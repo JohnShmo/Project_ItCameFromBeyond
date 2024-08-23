@@ -2,6 +2,7 @@ package org.shmo.icfb;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.shmo.icfb.campaign.ShiftDrive_AbilityPlugin;
 
 public class ItCameFromBeyond {
     public static class Log {
@@ -26,6 +27,10 @@ public class ItCameFromBeyond {
 
     public static ItCameFromBeyond_ModPlugin getPlugin() {
         return ItCameFromBeyond_ModPlugin.getInstance();
+    }
+
+    public static ShiftDrive_AbilityPlugin getShiftDrivePlugin() {
+        return ShiftDrive_AbilityPlugin.getInstance();
     }
 
 }

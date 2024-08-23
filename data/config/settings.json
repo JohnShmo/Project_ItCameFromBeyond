@@ -1,11 +1,9 @@
 {
-	# This file is optional and can be deleted if you aren't using it, but doesn't hurt to keep.
-
 	# Add plugins like `EveryFrameCombatPlugin` and `EveryFrameScript` here and the game will automatically run them.
 	# The list of plugins that should be added here seems slightly random.
-	#"plugins":{
-	#	 "coreLifecyclePlugin":"com.fs.starfarer.api.impl.campaign.CoreLifecyclePluginImpl",
-	#},
+	# "plugins":{
+	#	 "icfb_ShiftDrive_AbilityPlugin":"org.shmo.icfb.campaign.ShiftDrive_AbilityPlugin",
+	# },
 
 	# rules.csv can call Java from within a rule. The code must extend `BaseCommandPlugin`.
 	# This section is where we can tell the game where to look for our custom rule commands.
