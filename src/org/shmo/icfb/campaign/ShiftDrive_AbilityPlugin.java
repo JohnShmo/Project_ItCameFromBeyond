@@ -248,7 +248,7 @@ public class ShiftDrive_AbilityPlugin extends BaseDurationAbility {
     @Override
     public void fleetLeftBattle(BattleAPI battle, boolean engagedInHostilities) {
         if (engagedInHostilities) {
-            deactivate();
+            reset();
         }
     }
 }
