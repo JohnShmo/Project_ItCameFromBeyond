@@ -16,6 +16,10 @@ public class ItCameFromBeyond {
             LOGGER.info(message);
         }
 
+        public static void warn(Object message) {
+            LOGGER.warn(message);
+        }
+
         public static void error(Object message) {
             LOGGER.error(message);
         }

@@ -12,6 +12,7 @@ import com.fs.starfarer.api.util.Misc;
 import org.lazywizard.console.Console;
 import org.lazywizard.lazylib.MathUtils;
 import org.lwjgl.util.vector.Vector2f;
+import org.shmo.icfb.ItCameFromBeyond;
 
 import java.awt.*;
 
@@ -68,11 +69,13 @@ public class ShiftDrive_AbilityPlugin extends BaseDurationAbility {
             return;
         if (fleet.isInHyperspaceTransition())
             return;
+
+        ItCameFromBeyond.Log.info("Activating Shift Drive...");
         if (!hasTarget()) {
+            ItCameFromBeyond.Log.info("No target for Shift Drive! Deactivating...");
             reset();
             return;
         }
-
         ping = Global.getSector().addPing(fleet, PING_ID);
         prime();
         primeSound();
@@ -94,33 +97,42 @@ public class ShiftDrive_AbilityPlugin extends BaseDurationAbility {
             return;
 
         if (level > 0 && level < 1 && amount > 0) {
-            float activateSeconds = getActivationDays() * Global.getSector().getClock().getSecondsPerDay();
-            float speed = fleet.getVelocity().length();
-            float acc = Math.max(speed, 200f)/activateSeconds + fleet.getAcceleration();
-            float ds = acc * amount;
-            if (ds > speed) ds = speed;
-            Vector2f dv = Misc.getUnitVectorAtDegreeAngle(Misc.getAngleInDegrees(fleet.getVelocity()));
-            dv.scale(ds);
-            fleet.setVelocity(fleet.getVelocity().x - dv.x, fleet.getVelocity().y - dv.y);
+            applySlowdown(amount, fleet);
             return;
         }
 
         if (level == 1 && isPrimed()) {
             SectorEntityToken destination = calculateDestination();
-            if (destination == null) {
+            if (destination == null || target == null) {
+                ItCameFromBeyond.Log.warn("Shift Drive failed to find its target!");
                 return;
             }
-
-            JumpPointAPI.JumpDestination dest = new JumpPointAPI.JumpDestination(destination, null);
-            Global.getSector().doHyperspaceTransition(fleet, fleet, dest);
-            fleet.setNoEngaging(2.0f);
-            fleet.clearAssignments();
-            fleet.addAssignment(FleetAssignment.GO_TO_LOCATION, destination, 1f);
-            Global.getSector().addPing(fleet, ACTIVATE_PING_ID);
-            destination.setExpired(true);
+            doJump(fleet, destination, target.getName());
             resetTarget();
             unprime();
         }
+    }
+
+    protected void applySlowdown(float amount, CampaignFleetAPI fleet) {
+        float activateSeconds = getActivationDays() * Global.getSector().getClock().getSecondsPerDay();
+        float speed = fleet.getVelocity().length();
+        float acc = Math.max(speed, 200f)/activateSeconds + fleet.getAcceleration();
+        float ds = acc * amount;
+        if (ds > speed) ds = speed;
+        Vector2f dv = Misc.getUnitVectorAtDegreeAngle(Misc.getAngleInDegrees(fleet.getVelocity()));
+        dv.scale(ds);
+        fleet.setVelocity(fleet.getVelocity().x - dv.x, fleet.getVelocity().y - dv.y);
+    }
+
+    protected void doJump(CampaignFleetAPI fleet, SectorEntityToken destination, String destinationName) {
+        JumpPointAPI.JumpDestination dest = new JumpPointAPI.JumpDestination(destination, null);
+        Global.getSector().doHyperspaceTransition(fleet, fleet, dest);
+        fleet.setNoEngaging(2.0f);
+        fleet.clearAssignments();
+        fleet.addAssignment(FleetAssignment.GO_TO_LOCATION, destination, 1f);
+        Global.getSector().addPing(fleet, ACTIVATE_PING_ID);
+        destination.setExpired(true);
+        ItCameFromBeyond.Log.info("Shift Drive jumped to { " + destinationName + " }!");
     }
 
     protected void primeSound() {
