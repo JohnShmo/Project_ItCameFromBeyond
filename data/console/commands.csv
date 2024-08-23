@@ -1,2 +1,2 @@
 command,class,tags,syntax,help
-ShiftDriveTarget,org.shmo.icfb.commands.ShiftDriveTarget,"cheat,campaign",shiftdrivetarget <system>,Teleports your fleet to the specified system. You will be brought to that system's star (if it has one). If you want to travel to a specific token you should chain 'goto' after this command. The argument 'home' will function identically to the 'home' command.
+ShiftDriveTarget,org.shmo.icfb.commands.ShiftDriveTarget,"cheat,campaign",shiftdrivetarget <system>,
