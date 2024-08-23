@@ -23,6 +23,10 @@ hs_err_pid*
 replay_pid*
 
 /.gradle
+/.idea
 *.properties
 *.lock
 *.bat
+gradlew
+build.gradle.kts
+settings.gradle.kts
