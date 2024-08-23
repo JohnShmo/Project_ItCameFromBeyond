@@ -20,5 +20,5 @@
     }
   ],
   "jars": [ "jars/ItCameFromBeyond.jar" ],
-  "modPlugin": "org.shmo.icfb.ModPlugin"
+  "modPlugin": "org.shmo.icfb.ICFB_ModPlugin"
 }
