@@ -1,0 +1,24 @@
+{
+  "id": "Shmo_ICFB",
+  "name": "It Came Frome Beyond",
+  "author": "John Shmo",
+  "utility": "false",
+  # Using the long version format lets the game correctly compare major/minor/patch versions.
+  "version": { "major": '0', "minor": '0', "patch": '1' },
+  "description": "TODO: Add description...",
+  "gameVersion": "0.97a-RC11",
+  "dependencies": [
+    {
+      "id": "lw_lazylib",
+      "name": "LazyLib",
+      "version": "2.8b"
+    },
+	{
+      "id": "MagicLib",
+      "name": "MagicLib",
+      "version": "1.4.5"
+    }
+  ],
+  "jars": [ "jars/ItCameFromBeyond.jar" ],
+  "modPlugin": "org.shmo.icfb.ModPlugin"
+}
