@@ -23,7 +23,7 @@ additional content and mechanics to the game.
 - ***New player fleet abilities***
   - Shift Drive: Allows instantaneous travel across the sector
   for a large cost. Massively lowers the combat readiness of the player's fleet, and consumes copius fuel. Using it too
-  often may also attract some "unwanted" attention. [CURRENTLY IN DEVELOPMENT]
+  often may also attract some "unwanted" attention. [PARTIALLY IMPLEMENTED]
 
 ## Lore
 
