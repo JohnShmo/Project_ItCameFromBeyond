@@ -85,7 +85,7 @@ public class ShiftJump {
         CampaignUIAPI ui = Global.getSector().getCampaignUI();
         ShiftJump_DestinationPicker picker =
                 (ShiftJump_DestinationPicker)Global.getSettings().getPlugin(ShiftJump_DestinationPicker.ID);
-        picker.setShiftDrive(this);
+        picker.setShiftJump(this);
         ui.showInteractionDialog(picker, null);
     }
 
@@ -114,7 +114,7 @@ public class ShiftJump {
     private void spendFuel(CampaignFleetAPI fleet, SectorEntityToken target) {
         final int cost = computeFuelCost(fleet, target);
         ItCameFromBeyond.Log.info("Shift Jump: Consumed { " + cost + " } fuel.");
-        Global.getSector().getPlayerFleet().getCargo().removeFuel(cost);
+        fleet.getCargo().removeFuel(cost);
         setFuelToRefund(cost);
     }
 
@@ -245,7 +245,6 @@ public class ShiftJump {
     }
 
     private void setState(State state, CampaignFleetAPI fleet) {
-        _state = state;
         switch (state) {
             case INACTIVE: break;
             case CHOOSING_DESTINATION:
@@ -261,6 +260,7 @@ public class ShiftJump {
                 goToCanceledState(fleet);
                 break;
         }
+        _state = state;
     }
 
     private void gotToChoosingDestinationState(CampaignFleetAPI fleet) {
@@ -274,7 +274,8 @@ public class ShiftJump {
         ItCameFromBeyond.Log.info("Shift Jump: Primed and charging...");
 
         spawnPrimedPing(fleet);
-        spendFuel(fleet, getTarget());
+        if (fleet.isPlayerFleet())
+            spendFuel(fleet, getTarget());
     }
 
     private void goToFinishedState(CampaignFleetAPI fleet) {
@@ -298,6 +299,7 @@ public class ShiftJump {
 
     private void goToCanceledState(CampaignFleetAPI fleet) {
         ItCameFromBeyond.Log.info("Shift Jump: Canceled.");
+
         if (isState(State.PRIMED)) {
             refundFuel(fleet);
         }

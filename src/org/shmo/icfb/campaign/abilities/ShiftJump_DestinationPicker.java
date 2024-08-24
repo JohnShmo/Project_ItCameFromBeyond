@@ -58,5 +58,5 @@ public class ShiftJump_DestinationPicker implements InteractionDialogPlugin {
     public CampaignFleetAPI getPlayerFleet() { return _playerFleet; }
     private void setPlayerFleet(CampaignFleetAPI fleet) { _playerFleet = fleet; }
     public ShiftJump getShiftJump() { return _shiftJump; }
-    public void setShiftDrive(ShiftJump shiftJump) { _shiftJump = shiftJump; }
+    public void setShiftJump(ShiftJump shiftJump) { _shiftJump = shiftJump; }
 }
