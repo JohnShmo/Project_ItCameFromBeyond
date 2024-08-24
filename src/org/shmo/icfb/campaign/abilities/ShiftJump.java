@@ -294,7 +294,7 @@ public class ShiftJump {
         resetFuelToRefund();
 
         if (fleet.isPlayerFleet())
-            ItCameFromBeyond.Global.getShiftDriveTracker().incrementUses();
+            ItCameFromBeyond.Global.getShiftDriveManager().incrementUses();
     }
 
     private void goToCanceledState(CampaignFleetAPI fleet) {

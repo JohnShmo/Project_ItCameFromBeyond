@@ -5,12 +5,12 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import org.shmo.icfb.ItCameFromBeyond;
 
-public class ShiftDriveTracker implements EveryFrameScript {
-    public static final String ID = "icfb_ShiftDriveTracker";
-    public static final String USE_COUNT_MEMORY_ID = "$icfb_ShiftDriveTracker_useCount";
+public class ShiftDriveManager implements EveryFrameScript {
+    public static final String ID = "icfb_ShiftDriveManager";
+    public static final String USE_COUNT_MEMORY_ID = "$icfb_ShiftDriveManager_useCount";
 
-    public static ShiftDriveTracker getInstance() {
-        return (ShiftDriveTracker)Global.getSettings().getPlugin(ID);
+    public static ShiftDriveManager getInstance() {
+        return (ShiftDriveManager)Global.getSettings().getPlugin(ID);
     }
 
     public void incrementUses() {

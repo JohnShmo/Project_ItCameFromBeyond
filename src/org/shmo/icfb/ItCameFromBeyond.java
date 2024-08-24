@@ -4,7 +4,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.shmo.icfb.campaign.abilities.ShiftJump;
 import org.shmo.icfb.campaign.abilities.ShiftJump_AbilityPlugin;
-import org.shmo.icfb.campaign.scripts.ShiftDriveTracker;
+import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
 
 public class ItCameFromBeyond {
     public static class Log {
@@ -47,8 +47,8 @@ public class ItCameFromBeyond {
             return plugin.getImpl();
         }
 
-        public static ShiftDriveTracker getShiftDriveTracker() {
-            return ShiftDriveTracker.getInstance();
+        public static ShiftDriveManager getShiftDriveManager() {
+            return ShiftDriveManager.getInstance();
         }
     }
 
