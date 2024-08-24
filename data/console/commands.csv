@@ -1,2 +1,1 @@
 command,class,tags,syntax,help
-ShiftDriveTarget,org.shmo.icfb.commands.Command_ShiftDriveTarget,"cheat,campaign",shiftdrivetarget <system>,

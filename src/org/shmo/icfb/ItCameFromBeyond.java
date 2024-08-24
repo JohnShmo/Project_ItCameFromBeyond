@@ -2,8 +2,8 @@ package org.shmo.icfb;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.shmo.icfb.campaign.abilities.ShiftDrive;
-import org.shmo.icfb.campaign.abilities.ShiftDrive_AbilityPlugin;
+import org.shmo.icfb.campaign.abilities.ShiftJump;
+import org.shmo.icfb.campaign.abilities.ShiftJump_AbilityPlugin;
 import org.shmo.icfb.campaign.scripts.ShiftDriveTracker;
 
 public class ItCameFromBeyond {
@@ -36,12 +36,12 @@ public class ItCameFromBeyond {
             return ItCameFromBeyond_ModPlugin.getInstance();
         }
 
-        public static ShiftDrive_AbilityPlugin getPlayerShiftDrivePlugin() {
-            return ShiftDrive_AbilityPlugin.getPlayerInstance();
+        public static ShiftJump_AbilityPlugin getPlayerShiftJumpPlugin() {
+            return ShiftJump_AbilityPlugin.getPlayerInstance();
         }
 
-        public static ShiftDrive getPlayerShiftDrive() {
-            ShiftDrive_AbilityPlugin plugin = getPlayerShiftDrivePlugin();
+        public static ShiftJump getPlayerShiftJump() {
+            ShiftJump_AbilityPlugin plugin = getPlayerShiftJumpPlugin();
             if (plugin == null)
                 return null;
             return plugin.getImpl();

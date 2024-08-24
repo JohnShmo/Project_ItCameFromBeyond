@@ -1,6 +1,6 @@
 {
 	"plugins":{
-		 "icfb_ShiftDrive_DestinationPicker":"org.shmo.icfb.campaign.abilities.ShiftDrive_DestinationPicker",
+		 "icfb_ShiftJump_DestinationPicker":"org.shmo.icfb.campaign.abilities.ShiftJump_DestinationPicker",
 		 "icfb_ShiftDriveTracker":"org.shmo.icfb.campaign.scripts.ShiftDriveTracker",
 	}
 }

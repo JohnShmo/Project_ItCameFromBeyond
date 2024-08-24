@@ -11,21 +11,21 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShiftDrive_AbilityPlugin extends BaseDurationAbility {
-    public static final String ID = "icfb_shift_drive";
+public class ShiftJump_AbilityPlugin extends BaseDurationAbility {
+    public static final String ID = "icfb_shift_jump";
 
-    private final ShiftDrive _impl = new ShiftDrive();
+    private final ShiftJump _impl = new ShiftJump();
 
-    public static ShiftDrive_AbilityPlugin getPlayerInstance() {
+    public static ShiftJump_AbilityPlugin getPlayerInstance() {
         CampaignFleetAPI playerFleet = Global.getSector().getPlayerFleet();
         if (playerFleet == null)
             return null;
         if (!playerFleet.hasAbility(ID))
             return null;
-        return (ShiftDrive_AbilityPlugin) playerFleet.getAbility(ID);
+        return (ShiftJump_AbilityPlugin) playerFleet.getAbility(ID);
     }
 
-    public ShiftDrive getImpl() {
+    public ShiftJump getImpl() {
         return _impl;
     }
 
@@ -55,7 +55,7 @@ public class ShiftDrive_AbilityPlugin extends BaseDurationAbility {
         if (fleet == null)
             return;
         getImpl().advance(fleet, getActivationDays() * Global.getSector().getClock().getSecondsPerDay(), amount, level);
-        if (getImpl().isState(ShiftDrive.State.CANCELED)) {
+        if (getImpl().isState(ShiftJump.State.CANCELED)) {
             deactivate();
             resetCooldown();
         }
@@ -93,7 +93,7 @@ public class ShiftDrive_AbilityPlugin extends BaseDurationAbility {
         final Color highlight = Misc.getHighlightColor();
         final Color fuel = Global.getSettings().getColor("progressBarFuelColor");
         final int fuelPerLY = getImpl().computeFuelCost(fleet, 1);
-        final int extraFuelPercent = (int)((ShiftDrive.EXTRA_FUEL_USE *  getImpl().getFuelCostMultiplier()) * 100f);
+        final int extraFuelPercent = (int)((ShiftJump.EXTRA_FUEL_USE *  getImpl().getFuelCostMultiplier()) * 100f);
         final int crPercentShort = (int)(getImpl().computeCRCostFractional(0.25f) * 100f);
         final int crPercentMedium = (int)(getImpl().computeCRCostFractional(0.5f) * 100f);
         final int crPercentMax = (int)(getImpl().computeCRCostFractional(1.0f) * 100f);
@@ -163,14 +163,14 @@ public class ShiftDrive_AbilityPlugin extends BaseDurationAbility {
 
     @Override
     public String getOffSoundUI() {
-        if (getImpl().isState(ShiftDrive.State.CANCELED))
+        if (getImpl().isState(ShiftJump.State.CANCELED))
             return null;
         return super.getOffSoundUI();
     }
 
     @Override
     public String getOffSoundWorld() {
-        if (getImpl().isState(ShiftDrive.State.CANCELED))
+        if (getImpl().isState(ShiftJump.State.CANCELED))
             return null;
         return super.getOffSoundWorld();
     }

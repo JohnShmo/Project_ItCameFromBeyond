@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class ShiftDrive {
+public class ShiftJump {
     // CONSTANTS =======================================================================================================
 
     public static final float CR_USE_RATE = 0.8f;
@@ -24,8 +24,8 @@ public class ShiftDrive {
     public static final float CHANCE_FOR_DISABLE_AT_0_CR = 0.1f;
     public static final int MAX_RANGE_LY = 15;
 
-    public static final String PING_ID = "icfb_shift_drive";
-    public static final String JUMP_PING_ID = "icfb_shift_drive_activate";
+    public static final String PRIME_PING_ID = "icfb_shift_jump";
+    public static final String ACTIVATE_PING_ID = "icfb_shift_jump_activate";
 
     public enum State {
         INACTIVE,
@@ -78,20 +78,20 @@ public class ShiftDrive {
     }
 
     private static void spawnJumpPing(CampaignFleetAPI fleet) {
-        Global.getSector().addPing(fleet, JUMP_PING_ID);
+        Global.getSector().addPing(fleet, ACTIVATE_PING_ID);
     }
 
     private void showDestinationPicker() {
         CampaignUIAPI ui = Global.getSector().getCampaignUI();
-        ShiftDrive_DestinationPicker picker =
-                (ShiftDrive_DestinationPicker)Global.getSettings().getPlugin(ShiftDrive_DestinationPicker.ID);
+        ShiftJump_DestinationPicker picker =
+                (ShiftJump_DestinationPicker)Global.getSettings().getPlugin(ShiftJump_DestinationPicker.ID);
         picker.setShiftDrive(this);
         ui.showInteractionDialog(picker, null);
     }
 
     private void spawnPrimedPing(CampaignFleetAPI fleet) {
         despawnPrimedPing();
-        _primedPing = Global.getSector().addPing(fleet, PING_ID);
+        _primedPing = Global.getSector().addPing(fleet, PRIME_PING_ID);
     }
 
     private void despawnPrimedPing() {
@@ -113,14 +113,14 @@ public class ShiftDrive {
 
     private void spendFuel(CampaignFleetAPI fleet, SectorEntityToken target) {
         final int cost = computeFuelCost(fleet, target);
-        ItCameFromBeyond.Log.info("Shift Drive: Consumed { " + cost + " } fuel.");
+        ItCameFromBeyond.Log.info("Shift Jump: Consumed { " + cost + " } fuel.");
         Global.getSector().getPlayerFleet().getCargo().removeFuel(cost);
         setFuelToRefund(cost);
     }
 
     private void refundFuel(CampaignFleetAPI fleet) {
         fleet.getCargo().addFuel(getFuelToRefund());
-        ItCameFromBeyond.Log.info("Shift Drive: Refunded { " + getFuelToRefund() + " } fuel.");
+        ItCameFromBeyond.Log.info("Shift Jump: Refunded { " + getFuelToRefund() + " } fuel.");
         resetFuelToRefund();
     }
 
@@ -157,10 +157,10 @@ public class ShiftDrive {
             if (crAfterUse == 0) {
                 if (tryApplyDamage(member, rng)) {
                     eventMessage = member.getShipName() + " was damaged due to complications during Shift Jump.";
-                    Global.getSector().getIntelManager().addIntel(new ShiftDrive_DamageIntel(eventMessage));
+                    Global.getSector().getIntelManager().addIntel(new ShiftJump_DamageIntel(eventMessage));
                 } else if (tryDisable(member, rng)) {
                     eventMessage = member.getShipName() + " was disabled due to complications during Shift Jump.";
-                    Global.getSector().getIntelManager().addIntel(new ShiftDrive_DamageIntel(eventMessage));
+                    Global.getSector().getIntelManager().addIntel(new ShiftJump_DamageIntel(eventMessage));
                 }
             }
             repairTracker.applyCREvent(-crCost, eventMessage);
@@ -218,7 +218,7 @@ public class ShiftDrive {
     // STATE MACHINE ===================================================================================================
 
     public void activate(CampaignFleetAPI fleet) {
-        ItCameFromBeyond.Log.info("Shift Drive: Activating...");
+        ItCameFromBeyond.Log.info("Shift Jump: Activating...");
         setState(State.CHOOSING_DESTINATION, fleet);
     }
 
@@ -264,22 +264,22 @@ public class ShiftDrive {
     }
 
     private void gotToChoosingDestinationState(CampaignFleetAPI fleet) {
-        ItCameFromBeyond.Log.info("Shift Drive: Choosing destination...");
+        ItCameFromBeyond.Log.info("Shift Jump: Choosing destination...");
 
         if (fleet.isPlayerFleet())
             showDestinationPicker();
     }
 
     private void goToPrimedState(CampaignFleetAPI fleet) {
-        ItCameFromBeyond.Log.info("Shift Drive: Primed and charging...");
+        ItCameFromBeyond.Log.info("Shift Jump: Primed and charging...");
 
         spawnPrimedPing(fleet);
         spendFuel(fleet, getTarget());
     }
 
     private void goToFinishedState(CampaignFleetAPI fleet) {
-        ItCameFromBeyond.Log.info("Shift Drive: Activation complete!");
-        ItCameFromBeyond.Log.info("Shift Drive: Jumped to { " + getTarget().getName() + " }!");
+        ItCameFromBeyond.Log.info("Shift Jump: Activation complete!");
+        ItCameFromBeyond.Log.info("Shift Jump: Jumped to { " + getTarget().getName() + " }!");
 
         applyCRCost(fleet, getTarget());
 
@@ -297,7 +297,7 @@ public class ShiftDrive {
     }
 
     private void goToCanceledState(CampaignFleetAPI fleet) {
-        ItCameFromBeyond.Log.info("Shift Drive: Canceled.");
+        ItCameFromBeyond.Log.info("Shift Jump: Canceled.");
         if (isState(State.PRIMED)) {
             refundFuel(fleet);
         }

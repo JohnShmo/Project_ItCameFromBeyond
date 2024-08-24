@@ -8,11 +8,11 @@ import com.fs.starfarer.api.util.Misc;
 
 import java.awt.*;
 
-public class ShiftDrive_DestinationPicker_Listener extends BaseCampaignEntityPickerListener {
+public class ShiftJump_DestinationPicker_Listener extends BaseCampaignEntityPickerListener {
 
-    private final ShiftDrive_DestinationPicker _picker;
+    private final ShiftJump_DestinationPicker _picker;
 
-    public ShiftDrive_DestinationPicker_Listener(ShiftDrive_DestinationPicker picker) {
+    public ShiftJump_DestinationPicker_Listener(ShiftJump_DestinationPicker picker) {
         _picker = picker;
     }
 
@@ -23,7 +23,7 @@ public class ShiftDrive_DestinationPicker_Listener extends BaseCampaignEntityPic
 
     @Override
     public void pickedEntity(SectorEntityToken entity) {
-        _picker.getShiftDrive().setTarget(entity);
+        _picker.getShiftJump().setTarget(entity);
         _picker.getDialog().dismiss();
         Global.getSector().setPaused(false);
     }
@@ -41,10 +41,10 @@ public class ShiftDrive_DestinationPicker_Listener extends BaseCampaignEntityPic
 
     @Override
     public void createInfoText(TooltipMakerAPI info, SectorEntityToken entity) {
-        final int cost = _picker.getShiftDrive().computeFuelCost(_picker.getPlayerFleet(), entity);
-        final int crPenalty = (int)(_picker.getShiftDrive().computeCRCost(_picker.getPlayerFleet(), entity) * 100f);
+        final int cost = _picker.getShiftJump().computeFuelCost(_picker.getPlayerFleet(), entity);
+        final int crPenalty = (int)(_picker.getShiftJump().computeCRCost(_picker.getPlayerFleet(), entity) * 100f);
         final int available = (int) _picker.getPlayerFleet().getCargo().getFuel();
-        final int maxRange = _picker.getShiftDrive().getMaxRangeLY();
+        final int maxRange = _picker.getShiftJump().getMaxRangeLY();
         final int distance = (int)Misc.getDistanceLY(_picker.getPlayerFleet(), entity);
 
         Color reqColor = Misc.getHighlightColor();
@@ -71,7 +71,7 @@ public class ShiftDrive_DestinationPicker_Listener extends BaseCampaignEntityPic
 
     @Override
     public boolean canConfirmSelection(SectorEntityToken entity) {
-        int cost = _picker.getShiftDrive().computeFuelCost(_picker.getPlayerFleet(), entity);
+        int cost = _picker.getShiftJump().computeFuelCost(_picker.getPlayerFleet(), entity);
         int available = (int) _picker.getPlayerFleet().getCargo().getFuel();
         return cost <= available;
     }

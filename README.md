@@ -21,7 +21,7 @@ additional content and mechanics to the game.
   - Several new utility and logistical ships. [UNFINISHED]
   - Several unboardable ***REDACTED*** ships. [UNFINISHED]
 - ***New player fleet abilities***
-  - Shift Drive: Allows instantaneous travel across the sector
+  - Shift Jump: Allows instantaneous travel across the sector
   for a large cost. Massively lowers the combat readiness of the player's fleet, and consumes copius fuel. Using it too
   often may also attract some "unwanted" attention. [PARTIALLY IMPLEMENTED]
 
