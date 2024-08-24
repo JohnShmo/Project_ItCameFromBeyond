@@ -2,7 +2,9 @@ package org.shmo.icfb;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.shmo.icfb.campaign.ShiftDrive_AbilityPlugin;
+import org.shmo.icfb.campaign.abilities.ShiftDrive;
+import org.shmo.icfb.campaign.abilities.ShiftDrive_AbilityPlugin;
+import org.shmo.icfb.campaign.scripts.ShiftDriveTracker;
 
 public class ItCameFromBeyond {
     public static class Log {
@@ -29,12 +31,31 @@ public class ItCameFromBeyond {
         }
     }
 
-    public static ItCameFromBeyond_ModPlugin getPlugin() {
-        return ItCameFromBeyond_ModPlugin.getInstance();
+    public static class Global {
+        public static ItCameFromBeyond_ModPlugin getPlugin() {
+            return ItCameFromBeyond_ModPlugin.getInstance();
+        }
+
+        public static ShiftDrive_AbilityPlugin getPlayerShiftDrivePlugin() {
+            return ShiftDrive_AbilityPlugin.getPlayerInstance();
+        }
+
+        public static ShiftDrive getPlayerShiftDrive() {
+            ShiftDrive_AbilityPlugin plugin = getPlayerShiftDrivePlugin();
+            if (plugin == null)
+                return null;
+            return plugin.getImpl();
+        }
+
+        public static ShiftDriveTracker getShiftDriveTracker() {
+            return ShiftDriveTracker.getInstance();
+        }
     }
 
-    public static ShiftDrive_AbilityPlugin getShiftDrivePlugin() {
-        return ShiftDrive_AbilityPlugin.getInstance();
+    public static class Utils {
+        public static float lerp(float a, float b, float t) {
+            return a + t * (b - a);
+        }
     }
 
 }

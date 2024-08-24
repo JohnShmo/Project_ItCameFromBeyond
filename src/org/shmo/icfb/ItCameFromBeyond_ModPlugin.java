@@ -5,6 +5,7 @@ import com.fs.starfarer.api.BaseModPlugin;
 public class ItCameFromBeyond_ModPlugin extends BaseModPlugin {
 
     private static ItCameFromBeyond_ModPlugin INSTANCE = null;
+
     public static ItCameFromBeyond_ModPlugin getInstance() {
         return INSTANCE;
     }
