@@ -19,12 +19,12 @@ public class ShiftJump {
 
     public static final float CR_USE_RATE = 0.8f;
     public static final float CR_USE_VARIANCE = 0.1f;
-    public static final float EXTRA_FUEL_USE = 0.333333f;
+    public static final float EXTRA_FUEL_USE = 1f/3f;
     public static final float CHANCE_FOR_DAMAGE_AT_0_CR = 0.5f;
     public static final float CHANCE_FOR_DISABLE_AT_0_CR = 0.1f;
     public static final int MAX_RANGE_LY = 15;
 
-    public static final String PRIME_PING_ID = "icfb_shift_jump";
+    public static final String PRIME_PING_ID = "icfb_shift_jump_prime";
     public static final String ACTIVATE_PING_ID = "icfb_shift_jump_activate";
 
     public enum State {
