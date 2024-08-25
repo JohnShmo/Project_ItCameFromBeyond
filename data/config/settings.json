@@ -1,6 +1,11 @@
 {
 	"plugins":{
-		 "icfb_ShiftJump_DestinationPicker":"org.shmo.icfb.campaign.abilities.ShiftJump_DestinationPicker",
-		 "icfb_ShiftDriveManager":"org.shmo.icfb.campaign.scripts.ShiftDriveManager",
+		# UI plugins
+		"icfb_ShiftJump_DestinationPicker":"org.shmo.icfb.campaign.abilities.ShiftJump_DestinationPicker",
+	},
+	"graphics":{
+		"icfb_icons":{
+			"shift_drive":"graphics/ItCameFromBeyond/icons/abilities/shift_drive.png",
+		}
 	}
 }

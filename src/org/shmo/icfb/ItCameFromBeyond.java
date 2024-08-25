@@ -4,6 +4,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.shmo.icfb.campaign.abilities.ShiftJump;
 import org.shmo.icfb.campaign.abilities.ShiftJump_AbilityPlugin;
+import org.shmo.icfb.campaign.intel.events.ShiftDriveUsageEvent;
 import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
 
 public class ItCameFromBeyond {
@@ -32,10 +33,6 @@ public class ItCameFromBeyond {
     }
 
     public static class Global {
-        public static ItCameFromBeyond_ModPlugin getPlugin() {
-            return ItCameFromBeyond_ModPlugin.getInstance();
-        }
-
         public static ShiftJump_AbilityPlugin getPlayerShiftJumpPlugin() {
             return ShiftJump_AbilityPlugin.getPlayerInstance();
         }
@@ -50,6 +47,8 @@ public class ItCameFromBeyond {
         public static ShiftDriveManager getShiftDriveManager() {
             return ShiftDriveManager.getInstance();
         }
+
+        public static ShiftDriveUsageEvent getShiftDriveUsageEvent() { return ShiftDriveUsageEvent.getInstance(); }
     }
 
     public static class Utils {

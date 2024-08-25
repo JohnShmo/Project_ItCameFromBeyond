@@ -82,11 +82,7 @@ public class ShiftJump {
     }
 
     private void showDestinationPicker() {
-        CampaignUIAPI ui = Global.getSector().getCampaignUI();
-        ShiftJump_DestinationPicker picker =
-                (ShiftJump_DestinationPicker)Global.getSettings().getPlugin(ShiftJump_DestinationPicker.ID);
-        picker.setShiftJump(this);
-        ui.showInteractionDialog(picker, null);
+        ShiftJump_DestinationPicker.execute(this);
     }
 
     private void spawnPrimedPing(CampaignFleetAPI fleet) {
@@ -283,7 +279,9 @@ public class ShiftJump {
         ItCameFromBeyond.Log.info("Shift Jump: Jumped to { " + getTarget().getName() + " }!");
 
         applyCRCost(fleet, getTarget());
+        resetFuelToRefund();
 
+        final float distance = Misc.getDistanceLY(fleet, getTarget());
         SectorEntityToken destination = createDestinationToken(getTarget());
         doJump(fleet, destination);
         cleanupDestinationToken(destination);
@@ -291,10 +289,11 @@ public class ShiftJump {
         despawnPrimedPing();
         spawnJumpPing(fleet);
         resetTarget();
-        resetFuelToRefund();
 
-        if (fleet.isPlayerFleet())
-            ItCameFromBeyond.Global.getShiftDriveManager().incrementUses();
+        if (fleet.isPlayerFleet()) {
+            ItCameFromBeyond.Global.getShiftDriveManager().incrementShiftJumpUses();
+            ItCameFromBeyond.Global.getShiftDriveManager().addToShiftJumpTotalDistance(distance);
+        }
     }
 
     private void goToCanceledState(CampaignFleetAPI fleet) {

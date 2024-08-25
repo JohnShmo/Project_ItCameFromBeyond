@@ -2,6 +2,8 @@ package org.shmo.icfb.campaign.abilities;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.BaseCampaignEntityPickerListener;
+import com.fs.starfarer.api.campaign.CampaignFleetAPI;
+import com.fs.starfarer.api.campaign.InteractionDialogAPI;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
@@ -10,10 +12,14 @@ import java.awt.*;
 
 public class ShiftJump_DestinationPicker_Listener extends BaseCampaignEntityPickerListener {
 
-    private final ShiftJump_DestinationPicker _picker;
+    private InteractionDialogAPI _dialog;
+    private ShiftJump _shiftJump;
+    private CampaignFleetAPI _playerFleet;
 
-    public ShiftJump_DestinationPicker_Listener(ShiftJump_DestinationPicker picker) {
-        _picker = picker;
+    public ShiftJump_DestinationPicker_Listener(InteractionDialogAPI dialog, ShiftJump shiftJump) {
+        _shiftJump = shiftJump;
+        _dialog = dialog;
+        _playerFleet = Global.getSector().getPlayerFleet();
     }
 
     @Override
@@ -23,14 +29,16 @@ public class ShiftJump_DestinationPicker_Listener extends BaseCampaignEntityPick
 
     @Override
     public void pickedEntity(SectorEntityToken entity) {
-        _picker.getShiftJump().setTarget(entity);
-        _picker.getDialog().dismiss();
+        _shiftJump.setTarget(entity);
+        _dialog.dismiss();
+        unsetFields();
         Global.getSector().setPaused(false);
     }
 
     @Override
     public void cancelledEntityPicking() {
-        _picker.getDialog().dismiss();
+        _dialog.dismiss();
+        unsetFields();
         Global.getSector().setPaused(false);
     }
 
@@ -41,11 +49,11 @@ public class ShiftJump_DestinationPicker_Listener extends BaseCampaignEntityPick
 
     @Override
     public void createInfoText(TooltipMakerAPI info, SectorEntityToken entity) {
-        final int cost = _picker.getShiftJump().computeFuelCost(_picker.getPlayerFleet(), entity);
-        final int crPenalty = (int)(_picker.getShiftJump().computeCRCost(_picker.getPlayerFleet(), entity) * 100f);
-        final int available = (int) _picker.getPlayerFleet().getCargo().getFuel();
-        final int maxRange = _picker.getShiftJump().getMaxRangeLY();
-        final int distance = (int)Misc.getDistanceLY(_picker.getPlayerFleet(), entity);
+        final int cost = _shiftJump.computeFuelCost(_playerFleet, entity);
+        final int crPenalty = (int)(_shiftJump.computeCRCost(_playerFleet, entity) * 100f);
+        final int available = (int) _playerFleet.getCargo().getFuel();
+        final int maxRange = _shiftJump.getMaxRangeLY();
+        final int distance = (int)Misc.getDistanceLY(_playerFleet, entity);
 
         Color reqColor = Misc.getHighlightColor();
         Color availableColor = Misc.getHighlightColor();
@@ -66,18 +74,28 @@ public class ShiftJump_DestinationPicker_Listener extends BaseCampaignEntityPick
         info.setGridFontSmallInsignia();
         info.addToGrid(0, 0, "    Fuel required:", Misc.getWithDGS(cost), reqColor);
         info.addToGrid(1, 0, "    Fuel available:", Misc.getWithDGS(available), availableColor);
-        info.addGrid(0);;
+        info.addGrid(0);
     }
 
     @Override
     public boolean canConfirmSelection(SectorEntityToken entity) {
-        int cost = _picker.getShiftJump().computeFuelCost(_picker.getPlayerFleet(), entity);
-        int available = (int) _picker.getPlayerFleet().getCargo().getFuel();
+        if (_shiftJump == null || _playerFleet == null)
+            return false;
+
+        int cost = _shiftJump.computeFuelCost(_playerFleet, entity);
+        int available = (int) _playerFleet.getCargo().getFuel();
         return cost <= available;
     }
 
     @Override
     public float getFuelColorAlphaMult() {
         return 0.5f;
+    }
+
+    // Prevents memory leak
+    private void unsetFields() {
+        _dialog = null;
+        _shiftJump = null;
+        _playerFleet = null;
     }
 }

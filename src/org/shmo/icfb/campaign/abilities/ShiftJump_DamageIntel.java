@@ -6,12 +6,13 @@ import com.fs.starfarer.api.ui.CustomPanelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 
 public class ShiftJump_DamageIntel extends BaseIntelPlugin {
-    private static final String ICON_CATEGORY =  "intel";
-    private static final String ICON_ID =  "damage_report";
+    private static final String ICON_CATEGORY = "intel";
+    private static final String ICON_ID = "damage_report";
 
     private final String _message;
 
     public ShiftJump_DamageIntel(String message) {
+        super();
         _message = message;
     }
 
