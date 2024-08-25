@@ -7,6 +7,7 @@ import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.campaign.abilities.ShiftJump;
 import org.shmo.icfb.campaign.intel.events.ShiftDriveUsageEvent;
 import org.shmo.icfb.utilities.BasicTimer;
+import org.shmo.icfb.utilities.ScriptFactory;
 import org.shmo.icfb.utilities.Timer;
 
 public class ShiftDriveManager implements EveryFrameScript {
@@ -20,6 +21,16 @@ public class ShiftDriveManager implements EveryFrameScript {
 
     public static final float RANGE_UPGRADE_MULTIPLIER = 1.0f + (2f/3f);
     public static final float FUEL_UPGRADE_MULTIPLIER = 0.5f;
+
+    public static class Factory implements ScriptFactory {
+        @Override
+        public EveryFrameScript getInstance() {
+            EveryFrameScript script = ShiftDriveManager.getInstance();
+            if (script == null)
+                script = new ShiftDriveManager();
+            return script;
+        }
+    }
 
     private final Timer _reportIntelTimer = new BasicTimer(1f);
     private boolean _shiftJumpUsageDirty = false;

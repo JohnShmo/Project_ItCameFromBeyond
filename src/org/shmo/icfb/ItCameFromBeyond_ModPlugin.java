@@ -1,17 +1,25 @@
 package org.shmo.icfb;
 
 import com.fs.starfarer.api.BaseModPlugin;
-import com.fs.starfarer.api.Global;
 import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
+import org.shmo.icfb.utilities.ScriptInitializer;
 
 public class ItCameFromBeyond_ModPlugin extends BaseModPlugin {
-    private void addScripts() {
-        Global.getSector().removeScriptsOfClass(ShiftDriveManager.class);
-        ShiftDriveManager shiftDriveManager = ShiftDriveManager.getInstance();
-        if (shiftDriveManager == null) {
-            shiftDriveManager = new ShiftDriveManager();
-        }
-        Global.getSector().addScript(shiftDriveManager);
+
+    private void initializeScripts() {
+        ItCameFromBeyond.Log.info("" +
+                "\n#######################\n" +
+                "\nINITIALIZING SCRIPTS...\n" +
+                "\n#######################\n"
+        );
+
+        ScriptInitializer.initializeScript(new ShiftDriveManager.Factory());
+
+        ItCameFromBeyond.Log.info("" +
+                "\n#######################\n" +
+                "\nINITIALIZING SCRIPTS COMPLETE!\n" +
+                "\n#######################\n"
+        );
     }
 
     @Override
@@ -24,7 +32,7 @@ public class ItCameFromBeyond_ModPlugin extends BaseModPlugin {
     @Override
     public void onGameLoad(boolean newGame) {
         super.onGameLoad(newGame);
-        addScripts();
+        initializeScripts();
     }
 
     @Override
