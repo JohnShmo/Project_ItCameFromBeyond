@@ -5,17 +5,13 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.campaign.abilities.ShiftJump;
-import org.shmo.icfb.campaign.intel.events.ShiftDriveUsageEvent;
-import org.shmo.icfb.utilities.BasicTimer;
+import org.shmo.icfb.campaign.intel.events.ShiftDriveEvent;
 import org.shmo.icfb.utilities.ScriptFactory;
-import org.shmo.icfb.utilities.Timer;
 
 public class ShiftDriveManager implements EveryFrameScript {
     public static final String KEY = "$icfb_ShiftDriveManager";
 
     public static final String UNLOCKED_MEMORY_KEY = "$icfb_ShiftDriveManager_unlocked";
-    public static final String USE_COUNT_MEMORY_KEY = "$icfb_ShiftDriveManager_useCount";
-    public static final String TOTAL_DISTANCE_MEMORY_KEY = "$icfb_ShiftDriveManager_totalDistance";
     public static final String RANGE_UPGRADE_MEMORY_KEY = "$icfb_ShiftDriveManager_hasRangeUpgrade";
     public static final String FUEL_UPGRADE_MEMORY_KEY = "$icfb_ShiftDriveManager_hasFuelUpgrade";
 
@@ -31,9 +27,6 @@ public class ShiftDriveManager implements EveryFrameScript {
             return script;
         }
     }
-
-    private final Timer _reportIntelTimer = new BasicTimer(1f);
-    private boolean _shiftJumpUsageDirty = false;
 
     public static ShiftDriveManager getInstance() {
         return (ShiftDriveManager)Global.getSector().getMemoryWithoutUpdate().get(KEY);
@@ -56,40 +49,8 @@ public class ShiftDriveManager implements EveryFrameScript {
         ItCameFromBeyond.Log.info("Set Shift Jump unlocked status to: " + unlocked);
     }
 
-    public int getShiftJumpUses() {
-        MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
-        if (!memory.contains(USE_COUNT_MEMORY_KEY))
-            return 0;
-        return memory.getInt(USE_COUNT_MEMORY_KEY);
-    }
-
-    public void setShiftJumpUses(int count) {
-        markShiftJumpUsageDirty();
-        MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
-        memory.set(USE_COUNT_MEMORY_KEY, count);
-        ItCameFromBeyond.Log.info("Set uses of Shift Jump to: " + count);
-    }
-
-    public void incrementShiftJumpUses() {
-        setShiftJumpUses(getShiftJumpUses() + 1);
-    }
-
-    public float getShiftJumpTotalDistance() {
-        MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
-        if (!memory.contains(TOTAL_DISTANCE_MEMORY_KEY))
-            return 0;
-        return memory.getFloat(TOTAL_DISTANCE_MEMORY_KEY);
-    }
-
-    public void setShiftJumpTotalDistance(float totalDistance) {
-        markShiftJumpUsageDirty();
-        MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
-        memory.set(TOTAL_DISTANCE_MEMORY_KEY, totalDistance);
-        ItCameFromBeyond.Log.info("Set total distance traveled with Shift Jump to: " + totalDistance + " light years");
-    }
-
     public void addToShiftJumpTotalDistance(float amount) {
-        setShiftJumpTotalDistance(getShiftJumpTotalDistance() + amount);
+        ShiftDriveEvent.addFactorCreateIfNecessary(ShiftDriveEvent.Factor.SHIFT_JUMP_USE, amount);
     }
 
     public boolean hasShiftJumpRangeUpgrade() {
@@ -130,35 +91,6 @@ public class ShiftDriveManager implements EveryFrameScript {
             shiftJump.setMaxRangeMultiplier(RANGE_UPGRADE_MULTIPLIER);
     }
 
-    private boolean shouldReportUsesToIntel(float deltaTime) {
-        if (!isShiftJumpUnlocked() || !isShiftJumpUsageDirty())
-            return false;
-        return _reportIntelTimer.advance(deltaTime);
-    }
-
-    private void reportShiftJumpUsageToIntel() {
-        ItCameFromBeyond.Log.info("Reported Shift Jump usage.");
-        markShiftJumpUsageClean();
-        ShiftDriveUsageEvent eventIntel = ItCameFromBeyond.Global.getShiftDriveUsageEvent();
-        if (eventIntel == null) {
-            eventIntel = new ShiftDriveUsageEvent();
-        }
-        eventIntel.reportUses(getShiftJumpUses());
-        eventIntel.reportTotalDistance(getShiftJumpTotalDistance());
-    }
-
-    private void markShiftJumpUsageDirty() {
-        _shiftJumpUsageDirty = true;
-    }
-
-    private void markShiftJumpUsageClean() {
-        _shiftJumpUsageDirty = false;
-    }
-
-    private boolean isShiftJumpUsageDirty() {
-        return _shiftJumpUsageDirty;
-    }
-
     @Override
     public boolean isDone() {
         return false;
@@ -172,7 +104,5 @@ public class ShiftDriveManager implements EveryFrameScript {
     @Override
     public void advance(float amount) {
         applyUpgradesAndUnlock();
-        if (shouldReportUsesToIntel(amount))
-            reportShiftJumpUsageToIntel();
     }
 }

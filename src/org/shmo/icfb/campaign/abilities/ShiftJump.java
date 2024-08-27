@@ -291,7 +291,6 @@ public class ShiftJump {
         resetTarget();
 
         if (fleet.isPlayerFleet()) {
-            ItCameFromBeyond.Global.getShiftDriveManager().incrementShiftJumpUses();
             ItCameFromBeyond.Global.getShiftDriveManager().addToShiftJumpTotalDistance(distance);
         }
     }
