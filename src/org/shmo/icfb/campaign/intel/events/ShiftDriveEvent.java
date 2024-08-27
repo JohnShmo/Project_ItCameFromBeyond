@@ -186,7 +186,7 @@ public class ShiftDriveEvent extends BaseEventIntel {
             if (current != null) {
                 info.addPara(
                         "Progress is locked due to reaching the %s stage in this event. " +
-                        "Resolve the associated affair to continue this event.",
+                        "Resolve the associated affair to continue.",
                         initPad, tc, Misc.getHighlightColor(), current.getTitle()
                 );
             }
