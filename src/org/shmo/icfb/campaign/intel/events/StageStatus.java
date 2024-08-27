@@ -3,7 +3,7 @@ package org.shmo.icfb.campaign.intel.events;
 import com.fs.starfarer.api.GameState;
 import com.fs.starfarer.api.Global;
 
-public abstract class StageData {
+public abstract class StageStatus {
     public static final String UNKNOWN_LABEL = "???";
     public static final String UNKNOWN_ICON_CATEGORY = "events";
     public static final String UNKNOWN_ICON_ID = "stage_unknown_neutral";
@@ -50,4 +50,5 @@ public abstract class StageData {
 
     protected String getDescription() { return DEFAULT_DESCRIPTION; }
     protected String getTitle() { return getLabel(); }
+    protected abstract int getProgress();
 }

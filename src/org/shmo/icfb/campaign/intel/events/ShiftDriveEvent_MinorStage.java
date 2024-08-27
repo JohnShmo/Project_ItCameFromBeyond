@@ -2,7 +2,7 @@ package org.shmo.icfb.campaign.intel.events;
 
 import com.fs.starfarer.api.Global;
 
-public class ShiftDriveEvent_MinorStage extends StageData {
+public class ShiftDriveEvent_MinorStage extends StageStatus {
     public static final String ICON_CATEGORY = "events";
     public static final String ICON_ID = "stage_unknown_bad";
     public static final String LABEL = "Odd Occurrences";
@@ -48,5 +48,10 @@ public class ShiftDriveEvent_MinorStage extends StageData {
         if (getState() == State.COMPLETE)
             return "--TODO--";
         return super.getDescription();
+    }
+
+    @Override
+    protected int getProgress() {
+        return ShiftDriveEvent.PROGRESS_MINOR;
     }
 }

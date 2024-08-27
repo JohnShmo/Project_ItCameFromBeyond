@@ -12,7 +12,14 @@ public class ShiftDriveEvent_DecayFactor extends BaseEventFactor {
     public static final int MONTHLY_DECAY = 5;
 
     public int getProgress(BaseEventIntel intel) {
-        return -MONTHLY_DECAY;
+        ShiftDriveEvent shiftDriveEvent = (ShiftDriveEvent)intel;
+        return shiftDriveEvent.isLockedInStage() ? 0 : -MONTHLY_DECAY;
+    }
+
+    @Override
+    public boolean shouldShow(BaseEventIntel intel) {
+        ShiftDriveEvent shiftDriveEvent = (ShiftDriveEvent)intel;
+        return !shiftDriveEvent.isLockedInStage();
     }
 
     @Override

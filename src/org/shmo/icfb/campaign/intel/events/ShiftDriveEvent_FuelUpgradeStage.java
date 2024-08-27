@@ -2,7 +2,7 @@ package org.shmo.icfb.campaign.intel.events;
 
 import com.fs.starfarer.api.Global;
 
-public class ShiftDriveEvent_FuelUpgradeStage extends StageData {
+public class ShiftDriveEvent_FuelUpgradeStage extends StageStatus {
     public static final String ICON_CATEGORY = "icfb_icons";
     public static final String ICON_ID = "shift_drive";
     public static final String LABEL = "Upgrade";
@@ -35,5 +35,10 @@ public class ShiftDriveEvent_FuelUpgradeStage extends StageData {
     @Override
     protected String getCompleteIcon() {
         return Global.getSettings().getSpriteName(ICON_CATEGORY, ICON_ID);
+    }
+
+    @Override
+    protected int getProgress() {
+        return ShiftDriveEvent.PROGRESS_FUEL_UPGRADE;
     }
 }

@@ -16,10 +16,12 @@ public class ShiftDriveEvent_UseFactor extends BaseEventFactor {
 
     private float _distanceLY = 0;
     private final long _timeStamp;
+    private int _progress;
 
     public ShiftDriveEvent_UseFactor(float distanceLY) {
         addDistance(distanceLY);
         _timeStamp = Global.getSector().getClock().getTimestamp();
+        _progress = (int)(_distanceLY * POINTS_PER_LY) + POINTS_PER_USE;
     }
 
     @Override
@@ -28,7 +30,7 @@ public class ShiftDriveEvent_UseFactor extends BaseEventFactor {
     }
 
     public void addDistance(float distanceLY) {
-        _distanceLY += distanceLY;
+        setDistance(getDistance() + distanceLY);
     }
 
     public void setDistance(float distanceLY) {
@@ -40,7 +42,11 @@ public class ShiftDriveEvent_UseFactor extends BaseEventFactor {
     }
 
     public int getProgress(BaseEventIntel intel) {
-        return (int)(_distanceLY * POINTS_PER_LY) + POINTS_PER_USE;
+        return _progress;
+    }
+
+    public void setProgress(int progress) {
+        _progress = progress;
     }
 
     public String getDesc(BaseEventIntel intel) {
@@ -55,19 +61,6 @@ public class ShiftDriveEvent_UseFactor extends BaseEventFactor {
         return Global.getSector().getClock().getElapsedDaysSince(_timeStamp) > SHOW_DURATION_DAYS;
     }
 
-    protected String getBulletPointText(BaseEventIntel intel) {
-        return null;
-    }
-
-    public void addBulletPointForOneTimeFactor(BaseEventIntel intel, TooltipMakerAPI info, Color tc, float initPad) {
-        String text = getBulletPointText(intel);
-        if (text == null) text = getDesc(intel);
-        if (text != null) {
-            info.addPara(text + ": %s", initPad, tc, getProgressColor(intel),
-                    getProgressStr(intel));
-        }
-    }
-
     public TooltipMakerAPI.TooltipCreator getMainRowTooltip(final BaseEventIntel intel) {
         return new BaseFactorTooltip() {
             @Override
@@ -76,7 +69,7 @@ public class ShiftDriveEvent_UseFactor extends BaseEventFactor {
                 final Color highlight = Misc.getHighlightColor();
                 tooltip.addTitle("Shift Jump Use");
                 String str1 = "The recent use of your %s increased the progress of this event by %s points.";
-                String str2 = "The %s light year"+  ((int)_distanceLY >= 2 ? "s" : "") + " traveled with your %s " +
+                String str2 = "The %s light year"+  ((int)getDistance() >= 2 ? "s" : "") + " traveled with your %s" +
                         " increased the progress of this event by %s points.";
                 tooltip.addPara(str1,
                         pad, highlight,
@@ -85,7 +78,7 @@ public class ShiftDriveEvent_UseFactor extends BaseEventFactor {
                 );
                 tooltip.addPara(str2,
                         pad, highlight,
-                        String.valueOf((int)_distanceLY),
+                        String.valueOf((int)getDistance()),
                         "Shift Jump",
                         String.valueOf((int)(_distanceLY * POINTS_PER_LY))
                 );

@@ -2,7 +2,7 @@ package org.shmo.icfb.campaign.intel.events;
 
 import com.fs.starfarer.api.Global;
 
-public class ShiftDriveEvent_DeadlyStage extends StageData {
+public class ShiftDriveEvent_DeadlyStage extends StageStatus {
     public static final String ICON_CATEGORY = "events";
     public static final String ICON_ID = "stage_unknown_bad";
     public static final String LABEL = "The Hunt";
@@ -35,5 +35,10 @@ public class ShiftDriveEvent_DeadlyStage extends StageData {
     @Override
     protected String getCompleteIcon() {
         return Global.getSettings().getSpriteName(ICON_CATEGORY, ICON_ID);
+    }
+
+    @Override
+    protected int getProgress() {
+        return ShiftDriveEvent.PROGRESS_DEADLY;
     }
 }
