@@ -31,7 +31,7 @@ public class ShiftDriveEvent extends BaseEventIntel {
     }
 
     public static final int MAX_PROGRESS = 800;
-    public static final int PROGRESS_MINOR = 150;
+    public static final int PROGRESS_MINOR = 50;
     public static final int PROGRESS_FUEL_UPGRADE = 250;
     public static final int PROGRESS_MAJOR = 450;
     public static final int PROGRESS_RANGE_UPGRADE = 550;
@@ -203,11 +203,50 @@ public class ShiftDriveEvent extends BaseEventIntel {
 
     @Override
     public void setProgress(int progress) {
+        if (_lockedInStage)
+            return;
+
         if (progress < _checkPoint)
             progress = _checkPoint;
         if (progress > _currentMaximum)
             progress = _currentMaximum;
-        super.setProgress(progress);
+
+        if (this.progress == progress) return;
+
+        if (progress < 0) progress = 0;
+        if (progress > maxProgress) progress = maxProgress;
+
+        EventStageData prev = getLastActiveStage(true);
+        prevProgressDeltaWasPositive = this.progress < progress;
+
+        if (progress < 0) {
+            progress = 0;
+        }
+
+        if (progress > getMaxProgress()) {
+            progress = getMaxProgress();
+        }
+
+        this.progress = progress;
+
+        for (EventStageData curr : getStages()) {
+            if (curr.progress <= prev.progress && !prev.wasEverReached &&
+                    (prev.rollData == null || prev.rollData.equals(RANDOM_EVENT_NONE))) continue;
+
+            if (curr.progress <= progress) {
+                boolean laterThanPrev = ((Enum)prev.id).ordinal() < ((Enum)curr.id).ordinal();
+                if (laterThanPrev || !prev.wasEverReached) {
+                    notifyStageReached(curr);
+                    if (curr.sendIntelUpdateOnReaching && curr.progress > 0 && prev.progress < curr.progress) {
+                        sendUpdateIfPlayerHasIntel(curr, getTextPanelForStageChange());
+                    }
+                    curr.rollData = null;
+                    curr.wasEverReached = true;
+
+                    progress = getProgress();
+                }
+            }
+        }
     }
 
     private void createFactorIntelInfo(TooltipMakerAPI info, ListInfoMode mode) {
@@ -238,12 +277,29 @@ public class ShiftDriveEvent extends BaseEventIntel {
         _lastFactorId = null;
     }
 
+    private void createStageIntelInfo(TooltipMakerAPI info, ListInfoMode mode) {
+        info.setParaFontDefault();
+        info.setParaFontColor(getTitleColor(mode));
+        info.addPara(getName(), 0);
+        info.setParaFontColor(Misc.getTextColor());
+        info.addPara("    - Stage Reached: " + getStageLabel(_lastStageId),0);
+        _lastStageId = null;
+    }
+
     @Override
     public void createIntelInfo(TooltipMakerAPI info, ListInfoMode mode) {
         if (_lastFactor != null && _lastFactorId != null) {
             createFactorIntelInfo(info, mode);
+        } else if (_lastStageId != null) {
+            createStageIntelInfo(info, mode);
         } else {
             super.createIntelInfo(info, mode);
         }
+    }
+
+    private transient Stage _lastStageId = null;
+    @Override
+    protected void notifyStageReached(EventStageData stage) {
+        _lastStageId = (Stage)stage.id;
     }
 }
