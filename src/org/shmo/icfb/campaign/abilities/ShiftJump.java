@@ -62,7 +62,7 @@ public class ShiftJump {
 
     private static void applySlowdown(float activateSeconds, float amount, CampaignFleetAPI fleet) {
         float speed = fleet.getVelocity().length();
-        float acc = Math.max(speed, 200f)/activateSeconds + fleet.getAcceleration();
+        float acc = java.lang.Math.max(speed, 200f)/activateSeconds + fleet.getAcceleration();
         float ds = acc * amount;
         if (ds > speed) ds = speed;
         Vector2f dv = Misc.getUnitVectorAtDegreeAngle(Misc.getAngleInDegrees(fleet.getVelocity()));
@@ -126,7 +126,7 @@ public class ShiftJump {
 
     public float computeCRCostFractional(float t) {
         final float curve = t * t;
-        return ItCameFromBeyond.Utils.lerp(0, CR_USE_RATE * getCRUseMultiplier(), curve);
+        return ItCameFromBeyond.Math.lerp(0, CR_USE_RATE * getCRUseMultiplier(), curve);
     }
 
     public float computeCRCost(float distanceInLY) {
@@ -148,7 +148,7 @@ public class ShiftJump {
             if (member.isFighterWing())
                 continue;
             final RepairTrackerAPI repairTracker = member.getRepairTracker();
-            final float crAfterUse = Math.max(repairTracker.getCR() - crCost, 0);
+            final float crAfterUse = java.lang.Math.max(repairTracker.getCR() - crCost, 0);
             String eventMessage = "Combat readiness reduced after Shift Jump.";
             if (crAfterUse == 0) {
                 if (tryApplyDamage(member, rng)) {

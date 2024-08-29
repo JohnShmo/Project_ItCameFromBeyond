@@ -1,6 +1,10 @@
 package org.shmo.icfb.campaign.intel.events;
 
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import com.fs.starfarer.api.util.Misc;
+
+import java.awt.*;
 
 public class ShiftDriveEvent_RangeUpgradeStage extends StageStatus {
     public static final String ICON_CATEGORY = "icfb_icons";
@@ -40,5 +44,17 @@ public class ShiftDriveEvent_RangeUpgradeStage extends StageStatus {
     @Override
     protected int getProgress() {
         return ShiftDriveEvent.PROGRESS_RANGE_UPGRADE;
+    }
+
+    @Override
+    protected void addDescriptionTextImpl(TooltipMakerAPI info, float width) {
+        final Color highlight = Misc.getHighlightColor();
+        final Color negative = Misc.getNegativeHighlightColor();
+        final float pad = 10;
+
+        info.addPara(
+                "The maximum range of your %s ability has been improved.",
+                pad, highlight, "Shift Jump"
+        );
     }
 }

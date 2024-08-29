@@ -4,11 +4,10 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.SettingsAPI;
 import com.fs.starfarer.api.campaign.InteractionDialogAPI;
 import com.fs.starfarer.api.impl.campaign.intel.events.BaseEventIntel;
-import com.fs.starfarer.api.impl.campaign.intel.events.BaseFactorTooltip;
 import com.fs.starfarer.api.impl.campaign.intel.events.EventFactor;
+import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import javafx.util.Pair;
 import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.campaign.abilities.ShiftJump;
 import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
@@ -16,6 +15,7 @@ import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class ShiftDriveEvent extends BaseEventIntel {
     public static final String KEY = "$icfb_ShiftDriveUsageEvent";
@@ -36,7 +36,7 @@ public class ShiftDriveEvent extends BaseEventIntel {
     }
 
     public static final int MAX_PROGRESS = 800;
-    public static final int PROGRESS_MINOR = 50;
+    public static final int PROGRESS_MINOR = 150;
     public static final int PROGRESS_FUEL_UPGRADE = 250;
     public static final int PROGRESS_MAJOR = 450;
     public static final int PROGRESS_RANGE_UPGRADE = 550;
@@ -131,14 +131,10 @@ public class ShiftDriveEvent extends BaseEventIntel {
 
         addStage(Stage.START, 0, true, StageIconSize.SMALL);
         addStage(Stage.MINOR_EVENT, PROGRESS_MINOR, true, StageIconSize.MEDIUM);
-        addStage(Stage.FUEL_UPGRADE, PROGRESS_FUEL_UPGRADE, true, StageIconSize.SMALL);
+        addStage(Stage.FUEL_UPGRADE, PROGRESS_FUEL_UPGRADE, true, StageIconSize.LARGE);
         addStage(Stage.MAJOR_EVENT, PROGRESS_MAJOR, true, StageIconSize.MEDIUM);
-        addStage(Stage.RANGE_UPGRADE, PROGRESS_RANGE_UPGRADE, true, StageIconSize.SMALL);
+        addStage(Stage.RANGE_UPGRADE, PROGRESS_RANGE_UPGRADE, true, StageIconSize.LARGE);
         addStage(Stage.DEADLY_EVENT, PROGRESS_DEADLY, false, StageIconSize.LARGE);
-
-        minor.setState(StageStatus.State.INACTIVE);
-        fuel.setState(StageStatus.State.INACTIVE);
-        range.setState(StageStatus.State.INACTIVE);
 
         addFactor(new ShiftDriveEvent_DecayFactor());
     }
@@ -168,55 +164,7 @@ public class ShiftDriveEvent extends BaseEventIntel {
 
     @Override
     protected void addBulletPoints(TooltipMakerAPI info, ListInfoMode mode, boolean isUpdate, Color tc, float initPad) {
-        StageStatus minor = getStageStatus(Stage.MINOR_EVENT);
-        StageStatus major = getStageStatus(Stage.MAJOR_EVENT);
-        StageStatus deadly = getStageStatus(Stage.DEADLY_EVENT);
-        StageStatus fuel = getStageStatus(Stage.FUEL_UPGRADE);
-        StageStatus range = getStageStatus(Stage.RANGE_UPGRADE);
 
-        if (isLockedInStage()) {
-            StageStatus current = null;
-            if (minor.getState() == StageStatus.State.ACTIVE) {
-                current = minor;
-            } else if (major.getState() == StageStatus.State.ACTIVE) {
-                current = major;
-            } else if (deadly.getState() == StageStatus.State.ACTIVE) {
-                current = deadly;
-            }
-            if (current != null) {
-                info.addPara(
-                        "Progress is locked due to reaching the %s stage in this event. " +
-                        "Resolve the associated affair to continue.",
-                        initPad, tc, Misc.getHighlightColor(), current.getTitle()
-                );
-            }
-        }
-
-        if (fuel.getState() == StageStatus.State.COMPLETE) {
-            info.addPara(
-                    "The fuel-efficiency of your %s ability has been improved.",
-                    initPad, tc, Misc.getHighlightColor(), "Shift Jump"
-            );
-        }
-
-        if (range.getState() == StageStatus.State.COMPLETE) {
-            info.addPara(
-                    "The maximum range of your %s ability has been improved.",
-                    initPad, tc, Misc.getHighlightColor(), "Shift Jump"
-            );
-        }
-
-        if (major.getState() == StageStatus.State.COMPLETE) {
-            info.addPara(
-                    "Roaming %s fleets are active and aggressive.",
-                    initPad, tc, Misc.getNegativeHighlightColor(), "Shifter"
-            );
-        } else if (minor.getState() == StageStatus.State.COMPLETE) {
-            info.addPara(
-                    "Fleets of unknown origin have started to appear.",
-                    tc, initPad
-            );
-        }
     }
 
     @Override
@@ -224,49 +172,7 @@ public class ShiftDriveEvent extends BaseEventIntel {
         Stage stage = (Stage)stageId;
         if (stage == Stage.START)
             return null;
-        switch (stage) {
-            case MINOR_EVENT:
-                return new BaseFactorTooltip() {
-                    @Override
-                    public void createTooltip(TooltipMakerAPI tooltip, boolean expanded, Object tooltipParam) {
-                        tooltip.addTitle(getStageStatus(Stage.MINOR_EVENT).getTitle());
-                        tooltip.addPara(getStageStatus(Stage.MINOR_EVENT).getDescription(), 10);
-                    }
-                };
-            case FUEL_UPGRADE:
-                return new BaseFactorTooltip() {
-                    @Override
-                    public void createTooltip(TooltipMakerAPI tooltip, boolean expanded, Object tooltipParam) {
-                        tooltip.addTitle(getStageStatus(Stage.FUEL_UPGRADE).getTitle());
-                        tooltip.addPara(getStageStatus(Stage.FUEL_UPGRADE).getDescription(), 10);
-                    }
-                };
-            case MAJOR_EVENT:
-                return new BaseFactorTooltip() {
-                    @Override
-                    public void createTooltip(TooltipMakerAPI tooltip, boolean expanded, Object tooltipParam) {
-                        tooltip.addTitle(getStageStatus(Stage.MAJOR_EVENT).getTitle());
-                        tooltip.addPara(getStageStatus(Stage.MAJOR_EVENT).getDescription(), 10);
-                    }
-                };
-            case RANGE_UPGRADE:
-                return new BaseFactorTooltip() {
-                    @Override
-                    public void createTooltip(TooltipMakerAPI tooltip, boolean expanded, Object tooltipParam) {
-                        tooltip.addTitle(getStageStatus(Stage.RANGE_UPGRADE).getTitle());
-                        tooltip.addPara(getStageStatus(Stage.RANGE_UPGRADE).getDescription(), 10);
-                    }
-                };
-            case DEADLY_EVENT:
-                return new BaseFactorTooltip() {
-                    @Override
-                    public void createTooltip(TooltipMakerAPI tooltip, boolean expanded, Object tooltipParam) {
-                        tooltip.addTitle(getStageStatus(Stage.DEADLY_EVENT).getTitle());
-                        tooltip.addPara(getStageStatus(Stage.DEADLY_EVENT).getDescription(), 10);
-                    }
-                };
-        }
-        return null;
+        return getStageStatus(stage).getStageTooltip();
     }
 
     @Override
@@ -375,6 +281,15 @@ public class ShiftDriveEvent extends BaseEventIntel {
         }
     }
 
+    @Override
+    public void addStageDescriptionText(TooltipMakerAPI info, float width, Object stageId) {
+        Stage stage = (Stage)stageId;
+        StageStatus stageStatus = getStageStatus(stage);
+        if (stageStatus == null)
+            return;
+        stageStatus.addDescriptionText(info, width);
+    }
+
     private void lockStage() {
         _lockedInStage = true;
     }
@@ -404,36 +319,10 @@ public class ShiftDriveEvent extends BaseEventIntel {
         return _lastStageInfo;
     }
 
-    private void updateStage(Stage id) {
-        StageStatus stageStatus = getStageStatus(id);
-        if (stageStatus.getState() == StageStatus.State.HIDDEN || stageStatus.getState() == StageStatus.State.COMPLETE)
-            return;
-        if (stageStatus.getProgress() < getProgress()) {
-            stageStatus.setState(StageStatus.State.INACTIVE);
-        } else if (stageStatus.getProgress() == getProgress()) {
-            stageStatus.setState(StageStatus.State.ACTIVE);
-        } else if (stageStatus.getProgress() > getProgress()) {
-            stageStatus.setState(StageStatus.State.COMPLETE);
-        }
-    }
-
-    private void updateAllStages(Stage idToExclude) {
-        for (Map.Entry<Stage, StageStatus> entry : _statusMap.entrySet()) {
-            if (entry.getKey() == idToExclude)
-                continue;
-            updateStage(entry.getKey());
-        }
-    }
-
-    private void updateAllStages() {
-        updateAllStages(null);
-    }
-
     @Override
     protected void notifyStageReached(EventStageData eventStageData) {
         final Stage stage = (Stage)eventStageData.id;
         setLastStageInfo(stage);
-        updateAllStages(stage);
         getStageStatus(stage).setState(StageStatus.State.ACTIVE);
 
         switch (stage) {
@@ -467,5 +356,16 @@ public class ShiftDriveEvent extends BaseEventIntel {
                 break;
             }
         }
+    }
+
+    @Override
+    public Set<String> getIntelTags(SectorMapAPI map) {
+        Set<String> set = super.getIntelTags(map);
+        set.add("Shift Drive");
+        return set;
+    }
+
+    public float getImageSizeForStageDesc(Object stageId) {
+        return getStageIconSize(stageId);
     }
 }

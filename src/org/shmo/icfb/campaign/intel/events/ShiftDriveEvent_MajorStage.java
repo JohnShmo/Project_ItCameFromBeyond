@@ -1,6 +1,10 @@
 package org.shmo.icfb.campaign.intel.events;
 
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import com.fs.starfarer.api.util.Misc;
+
+import java.awt.*;
 
 public class ShiftDriveEvent_MajorStage extends StageStatus {
     public static final String ICON_CATEGORY = "events";
@@ -40,5 +44,25 @@ public class ShiftDriveEvent_MajorStage extends StageStatus {
     @Override
     protected int getProgress() {
         return ShiftDriveEvent.PROGRESS_MAJOR;
+    }
+
+    @Override
+    protected void addDescriptionTextImpl(TooltipMakerAPI info, float width) {
+        final Color highlight = Misc.getHighlightColor();
+        final Color negative = Misc.getNegativeHighlightColor();
+        final float pad = 10;
+
+        if (getState() == State.ACTIVE) {
+            info.addPara("Progress is locked due to reaching this stage in the event. " +
+                            "Resolve the associated affair to continue.",
+                    pad
+            );
+        } else if (getState() == State.COMPLETE) {
+            info.addPara(
+                    "Roaming %s fleets became more active and aggressive after resolving this stage. " +
+                    "Their activity increases proportionally to the progress level of the event.",
+                    pad, negative, "Shifter"
+            );
+        }
     }
 }

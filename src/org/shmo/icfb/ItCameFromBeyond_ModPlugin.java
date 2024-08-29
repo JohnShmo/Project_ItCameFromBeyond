@@ -1,6 +1,7 @@
 package org.shmo.icfb;
 
 import com.fs.starfarer.api.BaseModPlugin;
+import org.shmo.icfb.campaign.scripts.QuestManager;
 import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
 import org.shmo.icfb.utilities.ScriptInitializer;
 
@@ -14,6 +15,7 @@ public class ItCameFromBeyond_ModPlugin extends BaseModPlugin {
         );
 
         ScriptInitializer.initializeScript(new ShiftDriveManager.Factory());
+        ScriptInitializer.initializeScript(new QuestManager.Factory());
 
         ItCameFromBeyond.Log.info("" +
                 "\n#######################\n" +
