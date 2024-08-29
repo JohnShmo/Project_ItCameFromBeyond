@@ -3,7 +3,7 @@ package org.shmo.icfb;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.shmo.icfb.campaign.abilities.ShiftJump;
-import org.shmo.icfb.campaign.abilities.ShiftJump_AbilityPlugin;
+import org.shmo.icfb.campaign.abilities.ShiftJumpAbilityPlugin;
 import org.shmo.icfb.campaign.intel.events.ShiftDriveEvent;
 import org.shmo.icfb.campaign.scripts.QuestManager;
 import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
@@ -34,12 +34,12 @@ public class ItCameFromBeyond {
     }
 
     public static class Global {
-        public static ShiftJump_AbilityPlugin getPlayerShiftJumpPlugin() {
-            return ShiftJump_AbilityPlugin.getPlayerInstance();
+        public static ShiftJumpAbilityPlugin getPlayerShiftJumpPlugin() {
+            return ShiftJumpAbilityPlugin.getPlayerInstance();
         }
 
         public static ShiftJump getPlayerShiftJump() {
-            ShiftJump_AbilityPlugin plugin = getPlayerShiftJumpPlugin();
+            ShiftJumpAbilityPlugin plugin = getPlayerShiftJumpPlugin();
             if (plugin == null)
                 return null;
             return plugin.getImpl();

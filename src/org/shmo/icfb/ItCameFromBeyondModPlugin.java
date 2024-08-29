@@ -5,7 +5,7 @@ import org.shmo.icfb.campaign.scripts.QuestManager;
 import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
 import org.shmo.icfb.utilities.ScriptInitializer;
 
-public class ItCameFromBeyond_ModPlugin extends BaseModPlugin {
+public class ItCameFromBeyondModPlugin extends BaseModPlugin {
 
     private void initializeScripts() {
         ItCameFromBeyond.Log.info("" +

@@ -10,15 +10,25 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.campaign.abilities.ShiftJump;
+import org.shmo.icfb.campaign.quests.QuestListener;
+import org.shmo.icfb.campaign.quests.QuestId;
+import org.shmo.icfb.campaign.quests.impl.OddOccurrences;
+import org.shmo.icfb.campaign.quests.impl.TheHunt;
+import org.shmo.icfb.campaign.quests.impl.UnwantedCompany;
+import org.shmo.icfb.campaign.quests.impl.builders.OddOccurrencesBuilder;
+import org.shmo.icfb.campaign.quests.impl.builders.TheHuntBuilder;
+import org.shmo.icfb.campaign.quests.impl.builders.UnwantedCompanyBuilder;
+import org.shmo.icfb.campaign.scripts.QuestManager;
 import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
-public class ShiftDriveEvent extends BaseEventIntel {
-    public static final String KEY = "$icfb_ShiftDriveUsageEvent";
+public class ShiftDriveEvent extends BaseEventIntel implements QuestListener {
+    public static final String KEY = "$icfb_ShiftDriveEvent";
     public static final String SHIFT_JUMP_ICON_CATEGORY = "icfb_icons";
     public static final String SHIFT_JUMP_ICON_ID = "shift_drive";
 
@@ -92,7 +102,7 @@ public class ShiftDriveEvent extends BaseEventIntel {
     }
     public void addFactor(Factor factorId, float param, InteractionDialogAPI dialog) {
         if (factorId == Factor.SHIFT_JUMP_USE) {
-            ShiftDriveEvent_UseFactor factor = new ShiftDriveEvent_UseFactor(param);
+            ShiftDriveEventUseFactor factor = new ShiftDriveEventUseFactor(param);
             setLastFactorInfo(factorId, factor);
             if (_lockedInStage) {
                 factor.setProgress(0);
@@ -115,11 +125,11 @@ public class ShiftDriveEvent extends BaseEventIntel {
     }
 
     private void setup() {
-        StageStatus minor = new ShiftDriveEvent_MinorStage();
-        StageStatus major = new ShiftDriveEvent_MajorStage();
-        StageStatus deadly = new ShiftDriveEvent_DeadlyStage();
-        StageStatus fuel = new ShiftDriveEvent_FuelUpgradeStage();
-        StageStatus range = new ShiftDriveEvent_RangeUpgradeStage();
+        StageStatus minor = new ShiftDriveEventMinorStage();
+        StageStatus major = new ShiftDriveEventMajorStage();
+        StageStatus deadly = new ShiftDriveEventDeadlyStage();
+        StageStatus fuel = new ShiftDriveEventFuelUpgradeStage();
+        StageStatus range = new ShiftDriveEventRangeUpgradeStage();
         _statusMap = new HashMap<>();
         _statusMap.put(Stage.MINOR_EVENT, minor);
         _statusMap.put(Stage.MAJOR_EVENT, major);
@@ -136,7 +146,9 @@ public class ShiftDriveEvent extends BaseEventIntel {
         addStage(Stage.RANGE_UPGRADE, PROGRESS_RANGE_UPGRADE, true, StageIconSize.LARGE);
         addStage(Stage.DEADLY_EVENT, PROGRESS_DEADLY, false, StageIconSize.LARGE);
 
-        addFactor(new ShiftDriveEvent_DecayFactor());
+        addFactor(new ShiftDriveEventDecayFactor());
+
+        QuestManager.getInstance().addListener(this);
     }
 
     @Override
@@ -240,7 +252,7 @@ public class ShiftDriveEvent extends BaseEventIntel {
                 0, Misc.getHighlightColor(), factor.getProgressStr(this));
         info.setParaFontColor(Misc.getTextColor());
         if (factorId == Factor.SHIFT_JUMP_USE) {
-            ShiftDriveEvent_UseFactor useFactor = (ShiftDriveEvent_UseFactor)factor;
+            ShiftDriveEventUseFactor useFactor = (ShiftDriveEventUseFactor)factor;
             ShiftJump shiftJump = ItCameFromBeyond.Global.getPlayerShiftJump();
             int fuelCost = 0;
             int crPercent = 0;
@@ -331,16 +343,19 @@ public class ShiftDriveEvent extends BaseEventIntel {
                 lockStage();
                 _currentMaximum = PROGRESS_MAJOR;
                 _checkPoint = PROGRESS_MINOR;
+                OddOccurrences.start();
                 break;
             }
             case MAJOR_EVENT: {
                 lockStage();
                 _currentMaximum = MAX_PROGRESS;
                 _checkPoint = PROGRESS_MAJOR;
+                UnwantedCompany.start();
                 break;
             }
             case DEADLY_EVENT: {
                 lockStage();
+                TheHunt.start();
                 break;
             }
             case FUEL_UPGRADE: {
@@ -367,5 +382,32 @@ public class ShiftDriveEvent extends BaseEventIntel {
 
     public float getImageSizeForStageDesc(Object stageId) {
         return getStageIconSize(stageId);
+    }
+
+    private int generateAmountToSubtractAfterDeadly() {
+        Random random = new Random();
+        final int randBounds = PROGRESS_TO_SUBTRACT_AFTER_DEADLY / 4;
+        int iRand = random.nextInt(randBounds);
+        iRand -= randBounds / 2;
+        return PROGRESS_TO_SUBTRACT_AFTER_DEADLY + iRand;
+    }
+
+    @Override
+    public void notifyQuestComplete(String questId) {
+        switch (questId) {
+            case QuestId.ODD_OCCURRENCES:
+                unlockStage();
+                getStageStatus(Stage.MINOR_EVENT).setState(StageStatus.State.COMPLETE);
+                break;
+            case QuestId.UNWANTED_COMPANY:
+                unlockStage();
+                getStageStatus(Stage.MAJOR_EVENT).setState(StageStatus.State.COMPLETE);
+                break;
+            case QuestId.THE_HUNT:
+                unlockStage();
+                setProgress(getProgress() - generateAmountToSubtractAfterDeadly());
+                getStageStatus(Stage.DEADLY_EVENT).setState(StageStatus.State.INACTIVE);
+                break;
+        }
     }
 }

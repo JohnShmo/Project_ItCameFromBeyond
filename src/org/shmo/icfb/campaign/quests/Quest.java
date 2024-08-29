@@ -2,13 +2,15 @@ package org.shmo.icfb.campaign.quests;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
+import org.shmo.icfb.ItCameFromBeyond;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Quest {
     private final List<QuestStep> _steps;
+    private int _stepIndex;
     private boolean _started;
-    private int _currentStepIndex;
     private QuestScript _script;
 
     public static void sendIntelForStep(QuestStep step) {
@@ -44,7 +46,7 @@ public class Quest {
         plugin.getImpl().cleanup();
     }
 
-    private static void beginStep(QuestStep step) {
+    private static void startStep(QuestStep step) {
         if (step == null)
             return;
         if (step.script != null) {
@@ -53,6 +55,7 @@ public class Quest {
         }
         if (step.intel != null) {
             sendIntelForStep(step);
+            ItCameFromBeyond.Log.info("Quest step with name: { " + step.intel.getName() + " } was started.");
         }
     }
 
@@ -61,6 +64,7 @@ public class Quest {
             return;
         if (step.intel != null) {
             removeIntelForStep(step);
+            ItCameFromBeyond.Log.info("Quest step with name: { " + step.intel.getName() + " } was ended.");
         }
         if (step.script != null) {
             step.script.end();
@@ -70,9 +74,30 @@ public class Quest {
 
     public Quest() {
         _steps = new ArrayList<>();
-        _currentStepIndex = 0;
+        _stepIndex = 0;
         _started = false;
         _script = null;
+    }
+
+    public Quest(QuestScript script) {
+        _steps = new ArrayList<>();
+        _stepIndex = 0;
+        _started = false;
+        _script = script;
+    }
+
+    public Quest(List<QuestStep> steps) {
+        _steps = new ArrayList<>(steps);
+        _stepIndex = 0;
+        _started = false;
+        _script = null;
+    }
+
+    public Quest(List<QuestStep> steps, QuestScript script) {
+        _steps = new ArrayList<>(steps);
+        _stepIndex = 0;
+        _started = false;
+        _script = script;
     }
 
     public void setScript(QuestScript script) {
@@ -91,7 +116,7 @@ public class Quest {
             getScript().init(this);
             getScript().start();
         }
-        beginCurrentStep();
+        startCurrentStep();
     }
 
     public void end() {
@@ -112,10 +137,10 @@ public class Quest {
         _started = false;
     }
 
-    private void beginCurrentStep() {
+    private void startCurrentStep() {
         if (isComplete())
             return;
-        beginStep(getCurrentStep());
+        startStep(getCurrentStep());
     }
 
     private void endCurrentStep() {
@@ -125,8 +150,8 @@ public class Quest {
     }
 
     private void incrementStepIndex() { setStepIndex(getStepIndex() + 1); }
-    private void setStepIndex(int index) { _currentStepIndex = index; }
-    private int getStepIndex() { return _currentStepIndex; }
+    private void setStepIndex(int index) { _stepIndex = index; }
+    private int getStepIndex() { return _stepIndex; }
     private void resetStepIndex() { setStepIndex(0); }
 
     private List<QuestStep> getSteps() { return _steps; }
@@ -134,11 +159,19 @@ public class Quest {
     private void progress() {
         endCurrentStep();
         incrementStepIndex();
-        beginCurrentStep();
+        startCurrentStep();
     }
 
     public void addStep(QuestStep step) {
         getSteps().add(step);
+    }
+
+    public void addStep(QuestStepIntel intel, QuestStepScript script, Object userData) {
+        addStep(new QuestStep(intel, script, userData));
+    }
+
+    public void addStep(QuestStepIntel intel, QuestStepScript script) {
+        addStep(new QuestStep(intel, script));
     }
 
     public QuestStep getCurrentStep() {

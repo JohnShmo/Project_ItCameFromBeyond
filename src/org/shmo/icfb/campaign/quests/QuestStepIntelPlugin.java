@@ -60,7 +60,7 @@ public class QuestStepIntelPlugin extends BaseIntelPlugin {
 
     @Override
     protected String getName() {
-        return _impl.getTitle();
+        return _impl.getName();
     }
 
     @Override

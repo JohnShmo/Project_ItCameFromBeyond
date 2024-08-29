@@ -6,16 +6,16 @@ import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.combat.EngagementResultAPI;
 import java.util.Map;
 
-public class ShiftJump_DestinationPicker implements InteractionDialogPlugin {
-    public static final String ID = "icfb_ShiftJump_DestinationPicker";
+public class ShiftJumpDestinationPicker implements InteractionDialogPlugin {
+    public static final String ID = "icfb_ShiftJumpDestinationPicker";
 
     private ShiftJump _shiftJump;
     private InteractionDialogAPI _dialog;
 
     public static void execute(ShiftJump shiftJump) {
         CampaignUIAPI ui = Global.getSector().getCampaignUI();
-        ShiftJump_DestinationPicker picker =
-                (ShiftJump_DestinationPicker)Global.getSettings().getPlugin(ID);
+        ShiftJumpDestinationPicker picker =
+                (ShiftJumpDestinationPicker)Global.getSettings().getPlugin(ID);
         picker.setShiftJump(shiftJump);
         ui.showInteractionDialog(picker, null);
     }
@@ -26,7 +26,7 @@ public class ShiftJump_DestinationPicker implements InteractionDialogPlugin {
         getDialog().showCampaignEntityPicker("Select destination", "Destination:", "Initiate Shift Jump",
                 Global.getSector().getPlayerFaction(),
                 getShiftJump().getValidDestinationList(Global.getSector().getPlayerFleet()),
-                new ShiftJump_DestinationPicker_Listener(getDialog(), getShiftJump())
+                new ShiftJumpDestinationPickerListener(getDialog(), getShiftJump())
         );
         unsetFields();
     }

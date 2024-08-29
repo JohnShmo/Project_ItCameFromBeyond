@@ -45,7 +45,7 @@ public abstract class BaseQuestStepIntel implements QuestStepIntel {
     }
 
     @Override
-    public String getTitle() {
+    public String getName() {
         return _title;
     }
 

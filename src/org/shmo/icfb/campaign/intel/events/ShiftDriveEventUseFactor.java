@@ -9,16 +9,16 @@ import com.fs.starfarer.api.util.Misc;
 
 import java.awt.*;
 
-public class ShiftDriveEvent_UseFactor extends BaseEventFactor {
-    public static final int POINTS_PER_LY = 2;
-    public static final int POINTS_PER_USE = 10;
+public class ShiftDriveEventUseFactor extends BaseEventFactor {
+    public static final int POINTS_PER_LY = 1;
+    public static final int POINTS_PER_USE = 5;
     public static final int SHOW_DURATION_DAYS = 30;
 
     private float _distanceLY = 0;
     private final long _timeStamp;
     private int _progress;
 
-    public ShiftDriveEvent_UseFactor(float distanceLY) {
+    public ShiftDriveEventUseFactor(float distanceLY) {
         addDistance(distanceLY);
         _timeStamp = Global.getSector().getClock().getTimestamp();
         _progress = (int)(_distanceLY * POINTS_PER_LY) + POINTS_PER_USE;

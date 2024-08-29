@@ -8,7 +8,7 @@ import com.fs.starfarer.api.util.Misc;
 
 import java.awt.*;
 
-public class ShiftDriveEvent_DecayFactor extends BaseEventFactor {
+public class ShiftDriveEventDecayFactor extends BaseEventFactor {
     public static final int MONTHLY_DECAY = 5;
 
     public int getProgress(BaseEventIntel intel) {

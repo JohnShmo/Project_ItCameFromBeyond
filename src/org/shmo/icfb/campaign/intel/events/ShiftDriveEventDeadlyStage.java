@@ -6,7 +6,7 @@ import com.fs.starfarer.api.util.Misc;
 
 import java.awt.*;
 
-public class ShiftDriveEvent_DeadlyStage extends StageStatus {
+public class ShiftDriveEventDeadlyStage extends StageStatus {
     public static final String ICON_CATEGORY = "events";
     public static final String ICON_ID = "stage_unknown_bad";
     public static final String LABEL = "The Hunt";
@@ -23,7 +23,7 @@ public class ShiftDriveEvent_DeadlyStage extends StageStatus {
 
     @Override
     protected String getCompleteLabel() {
-        return null;
+        return LABEL;
     }
 
     @Override

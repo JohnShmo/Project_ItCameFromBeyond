@@ -5,13 +5,13 @@ import com.fs.starfarer.api.impl.campaign.intel.BaseIntelPlugin;
 import com.fs.starfarer.api.ui.CustomPanelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 
-public class ShiftJump_DamageIntel extends BaseIntelPlugin {
+public class ShiftJumpDamageIntel extends BaseIntelPlugin {
     private static final String ICON_CATEGORY = "intel";
     private static final String ICON_ID = "damage_report";
 
     private final String _message;
 
-    public ShiftJump_DamageIntel(String message) {
+    public ShiftJumpDamageIntel(String message) {
         super();
         _message = message;
     }

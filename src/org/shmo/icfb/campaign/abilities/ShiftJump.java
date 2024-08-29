@@ -82,7 +82,7 @@ public class ShiftJump {
     }
 
     private void showDestinationPicker() {
-        ShiftJump_DestinationPicker.execute(this);
+        ShiftJumpDestinationPicker.execute(this);
     }
 
     private void spawnPrimedPing(CampaignFleetAPI fleet) {
@@ -153,10 +153,10 @@ public class ShiftJump {
             if (crAfterUse == 0) {
                 if (tryApplyDamage(member, rng)) {
                     eventMessage = member.getShipName() + " was damaged due to complications during Shift Jump.";
-                    Global.getSector().getIntelManager().addIntel(new ShiftJump_DamageIntel(eventMessage));
+                    Global.getSector().getIntelManager().addIntel(new ShiftJumpDamageIntel(eventMessage));
                 } else if (tryDisable(member, rng)) {
                     eventMessage = member.getShipName() + " was disabled due to complications during Shift Jump.";
-                    Global.getSector().getIntelManager().addIntel(new ShiftJump_DamageIntel(eventMessage));
+                    Global.getSector().getIntelManager().addIntel(new ShiftJumpDamageIntel(eventMessage));
                 }
             }
             repairTracker.applyCREvent(-crCost, eventMessage);

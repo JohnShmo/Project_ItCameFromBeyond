@@ -11,18 +11,18 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShiftJump_AbilityPlugin extends BaseDurationAbility {
+public class ShiftJumpAbilityPlugin extends BaseDurationAbility {
     public static final String ID = "icfb_shift_jump";
 
     private final ShiftJump _impl = new ShiftJump();
 
-    public static ShiftJump_AbilityPlugin getPlayerInstance() {
+    public static ShiftJumpAbilityPlugin getPlayerInstance() {
         CampaignFleetAPI playerFleet = Global.getSector().getPlayerFleet();
         if (playerFleet == null)
             return null;
         if (!playerFleet.hasAbility(ID))
             return null;
-        return (ShiftJump_AbilityPlugin) playerFleet.getAbility(ID);
+        return (ShiftJumpAbilityPlugin) playerFleet.getAbility(ID);
     }
 
     public ShiftJump getImpl() {

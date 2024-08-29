@@ -10,7 +10,7 @@ import java.util.Set;
 public interface QuestStepIntel {
     void init(QuestStep step);
     void cleanup();
-    String getTitle();
+    String getName();
     String getIcon();
     Set<String> getTags();
     void addNotificationBody(TooltipMakerAPI info);

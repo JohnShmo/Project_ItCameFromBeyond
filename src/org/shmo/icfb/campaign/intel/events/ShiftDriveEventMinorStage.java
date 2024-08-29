@@ -6,10 +6,10 @@ import com.fs.starfarer.api.util.Misc;
 
 import java.awt.*;
 
-public class ShiftDriveEvent_MajorStage extends StageStatus {
+public class ShiftDriveEventMinorStage extends StageStatus {
     public static final String ICON_CATEGORY = "events";
     public static final String ICON_ID = "stage_unknown_bad";
-    public static final String LABEL = "Unwanted Company";
+    public static final String LABEL = "Odd Occurrences";
 
     @Override
     protected String getInactiveLabel() {
@@ -23,7 +23,7 @@ public class ShiftDriveEvent_MajorStage extends StageStatus {
 
     @Override
     protected String getCompleteLabel() {
-        return null;
+        return LABEL;
     }
 
     @Override
@@ -42,8 +42,21 @@ public class ShiftDriveEvent_MajorStage extends StageStatus {
     }
 
     @Override
+    protected String getTooltipText() {
+        if (getState() == State.HIDDEN)
+            return super.getTooltipText();
+        if (getState() == State.INACTIVE)
+            return "Bizarre rumors grow more and more common as you use your Shift Drive.";
+        if (getState() == State.ACTIVE)
+            return "--TODO--";
+        if (getState() == State.COMPLETE)
+            return "--TODO--";
+        return super.getTooltipText();
+    }
+
+    @Override
     protected int getProgress() {
-        return ShiftDriveEvent.PROGRESS_MAJOR;
+        return ShiftDriveEvent.PROGRESS_MINOR;
     }
 
     @Override
@@ -59,9 +72,9 @@ public class ShiftDriveEvent_MajorStage extends StageStatus {
             );
         } else if (getState() == State.COMPLETE) {
             info.addPara(
-                    "Roaming %s fleets became more active and aggressive after resolving this stage. " +
-                    "Their activity increases proportionally to the progress level of the event.",
-                    pad, negative, "Shifter"
+                    "Fleets of unknown origin started to appear after resolving this stage. " +
+                            "Their activity seems to increase according to the progress of the event.",
+                    pad
             );
         }
     }

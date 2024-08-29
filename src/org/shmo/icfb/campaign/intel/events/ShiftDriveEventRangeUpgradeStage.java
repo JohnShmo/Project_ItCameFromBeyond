@@ -6,7 +6,7 @@ import com.fs.starfarer.api.util.Misc;
 
 import java.awt.*;
 
-public class ShiftDriveEvent_FuelUpgradeStage extends StageStatus {
+public class ShiftDriveEventRangeUpgradeStage extends StageStatus {
     public static final String ICON_CATEGORY = "icfb_icons";
     public static final String ICON_ID = "shift_drive";
     public static final String LABEL = "Upgrade";
@@ -43,7 +43,7 @@ public class ShiftDriveEvent_FuelUpgradeStage extends StageStatus {
 
     @Override
     protected int getProgress() {
-        return ShiftDriveEvent.PROGRESS_FUEL_UPGRADE;
+        return ShiftDriveEvent.PROGRESS_RANGE_UPGRADE;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ShiftDriveEvent_FuelUpgradeStage extends StageStatus {
         final float pad = 10;
 
         info.addPara(
-                "The fuel efficiency of your %s ability has been improved.",
+                "The maximum range of your %s ability is increased.",
                 pad, highlight, "Shift Jump"
         );
     }

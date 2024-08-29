@@ -10,13 +10,13 @@ import com.fs.starfarer.api.util.Misc;
 
 import java.awt.*;
 
-public class ShiftJump_DestinationPicker_Listener extends BaseCampaignEntityPickerListener {
+public class ShiftJumpDestinationPickerListener extends BaseCampaignEntityPickerListener {
 
     private InteractionDialogAPI _dialog;
     private ShiftJump _shiftJump;
     private CampaignFleetAPI _playerFleet;
 
-    public ShiftJump_DestinationPicker_Listener(InteractionDialogAPI dialog, ShiftJump shiftJump) {
+    public ShiftJumpDestinationPickerListener(InteractionDialogAPI dialog, ShiftJump shiftJump) {
         _shiftJump = shiftJump;
         _dialog = dialog;
         _playerFleet = Global.getSector().getPlayerFleet();
