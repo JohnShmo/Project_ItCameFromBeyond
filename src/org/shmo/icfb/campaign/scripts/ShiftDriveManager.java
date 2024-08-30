@@ -20,7 +20,7 @@ public class ShiftDriveManager implements EveryFrameScript {
 
     public static class Factory implements ScriptFactory {
         @Override
-        public EveryFrameScript getInstance() {
+        public EveryFrameScript createOrGetInstance() {
             EveryFrameScript script = ShiftDriveManager.getInstance();
             if (script == null)
                 script = new ShiftDriveManager();

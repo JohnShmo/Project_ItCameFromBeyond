@@ -5,13 +5,18 @@ import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
 import org.shmo.icfb.ItCameFromBeyond;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Quest {
     private final List<QuestStep> _steps;
     private int _stepIndex;
     private boolean _started;
+    private String _name;
+    private String _iconId;
     private QuestScript _script;
+    private final Set<String> _tags;
 
     public static void sendIntelForStep(QuestStep step) {
         QuestStepIntelPlugin intelPlugin = new QuestStepIntelPlugin(step.intel);
@@ -77,36 +82,32 @@ public class Quest {
         _stepIndex = 0;
         _started = false;
         _script = null;
-    }
-
-    public Quest(QuestScript script) {
-        _steps = new ArrayList<>();
-        _stepIndex = 0;
-        _started = false;
-        _script = script;
-    }
-
-    public Quest(List<QuestStep> steps) {
-        _steps = new ArrayList<>(steps);
-        _stepIndex = 0;
-        _started = false;
-        _script = null;
-    }
-
-    public Quest(List<QuestStep> steps, QuestScript script) {
-        _steps = new ArrayList<>(steps);
-        _stepIndex = 0;
-        _started = false;
-        _script = script;
+        _name = null;
+        _iconId = null;
+        _tags = new HashSet<>();
     }
 
     public void setScript(QuestScript script) {
         _script = script;
     }
-
     public QuestScript getScript() {
         return _script;
     }
+    public void setName(String name) {
+        _name = name;
+    }
+    public String getName() {
+        return _name;
+    }
+    public void setIcon(String iconId) { _iconId = iconId; }
+    public String getIcon() { return _iconId; }
+    public void addTag(String tag) {
+        _tags.add(tag);
+    }
+    public void removeTag(String tag) {
+        _tags.remove(tag);
+    }
+    public Set<String> getTags() { return _tags; }
 
     public void start() {
         if (isStarted())
@@ -162,16 +163,16 @@ public class Quest {
         startCurrentStep();
     }
 
-    public void addStep(QuestStep step) {
+    private void addStep(QuestStep step) {
         getSteps().add(step);
     }
 
     public void addStep(QuestStepIntel intel, QuestStepScript script, Object userData) {
-        addStep(new QuestStep(intel, script, userData));
+        addStep(new QuestStep(this, intel, script, userData));
     }
 
     public void addStep(QuestStepIntel intel, QuestStepScript script) {
-        addStep(new QuestStep(intel, script));
+        addStep(new QuestStep(this, intel, script));
     }
 
     public QuestStep getCurrentStep() {

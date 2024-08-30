@@ -14,11 +14,9 @@ public interface QuestStepIntel {
     String getIcon();
     Set<String> getTags();
     void addNotificationBody(TooltipMakerAPI info);
-    void addNotificationBulletPoint(int index, TooltipMakerAPI info);
-    int getNotificationBulletPointCount();
+    void addNotificationBulletPoints(TooltipMakerAPI info);
     void addDescriptionBody(TooltipMakerAPI info);
-    void addDescriptionBulletPoint(int index, TooltipMakerAPI info);
-    int getDescriptionBulletPointCount();
+    void addDescriptionBulletPoints(TooltipMakerAPI info);
     SectorEntityToken getMapLocation(SectorMapAPI map);
     List<IntelInfoPlugin.ArrowData> getArrowData(SectorMapAPI map);
 }

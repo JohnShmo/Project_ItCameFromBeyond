@@ -4,6 +4,7 @@ import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.impl.campaign.intel.BaseIntelPlugin;
 import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import com.fs.starfarer.api.util.Misc;
 
 import java.util.List;
 import java.util.Set;
@@ -25,9 +26,9 @@ public class QuestStepIntelPlugin extends BaseIntelPlugin {
             info.addTitle(getName());
         _impl.addDescriptionBody(info);
         bullet(info);
-        for (int i = 0; i < _impl.getDescriptionBulletPointCount(); i++) {
-            _impl.addDescriptionBulletPoint(i, info);
-        }
+        info.setParaFontColor(Misc.getGrayColor());
+        _impl.addDescriptionBulletPoints(info);
+        info.setParaFontColor(Misc.getTextColor());
         unindent(info);
     }
 
@@ -37,9 +38,9 @@ public class QuestStepIntelPlugin extends BaseIntelPlugin {
             info.addPara(getName(), getTitleColor(mode), 0);
         _impl.addNotificationBody(info);
         bullet(info);
-        for (int i = 0; i < _impl.getNotificationBulletPointCount(); i++) {
-            _impl.addNotificationBulletPoint(i, info);
-        }
+        info.setParaFontColor(Misc.getGrayColor());
+        _impl.addNotificationBulletPoints(info);
+        info.setParaFontColor(Misc.getTextColor());
         unindent(info);
     }
 

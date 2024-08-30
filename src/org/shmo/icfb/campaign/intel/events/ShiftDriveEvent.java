@@ -15,9 +15,6 @@ import org.shmo.icfb.campaign.quests.QuestId;
 import org.shmo.icfb.campaign.quests.impl.OddOccurrences;
 import org.shmo.icfb.campaign.quests.impl.TheHunt;
 import org.shmo.icfb.campaign.quests.impl.UnwantedCompany;
-import org.shmo.icfb.campaign.quests.impl.builders.OddOccurrencesBuilder;
-import org.shmo.icfb.campaign.quests.impl.builders.TheHuntBuilder;
-import org.shmo.icfb.campaign.quests.impl.builders.UnwantedCompanyBuilder;
 import org.shmo.icfb.campaign.scripts.QuestManager;
 import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
 
@@ -46,7 +43,7 @@ public class ShiftDriveEvent extends BaseEventIntel implements QuestListener {
     }
 
     public static final int MAX_PROGRESS = 800;
-    public static final int PROGRESS_MINOR = 150;
+    public static final int PROGRESS_MINOR = 10;
     public static final int PROGRESS_FUEL_UPGRADE = 250;
     public static final int PROGRESS_MAJOR = 450;
     public static final int PROGRESS_RANGE_UPGRADE = 550;

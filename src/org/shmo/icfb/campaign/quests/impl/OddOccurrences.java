@@ -9,8 +9,4 @@ public class OddOccurrences {
     public static void start() {
         QuestManager.getInstance().add(QuestId.ODD_OCCURRENCES, new OddOccurrencesBuilder());
     }
-
-    public static Quest getInstance() {
-        return QuestManager.getInstance().getQuest(QuestId.ODD_OCCURRENCES);
-    }
 }

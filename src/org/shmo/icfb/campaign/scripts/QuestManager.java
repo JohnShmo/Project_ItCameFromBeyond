@@ -15,7 +15,7 @@ public class QuestManager implements EveryFrameScript {
 
     public static class Factory implements ScriptFactory {
         @Override
-        public EveryFrameScript getInstance() {
+        public EveryFrameScript createOrGetInstance() {
             EveryFrameScript script = QuestManager.getInstance();
             if (script == null)
                 script = new QuestManager();

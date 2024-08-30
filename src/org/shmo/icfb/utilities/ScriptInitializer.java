@@ -6,7 +6,7 @@ import org.shmo.icfb.ItCameFromBeyond;
 
 public class ScriptInitializer {
     public static <T extends ScriptFactory> void initializeScript(T factory) {
-        EveryFrameScript script = factory.getInstance();
+        EveryFrameScript script = factory.createOrGetInstance();
         Global.getSector().removeScriptsOfClass(script.getClass());
         Global.getSector().addScript(script);
         ItCameFromBeyond.Log.info("Initialized script: " + script.getClass().getName());

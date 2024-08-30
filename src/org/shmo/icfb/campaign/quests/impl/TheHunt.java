@@ -9,8 +9,4 @@ public class TheHunt {
     public static void start() {
         QuestManager.getInstance().add(QuestId.THE_HUNT, new TheHuntBuilder());
     }
-
-    public static Quest getInstance() {
-        return QuestManager.getInstance().getQuest(QuestId.THE_HUNT);
-    }
 }

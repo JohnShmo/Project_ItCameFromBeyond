@@ -9,8 +9,4 @@ public class UnwantedCompany {
     public static void start() {
         QuestManager.getInstance().add(QuestId.UNWANTED_COMPANY, new UnwantedCompanyBuilder());
     }
-
-    public static Quest getInstance() {
-        return QuestManager.getInstance().getQuest(QuestId.UNWANTED_COMPANY);
-    }
 }

@@ -3,23 +3,27 @@ package org.shmo.icfb.campaign.quests;
 public class QuestStep {
     public QuestStepIntel intel;
     public QuestStepScript script;
+    public Quest quest;
     public Object userData;
 
-    public QuestStep() {
+    public QuestStep(Quest quest) {
         this.intel = null;
         this.script = null;
+        this.quest = quest;
         this.userData = null;
     }
 
-    public QuestStep(QuestStepIntel intel, QuestStepScript script) {
+    public QuestStep(Quest quest, QuestStepIntel intel, QuestStepScript script) {
         this.intel = intel;
         this.script = script;
+        this.quest = quest;
         this.userData = null;
     }
 
-    public QuestStep(QuestStepIntel intel, QuestStepScript script, Object userData) {
+    public QuestStep(Quest quest, QuestStepIntel intel, QuestStepScript script, Object userData) {
         this.intel = intel;
         this.script = script;
+        this.quest = quest;
         this.userData = userData;
     }
 }
