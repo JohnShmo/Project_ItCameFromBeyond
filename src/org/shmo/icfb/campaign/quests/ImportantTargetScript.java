@@ -4,7 +4,7 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.util.Misc;
 
-public class ImportantTargetQuestStepScript extends BaseQuestStepScript {
+public class ImportantTargetScript extends BaseQuestStepScript {
 
     private SectorEntityToken _target = null;
 

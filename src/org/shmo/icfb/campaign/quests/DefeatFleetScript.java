@@ -8,13 +8,20 @@ import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.util.Misc;
 import org.shmo.icfb.utilities.FleetFactory;
 
-public class DefeatFleetQuestStepScript extends ImportantTargetQuestStepScript implements FleetEventListener {
+public class DefeatFleetScript extends ImportantTargetScript implements FleetEventListener {
 
     protected FleetFactory _fleetFactory = null;
     protected SectorEntityToken _spawnLocation = null;
     protected CampaignFleetAPI _fleet = null;
     protected FleetMemberAPI _flagShip = null;
     protected FactionAPI _faction = null;
+    protected WinCondition _winCondition = WinCondition.BASIC_VICTORY;
+
+    public enum WinCondition {
+        BASIC_VICTORY,
+        DEFEAT_FLAGSHIP,
+        TOTAL_ANNIHILATION
+    }
 
     private void setFlagShip(FleetMemberAPI flagShip) {
         _flagShip = flagShip;
@@ -56,6 +63,14 @@ public class DefeatFleetQuestStepScript extends ImportantTargetQuestStepScript i
         return _fleet;
     }
 
+    public void setWinCondition(WinCondition winCondition) {
+        _winCondition = winCondition;
+    }
+
+    public WinCondition getWinCondition() {
+        return _winCondition;
+    }
+
     @Override
     public void start() {
         if (getFleetFactory() != null && getSpawnLocation() != null) {
@@ -78,15 +93,34 @@ public class DefeatFleetQuestStepScript extends ImportantTargetQuestStepScript i
 
     @Override
     public void reportFleetDespawnedToListener(CampaignFleetAPI fleet, CampaignEventListener.FleetDespawnReason reason, Object param) {
-        if (fleet == getFleet())
-            cleanUpFleet();
+        if (fleet != getFleet())
+            return;
+        cleanUpFleet();
     }
 
     @Override
     public void reportBattleOccurred(CampaignFleetAPI fleet, CampaignFleetAPI primaryWinner, BattleAPI battle) {
-        if (fleet.getFlagship() == getFlagShip()) // flagship wasn't defeated
+        if (fleet != getFleet())
             return;
-        cleanUpFleet();
+
+        boolean taskComplete = false;
+        switch (getWinCondition()) {
+            case BASIC_VICTORY:
+                if (primaryWinner != fleet || fleet.getNumShips() == 0)
+                    taskComplete = true;
+                break;
+            case DEFEAT_FLAGSHIP:
+                if (fleet.getFlagship() != getFlagShip() || fleet.getNumShips() == 0)
+                    taskComplete = true;
+                break;
+            case TOTAL_ANNIHILATION:
+                if (fleet.getNumShips() == 0)
+                    taskComplete = true;
+                break;
+        }
+
+        if (taskComplete)
+            cleanUpFleet();
     }
 
     protected void cleanUpFleet() {

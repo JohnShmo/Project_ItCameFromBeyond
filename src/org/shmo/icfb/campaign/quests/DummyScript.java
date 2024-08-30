@@ -1,6 +1,6 @@
 package org.shmo.icfb.campaign.quests;
 
-public class DummyQuestStepScript extends BaseQuestStepScript {
+public class DummyScript extends BaseQuestStepScript {
     @Override
     public void start() {
 
@@ -18,6 +18,6 @@ public class DummyQuestStepScript extends BaseQuestStepScript {
 
     @Override
     public boolean isComplete() {
-        return false;
+        return true;
     }
 }

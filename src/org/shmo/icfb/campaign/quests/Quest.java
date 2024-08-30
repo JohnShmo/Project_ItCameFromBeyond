@@ -2,6 +2,7 @@ package org.shmo.icfb.campaign.quests;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
+import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import org.shmo.icfb.ItCameFromBeyond;
 
 import java.util.ArrayList;
@@ -85,6 +86,9 @@ public class Quest {
         _name = null;
         _iconId = null;
         _tags = new HashSet<>();
+
+        addTag(Tags.INTEL_ACCEPTED);
+        addTag(Tags.INTEL_MISSIONS);
     }
 
     public void setScript(QuestScript script) {
@@ -173,6 +177,10 @@ public class Quest {
 
     public void addStep(QuestStepIntel intel, QuestStepScript script) {
         addStep(new QuestStep(this, intel, script));
+    }
+
+    public void addFinalStep() {
+        addStep(new QuestCompleteIntel(), null);
     }
 
     public QuestStep getCurrentStep() {

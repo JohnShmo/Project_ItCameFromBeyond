@@ -11,7 +11,7 @@ import com.fs.starfarer.api.util.Misc;
 import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.campaign.abilities.ShiftJump;
 import org.shmo.icfb.campaign.quests.QuestListener;
-import org.shmo.icfb.campaign.quests.QuestId;
+import org.shmo.icfb.campaign.quests.QuestIds;
 import org.shmo.icfb.campaign.quests.impl.OddOccurrences;
 import org.shmo.icfb.campaign.quests.impl.TheHunt;
 import org.shmo.icfb.campaign.quests.impl.UnwantedCompany;
@@ -26,8 +26,8 @@ import java.util.Set;
 
 public class ShiftDriveEvent extends BaseEventIntel implements QuestListener {
     public static final String KEY = "$icfb_ShiftDriveEvent";
-    public static final String SHIFT_JUMP_ICON_CATEGORY = "icfb_icons";
-    public static final String SHIFT_JUMP_ICON_ID = "shift_drive";
+    public static final String ICON_CATEGORY = "icfb_icons";
+    public static final String ICON_ID = "shift_drive";
 
     public enum Stage {
         START,
@@ -43,7 +43,7 @@ public class ShiftDriveEvent extends BaseEventIntel implements QuestListener {
     }
 
     public static final int MAX_PROGRESS = 800;
-    public static final int PROGRESS_MINOR = 10;
+    public static final int PROGRESS_MINOR = 150;
     public static final int PROGRESS_FUEL_UPGRADE = 250;
     public static final int PROGRESS_MAJOR = 450;
     public static final int PROGRESS_RANGE_UPGRADE = 550;
@@ -113,7 +113,7 @@ public class ShiftDriveEvent extends BaseEventIntel implements QuestListener {
 
     @Override
     public String getIcon() {
-        return Global.getSettings().getSpriteName(SHIFT_JUMP_ICON_CATEGORY, SHIFT_JUMP_ICON_ID);
+        return Global.getSettings().getSpriteName(ICON_CATEGORY, ICON_ID);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class ShiftDriveEvent extends BaseEventIntel implements QuestListener {
         Stage stage = (Stage)stageId;
         SettingsAPI settings = Global.getSettings();
         if (stage == Stage.START) {
-            return settings.getSpriteName(SHIFT_JUMP_ICON_CATEGORY, SHIFT_JUMP_ICON_ID);
+            return settings.getSpriteName(ICON_CATEGORY, ICON_ID);
         }
         return getStageStatus(stage).getIcon();
     }
@@ -392,15 +392,15 @@ public class ShiftDriveEvent extends BaseEventIntel implements QuestListener {
     @Override
     public void notifyQuestComplete(String questId) {
         switch (questId) {
-            case QuestId.ODD_OCCURRENCES:
+            case QuestIds.ODD_OCCURRENCES:
                 unlockStage();
                 getStageStatus(Stage.MINOR_EVENT).setState(StageStatus.State.COMPLETE);
                 break;
-            case QuestId.UNWANTED_COMPANY:
+            case QuestIds.UNWANTED_COMPANY:
                 unlockStage();
                 getStageStatus(Stage.MAJOR_EVENT).setState(StageStatus.State.COMPLETE);
                 break;
-            case QuestId.THE_HUNT:
+            case QuestIds.THE_HUNT:
                 unlockStage();
                 setProgress(getProgress() - generateAmountToSubtractAfterDeadly());
                 getStageStatus(Stage.DEADLY_EVENT).setState(StageStatus.State.INACTIVE);

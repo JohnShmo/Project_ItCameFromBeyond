@@ -10,7 +10,7 @@ import com.fs.starfarer.api.util.Misc;
 
 import java.util.List;
 
-public class LocationQuestStepIntel extends BaseQuestStepIntel {
+public class LocationIntel extends BaseQuestStepIntel {
     private SectorEntityToken _targetEntity = null;
     private String _locationHint = null;
 
