@@ -8,6 +8,7 @@ import org.shmo.icfb.campaign.quests.Quest;
 import org.shmo.icfb.campaign.quests.factories.QuestFactory;
 import org.shmo.icfb.campaign.listeners.QuestListener;
 import org.shmo.icfb.factories.ScriptFactory;
+import org.shmo.icfb.utilities.Caster;
 
 import java.util.*;
 
@@ -35,7 +36,7 @@ public class QuestManager implements EveryFrameScript {
         if (!memory.contains(QUEST_MAP_KEY)) {
             memory.set(QUEST_MAP_KEY, new HashMap<String, Quest>());
         }
-        return (Map<String, Quest>) memory.get(QUEST_MAP_KEY);
+        return Caster.tryCast(memory.get(LISTENERS_KEY));
     }
 
     private Set<QuestListener> getListeners() {
@@ -43,7 +44,7 @@ public class QuestManager implements EveryFrameScript {
         if (!memory.contains(LISTENERS_KEY)) {
             memory.set(LISTENERS_KEY, new HashSet<QuestListener>());
         }
-        return (Set<QuestListener>) memory.get(LISTENERS_KEY);
+        return Caster.tryCast(memory.get(LISTENERS_KEY));
     }
 
     public List<Quest> getAllQuests() {
