@@ -36,7 +36,7 @@ public class QuestManager implements EveryFrameScript {
         if (!memory.contains(QUEST_MAP_KEY)) {
             memory.set(QUEST_MAP_KEY, new HashMap<String, Quest>());
         }
-        return Caster.tryCast(memory.get(LISTENERS_KEY));
+        return Caster.tryCast(memory.get(QUEST_MAP_KEY));
     }
 
     private Set<QuestListener> getListeners() {
