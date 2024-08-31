@@ -1,4 +1,4 @@
-package org.shmo.icfb.campaign.quests;
+package org.shmo.icfb.campaign.quests.intel;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
@@ -7,10 +7,11 @@ import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
 import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
+import org.shmo.icfb.campaign.quests.intel.BaseQuestStepIntel;
 
 import java.util.List;
 
-public class LocationIntel extends BaseQuestStepIntel {
+public class LocationQuestStepIntel extends BaseQuestStepIntel {
     private SectorEntityToken _targetEntity = null;
     private String _locationHint = null;
 

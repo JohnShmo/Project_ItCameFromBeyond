@@ -9,13 +9,13 @@ import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.impl.campaign.ids.FleetTypes;
 import com.fs.starfarer.api.impl.campaign.ids.MemFlags;
 import org.magiclib.campaign.MagicFleetBuilder;
-import org.shmo.icfb.campaign.quests.DefeatFleetScript;
-import org.shmo.icfb.campaign.quests.impl.OddOccurrences;
-import org.shmo.icfb.utilities.FleetFactory;
+import org.shmo.icfb.campaign.quests.scripts.DefeatFleetQuestStepScript;
+import org.shmo.icfb.campaign.quests.impl.TestQuest;
+import org.shmo.icfb.campaign.factories.FleetFactory;
 
-public class TestQuestScript extends DefeatFleetScript {
-    public TestQuestScript() {
-        setSpawnLocation(OddOccurrences.getTestPirateSpawnLocation());
+public class TestQuestStepScript extends DefeatFleetQuestStepScript {
+    public TestQuestStepScript() {
+        setSpawnLocation(TestQuest.getPirateSpawnLocation());
         setWinCondition(WinCondition.DEFEAT_FLAGSHIP);
         setFleetFactory(new FleetFactory() {
             @Override

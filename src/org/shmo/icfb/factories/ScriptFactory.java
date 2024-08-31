@@ -1,4 +1,4 @@
-package org.shmo.icfb.utilities;
+package org.shmo.icfb.factories;
 
 import com.fs.starfarer.api.EveryFrameScript;
 

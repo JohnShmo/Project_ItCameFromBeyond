@@ -1,4 +1,4 @@
-package org.shmo.icfb.campaign.quests;
+package org.shmo.icfb.campaign.quests.scripts;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
@@ -6,9 +6,9 @@ import com.fs.starfarer.api.campaign.listeners.FleetEventListener;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.util.Misc;
-import org.shmo.icfb.utilities.FleetFactory;
+import org.shmo.icfb.campaign.factories.FleetFactory;
 
-public class DefeatFleetScript extends ImportantTargetScript implements FleetEventListener {
+public class DefeatFleetQuestStepScript extends TargetQuestStepScript implements FleetEventListener {
 
     protected FleetFactory _fleetFactory = null;
     protected SectorEntityToken _spawnLocation = null;

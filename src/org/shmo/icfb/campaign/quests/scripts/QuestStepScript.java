@@ -1,4 +1,6 @@
-package org.shmo.icfb.campaign.quests;
+package org.shmo.icfb.campaign.quests.scripts;
+
+import org.shmo.icfb.campaign.quests.QuestStep;
 
 public interface QuestStepScript {
     void init(QuestStep step);

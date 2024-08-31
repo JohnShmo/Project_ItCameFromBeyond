@@ -1,4 +1,4 @@
-package org.shmo.icfb.campaign.quests;
+package org.shmo.icfb.campaign.quests.intel;
 
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.impl.campaign.intel.BaseIntelPlugin;

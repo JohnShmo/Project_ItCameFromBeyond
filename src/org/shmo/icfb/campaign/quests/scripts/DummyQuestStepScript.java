@@ -1,6 +1,8 @@
-package org.shmo.icfb.campaign.quests;
+package org.shmo.icfb.campaign.quests.scripts;
 
-public class DummyScript extends BaseQuestStepScript {
+import org.shmo.icfb.campaign.quests.scripts.BaseQuestStepScript;
+
+public class DummyQuestStepScript extends BaseQuestStepScript {
     @Override
     public void start() {
 

@@ -1,5 +1,8 @@
 package org.shmo.icfb.campaign.quests;
 
+import org.shmo.icfb.campaign.quests.intel.QuestStepIntel;
+import org.shmo.icfb.campaign.quests.scripts.QuestStepScript;
+
 public class QuestStep {
     public QuestStepIntel intel;
     public QuestStepScript script;

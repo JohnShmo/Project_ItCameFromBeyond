@@ -9,6 +9,7 @@ import com.fs.starfarer.api.util.Misc;
 import org.lazywizard.lazylib.MathUtils;
 import org.lwjgl.util.vector.Vector2f;
 import org.shmo.icfb.ItCameFromBeyond;
+import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -291,7 +292,7 @@ public class ShiftJump {
         resetTarget();
 
         if (fleet.isPlayerFleet()) {
-            ItCameFromBeyond.Global.getShiftDriveManager().addToShiftJumpTotalDistance(distance);
+            ShiftDriveManager.getInstance().notifyShiftJumpUsed(fleet, distance);
         }
     }
 

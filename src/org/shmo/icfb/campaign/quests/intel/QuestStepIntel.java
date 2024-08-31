@@ -1,8 +1,9 @@
-package org.shmo.icfb.campaign.quests;
+package org.shmo.icfb.campaign.quests.intel;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
 import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import org.shmo.icfb.campaign.quests.QuestStep;
 
 import java.util.List;
 import java.util.Set;

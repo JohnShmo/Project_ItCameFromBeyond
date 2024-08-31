@@ -1,21 +1,21 @@
-package org.shmo.icfb.campaign.quests.impl.builders;
+package org.shmo.icfb.campaign.quests.impl.factories;
 
 import com.fs.starfarer.api.Global;
 import org.shmo.icfb.campaign.intel.events.ShiftDriveEvent;
 import org.shmo.icfb.campaign.quests.Quest;
-import org.shmo.icfb.campaign.quests.QuestBuilder;
+import org.shmo.icfb.campaign.quests.factories.QuestFactory;
 import org.shmo.icfb.campaign.quests.impl.UnwantedCompany;
-import org.shmo.icfb.campaign.quests.impl.intel.TestQuestIntel;
-import org.shmo.icfb.campaign.quests.impl.scripts.TestQuestScript;
 
-public class UnwantedCompanyBuilder implements QuestBuilder {
+public class UnwantedCompanyFactory implements QuestFactory {
     @Override
-    public void build(Quest quest) {
+    public Quest create() {
+        Quest quest = new Quest(UnwantedCompany.ID);
         quest.setName(UnwantedCompany.NAME);
         quest.setIcon(Global.getSettings().getSpriteName(ShiftDriveEvent.ICON_CATEGORY, ShiftDriveEvent.ICON_ID));
         quest.addTag("Shift Drive");
 
-        quest.addStep(new TestQuestIntel(), new TestQuestScript());
         quest.addFinalStep();
+
+        return quest;
     }
 }

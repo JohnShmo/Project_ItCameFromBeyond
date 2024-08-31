@@ -2,14 +2,20 @@ package org.shmo.icfb.campaign.scripts;
 
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.campaign.abilities.ShiftJump;
 import org.shmo.icfb.campaign.intel.events.ShiftDriveEvent;
-import org.shmo.icfb.utilities.ScriptFactory;
+import org.shmo.icfb.factories.ScriptFactory;
+import org.shmo.icfb.campaign.listeners.ShiftDriveListener;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class ShiftDriveManager implements EveryFrameScript {
     public static final String KEY = "$icfb_ShiftDriveManager";
+    public static final String LISTENERS_KEY = "$icfb_ShiftDriveManager_listeners";
 
     public static final String UNLOCKED_MEMORY_KEY = "$icfb_ShiftDriveManager_unlocked";
     public static final String RANGE_UPGRADE_MEMORY_KEY = "$icfb_ShiftDriveManager_hasRangeUpgrade";
@@ -36,6 +42,22 @@ public class ShiftDriveManager implements EveryFrameScript {
         Global.getSector().getMemoryWithoutUpdate().set(KEY, this);
     }
 
+    private Set<ShiftDriveListener> getListeners() {
+        MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
+        if (!memory.contains(LISTENERS_KEY)) {
+            memory.set(LISTENERS_KEY, new HashSet<ShiftDriveListener>());
+        }
+        return (Set<ShiftDriveListener>) memory.get(LISTENERS_KEY);
+    }
+
+    public void addListener(ShiftDriveListener listener) {
+        getListeners().add(listener);
+    }
+
+    public void removeListener(ShiftDriveListener listener) {
+        getListeners().remove(listener);
+    }
+
     public boolean isShiftJumpUnlocked() {
         MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
         if (!memory.contains(UNLOCKED_MEMORY_KEY))
@@ -49,8 +71,14 @@ public class ShiftDriveManager implements EveryFrameScript {
         ItCameFromBeyond.Log.info("Set Shift Jump unlocked status to: " + unlocked);
     }
 
-    public void addToShiftJumpTotalDistance(float amount) {
-        ShiftDriveEvent.addFactorCreateIfNecessary(ShiftDriveEvent.Factor.SHIFT_JUMP_USE, amount);
+    public void notifyShiftJumpUsed(CampaignFleetAPI fleet, float distanceLY) {
+        if (ShiftDriveEvent.getInstance() == null)
+            new ShiftDriveEvent();
+
+        final Set<ShiftDriveListener> listeners = getListeners();
+        for (ShiftDriveListener listener : listeners) {
+            listener.notifyShiftJumpUsed(fleet, distanceLY);
+        }
     }
 
     public boolean hasShiftJumpRangeUpgrade() {

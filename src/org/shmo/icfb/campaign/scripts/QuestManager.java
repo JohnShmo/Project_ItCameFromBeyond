@@ -2,16 +2,19 @@ package org.shmo.icfb.campaign.scripts;
 
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.campaign.quests.Quest;
-import org.shmo.icfb.campaign.quests.QuestBuilder;
-import org.shmo.icfb.campaign.quests.QuestListener;
-import org.shmo.icfb.utilities.ScriptFactory;
+import org.shmo.icfb.campaign.quests.factories.QuestFactory;
+import org.shmo.icfb.campaign.listeners.QuestListener;
+import org.shmo.icfb.factories.ScriptFactory;
 
 import java.util.*;
 
 public class QuestManager implements EveryFrameScript {
     public static final String KEY = "$icfb_QuestManager";
+    public static final String QUEST_MAP_KEY = "$icfb_QuestManager_questMap";
+    public static final String LISTENERS_KEY = "$icfb_QuestManager_listeners";
 
     public static class Factory implements ScriptFactory {
         @Override
@@ -27,103 +30,97 @@ public class QuestManager implements EveryFrameScript {
         return (QuestManager)Global.getSector().getMemoryWithoutUpdate().get(KEY);
     }
 
-    private final Map<String, Quest> _idToQuestMap;
-    private final Map<Quest, String> _questToIdMap;
-    private final Set<Quest> _questSet;
-    private final Set<QuestListener> _questListeners;
-    private Map<String, Quest> getIdToQuestMap() {
-        return _idToQuestMap;
+    private Map<String, Quest> getQuestMap() {
+        MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
+        if (!memory.contains(QUEST_MAP_KEY)) {
+            memory.set(QUEST_MAP_KEY, new HashMap<String, Quest>());
+        }
+        return (Map<String, Quest>) memory.get(QUEST_MAP_KEY);
     }
-    private Map<Quest, String> getQuestToIdMap() {
-        return _questToIdMap;
+
+    private Set<QuestListener> getListeners() {
+        MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
+        if (!memory.contains(LISTENERS_KEY)) {
+            memory.set(LISTENERS_KEY, new HashSet<QuestListener>());
+        }
+        return (Set<QuestListener>) memory.get(LISTENERS_KEY);
     }
-    private Set<Quest> getQuestSet() {
-        return _questSet;
-    }
-    private Set<QuestListener> getQuestListeners() {
-        return _questListeners;
-    }
+
     public List<Quest> getAllQuests() {
-        return new ArrayList<>(getQuestSet());
+        final List<Quest> result = new ArrayList<>();
+        Map<String, Quest> questMap = getQuestMap();
+        for (Map.Entry<String, Quest> quest : questMap.entrySet()) {
+            result.add(quest.getValue());
+        }
+        return result;
     }
 
     public QuestManager() {
         Global.getSector().getMemoryWithoutUpdate().set(KEY, this);
-        _idToQuestMap = new HashMap<>();
-        _questToIdMap = new HashMap<>();
-        _questSet = new HashSet<>();
-        _questListeners = new HashSet<>();
     }
 
     public void addListener(QuestListener listener) {
-        getQuestListeners().add(listener);
+        getListeners().add(listener);
     }
 
     public void removeListener(QuestListener listener) {
-        getQuestListeners().remove(listener);
+        getListeners().remove(listener);
     }
 
-    private void notifyListeners(String questId) {
-        for (QuestListener listener : getQuestListeners()) {
-            listener.notifyQuestComplete(questId);
+    private void broadcastQuestCompleted(String questId) {
+        ItCameFromBeyond.Log.info("Quest with id: { " + questId + " } was completed.");
+        for (QuestListener listener : getListeners()) {
+            listener.notifyQuestCompleted(questId);
         }
     }
 
-    public void add(String id, QuestBuilder questBuilder) {
-        Quest quest = new Quest();
-        questBuilder.build(quest);
-        add(id, quest);
+    private void broadcastQuestStarted(String questId) {
+        ItCameFromBeyond.Log.info("Quest with id: { " + questId + " } was started.");
+        for (QuestListener listener : getListeners()) {
+            listener.notifyQuestStarted(questId);
+        }
     }
 
-    public void add(String id, Quest quest) {
+    public void add(QuestFactory questFactory) {
+        Quest quest = questFactory.create();
+        add(quest.getId(), quest);
+    }
+
+    private void add(String id, Quest quest) {
         if (id == null || quest == null)
             return;
         remove(id);
-        getIdToQuestMap().put(id, quest);
-        getQuestToIdMap().put(quest, id);
-        getQuestSet().add(quest);
+        getQuestMap().put(id, quest);
         quest.start();
-        ItCameFromBeyond.Log.info("Quest with id: { " + getId(quest) + " } was started.");
+        broadcastQuestStarted(id);
     }
 
     public Quest getQuest(String id) {
-        return getIdToQuestMap().get(id);
-    }
-
-    public String getId(Quest quest) {
-        return getQuestToIdMap().get(quest);
+        return getQuestMap().get(id);
     }
 
     public boolean contains(String id) {
-        return getIdToQuestMap().containsKey(id);
+        return getQuestMap().containsKey(id);
     }
 
     public boolean contains(Quest quest) {
-        return getQuestSet().contains(quest);
+        return getQuestMap().containsValue(quest);
     }
 
     public void remove(String id) {
         if (id == null)
             return;
-        Quest quest = getIdToQuestMap().remove(id);
-        if (quest != null) {
-            getQuestToIdMap().remove(quest);
-            getQuestSet().remove(quest);
+        final Quest quest = getQuestMap().remove(id);
+        if (quest != null)
             quest.end();
-            ItCameFromBeyond.Log.info("Quest with id: { " + id + " } was ended.");
-        }
     }
 
     public void remove(Quest quest) {
         if (quest == null)
             return;
-        String id = getQuestToIdMap().remove(quest);
-        if (id != null) {
-            getIdToQuestMap().remove(id);
-            getQuestSet().remove(quest);
-            quest.end();
-            ItCameFromBeyond.Log.info("Quest with id: { " + id + " } was ended.");
-        }
+        final Quest removed = getQuestMap().remove(quest.getId());
+        if (removed != null)
+            removed.end();
     }
 
     @Override
@@ -141,7 +138,7 @@ public class QuestManager implements EveryFrameScript {
         List<Quest> quests = getAllQuests();
         for (Quest quest : quests) {
             if (quest.isComplete()) {
-                notifyListeners(getId(quest));
+                broadcastQuestCompleted(quest.getId());
                 remove(quest);
                 continue;
             }

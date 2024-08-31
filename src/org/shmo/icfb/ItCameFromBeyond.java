@@ -44,14 +44,6 @@ public class ItCameFromBeyond {
                 return null;
             return plugin.getImpl();
         }
-
-        public static ShiftDriveManager getShiftDriveManager() {
-            return ShiftDriveManager.getInstance();
-        }
-
-        public static QuestManager getQuestManager() { return QuestManager.getInstance(); }
-
-        public static ShiftDriveEvent getShiftDriveEvent() { return ShiftDriveEvent.getInstance(); }
     }
 
     public static class Math {

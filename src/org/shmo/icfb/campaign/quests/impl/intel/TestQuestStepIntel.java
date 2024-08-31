@@ -1,15 +1,12 @@
 package org.shmo.icfb.campaign.quests.impl.intel;
 
-import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
-import org.shmo.icfb.campaign.quests.DefeatFleetIntel;
-import org.shmo.icfb.campaign.quests.LocationIntel;
-import org.shmo.icfb.campaign.quests.impl.OddOccurrences;
+import org.shmo.icfb.campaign.quests.intel.DefeatFleetQuestStepIntel;
+import org.shmo.icfb.campaign.quests.impl.TestQuest;
 
-public class TestQuestIntel extends DefeatFleetIntel {
-    public TestQuestIntel() {
-        setTarget(OddOccurrences.getTestPirateSpawnLocation());
+public class TestQuestStepIntel extends DefeatFleetQuestStepIntel {
+    public TestQuestStepIntel() {
+        setTarget(TestQuest.getPirateSpawnLocation());
         setLocationHint("near a planet of");
         setTargetName("Jack Sparrow");
     }

@@ -1,8 +1,8 @@
 package org.shmo.icfb;
 
 import com.fs.starfarer.api.BaseModPlugin;
-import org.shmo.icfb.campaign.quests.QuestIds;
-import org.shmo.icfb.campaign.quests.impl.OddOccurrences;
+import org.shmo.icfb.campaign.quests.impl.TestQuest;
+import org.shmo.icfb.campaign.quests.impl.factories.TestQuestFactory;
 import org.shmo.icfb.campaign.scripts.QuestManager;
 import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
 import org.shmo.icfb.utilities.ScriptInitializer;
@@ -27,8 +27,8 @@ public class ItCameFromBeyondModPlugin extends BaseModPlugin {
 
         // QUEST TESTS =====================================================
 
-        if (!QuestManager.getInstance().contains(QuestIds.ODD_OCCURRENCES)) {
-            OddOccurrences.start();
+        if (!QuestManager.getInstance().contains(TestQuest.ID)) {
+            QuestManager.getInstance().add(new TestQuestFactory());
         }
     }
 

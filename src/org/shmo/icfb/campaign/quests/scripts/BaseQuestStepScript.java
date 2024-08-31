@@ -1,4 +1,6 @@
-package org.shmo.icfb.campaign.quests;
+package org.shmo.icfb.campaign.quests.scripts;
+
+import org.shmo.icfb.campaign.quests.QuestStep;
 
 public abstract class BaseQuestStepScript implements QuestStepScript {
     private QuestStep _questStep = null;

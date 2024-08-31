@@ -1,10 +1,9 @@
-package org.shmo.icfb.campaign.quests;
+package org.shmo.icfb.campaign.quests.scripts;
 
-import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.util.Misc;
 
-public class ImportantTargetScript extends BaseQuestStepScript {
+public class TargetQuestStepScript extends BaseQuestStepScript {
 
     private SectorEntityToken _target = null;
 

@@ -1,4 +1,4 @@
-package org.shmo.icfb.utilities;
+package org.shmo.icfb.campaign.factories;
 
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.SectorEntityToken;

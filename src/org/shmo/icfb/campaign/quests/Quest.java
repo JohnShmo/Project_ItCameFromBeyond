@@ -4,6 +4,11 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
 import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import org.shmo.icfb.ItCameFromBeyond;
+import org.shmo.icfb.campaign.quests.intel.QuestCompleteIntel;
+import org.shmo.icfb.campaign.quests.intel.QuestStepIntel;
+import org.shmo.icfb.campaign.quests.intel.QuestStepIntelPlugin;
+import org.shmo.icfb.campaign.quests.scripts.QuestScript;
+import org.shmo.icfb.campaign.quests.scripts.QuestStepScript;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 public class Quest {
+    private final String _id;
     private final List<QuestStep> _steps;
     private int _stepIndex;
     private boolean _started;
@@ -78,7 +84,8 @@ public class Quest {
         }
     }
 
-    public Quest() {
+    public Quest(String id) {
+        _id = id;
         _steps = new ArrayList<>();
         _stepIndex = 0;
         _started = false;
@@ -91,26 +98,42 @@ public class Quest {
         addTag(Tags.INTEL_MISSIONS);
     }
 
+    public String getId() {
+        return _id;
+    }
+
     public void setScript(QuestScript script) {
         _script = script;
     }
+
     public QuestScript getScript() {
         return _script;
     }
+
     public void setName(String name) {
         _name = name;
     }
+
     public String getName() {
         return _name;
     }
-    public void setIcon(String iconId) { _iconId = iconId; }
-    public String getIcon() { return _iconId; }
+
+    public void setIcon(String iconId) {
+        _iconId = iconId;
+    }
+
+    public String getIcon() {
+        return _iconId;
+    }
+
     public void addTag(String tag) {
         _tags.add(tag);
     }
+
     public void removeTag(String tag) {
         _tags.remove(tag);
     }
+
     public Set<String> getTags() { return _tags; }
 
     public void start() {
