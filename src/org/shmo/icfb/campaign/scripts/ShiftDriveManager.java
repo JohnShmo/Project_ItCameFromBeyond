@@ -3,24 +3,17 @@ package org.shmo.icfb.campaign.scripts;
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
-import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.campaign.abilities.ShiftJump;
 import org.shmo.icfb.campaign.intel.events.ShiftDriveEvent;
 import org.shmo.icfb.factories.ScriptFactory;
 import org.shmo.icfb.campaign.listeners.ShiftDriveListener;
-import org.shmo.icfb.utilities.Caster;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class ShiftDriveManager implements EveryFrameScript {
     public static final String KEY = "$icfb_ShiftDriveManager";
-    public static final String LISTENERS_KEY = "$icfb_ShiftDriveManager_listeners";
-
-    public static final String UNLOCKED_MEMORY_KEY = "$icfb_ShiftDriveManager_unlocked";
-    public static final String RANGE_UPGRADE_MEMORY_KEY = "$icfb_ShiftDriveManager_hasRangeUpgrade";
-    public static final String FUEL_UPGRADE_MEMORY_KEY = "$icfb_ShiftDriveManager_hasFuelUpgrade";
 
     public static final float RANGE_UPGRADE_MULTIPLIER = 1.0f + (2f/3f);
     public static final float FUEL_UPGRADE_MULTIPLIER = 0.5f;
@@ -39,16 +32,22 @@ public class ShiftDriveManager implements EveryFrameScript {
         return (ShiftDriveManager)Global.getSector().getMemoryWithoutUpdate().get(KEY);
     }
 
+    private final Set<ShiftDriveListener> _listeners;
+    private boolean _shiftJumpUnlocked;
+    private boolean _rangeUpgradeUnlocked;
+    private boolean _fuelUpgradeUnlocked;
+
     public ShiftDriveManager() {
+        _listeners = new HashSet<>();
+        _shiftJumpUnlocked = false;
+        _rangeUpgradeUnlocked = false;
+        _fuelUpgradeUnlocked = false;
+
         Global.getSector().getMemoryWithoutUpdate().set(KEY, this);
     }
 
     private Set<ShiftDriveListener> getListeners() {
-        MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
-        if (!memory.contains(LISTENERS_KEY)) {
-            memory.set(LISTENERS_KEY, new HashSet<ShiftDriveListener>());
-        }
-        return (Set<ShiftDriveListener>)memory.get(LISTENERS_KEY);
+        return _listeners;
     }
 
     public void addListener(ShiftDriveListener listener) {
@@ -60,16 +59,11 @@ public class ShiftDriveManager implements EveryFrameScript {
     }
 
     public boolean isShiftJumpUnlocked() {
-        MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
-        if (!memory.contains(UNLOCKED_MEMORY_KEY))
-            return false;
-        return memory.getBoolean(UNLOCKED_MEMORY_KEY);
+       return _shiftJumpUnlocked;
     }
 
     public void setShiftJumpUnlocked(boolean unlocked) {
-        MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
-        memory.set(UNLOCKED_MEMORY_KEY, unlocked);
-        ItCameFromBeyond.Log.info("Set Shift Jump unlocked status to: " + unlocked);
+        _shiftJumpUnlocked = unlocked;
     }
 
     public void notifyShiftJumpUsed(CampaignFleetAPI fleet, float distanceLY) {
@@ -83,29 +77,19 @@ public class ShiftDriveManager implements EveryFrameScript {
     }
 
     public boolean hasShiftJumpRangeUpgrade() {
-        MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
-        if (!memory.contains(RANGE_UPGRADE_MEMORY_KEY))
-            return false;
-        return memory.getBoolean(RANGE_UPGRADE_MEMORY_KEY);
+        return _rangeUpgradeUnlocked;
     }
 
     public void setShiftJumpRangeUpgrade(boolean rangeUpgradeStatus) {
-        MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
-        memory.set(RANGE_UPGRADE_MEMORY_KEY, rangeUpgradeStatus);
-        ItCameFromBeyond.Log.info("Set Shift Jump range upgrade status to: " + rangeUpgradeStatus);
+        _rangeUpgradeUnlocked = rangeUpgradeStatus;
     }
 
     public boolean hasShiftJumpFuelUpgrade() {
-        MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
-        if (!memory.contains(FUEL_UPGRADE_MEMORY_KEY))
-            return false;
-        return memory.getBoolean(FUEL_UPGRADE_MEMORY_KEY);
+        return _fuelUpgradeUnlocked;
     }
 
     public void setShiftJumpFuelUpgrade(boolean fuelUpgradeStatus) {
-        MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
-        memory.set(FUEL_UPGRADE_MEMORY_KEY, fuelUpgradeStatus);
-        ItCameFromBeyond.Log.info("Set Shift Jump fuel upgrade status to: " + fuelUpgradeStatus);
+        _fuelUpgradeUnlocked = fuelUpgradeStatus;
     }
 
     private void applyUpgradesAndUnlock() {
