@@ -9,6 +9,7 @@ import org.shmo.icfb.campaign.abilities.ShiftJump;
 import org.shmo.icfb.campaign.intel.events.ShiftDriveEvent;
 import org.shmo.icfb.factories.ScriptFactory;
 import org.shmo.icfb.campaign.listeners.ShiftDriveListener;
+import org.shmo.icfb.utilities.Caster;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -47,7 +48,7 @@ public class ShiftDriveManager implements EveryFrameScript {
         if (!memory.contains(LISTENERS_KEY)) {
             memory.set(LISTENERS_KEY, new HashSet<ShiftDriveListener>());
         }
-        return (Set<ShiftDriveListener>) memory.get(LISTENERS_KEY);
+        return (Set<ShiftDriveListener>)memory.get(LISTENERS_KEY);
     }
 
     public void addListener(ShiftDriveListener listener) {

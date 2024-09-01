@@ -31,20 +31,23 @@ public class QuestManager implements EveryFrameScript {
         return (QuestManager)Global.getSector().getMemoryWithoutUpdate().get(KEY);
     }
 
+    private Map<String, Quest> _questMap;
+    private Set<QuestListener> _listeners;
+
     private Map<String, Quest> getQuestMap() {
+<<<<<<< Updated upstream
         MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
         if (!memory.contains(QUEST_MAP_KEY)) {
             memory.set(QUEST_MAP_KEY, new HashMap<String, Quest>());
         }
         return Caster.tryCast(memory.get(QUEST_MAP_KEY));
+=======
+        return _questMap;
+>>>>>>> Stashed changes
     }
 
     private Set<QuestListener> getListeners() {
-        MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
-        if (!memory.contains(LISTENERS_KEY)) {
-            memory.set(LISTENERS_KEY, new HashSet<QuestListener>());
-        }
-        return Caster.tryCast(memory.get(LISTENERS_KEY));
+        return _listeners;
     }
 
     public List<Quest> getAllQuests() {
@@ -57,6 +60,8 @@ public class QuestManager implements EveryFrameScript {
     }
 
     public QuestManager() {
+        _questMap = new HashMap<>();
+        _listeners = new HashSet<>();
         Global.getSector().getMemoryWithoutUpdate().set(KEY, this);
     }
 

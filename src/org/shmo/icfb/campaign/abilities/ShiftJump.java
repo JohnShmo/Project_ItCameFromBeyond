@@ -10,6 +10,7 @@ import org.lazywizard.lazylib.MathUtils;
 import org.lwjgl.util.vector.Vector2f;
 import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
+import org.shmo.icfb.utilities.ShmoMath;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,7 +128,7 @@ public class ShiftJump {
 
     public float computeCRCostFractional(float t) {
         final float curve = t * t;
-        return ItCameFromBeyond.Math.lerp(0, CR_USE_RATE * getCRUseMultiplier(), curve);
+        return ShmoMath.lerp(0, CR_USE_RATE * getCRUseMultiplier(), curve);
     }
 
     public float computeCRCost(float distanceInLY) {
