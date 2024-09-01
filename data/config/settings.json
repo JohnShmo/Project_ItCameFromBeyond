@@ -2,6 +2,8 @@
 	"plugins":{
 		# UI plugins
 		"icfb_ShiftJumpDestinationPicker":"org.shmo.icfb.campaign.abilities.ShiftJumpDestinationPicker",
+		# Combat plugins
+		"icfb_DeflectorSystemPlugin":"org.shmo.icfb.combat.plugins.DeflectorSystemPlugin",
 	},
 	"graphics":{
 		"icfb_icons":{

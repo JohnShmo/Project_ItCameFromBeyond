@@ -5,6 +5,26 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 public class ShmoMath {
+
+    public static @NotNull Vector2f computeReflectionNormal(Vector2f projectileNormal, Vector2f surfaceNormal) {
+        Vector2f normalizedProjectileNormal = new Vector2f(projectileNormal);
+        normalizedProjectileNormal.normalise();
+
+        Vector2f normalizedSurfaceNormal = new Vector2f(surfaceNormal);
+        normalizedSurfaceNormal.normalise();
+
+        float dotProduct = Vector2f.dot(normalizedProjectileNormal, normalizedSurfaceNormal);
+
+        // Compute the reflection vector
+        Vector2f reflection = new Vector2f(normalizedSurfaceNormal);
+        reflection.scale(2 * dotProduct);
+        Vector2f bounceNormal = Vector2f.sub(reflection, normalizedProjectileNormal, null);
+
+        bounceNormal.normalise();
+
+        return bounceNormal;
+    }
+
     public static float lerp(float a, float b, float t) {
         return a + t * (b - a);
     }
