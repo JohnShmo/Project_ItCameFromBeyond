@@ -14,8 +14,6 @@ import java.util.*;
 
 public class QuestManager implements EveryFrameScript {
     public static final String KEY = "$icfb_QuestManager";
-    public static final String QUEST_MAP_KEY = "$icfb_QuestManager_questMap";
-    public static final String LISTENERS_KEY = "$icfb_QuestManager_listeners";
 
     public static class Factory implements ScriptFactory {
         @Override
@@ -31,19 +29,11 @@ public class QuestManager implements EveryFrameScript {
         return (QuestManager)Global.getSector().getMemoryWithoutUpdate().get(KEY);
     }
 
-    private Map<String, Quest> _questMap;
-    private Set<QuestListener> _listeners;
+    private final Map<String, Quest> _questMap;
+    private final Set<QuestListener> _listeners;
 
     private Map<String, Quest> getQuestMap() {
-<<<<<<< Updated upstream
-        MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
-        if (!memory.contains(QUEST_MAP_KEY)) {
-            memory.set(QUEST_MAP_KEY, new HashMap<String, Quest>());
-        }
-        return Caster.tryCast(memory.get(QUEST_MAP_KEY));
-=======
         return _questMap;
->>>>>>> Stashed changes
     }
 
     private Set<QuestListener> getListeners() {
