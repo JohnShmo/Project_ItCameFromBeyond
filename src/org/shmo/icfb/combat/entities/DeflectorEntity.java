@@ -8,8 +8,8 @@ public class DeflectorEntity extends AnchoredEntity {
 
     private float _facing = 0;
 
-    public DeflectorEntity(CombatEntityAPI anchor, Vector2f location, float facing) {
-        super(anchor, location);
+    public DeflectorEntity(CombatEntityAPI anchor, float facing) {
+        super(anchor, new Vector2f(0,0));
         setFacing(anchor.getFacing() + facing);
     }
 

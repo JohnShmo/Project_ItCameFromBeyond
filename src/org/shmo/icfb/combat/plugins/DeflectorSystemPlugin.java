@@ -19,10 +19,40 @@ public class DeflectorSystemPlugin extends BaseEveryFrameCombatPlugin {
         return _engine;
     }
 
-    private List<DeflectorEntity> getOrCreateDeflectorEntityList(ShipAPI ship) {
-        if (!_deflectorEntities.containsKey(ship)) {
-            _deflectorEntities.put(ship, new ArrayList<DeflectorEntity>());
+    private static int computeHowManyEntitiesToSpawn(ShipAPI ship) {
+        // We are going to hijack aspects of the shield spec.
+        // (I hope this stuff is intact despite the shield being disabled)
+
+        final ShipHullSpecAPI spec = ship.getHullSpec();
+        final float shieldArc = spec.getShieldSpec().getArc();
+        if (shieldArc > 180)
+            return 4;
+        return 2;
+    }
+
+    private static DeflectorEntity createDeflectorEntity(ShipAPI ship, int index) {
+        final float degreesPerEntity = 360f / 4f;
+        final float initialOffset = -(degreesPerEntity / 2f);
+        final float facingAngle = initialOffset + (degreesPerEntity * index);
+        return new DeflectorEntity(ship, facingAngle);
+    }
+
+    private void createDeflectorEntitiesIfNeeded(ShipAPI ship) {
+        List<DeflectorEntity> deflectorEntityList = _deflectorEntities.get(ship);
+        if (deflectorEntityList == null) {
+            deflectorEntityList = new ArrayList<>();
+            int entityCount = computeHowManyEntitiesToSpawn(ship);
+            for (int i = 0; i < entityCount; i++) {
+                DeflectorEntity entity = createDeflectorEntity(ship, i);
+                deflectorEntityList.add(entity);
+                getEngine().addEntity(entity);
+            }
+            _deflectorEntities.put(ship, deflectorEntityList);
         }
+    }
+
+    private List<DeflectorEntity> getOrCreateDeflectorEntities(ShipAPI ship) {
+        createDeflectorEntitiesIfNeeded(ship);
         return _deflectorEntities.get(ship);
     }
 
@@ -31,10 +61,7 @@ public class DeflectorSystemPlugin extends BaseEveryFrameCombatPlugin {
     }
 
     public boolean shipHasDeflector(ShipAPI ship) {
-        ShipSystemAPI defenseSystem = ship.getPhaseCloak();
-        if (defenseSystem == null)
-            return false;
-        return defenseSystem.getId().equals(DeflectorSystem.ID);
+        return DeflectorSystem.ID.equals(ship.getHullSpec().getShipDefenseId());
     }
 
     public List<ShipAPI> getShipsWithDeflectors() {
