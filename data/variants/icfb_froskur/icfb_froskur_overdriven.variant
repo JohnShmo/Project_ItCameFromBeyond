@@ -1,0 +1,37 @@
+{
+    "displayName": "Overdriven",
+    "fluxCapacitors": 0,
+    "fluxVents": 6,
+    "goalVariant": true,
+    "hullId": "icfb_froskur",
+    "hullMods": [
+        "safetyoverrides"
+    ],
+    "quality": 0.0,
+    "variantId": "icfb_froskur_overdriven",
+    "weaponGroups": [
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0002": "lightdualmg",
+                "WS0003": "lightdualmg"
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0001": "ionpulser"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0005": "vulcan",
+                "WS0004": "vulcan"
+            }
+        }
+    ]
+}
