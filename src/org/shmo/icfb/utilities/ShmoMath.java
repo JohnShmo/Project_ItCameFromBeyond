@@ -6,6 +6,15 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class ShmoMath {
 
+    public static Vector2f rotateVector(Vector2f v, float deltaDegrees) {
+        deltaDegrees *= 0.0174533f; // to radians
+
+        return new Vector2f(
+                v.x * (float) Math.cos(deltaDegrees) - v.y * (float)Math.sin(deltaDegrees),
+                v.x * (float)Math.sin(deltaDegrees) + v.y * (float)Math.cos(deltaDegrees)
+        );
+    }
+
     public static @NotNull Vector2f computeReflectionNormal(Vector2f projectileNormal, Vector2f surfaceNormal) {
         Vector2f normalizedProjectileNormal = new Vector2f(projectileNormal);
         normalizedProjectileNormal.normalise();

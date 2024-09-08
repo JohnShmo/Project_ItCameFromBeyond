@@ -1,0 +1,26 @@
+{
+	"id":"icfb_thruster_pulse",
+	"type":"ENGINE_MOD",
+	"aiType":"MANEUVERING_JETS",
+	
+	"statsScript":"org.shmo.icfb.combat.systems.ThrusterPulseSystem",
+	
+	"engineGlowLengthMult":1,
+	"engineGlowWidthMult":1,
+	"engineGlowGlowMult":2,
+	
+	"flameoutOnImpactChance":0.25,
+
+	"clampTurnRateAfter":true,
+	"clampMaxSpeedAfter":flase,
+
+	"useSound":"system_maneuvering_jets",
+	"loopSound":"system_maneuvering_jets_loop",
+	"outOfUsesSound":"engine_disabled",
+	
+	"aiHints":{
+		"activeSpeedIncrease":1000,
+		"burstMovementPotential":250,
+		"averageSpeedIncrease":250,
+	}
+}
