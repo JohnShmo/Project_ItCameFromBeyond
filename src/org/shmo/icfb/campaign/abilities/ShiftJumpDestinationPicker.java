@@ -9,8 +9,8 @@ import java.util.Map;
 public class ShiftJumpDestinationPicker implements InteractionDialogPlugin {
     public static final String ID = "icfb_ShiftJumpDestinationPicker";
 
-    private ShiftJump _shiftJump;
-    private InteractionDialogAPI _dialog;
+    private transient ShiftJump _shiftJump;
+    private transient InteractionDialogAPI _dialog;
 
     public static void execute(ShiftJump shiftJump) {
         CampaignUIAPI ui = Global.getSector().getCampaignUI();

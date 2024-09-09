@@ -4,9 +4,17 @@ import org.jetbrains.annotations.NotNull;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import java.awt.*;
+
 public class ShmoMath {
 
-    public static Vector2f rotateVector(Vector2f v, float deltaDegrees) {
+    /**
+     * Calculate a rotated version of the given vector.
+     * @param v The vector to rotate.
+     * @param deltaDegrees The number of degrees to rotate by.
+     * @return The resulting rotated vector.
+     */
+    public static @NotNull Vector2f rotateVector(@NotNull Vector2f v, float deltaDegrees) {
         deltaDegrees *= 0.0174533f; // to radians
 
         return new Vector2f(
@@ -15,7 +23,13 @@ public class ShmoMath {
         );
     }
 
-    public static @NotNull Vector2f computeReflectionNormal(Vector2f projectileNormal, Vector2f surfaceNormal) {
+    /**
+     * Calculate a reflected version of the given projectile normal vector off of a given surface normal.
+     * @param projectileNormal The direction normal of the projectile.
+     * @param surfaceNormal The surface normal for the projectile to bounce from.
+     * @return The resulting reflected normal vector.
+     */
+    public static @NotNull Vector2f reflectNormal(@NotNull Vector2f projectileNormal, @NotNull Vector2f surfaceNormal) {
         Vector2f normalizedProjectileNormal = new Vector2f(projectileNormal);
         normalizedProjectileNormal.normalise();
 
@@ -34,16 +48,53 @@ public class ShmoMath {
         return bounceNormal;
     }
 
+    /**
+     * Linearly interpolate within a range of two values (a and b) given the current position in the range (t).
+     * @param a The starting value of the range.
+     * @param b The ending value of the range.
+     * @param t The current position in the range (0.0f - 1.0f).
+     * @return The resulting interpolated value.
+     */
     public static float lerp(float a, float b, float t) {
         return a + t * (b - a);
     }
 
+    /**
+     * Linearly interpolate within a range of two values (a and b) given the current position in the range (t).
+     * @param a The starting value of the range.
+     * @param b The ending value of the range.
+     * @param t The current position in the range (0.0f - 1.0f).
+     * @return The resulting interpolated value.
+     */
     public static @NotNull Vector2f lerp(@NotNull Vector2f a, @NotNull Vector2f b, float t) {
         return new Vector2f(lerp(a.x, b.x, t), lerp(a.y, b.y, t));
     }
 
+    /**
+     * Linearly interpolate within a range of two values (a and b) given the current position in the range (t).
+     * @param a The starting value of the range.
+     * @param b The ending value of the range.
+     * @param t The current position in the range (0.0f - 1.0f).
+     * @return The resulting interpolated value.
+     */
     public static @NotNull Vector3f lerp(@NotNull Vector3f a, @NotNull Vector3f b, float t) {
         return new Vector3f(lerp(a.x, b.x, t), lerp(a.y, b.y, t), lerp(a.z, b.z, t));
+    }
+
+    /**
+     * Linearly interpolate within a range of two values (a and b) given the current position in the range (t).
+     * @param a The starting value of the range.
+     * @param b The ending value of the range.
+     * @param t The current position in the range (0.0f - 1.0f).
+     * @return The resulting interpolated value.
+     */
+    public static @NotNull Color lerp(@NotNull Color a, @NotNull Color b, float t) {
+        return new Color(
+                (int)lerp((float)a.getRed(), (float)b.getRed(), t),
+                (int)lerp((float)a.getGreen(), (float)b.getGreen(), t),
+                (int)lerp((float)a.getBlue(), (float)b.getBlue(), t),
+                (int)lerp((float)a.getAlpha(), (float)b.getAlpha(), t)
+        );
     }
 
     public static float easeInSine(float t) {

@@ -1,11 +1,13 @@
 package org.shmo.icfb;
 
 import com.fs.starfarer.api.BaseModPlugin;
+import org.magiclib.util.MagicSettings;
 import org.shmo.icfb.campaign.quests.impl.TestQuest;
 import org.shmo.icfb.campaign.quests.impl.factories.TestQuestFactory;
 import org.shmo.icfb.campaign.scripts.QuestManager;
 import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
 import org.shmo.icfb.utilities.ScriptInitializer;
+import org.json.JSONObject;
 
 public class ItCameFromBeyondModPlugin extends BaseModPlugin {
 
@@ -36,6 +38,7 @@ public class ItCameFromBeyondModPlugin extends BaseModPlugin {
     public void onApplicationLoad() throws Exception {
         super.onApplicationLoad();
         ItCameFromBeyond.Log.info("Loading plugin...");
+        loadSettings();
         ItCameFromBeyond.Log.info("Plugin loaded successfully!");
     }
 
@@ -51,7 +54,21 @@ public class ItCameFromBeyondModPlugin extends BaseModPlugin {
     }
 
     @Override
+    public void onDevModeF8Reload() {
+        super.onDevModeF8Reload();
+        loadSettings();
+    }
+
+    @Override
     public void onNewGameAfterTimePass() {
         super.onNewGameAfterTimePass();
+    }
+
+    private void loadSettings() {
+        MagicSettings.loadModSettings();
+        JSONObject json = MagicSettings.modSettings.optJSONObject("ItCameFromBeyond");
+        if (json == null)
+            return;
+        ItCameFromBeyond.Global.getSettings().loadFromJSON(json);
     }
 }

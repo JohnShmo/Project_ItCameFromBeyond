@@ -6,6 +6,7 @@ import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
 import org.lwjgl.util.vector.Vector2f;
 import org.magiclib.util.MagicRender;
+import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.utilities.ShmoCombatUtils;
 import org.shmo.icfb.utilities.ShmoMath;
 
@@ -15,7 +16,6 @@ import java.util.List;
 public class ThrusterPulseSystem extends BaseShipSystemScript {
     public static final String ID = "icfb_thruster_pulse";
     private static final String IMPULSE_KEY = "$ICFB_THRUSTER_PULSE_0";
-    private static final float IMPULSE = 1000f;
 
     private static Vector2f getStartVelocity(ShipAPI ship) {
         Vector2f startVelocity = ShmoCombatUtils.computeShipAccelerationVector(ship);
@@ -81,7 +81,8 @@ public class ThrusterPulseSystem extends BaseShipSystemScript {
 
     private void applySpeedBoost(MutableShipStatsAPI stats, float effectLevel, ShipAPI ship) {
         float speed = stats.getMaxSpeed().base;
-        speed += IMPULSE * ShmoMath.easeInCubic(effectLevel);
+        speed += ItCameFromBeyond.Global.getSettings().shipSystem.thrusterPulseImpulseMagnitude *
+                ShmoMath.easeInCubic(effectLevel);
         Vector2f velocity = ship.getVelocity();
         velocity.normalise();
         velocity.scale(speed);

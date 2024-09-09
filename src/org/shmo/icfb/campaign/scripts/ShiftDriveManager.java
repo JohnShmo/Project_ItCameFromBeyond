@@ -15,9 +15,6 @@ import java.util.Set;
 public class ShiftDriveManager implements EveryFrameScript {
     public static final String KEY = "$icfb_ShiftDriveManager";
 
-    public static final float RANGE_UPGRADE_MULTIPLIER = 1.0f + (2f/3f);
-    public static final float FUEL_UPGRADE_MULTIPLIER = 0.5f;
-
     public static class Factory implements ScriptFactory {
         @Override
         public EveryFrameScript createOrGetInstance() {
@@ -67,8 +64,10 @@ public class ShiftDriveManager implements EveryFrameScript {
     }
 
     public void notifyShiftJumpUsed(CampaignFleetAPI fleet, float distanceLY) {
-        if (ShiftDriveEvent.getInstance() == null)
-            new ShiftDriveEvent();
+        if (ItCameFromBeyond.Global.getSettings().shiftDriveEvent.isEnabled) {
+            if (ShiftDriveEvent.getInstance() == null)
+                new ShiftDriveEvent();
+        }
 
         final Set<ShiftDriveListener> listeners = getListeners();
         for (ShiftDriveListener listener : listeners) {
@@ -99,9 +98,9 @@ public class ShiftDriveManager implements EveryFrameScript {
         if (!isShiftJumpUnlocked())
             setShiftJumpUnlocked(true);
         if (hasShiftJumpFuelUpgrade())
-            shiftJump.setFuelCostMultiplier(FUEL_UPGRADE_MULTIPLIER);
+            shiftJump.setFuelCostMultiplier(ItCameFromBeyond.Global.getSettings().shiftJump.fuelUpgradeMultiplier);
         if (hasShiftJumpRangeUpgrade())
-            shiftJump.setMaxRangeMultiplier(RANGE_UPGRADE_MULTIPLIER);
+            shiftJump.setMaxRangeMultiplier(ItCameFromBeyond.Global.getSettings().shiftJump.rangeUpgradeMultiplier);
     }
 
     @Override

@@ -1,14 +1,12 @@
-package org.shmo.icfb.campaign.abilities;
+package org.shmo.icfb.campaign.intel;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.intel.BaseIntelPlugin;
 import com.fs.starfarer.api.ui.CustomPanelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import com.fs.starfarer.api.util.Misc;
 
 public class ShiftJumpDamageIntel extends BaseIntelPlugin {
-    private static final String ICON_CATEGORY = "intel";
-    private static final String ICON_ID = "damage_report";
-
     private final String _message;
 
     public ShiftJumpDamageIntel(String message) {
@@ -18,7 +16,7 @@ public class ShiftJumpDamageIntel extends BaseIntelPlugin {
 
     @Override
     protected String getName() {
-        return "Shift Jump Incident";
+        return null;
     }
 
     @Override
@@ -40,11 +38,21 @@ public class ShiftJumpDamageIntel extends BaseIntelPlugin {
     @Override
     public void createIntelInfo(TooltipMakerAPI info, ListInfoMode mode) {
         super.createIntelInfo(info, mode);
-        info.addPara(_message, 10f);
+        info.addPara(_message, 10f, Misc.getNegativeHighlightColor());
+    }
+
+    @Override
+    public boolean isEnded() {
+        return true;
+    }
+
+    @Override
+    public boolean isDone() {
+        return true;
     }
 
     @Override
     public String getIcon() {
-        return Global.getSettings().getSpriteName(ICON_CATEGORY, ICON_ID);
+        return null;
     }
 }

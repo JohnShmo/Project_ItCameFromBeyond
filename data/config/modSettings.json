@@ -1,5 +1,25 @@
 {
-    # Put any configuration for your mod here. This allows users to make a personal minimod to tweak mod settings.
-    # See https://starsector.fandom.com/wiki/MagicLib#MagicSettings
-    # and https://starsector.fandom.com/wiki/Category:Modding#Mods_inter-compatibility_and_integration
+	"ItCameFromBeyond": {
+		"shiftJump": {
+			"crPenaltyAtMaxRange": 0.5,
+			"crPenaltyCurve": "MODERATE", # "GENTLE", "MODERATE", "EXTREME"
+			
+			"baseExtraFuelPercent": 0.25,
+			"fuelUpgradeMultiplier": 0.5,
+			
+			"baseMaxRangeLY": 15.0,
+			"rangeUpgradeMultiplier": 1.666666,
+		},
+		"shiftDriveEvent": {
+			"isEnabled": false, # Probably don't enable this yet lol
+			
+			"pointsPerLYTraveledWithShiftJump": 1,
+			"pointsPerShiftJumpUse": 5,
+			
+			"isTheHuntRepeatable": true,
+		},
+		"shipSystem": {
+			"thrusterPulseImpulseMagnitude": 1000.0
+		}
+	}
 }

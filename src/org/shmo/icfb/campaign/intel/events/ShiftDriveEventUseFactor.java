@@ -6,12 +6,12 @@ import com.fs.starfarer.api.impl.campaign.intel.events.BaseEventIntel;
 import com.fs.starfarer.api.impl.campaign.intel.events.BaseFactorTooltip;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
+import org.shmo.icfb.ItCameFromBeyond;
+import org.shmo.icfb.ItCameFromBeyondSettings;
 
 import java.awt.*;
 
 public class ShiftDriveEventUseFactor extends BaseEventFactor {
-    public static final int POINTS_PER_LY = 1;
-    public static final int POINTS_PER_USE = 5;
     public static final int SHOW_DURATION_DAYS = 30;
 
     private float _distanceLY = 0;
@@ -21,7 +21,10 @@ public class ShiftDriveEventUseFactor extends BaseEventFactor {
     public ShiftDriveEventUseFactor(float distanceLY) {
         addDistance(distanceLY);
         _timeStamp = Global.getSector().getClock().getTimestamp();
-        _progress = (int)(_distanceLY * POINTS_PER_LY) + POINTS_PER_USE;
+        _progress =
+                (int)(_distanceLY *
+                        ItCameFromBeyond.Global.getSettings().shiftDriveEvent.pointsPerLYTraveledWithShiftJump)
+                        + ItCameFromBeyond.Global.getSettings().shiftDriveEvent.pointsPerShiftJumpUse;
     }
 
     @Override
@@ -74,13 +77,14 @@ public class ShiftDriveEventUseFactor extends BaseEventFactor {
                 tooltip.addPara(str1,
                         pad, highlight,
                         "Shift Jump",
-                        String.valueOf(POINTS_PER_USE)
+                        String.valueOf(ItCameFromBeyond.Global.getSettings().shiftDriveEvent.pointsPerShiftJumpUse)
                 );
                 tooltip.addPara(str2,
                         pad, highlight,
                         String.valueOf((int)getDistance()),
                         "Shift Jump",
-                        String.valueOf((int)(_distanceLY * POINTS_PER_LY))
+                        String.valueOf((int)(_distanceLY *
+                                ItCameFromBeyond.Global.getSettings().shiftDriveEvent.pointsPerLYTraveledWithShiftJump))
                 );
             }
         };

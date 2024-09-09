@@ -7,6 +7,7 @@ import org.shmo.icfb.campaign.abilities.ShiftJumpAbilityPlugin;
 import org.shmo.icfb.campaign.intel.events.ShiftDriveEvent;
 import org.shmo.icfb.campaign.scripts.QuestManager;
 import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
+import org.shmo.icfb.utilities.ShmoMath;
 
 public class ItCameFromBeyond {
     public static class Log {
@@ -34,6 +35,8 @@ public class ItCameFromBeyond {
     }
 
     public static class Global {
+        private static final ItCameFromBeyondSettings SETTINGS = new ItCameFromBeyondSettings();
+
         public static ShiftJumpAbilityPlugin getPlayerShiftJumpPlugin() {
             return ShiftJumpAbilityPlugin.getPlayerInstance();
         }
@@ -43,6 +46,26 @@ public class ItCameFromBeyond {
             if (plugin == null)
                 return null;
             return plugin.getImpl();
+        }
+
+        public static ItCameFromBeyondSettings getSettings() {
+            return SETTINGS;
+        }
+    }
+
+    public static class Misc {
+        public static float computeShiftJumpCRPenalty(
+                ItCameFromBeyondSettings.ShiftJumpSettings.CRPenaltyCurve curve,
+                float t
+        ) {
+            if (curve == null)
+                return t;
+            switch (curve) {
+                case GENTLE: return ShmoMath.easeInQuad(t);
+                case MODERATE: return ShmoMath.easeInQuart(t);
+                case EXTREME: return ShmoMath.easeInExpo(t);
+                default: return t;
+            }
         }
     }
 }

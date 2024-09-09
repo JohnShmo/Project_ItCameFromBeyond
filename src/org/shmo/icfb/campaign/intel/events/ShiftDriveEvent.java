@@ -410,14 +410,17 @@ public class ShiftDriveEvent extends BaseEventIntel implements QuestListener, Sh
                 unlockStage();
                 getStageStatus(Stage.MINOR_EVENT).setState(StageStatus.State.COMPLETE);
                 break;
+
             case UnwantedCompany.ID:
                 unlockStage();
                 getStageStatus(Stage.MAJOR_EVENT).setState(StageStatus.State.COMPLETE);
                 break;
+
             case TheHunt.ID:
                 unlockStage();
-                setProgress(getProgress() - generateAmountToSubtractAfterDeadly());
                 getStageStatus(Stage.DEADLY_EVENT).setState(StageStatus.State.INACTIVE);
+                if (ItCameFromBeyond.Global.getSettings().shiftDriveEvent.isTheHuntRepeatable)
+                    setProgress(getProgress() - generateAmountToSubtractAfterDeadly());
                 break;
         }
     }

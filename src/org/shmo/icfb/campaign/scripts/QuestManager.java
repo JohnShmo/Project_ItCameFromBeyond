@@ -40,7 +40,7 @@ public class QuestManager implements EveryFrameScript {
 
     public List<Quest> getAllQuests() {
         final List<Quest> result = new ArrayList<>();
-        Map<String, Quest> questMap = getQuestMap();
+        final Map<String, Quest> questMap = getQuestMap();
         for (Map.Entry<String, Quest> quest : questMap.entrySet()) {
             result.add(quest.getValue());
         }
@@ -129,7 +129,7 @@ public class QuestManager implements EveryFrameScript {
 
     @Override
     public void advance(float amount) {
-        List<Quest> quests = getAllQuests();
+        final List<Quest> quests = getAllQuests();
         for (Quest quest : quests) {
             if (quest.isComplete()) {
                 broadcastQuestCompleted(quest.getId());

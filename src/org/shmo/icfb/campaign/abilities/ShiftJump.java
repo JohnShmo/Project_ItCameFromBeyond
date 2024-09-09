@@ -9,6 +9,7 @@ import com.fs.starfarer.api.util.Misc;
 import org.lazywizard.lazylib.MathUtils;
 import org.lwjgl.util.vector.Vector2f;
 import org.shmo.icfb.ItCameFromBeyond;
+import org.shmo.icfb.campaign.intel.ShiftJumpDamageIntel;
 import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
 import org.shmo.icfb.utilities.ShmoMath;
 
@@ -19,12 +20,9 @@ import java.util.Random;
 public class ShiftJump {
     // CONSTANTS =======================================================================================================
 
-    public static final float CR_USE_RATE = 0.8f;
     public static final float CR_USE_VARIANCE = 0.1f;
-    public static final float EXTRA_FUEL_USE = 1f/3f;
     public static final float CHANCE_FOR_DAMAGE_AT_0_CR = 0.5f;
     public static final float CHANCE_FOR_DISABLE_AT_0_CR = 0.1f;
-    public static final int MAX_RANGE_LY = 15;
 
     public static final String PRIME_PING_ID = "icfb_shift_jump_prime";
     public static final String ACTIVATE_PING_ID = "icfb_shift_jump_activate";
@@ -100,7 +98,10 @@ public class ShiftJump {
 
     public int computeFuelCost(CampaignFleetAPI fleet, float distanceInLY) {
         final float normalCostPerLY = fleet.getLogistics().getFuelCostPerLightYear();
-        final float costPerLY = normalCostPerLY * (1f + (EXTRA_FUEL_USE * getFuelCostMultiplier()));
+        final float costPerLY =
+                normalCostPerLY * (1f +
+                        (ItCameFromBeyond.Global.getSettings().shiftJump.baseExtraFuelPercent *
+                                getFuelCostMultiplier()));
         return (int)(costPerLY * distanceInLY);
     }
 
@@ -123,12 +124,16 @@ public class ShiftJump {
     }
 
     public int getMaxRangeLY() {
-        return (int)(MAX_RANGE_LY * getMaxRangeMultiplier());
+        return (int)(ItCameFromBeyond.Global.getSettings().shiftJump.baseMaxRangeLY * getMaxRangeMultiplier());
     }
 
     public float computeCRCostFractional(float t) {
-        final float curve = t * t;
-        return ShmoMath.lerp(0, CR_USE_RATE * getCRUseMultiplier(), curve);
+        return ShmoMath.lerp(0,
+                ItCameFromBeyond.Global.getSettings().shiftJump.crPenaltyAtMaxRange * getCRUseMultiplier(),
+                ItCameFromBeyond.Misc.computeShiftJumpCRPenalty(
+                        ItCameFromBeyond.Global.getSettings().shiftJump.crPenaltyCurve, t
+                )
+        );
     }
 
     public float computeCRCost(float distanceInLY) {

@@ -6,6 +6,7 @@ import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.abilities.BaseDurationAbility;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
+import org.shmo.icfb.ItCameFromBeyond;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -93,7 +94,9 @@ public class ShiftJumpAbilityPlugin extends BaseDurationAbility {
         final Color highlight = Misc.getHighlightColor();
         final Color fuel = Global.getSettings().getColor("progressBarFuelColor");
         final int fuelPerLY = getImpl().computeFuelCost(fleet, 1);
-        final int extraFuelPercent = (int)((ShiftJump.EXTRA_FUEL_USE *  getImpl().getFuelCostMultiplier()) * 100f);
+        final int extraFuelPercent =
+                (int)((ItCameFromBeyond.Global.getSettings().shiftJump.baseExtraFuelPercent *
+                    getImpl().getFuelCostMultiplier()) * 100f);
         final int crPercentShort = (int)(getImpl().computeCRCostFractional(0.25f) * 100f);
         final int crPercentMedium = (int)(getImpl().computeCRCostFractional(0.5f) * 100f);
         final int crPercentMax = (int)(getImpl().computeCRCostFractional(1.0f) * 100f);

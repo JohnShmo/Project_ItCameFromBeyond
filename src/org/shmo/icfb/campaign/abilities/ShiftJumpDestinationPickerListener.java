@@ -12,9 +12,9 @@ import java.awt.*;
 
 public class ShiftJumpDestinationPickerListener extends BaseCampaignEntityPickerListener {
 
-    private InteractionDialogAPI _dialog;
-    private ShiftJump _shiftJump;
-    private CampaignFleetAPI _playerFleet;
+    private transient InteractionDialogAPI _dialog;
+    private transient ShiftJump _shiftJump;
+    private transient CampaignFleetAPI _playerFleet;
 
     public ShiftJumpDestinationPickerListener(InteractionDialogAPI dialog, ShiftJump shiftJump) {
         _shiftJump = shiftJump;

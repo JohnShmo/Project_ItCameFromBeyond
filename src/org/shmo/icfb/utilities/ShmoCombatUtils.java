@@ -10,9 +10,7 @@ public class ShmoCombatUtils {
     /**
      * Calculate the world-aligned vector of a ship's current acceleration.
      * Useful for getting the current intended direction of a ship.
-     *
      * @param ship The ship to get the normalised direction vector of acceleration for.
-     *
      * @return The normalised direction vector of acceleration. Vector2f(0, 0) if no current acceleration.
      */
     public static @NotNull Vector2f computeShipAccelerationVector(@NotNull ShipAPI ship) {
