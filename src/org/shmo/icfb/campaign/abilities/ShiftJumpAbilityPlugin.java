@@ -110,19 +110,16 @@ public class ShiftJumpAbilityPlugin extends BaseDurationAbility {
                 pad, highlight, "Shift Drive"
         );
 
-        if (!expanded)
-            return;
-
-        tooltip.addPara("%s cost per light year traveled: %s"
+        tooltip.addPara("%s per light year traveled: %s"
                 + "\nCompared to flying through hyperspace, this consumes an extra %s for the distance traveled.",
                 pad, fuel,
-                "Fuel", String.valueOf(fuelPerLY), extraFuelPercent + "%"
+                "Fuel cost", String.valueOf(fuelPerLY), extraFuelPercent + "%"
         );
 
-        tooltip.addPara("The %s penalty for using Shift Jump across short distances is roughly %s."
-                + "Across medium distances it is about %s. At maximum range it is %s.",
+        tooltip.addPara("The %s for using Shift Jump across short distances is roughly %s."
+                + " Across medium distances it is about %s. At maximum range it is %s.",
                 pad, highlight,
-                "CR", crPercentShort + "%", crPercentMedium + "%", crPercentMax + "%"
+                "combat readiness penalty", crPercentShort + "%", crPercentMedium + "%", crPercentMax + "%"
         );
     }
 

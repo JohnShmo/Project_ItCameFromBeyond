@@ -67,7 +67,8 @@ public class ShiftJumpDestinationPickerListener extends BaseCampaignEntityPicker
         info.setGridFontSmallInsignia();
         info.addToGrid(0, 0,"    Maximum range (LY):", String.valueOf(maxRange), availableColor);
         info.addToGrid(1, 0,"    Distance (LY):", String.valueOf(distance), availableColor);
-        info.addToGrid(2, 0, "    CR penalty:", crPenalty + "%", Misc.getNegativeHighlightColor());
+        if (crPenalty > 0)
+            info.addToGrid(2, 0, "    CR penalty:", crPenalty + "%", Misc.getNegativeHighlightColor());
         info.addGrid(0);
 
         info.beginGrid(200f, 2, Misc.getGrayColor());

@@ -61,9 +61,9 @@ public class ItCameFromBeyond {
             if (curve == null)
                 return t;
             switch (curve) {
-                case GENTLE: return ShmoMath.easeInQuad(t);
-                case MODERATE: return ShmoMath.easeInQuart(t);
-                case EXTREME: return ShmoMath.easeInExpo(t);
+                case FAST: return ShmoMath.easeInQuad(t);
+                case MEDIUM: return ShmoMath.easeInQuart(t);
+                case SLOW: return ShmoMath.easeInExpo(t);
                 default: return t;
             }
         }

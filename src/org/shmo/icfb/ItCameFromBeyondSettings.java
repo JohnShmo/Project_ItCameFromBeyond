@@ -8,21 +8,23 @@ public class ItCameFromBeyondSettings {
     public static class ShiftJumpSettings {
 
         public enum CRPenaltyCurve {
-            GENTLE,
-            MODERATE,
-            EXTREME
+            FAST,
+            MEDIUM,
+            SLOW
         }
 
         // DEFAULTS ====================================================================================================
 
         private static final float DEFAULT_CR_PENALTY_AT_MAX_RANGE = 0.5f;
-        private static final CRPenaltyCurve DEFAULT_CR_PENALTY_CURVE = CRPenaltyCurve.MODERATE;
+        private static final CRPenaltyCurve DEFAULT_CR_PENALTY_CURVE = CRPenaltyCurve.MEDIUM;
 
         private static final float DEFAULT_BASE_EXTRA_FUEL_PERCENT = 0.25f;
         private static final float DEFAULT_FUEL_UPGRADE_MULTIPLIER = 0.5f;
 
         private static final float DEFAULT_BASE_MAX_RANGE_LY = 15f;
         private static final float DEFAULT_RANGE_UPGRADE_MULTIPLIER = 1.666666f;
+
+        private static final float DEFAULT_ARRIVAL_DISTANCE_FROM_DESTINATION = 400f;
 
         // FIELDS ======================================================================================================
 
@@ -35,15 +37,17 @@ public class ItCameFromBeyondSettings {
         public float baseMaxRangeLY = DEFAULT_BASE_MAX_RANGE_LY;
         public float rangeUpgradeMultiplier = DEFAULT_RANGE_UPGRADE_MULTIPLIER;
 
+        public float arrivalDistanceFromDestination = DEFAULT_ARRIVAL_DISTANCE_FROM_DESTINATION;
+
         // METHODS =====================================================================================================
 
         public void loadFromJSON(@NotNull JSONObject json) {
             crPenaltyAtMaxRange = (float)json.optDouble("crPenaltyAtMaxRange", DEFAULT_CR_PENALTY_AT_MAX_RANGE);
             String crPenaltyCurveString = json.optString("crPenaltyCurve", "");
             switch (crPenaltyCurveString) {
-                case "GENTLE": crPenaltyCurve = CRPenaltyCurve.GENTLE; break;
-                case "MODERATE": crPenaltyCurve = CRPenaltyCurve.MODERATE; break;
-                case "EXTREME": crPenaltyCurve = CRPenaltyCurve.EXTREME; break;
+                case "FAST": crPenaltyCurve = CRPenaltyCurve.FAST; break;
+                case "MEDIUM": crPenaltyCurve = CRPenaltyCurve.MEDIUM; break;
+                case "SLOW": crPenaltyCurve = CRPenaltyCurve.SLOW; break;
                 default: crPenaltyCurve = DEFAULT_CR_PENALTY_CURVE; break;
             }
 
@@ -54,6 +58,11 @@ public class ItCameFromBeyondSettings {
             rangeUpgradeMultiplier = (float)json.optDouble(
                     "rangeUpgradeMultiplier",
                     DEFAULT_RANGE_UPGRADE_MULTIPLIER
+            );
+
+            arrivalDistanceFromDestination = (float)json.optDouble(
+                    "arrivalDistanceFromDestination",
+                    DEFAULT_ARRIVAL_DISTANCE_FROM_DESTINATION
             );
         }
     }

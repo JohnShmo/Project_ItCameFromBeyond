@@ -268,9 +268,11 @@ public class ShiftDriveEvent extends BaseEventIntel implements QuestListener, Sh
             info.addPara("    - Fuel used: %s", 0f, Misc.getHighlightColor(),
                     String.valueOf(fuelCost)
             );
-            info.addPara("    - CR penalty: %s", 0f, Misc.getNegativeHighlightColor(),
-                    crPercent + "%"
-            );
+            if (crPercent > 0) {
+                info.addPara("    - CR penalty: %s", 0f, Misc.getNegativeHighlightColor(),
+                        crPercent + "%"
+                );
+            }
         }
         info.setParaFontColor(Misc.getTextColor());
         unsetLastFactorInfo();

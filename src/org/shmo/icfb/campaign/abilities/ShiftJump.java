@@ -51,7 +51,8 @@ public class ShiftJump {
         // Don't appear within a star's corona effect!
         final PlanetAPI starPlanet = (PlanetAPI) star;
         final float distance = 2f * (star.getRadius()
-                + starPlanet.getSpec().getCoronaSize()) + 200f;
+                + starPlanet.getSpec().getCoronaSize())
+                + ItCameFromBeyond.Global.getSettings().shiftJump.arrivalDistanceFromDestination;
         final Vector2f offset = MathUtils.getRandomPointOnCircumference(null, distance);
         return starPlanet.getStarSystem().createToken(offset.x, offset.y);
     }
@@ -146,8 +147,11 @@ public class ShiftJump {
     }
 
     private void applyCRCost(CampaignFleetAPI fleet, SectorEntityToken target) {
-        Random rng = new Random();
         float crCost = computeCRCost(fleet, target);
+        if (crCost < 0.01)
+            return;
+
+        Random rng = new Random();
         crCost += crCost * (((rng.nextFloat() - 0.5f) * 2f) * CR_USE_VARIANCE);
         final List<FleetMemberAPI> fleetMembers = fleet.getMembersWithFightersCopy();
 
@@ -162,7 +166,7 @@ public class ShiftJump {
                     eventMessage = member.getShipName() + " was damaged due to complications during Shift Jump.";
                     Global.getSector().getIntelManager().addIntel(new ShiftJumpDamageIntel(eventMessage));
                 } else if (tryDisable(member, rng)) {
-                    eventMessage = member.getShipName() + " was disabled due to complications during Shift Jump.";
+                    eventMessage = member.getShipName() + " was destroyed due to complications during Shift Jump.";
                     Global.getSector().getIntelManager().addIntel(new ShiftJumpDamageIntel(eventMessage));
                 }
             }
@@ -206,6 +210,8 @@ public class ShiftJump {
         final List<SectorEntityToken> validStars = new ArrayList<>();
         for (final StarSystemAPI starSystem : starSystems) {
             if (!starSystem.isEnteredByPlayer())
+                continue;
+            if (starSystem == fleet.getContainingLocation())
                 continue;
             SectorEntityToken star = starSystem.getStar();
             if (star == null)

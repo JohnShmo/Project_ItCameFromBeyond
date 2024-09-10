@@ -2,13 +2,15 @@
 	"ItCameFromBeyond": {
 		"shiftJump": {
 			"crPenaltyAtMaxRange": 0.5,
-			"crPenaltyCurve": "MODERATE", # "GENTLE", "MODERATE", "EXTREME"
+			"crPenaltyCurve": "MEDIUM", # "FAST", "MEDIUM", "SLOW"
 			
 			"baseExtraFuelPercent": 0.25,
 			"fuelUpgradeMultiplier": 0.5,
 			
-			"baseMaxRangeLY": 15.0,
-			"rangeUpgradeMultiplier": 1.666666,
+			"baseMaxRangeLY": 10.0,
+			"rangeUpgradeMultiplier": 2.0,
+			
+			"arrivalDistanceFromDestination": 400.0,
 		},
 		"shiftDriveEvent": {
 			"isEnabled": false, # Probably don't enable this yet lol
