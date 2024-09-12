@@ -35,8 +35,6 @@ public class ItCameFromBeyond {
     }
 
     public static class Global {
-        private static final ItCameFromBeyondSettings SETTINGS = new ItCameFromBeyondSettings();
-
         public static ShiftJumpAbilityPlugin getPlayerShiftJumpPlugin() {
             return ShiftJumpAbilityPlugin.getPlayerInstance();
         }
@@ -49,7 +47,7 @@ public class ItCameFromBeyond {
         }
 
         public static ItCameFromBeyondSettings getSettings() {
-            return SETTINGS;
+            return ItCameFromBeyondModPlugin.getInstance().getSettings();
         }
     }
 

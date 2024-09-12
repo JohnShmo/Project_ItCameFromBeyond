@@ -1,3 +1,4 @@
-id,type,text1,text2,text3,text4,notes
+id,type,text1,text2,text3,text4,notes,Column 08,Column 09,Column 10
 # Types: WEAPON,SHIP,RESOURCE,CUSTOM,ACTION_TOOLTIP,ASTEROID,PLANET,SHIP_SYSTEM,FACTION,TERRAIN
-#astral,SHIP,"Text goes here",,,,
+icfb_froskur,SHIP,"The Froskur-class frigate is a general-purpose combat platform fielded regularly by Boundless patrols. It is relatively bulky, outfitted with strong armor and a flexible weapon loadout. The frigate's base speed and maneuverability leave much to be desired, but it is capable of rapidly adjusting its position via powerful auxiliary thrusters.",,,,,,,
+icfb_thruster_pulse,SHIP_SYSTEM,Briefly (and massively) boosts speed in the current direction of travel.,,,,,,,

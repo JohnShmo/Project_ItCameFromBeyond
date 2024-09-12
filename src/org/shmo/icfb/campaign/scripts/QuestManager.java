@@ -2,16 +2,20 @@ package org.shmo.icfb.campaign.scripts;
 
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.campaign.quests.Quest;
 import org.shmo.icfb.campaign.quests.factories.QuestFactory;
 import org.shmo.icfb.campaign.listeners.QuestListener;
 import org.shmo.icfb.factories.ScriptFactory;
+import org.shmo.icfb.utilities.MemoryHelper;
 
 import java.util.*;
 
 public class QuestManager implements EveryFrameScript {
     public static final String KEY = "$icfb_QuestManager";
+    public static final String QUEST_MAP_KEY = KEY + ":questMap";
+    public static final String LISTENERS_KEY = KEY + ":listeners";
 
     public static class Factory implements ScriptFactory {
         @Override
@@ -27,15 +31,20 @@ public class QuestManager implements EveryFrameScript {
         return (QuestManager)Global.getSector().getMemoryWithoutUpdate().get(KEY);
     }
 
-    private final Map<String, Quest> _questMap;
-    private final Set<QuestListener> _listeners;
-
     private Map<String, Quest> getQuestMap() {
-        return _questMap;
+        MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
+        Map<String, Quest> result = MemoryHelper.get(memory, QUEST_MAP_KEY);
+        if (result == null)
+            result = MemoryHelper.set(memory, QUEST_MAP_KEY, new HashMap<String, Quest>());
+        return result;
     }
 
     private Set<QuestListener> getListeners() {
-        return _listeners;
+        MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
+        Set<QuestListener> result = MemoryHelper.get(memory, LISTENERS_KEY);
+        if (result == null)
+            result = MemoryHelper.set(memory, LISTENERS_KEY, new HashSet<QuestListener>());
+        return result;
     }
 
     public List<Quest> getAllQuests() {
@@ -48,8 +57,6 @@ public class QuestManager implements EveryFrameScript {
     }
 
     public QuestManager() {
-        _questMap = new HashMap<>();
-        _listeners = new HashSet<>();
         Global.getSector().getMemoryWithoutUpdate().set(KEY, this);
     }
 
