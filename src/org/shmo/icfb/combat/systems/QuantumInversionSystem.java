@@ -176,7 +176,7 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
     }
 
     public static class Data {
-        private static final float MAX_TIME_STAMP = 2f; // 2 seconds
+        private static final float MAX_TIME_STAMP = 4f; // 3 seconds
         private final List<Keyframe> _keyframes;
         private final ShipAPI _ship;
         private float _currentPlayTime;
@@ -199,8 +199,8 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
             }
             if (!_keyframes.isEmpty() && _keyframes.get(0).timeStamp > MAX_TIME_STAMP) {
                 _keyframes.remove(0);
-                _playable = true;
             }
+            _playable = true;
             _currentPlayTime = 0f;
         }
 
@@ -260,12 +260,15 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
             if (!active) {
                 setActive(ship, true);
                 startPlaying(ship);
+            } else if (!isPlaying(ship)) {
+                ship.getSystem().forceState(ShipSystemAPI.SystemState.OUT, 1f);
             }
             setEffectLevel(ship, effectLevel);
         } else if (active) {
             unapply(ship);
         }
-        ship.setJitter(ID, Color.PINK, effectLevel, 6, 32f);
+        ship.setJitter(ID, Color.PINK, effectLevel * 0.5f, 2, 16f);
+        ship.setJitterUnder(ID, Color.CYAN, effectLevel, 3, 32f);
     }
 
     @Override
@@ -278,48 +281,46 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
         unapply(ship);
     }
 
-    private void unapply(ShipAPI ship) {
+    private static void unapply(ShipAPI ship) {
         setEffectLevel(ship, 0);
         setActive(ship, false);
         stopPlaying(ship);
     }
 
-    private boolean isActive(ShipAPI ship) {
+    public static boolean isActive(ShipAPI ship) {
         return Boolean.TRUE.equals(ship.getCustomData().get(ACTIVE_KEY));
     }
 
-    private void setActive(ShipAPI ship, boolean active) {
+    private static void setActive(ShipAPI ship, boolean active) {
         ship.setCustomData(ACTIVE_KEY, active);
     }
 
-    public boolean isPlaying(ShipAPI ship) {
+    public static boolean isPlaying(ShipAPI ship) {
         return ship.getCustomData().get(PLAYING_KEY) != null;
     }
 
-    private void startPlaying(ShipAPI ship) {
+    private static void startPlaying(ShipAPI ship) {
         ship.setCustomData(PLAYING_KEY, new Object());
     }
 
-    private void stopPlaying(ShipAPI ship) {
+    private static void stopPlaying(ShipAPI ship) {
         ship.setCustomData(PLAYING_KEY, null);
         getData(ship).clear();
     }
 
-    public void record(ShipAPI ship, float deltaTime) {
+    public static void record(ShipAPI ship, float deltaTime) {
         getData(ship).record(deltaTime);
     }
 
-    public void play(ShipAPI ship, float deltaTime) {
+    public static void play(ShipAPI ship, float deltaTime) {
         Data data = getData(ship);
-        if (!data.isPlayable())
-            stopPlaying(ship);
         deltaTime *= getEffectLevel(ship) * 2.5f;
-        if (!getData(ship).play(deltaTime)) {
+        if (!data.play(deltaTime)) {
             stopPlaying(ship);
         }
     }
 
-    public Data getData(ShipAPI ship) {
+    public static Data getData(ShipAPI ship) {
         Data data = (Data)ship.getCustomData().get(DATA_KEY);
         if (data == null) {
             data = new Data(ship);
@@ -328,7 +329,7 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
         return data;
     }
 
-    public void clearData(ShipAPI ship) {
+    public static void clearData(ShipAPI ship) {
         Data data = (Data)ship.getCustomData().get(DATA_KEY);
         if (data == null)
             return;
@@ -336,14 +337,14 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
         ship.setCustomData(DATA_KEY, null);
     }
 
-    private float getEffectLevel(ShipAPI ship) {
+    private static float getEffectLevel(ShipAPI ship) {
         Object resultObj = ship.getCustomData().get(EFFECT_LEVEL_KEY);
         if (resultObj == null)
             return 0f;
         return (float)resultObj;
     }
 
-    private void setEffectLevel(ShipAPI ship, float effectLevel) {
+    private static void setEffectLevel(ShipAPI ship, float effectLevel) {
         ship.setCustomData(EFFECT_LEVEL_KEY, effectLevel);
     }
 

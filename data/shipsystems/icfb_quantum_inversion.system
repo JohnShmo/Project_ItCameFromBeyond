@@ -1,0 +1,14 @@
+{
+	"id":"icfb_quantum_inversion",
+	"type":"STAT_MOD",
+	"aiType":"CUSTOM",
+	"aiScript":"org.shmo.icfb.combat.systems.ai.QuantumInversionAI",
+	
+	"statsScript":"org.shmo.icfb.combat.systems.QuantumInversionSystem",
+
+	"fadeActivationSoundOnChargedown":true,
+	"useSound":"system_temporalshell",
+	"loopSound":"system_temporalshell_loop",
+	"deactivateSound":"system_temporalshell_off",
+	"outOfUsesSound":"gun_out_of_ammo",
+}
