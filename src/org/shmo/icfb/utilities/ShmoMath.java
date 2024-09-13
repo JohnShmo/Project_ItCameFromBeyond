@@ -5,8 +5,43 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import java.awt.*;
+import java.util.Arrays;
 
 public class ShmoMath {
+
+    public static float[][] copyMatrix(float[][] matrix) {
+        if (matrix == null)
+            return null;
+        final float[][] result = new float[matrix.length][];
+        for (int i = 0; i < matrix.length; i++) {
+            result[i] = Arrays.copyOf(matrix[i], matrix[i].length);
+        }
+        return result;
+    }
+
+    public static float[][] lerpMatrix(float[][] matrix1, float[][] matrix2, float t) {
+        if (matrix1 == null)
+            return null;
+        if (matrix2 == null)
+            return null;
+        if (matrix1.length != matrix2.length)
+            return null;
+        if (matrix1[0].length != matrix2[0].length)
+            return null;
+
+        if (t <= 0f)
+            return copyMatrix(matrix1);
+        if (t >= 1f)
+            return copyMatrix(matrix2);
+
+        final float[][] result = copyMatrix(matrix1);
+        for (int i = 0; i < result.length; i++) {
+            for (int j = 0; j < result[i].length; j++) {
+                result[i][j] = lerp(matrix1[i][j], matrix2[i][j], t);
+            }
+        }
+        return result;
+    }
 
     /**
      * Calculate a rotated version of the given vector.
@@ -57,6 +92,38 @@ public class ShmoMath {
      */
     public static float lerp(float a, float b, float t) {
         return a + t * (b - a);
+    }
+
+    /**
+     * Linearly interpolate within a range of two values (a and b) given the current position in the range (t).
+     * @param a The starting value of the range.
+     * @param b The ending value of the range.
+     * @param t The current position in the range (0.0f - 1.0f).
+     * @return The resulting interpolated value.
+     */
+    public static int lerp(int a, int b, float t) {
+        if (t <= 0f)
+            return a;
+        if (t >= 1f)
+            return b;
+
+        return (int)((float)a + t * ((float)b - (float)a));
+    }
+
+    /**
+     * Linearly interpolate within a range of two values (a and b) given the current position in the range (t).
+     * @param a The starting value of the range.
+     * @param b The ending value of the range.
+     * @param t The current position in the range (0.0f - 1.0f).
+     * @return The resulting interpolated value.
+     */
+    public static long lerp(long a, long b, float t) {
+        if (t <= 0f)
+            return a;
+        if (t >= 1f)
+            return b;
+
+        return (long)((double)a + (double)t * ((double)b - (double)a));
     }
 
     /**
