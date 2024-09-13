@@ -176,7 +176,7 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
     }
 
     public static class Data {
-        private static final float MAX_TIME_STAMP = 4f; // 3 seconds
+        private static final float MAX_TIME_STAMP = 4f; // in seconds
         private final List<Keyframe> _keyframes;
         private final ShipAPI _ship;
         private float _currentPlayTime;
