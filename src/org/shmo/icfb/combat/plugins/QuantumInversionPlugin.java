@@ -12,10 +12,10 @@ import java.util.List;
 
 public class QuantumInversionPlugin extends BaseEveryFrameCombatPlugin {
 
-    private static final float KEYFRAME_INTERVAL = 0.1f;
-    private float _timePassed = 0f;
+    private static final float KEYFRAME_INTERVAL = 0.075f; // seconds
+    private float _timePassed = 0f; // seconds
 
-    private List<ShipAPI> getShipsWithQuantumInversion(CombatEngineAPI engine) {
+    private static List<ShipAPI> getShipsWithQuantumInversion(CombatEngineAPI engine) {
         final List<ShipAPI> result = new ArrayList<>();
         final List<ShipAPI> allShips = engine.getShips();
 
@@ -43,6 +43,8 @@ public class QuantumInversionPlugin extends BaseEveryFrameCombatPlugin {
 
         final List<ShipAPI> ships = getShipsWithQuantumInversion(engine);
         for (ShipAPI ship : ships) {
+            QuantumInversionSystem.drawGhost(ship);
+
             if (QuantumInversionSystem.isPlaying(ship)) {
                 QuantumInversionSystem.play(ship, amount);
             } else {
@@ -54,6 +56,6 @@ public class QuantumInversionPlugin extends BaseEveryFrameCombatPlugin {
         }
 
         if (_timePassed >= KEYFRAME_INTERVAL)
-            _timePassed = 0f;
+            _timePassed -= KEYFRAME_INTERVAL;
     }
 }

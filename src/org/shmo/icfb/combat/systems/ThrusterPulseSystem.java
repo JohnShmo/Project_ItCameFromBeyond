@@ -9,6 +9,7 @@ import org.magiclib.util.MagicRender;
 import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.utilities.ShmoCombatUtils;
 import org.shmo.icfb.utilities.ShmoMath;
+import org.shmo.icfb.utilities.ShmoRenderUtils;
 
 import java.awt.*;
 import java.util.List;
@@ -44,27 +45,7 @@ public class ThrusterPulseSystem extends BaseShipSystemScript {
     private void applyTrailEffect(State state, ShipAPI ship) {
         if (state != State.ACTIVE)
             return;
-        SpriteAPI sprite = Global.getSettings().getSprite(ship.getHullSpec().getSpriteName());
-        MagicRender.battlespace(
-                sprite,
-                ship.getLocation(),
-                new Vector2f(0, 0),
-                new Vector2f(sprite.getWidth(), sprite.getHeight()),
-                new Vector2f(sprite.getWidth()*2, sprite.getHeight()*2),
-                ship.getFacing() - 90,
-                0,
-                new Color(255, 255, 255, 50),
-                true,
-                10f,
-                10f,
-                0.75f,
-                0.75f,
-                0f,
-                0.0f,
-                0.1f,
-                0.1f,
-                ship.getLayer()
-        );
+        ShmoRenderUtils.drawShipTrailEffect(ship, new Color(255,255,255,50), true);
     }
 
     private void applyInit(State state, ShipAPI ship) {

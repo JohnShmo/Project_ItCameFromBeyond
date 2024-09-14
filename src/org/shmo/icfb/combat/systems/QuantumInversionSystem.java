@@ -1,16 +1,21 @@
 package org.shmo.icfb.combat.systems;
 
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.combat.MutableShipStatsAPI;
-import com.fs.starfarer.api.combat.ShipAPI;
-import com.fs.starfarer.api.combat.ShipSystemAPI;
-import com.fs.starfarer.api.combat.WeaponAPI;
+import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
+import org.lazywizard.lazylib.combat.entities.SimpleEntity;
+import org.lwjgl.util.vector.Vector2f;
+import org.magiclib.plugins.MagicAutoTrails;
+import org.magiclib.plugins.MagicTrailPlugin;
+import org.magiclib.util.MagicFakeBeam;
+import org.magiclib.util.MagicRender;
 import org.shmo.icfb.utilities.ShmoMath;
+import org.shmo.icfb.utilities.ShmoRenderUtils;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class QuantumInversionSystem extends BaseShipSystemScript {
     public static final String ID = "icfb_quantum_inversion";
@@ -19,7 +24,7 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
     public static final String ACTIVE_KEY = "$ICFB_QUANTUM_INVERSION_ACTIVE";
     public static final String PLAYING_KEY = "$ICFB_QUANTUM_INVERSION_PLAYING";
 
-    private static class Keyframe {
+    private static class Frame {
 
         private static class WeaponData {
             WeaponAPI weapon;
@@ -92,8 +97,8 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
         float xVelocity;
         float yVelocity;
 
-        public Keyframe(){}
-        public Keyframe(ShipAPI ship, float timeStamp) {
+        public Frame(){}
+        public Frame(ShipAPI ship, float timeStamp) {
             this.ship = ship;
             this.timeStamp = timeStamp;
 
@@ -139,7 +144,7 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
             ship.getVelocity().set(xVelocity, yVelocity);
         }
 
-        Keyframe createTween(Keyframe other, float amount) {
+        Frame createTween(Frame other, float amount) {
             if (ship != other.ship)
                 return null;
 
@@ -148,7 +153,7 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
             if (amount >= 1)
                 return other;
 
-            Keyframe result = new Keyframe();
+            Frame result = new Frame();
 
             result.ship = ship;
             result.timeStamp = ShmoMath.lerp(timeStamp, other.timeStamp, amount);
@@ -167,7 +172,7 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
 
             result.xLocation = ShmoMath.lerp(xLocation, other.xLocation, amount);
             result.yLocation = ShmoMath.lerp(yLocation, other.yLocation, amount);
-            result.facing = ShmoMath.lerp(facing, other.facing, amount);
+            result.facing = amount > 0.5 ? facing : other.facing;
             result.xVelocity = ShmoMath.lerp(xVelocity, other.xVelocity, amount);
             result.yVelocity = ShmoMath.lerp(yVelocity, other.yVelocity, amount);
 
@@ -175,9 +180,9 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
         }
     }
 
-    public static class Data {
-        private static final float MAX_TIME_STAMP = 4f; // in seconds
-        private final List<Keyframe> _keyframes;
+    private static class Data {
+        public static final float MAX_TIME_STAMP = 4f; // in seconds
+        private final List<Frame> _keyframes;
         private final ShipAPI _ship;
         private float _currentPlayTime;
         private boolean _playable;
@@ -193,8 +198,12 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
             return _playable;
         }
 
+        public List<Frame> getKeyframes() {
+            return _keyframes;
+        }
+
         private void advance(float deltaTime) {
-            for (Keyframe keyframe : _keyframes) {
+            for (Frame keyframe : _keyframes) {
                 keyframe.timeStamp += deltaTime;
             }
             if (!_keyframes.isEmpty() && _keyframes.get(0).timeStamp > MAX_TIME_STAMP) {
@@ -206,7 +215,7 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
 
         public void record(float deltaTime) {
             advance(deltaTime);
-            _keyframes.add(new Keyframe(_ship, 0));
+            _keyframes.add(new Frame(_ship, 0));
         }
 
         public void clear() {
@@ -224,13 +233,13 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
             }
             _currentPlayTime += deltaTime;
 
-            Keyframe curr = _keyframes.get(_keyframes.size() - 1);
-            Keyframe next = _keyframes.get(_keyframes.size() - 2);
+            Frame curr = _keyframes.get(_keyframes.size() - 1);
+            Frame next = _keyframes.get(_keyframes.size() - 2);
             float diff = next.timeStamp - curr.timeStamp;
 
             float t = _currentPlayTime / (diff > 0 ? diff : 0.000001f);
             t = Math.min(Math.max(0f, t), 1f);
-            Keyframe frame = curr.createTween(next, t);
+            Frame frame = curr.createTween(next, t);
             assert frame != null;
             frame.apply();
 
@@ -261,14 +270,15 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
                 setActive(ship, true);
                 startPlaying(ship);
             } else if (!isPlaying(ship)) {
-                ship.getSystem().forceState(ShipSystemAPI.SystemState.OUT, 1f);
+                ship.getSystem().forceState(ShipSystemAPI.SystemState.OUT, 0f);
             }
             setEffectLevel(ship, effectLevel);
         } else if (active) {
             unapply(ship);
         }
-        ship.setJitter(ID, Color.PINK, effectLevel * 0.5f, 2, 16f);
-        ship.setJitterUnder(ID, Color.CYAN, effectLevel, 3, 32f);
+        ship.setJitter(ID, Color.PINK, effectLevel * 0.75f, 2, 16f);
+        ship.setJitterUnder(ID, Color.PINK, effectLevel * 0.5f, 2, 32f);
+        ShmoRenderUtils.drawShipTrailEffect(ship, new Color(255,255,255, (int)(effectLevel * 50f)), true);
     }
 
     @Override
@@ -291,6 +301,68 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
         return Boolean.TRUE.equals(ship.getCustomData().get(ACTIVE_KEY));
     }
 
+    private static List<Frame> getKeyframes(ShipAPI ship) {
+        return getData(ship).getKeyframes();
+    }
+
+    private static Vector2f getFinalLocation(ShipAPI ship) {
+        List<Frame> keyframes = getKeyframes(ship);
+        if (keyframes.isEmpty())
+            return new Vector2f(ship.getLocation());
+        return new Vector2f(keyframes.get(0).xLocation, keyframes.get(0).yLocation);
+    }
+
+    private static float getFinalFacing(ShipAPI ship) {
+        List<Frame> keyframes = getKeyframes(ship);
+        if (keyframes.isEmpty())
+            return ship.getFacing();
+        return keyframes.get(0).facing;
+    }
+
+    private static float getFinalAlphaMult(ShipAPI ship) {
+        List<Frame> keyframes = getKeyframes(ship);
+        if (keyframes.isEmpty())
+            return ship.getFacing();
+        return keyframes.get(0).timeStamp / Data.MAX_TIME_STAMP;
+    }
+
+    public static void drawGhost(ShipAPI ship) {
+        CombatEngineAPI engine = Global.getCombatEngine();
+        if (engine == null)
+            return;
+        if (!getData(ship).isPlayable() && !isPlaying(ship))
+            return;
+
+        final Vector2f location = getFinalLocation(ship);
+        final List<Frame> keyframes = getKeyframes(ship);
+        float facing = getFinalFacing(ship);
+        float alphaMult = getFinalAlphaMult(ship);
+        final Random random = new Random();
+
+        final Color ghostColor = new Color(250, 200, 240, (int)(40f * alphaMult));
+        final Color jitterColor = new Color(255, 150, 200, (int)(15f * alphaMult));
+        final Color trailColor = new Color(250, 200, 240, (int)(7f * alphaMult));
+
+        location.x += (random.nextFloat() - 0.5) * 1;
+        location.y += (random.nextFloat() - 0.5) * 1;
+        ShmoRenderUtils.drawShipSprite(ship, location, facing, ghostColor, true);
+
+        location.x += (random.nextFloat() - 0.5) * 8;
+        location.y += (random.nextFloat() - 0.5) * 8;
+        facing += (random.nextFloat() - 0.5) * 15;
+        ShmoRenderUtils.drawShipJitter(ship, location, facing, jitterColor, true, 2, 2);
+
+        Vector2f lastLocation = new Vector2f();
+        for (Frame keyframe : keyframes) {
+            final Vector2f trailLocation = new Vector2f(keyframe.xLocation, keyframe.yLocation);
+            if (lastLocation.equals(trailLocation))
+                continue;
+            final float trailFacing = keyframe.facing;
+            ShmoRenderUtils.drawShipSprite(ship, trailLocation, trailFacing, trailColor, false);
+            lastLocation.set(trailLocation.x, trailLocation.y);
+        }
+    }
+
     private static void setActive(ShipAPI ship, boolean active) {
         ship.setCustomData(ACTIVE_KEY, active);
     }
@@ -309,18 +381,23 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
     }
 
     public static void record(ShipAPI ship, float deltaTime) {
+        if (ship.isExpired() || ship.getHitpoints() <= 0)
+            return;
         getData(ship).record(deltaTime);
     }
 
     public static void play(ShipAPI ship, float deltaTime) {
+        if (ship.isExpired() || ship.getHitpoints() <= 0)
+            return;
+
         Data data = getData(ship);
-        deltaTime *= getEffectLevel(ship) * 2.5f;
+        deltaTime *= ShmoMath.easeInQuad(getEffectLevel(ship)) * Data.MAX_TIME_STAMP * 1.5f;
         if (!data.play(deltaTime)) {
             stopPlaying(ship);
         }
     }
 
-    public static Data getData(ShipAPI ship) {
+    private static Data getData(ShipAPI ship) {
         Data data = (Data)ship.getCustomData().get(DATA_KEY);
         if (data == null) {
             data = new Data(ship);
