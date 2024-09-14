@@ -5,14 +5,13 @@ import com.fs.starfarer.api.combat.BaseEveryFrameCombatPlugin;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.input.InputEventAPI;
+import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.combat.systems.QuantumInversionSystem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class QuantumInversionPlugin extends BaseEveryFrameCombatPlugin {
-
-    private static final float KEYFRAME_INTERVAL = 0.075f; // seconds
     private float _timePassed = 0f; // seconds
 
     private static List<ShipAPI> getShipsWithQuantumInversion(CombatEngineAPI engine) {
@@ -40,6 +39,8 @@ public class QuantumInversionPlugin extends BaseEveryFrameCombatPlugin {
         if (engine.isPaused())
             return;
         _timePassed += amount;
+        final float keyframeInterval =
+                ItCameFromBeyond.Global.getSettings().shipSystem.quantumInversionKeyframeInterval;
 
         final List<ShipAPI> ships = getShipsWithQuantumInversion(engine);
         for (ShipAPI ship : ships) {
@@ -49,13 +50,13 @@ public class QuantumInversionPlugin extends BaseEveryFrameCombatPlugin {
                 QuantumInversionSystem.play(ship, amount);
             } else {
                 if (!QuantumInversionSystem.isActive(ship)) {
-                    if (_timePassed >= KEYFRAME_INTERVAL)
+                    if (_timePassed >= keyframeInterval)
                         QuantumInversionSystem.record(ship, _timePassed);
                 }
             }
         }
 
-        if (_timePassed >= KEYFRAME_INTERVAL)
-            _timePassed -= KEYFRAME_INTERVAL;
+        if (_timePassed >= keyframeInterval)
+            _timePassed -= keyframeInterval;
     }
 }

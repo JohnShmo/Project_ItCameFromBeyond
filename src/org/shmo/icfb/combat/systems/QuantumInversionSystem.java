@@ -9,6 +9,7 @@ import org.magiclib.plugins.MagicAutoTrails;
 import org.magiclib.plugins.MagicTrailPlugin;
 import org.magiclib.util.MagicFakeBeam;
 import org.magiclib.util.MagicRender;
+import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.utilities.ShmoMath;
 import org.shmo.icfb.utilities.ShmoRenderUtils;
 
@@ -181,7 +182,6 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
     }
 
     private static class Data {
-        public static final float MAX_TIME_STAMP = 4f; // in seconds
         private final List<Frame> _keyframes;
         private final ShipAPI _ship;
         private float _currentPlayTime;
@@ -203,10 +203,12 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
         }
 
         private void advance(float deltaTime) {
+            final float maxTimeSpan = ItCameFromBeyond.Global.getSettings().shipSystem.quantumInversionMaxTimeSpan;
+
             for (Frame keyframe : _keyframes) {
                 keyframe.timeStamp += deltaTime;
             }
-            if (!_keyframes.isEmpty() && _keyframes.get(0).timeStamp > MAX_TIME_STAMP) {
+            if (!_keyframes.isEmpty() && _keyframes.get(0).timeStamp > maxTimeSpan) {
                 _keyframes.remove(0);
             }
             _playable = true;
@@ -320,10 +322,11 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
     }
 
     private static float getFinalAlphaMult(ShipAPI ship) {
-        List<Frame> keyframes = getKeyframes(ship);
+        final List<Frame> keyframes = getKeyframes(ship);
         if (keyframes.isEmpty())
             return ship.getFacing();
-        return keyframes.get(0).timeStamp / Data.MAX_TIME_STAMP;
+        final float maxTimeSpan = ItCameFromBeyond.Global.getSettings().shipSystem.quantumInversionMaxTimeSpan;
+        return keyframes.get(0).timeStamp / maxTimeSpan;
     }
 
     public static void drawGhost(ShipAPI ship) {
@@ -389,9 +392,9 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
     public static void play(ShipAPI ship, float deltaTime) {
         if (ship.isExpired() || ship.getHitpoints() <= 0)
             return;
-
+        final float maxTimeSpan = ItCameFromBeyond.Global.getSettings().shipSystem.quantumInversionMaxTimeSpan;
         Data data = getData(ship);
-        deltaTime *= ShmoMath.easeInQuad(getEffectLevel(ship)) * Data.MAX_TIME_STAMP * 1.5f;
+        deltaTime *= ShmoMath.easeInQuad(getEffectLevel(ship)) * maxTimeSpan * 1.5f;
         if (!data.play(deltaTime)) {
             stopPlaying(ship);
         }

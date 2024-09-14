@@ -1,6 +1,6 @@
 {
 	"plugins":{
-		### Combat plugins
+		## Combat plugins
 		"icfb_QuantumInversionPlugin":"org.shmo.icfb.combat.plugins.QuantumInversionPlugin",
 	},
 	"graphics":{
@@ -9,6 +9,7 @@
 		}
 	},
 	"designTypeColors":{
-		"Boundless":[245,169,199,255]
+		"Boundless":[245,169,199,255],
+		"Shifters":[209,86,156,255],
 	}
 }

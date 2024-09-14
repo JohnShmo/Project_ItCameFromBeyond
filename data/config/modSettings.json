@@ -21,7 +21,12 @@
 			"isTheHuntRepeatable": true,
 		},
 		"shipSystem": {
-			"thrusterPulseImpulseMagnitude": 1000.0
+			## Thruster Pulse
+			"thrusterPulseImpulseMagnitude": 1000.0,
+			
+			## Quantum Inversion
+			"quantumInversionMaxTimeSpan": 4.0, 		# seconds
+			"quantumInversionKeyframeInterval": 0.1, 	# seconds
 		}
 	}
 }

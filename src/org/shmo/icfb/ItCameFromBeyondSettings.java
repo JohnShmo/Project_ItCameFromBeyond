@@ -107,15 +107,23 @@ public class ItCameFromBeyondSettings {
         // DEFAULTS ====================================================================================================
 
         private static final float DEFAULT_THRUSTER_PULSE_IMPULSE_MAGNITUDE = 1000f;
+        private static final float DEFAULT_QUANTUM_INVERSION_MAX_TIME_SPAN = 4f;
+        private static final float DEFAULT_QUANTUM_INVERSION_KEYFRAME_INTERVAL = 0.1f;
 
         // FIELDS ======================================================================================================
 
         public float thrusterPulseImpulseMagnitude = DEFAULT_THRUSTER_PULSE_IMPULSE_MAGNITUDE;
+        public float quantumInversionMaxTimeSpan = DEFAULT_QUANTUM_INVERSION_MAX_TIME_SPAN;
+        public float quantumInversionKeyframeInterval = DEFAULT_QUANTUM_INVERSION_KEYFRAME_INTERVAL;
 
         // METHODS =====================================================================================================
         public void loadFromJSON(@NotNull JSONObject json) {
             thrusterPulseImpulseMagnitude =
                     (float)json.optDouble("thrusterPulseImpulseMagnitude", DEFAULT_THRUSTER_PULSE_IMPULSE_MAGNITUDE);
+            quantumInversionMaxTimeSpan =
+                    (float)json.optDouble("quantumInversionMaxTimeSpan", DEFAULT_QUANTUM_INVERSION_MAX_TIME_SPAN);
+            quantumInversionKeyframeInterval =
+                    (float)json.optDouble("quantumInversionKeyframeInterval", DEFAULT_QUANTUM_INVERSION_KEYFRAME_INTERVAL);
         }
     }
 
