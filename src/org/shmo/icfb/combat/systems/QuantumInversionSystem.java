@@ -333,6 +333,8 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
         CombatEngineAPI engine = Global.getCombatEngine();
         if (engine == null)
             return;
+        if (ship.isExpired() || ship.getHitpoints() <= 0f)
+            return;
         if (!getData(ship).isPlayable() && !isPlaying(ship))
             return;
 
