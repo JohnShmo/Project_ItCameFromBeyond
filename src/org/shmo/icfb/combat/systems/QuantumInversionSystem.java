@@ -15,6 +15,7 @@ import org.shmo.icfb.utilities.ShmoRenderUtils;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -25,9 +26,9 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
     public static final String ACTIVE_KEY = "$ICFB_QUANTUM_INVERSION_ACTIVE";
     public static final String PLAYING_KEY = "$ICFB_QUANTUM_INVERSION_PLAYING";
 
-    private static class Frame {
+    public static class Frame {
 
-        private static class WeaponData {
+        public static class WeaponData {
             WeaponAPI weapon;
             int ammo;
             float health;
@@ -92,9 +93,9 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
 
         public WeaponData[] weapons;
 
+        float facing;
         float xLocation;
         float yLocation;
-        float facing;
         float xVelocity;
         float yVelocity;
 
@@ -116,9 +117,9 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
                 weapons[i] = new WeaponData(weaponList.get(i));
             }
 
+            facing = ship.getFacing();
             xLocation = ship.getLocation().x;
             yLocation = ship.getLocation().y;
-            facing = ship.getFacing();
             xVelocity = ship.getVelocity().x;
             yVelocity = ship.getVelocity().y;
         }
@@ -307,26 +308,52 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
         return getData(ship).getKeyframes();
     }
 
-    private static Vector2f getFinalLocation(ShipAPI ship) {
+    private static Frame getFinalKeyframe(ShipAPI ship) {
         List<Frame> keyframes = getKeyframes(ship);
         if (keyframes.isEmpty())
-            return new Vector2f(ship.getLocation());
-        return new Vector2f(keyframes.get(0).xLocation, keyframes.get(0).yLocation);
+            return new Frame(ship, 0);
+        return keyframes.get(0);
     }
 
-    private static float getFinalFacing(ShipAPI ship) {
-        List<Frame> keyframes = getKeyframes(ship);
-        if (keyframes.isEmpty())
-            return ship.getFacing();
-        return keyframes.get(0).facing;
+    public static Vector2f getFinalLocation(ShipAPI ship) {
+        Frame frame = getFinalKeyframe(ship);
+        return new Vector2f(frame.xLocation, frame.yLocation);
+    }
+
+    public static float getFinalFacing(ShipAPI ship) {
+        Frame frame = getFinalKeyframe(ship);
+        return frame.facing;
+    }
+
+    public static float getFinalHitPoints(ShipAPI ship) {
+        Frame frame = getFinalKeyframe(ship);
+        return frame.hitPoints;
+    }
+
+    public static float getFinalFlux(ShipAPI ship) {
+        Frame frame = getFinalKeyframe(ship);
+        return frame.flux;
+    }
+
+    public static float getFinalHardFlux(ShipAPI ship) {
+        Frame frame = getFinalKeyframe(ship);
+        return frame.hardFlux;
+    }
+
+    public static List<Frame.WeaponData> getFinalWeaponDataList(ShipAPI ship) {
+        Frame frame = getFinalKeyframe(ship);
+        return Arrays.asList(frame.weapons);
     }
 
     private static float getFinalAlphaMult(ShipAPI ship) {
-        final List<Frame> keyframes = getKeyframes(ship);
-        if (keyframes.isEmpty())
-            return ship.getFacing();
+        Frame frame = getFinalKeyframe(ship);
         final float maxTimeSpan = ItCameFromBeyond.Global.getSettings().shipSystem.quantumInversionMaxTimeSpan;
-        return keyframes.get(0).timeStamp / maxTimeSpan;
+        return frame.timeStamp / maxTimeSpan;
+    }
+
+    public static float getFinalOverloadTime(ShipAPI ship) {
+        Frame frame = getFinalKeyframe(ship);
+        return frame.overloadTime;
     }
 
     public static void drawGhost(ShipAPI ship) {
