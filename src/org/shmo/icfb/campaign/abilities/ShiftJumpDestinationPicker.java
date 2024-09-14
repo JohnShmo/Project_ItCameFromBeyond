@@ -7,15 +7,12 @@ import com.fs.starfarer.api.combat.EngagementResultAPI;
 import java.util.Map;
 
 public class ShiftJumpDestinationPicker implements InteractionDialogPlugin {
-    public static final String ID = "icfb_ShiftJumpDestinationPicker";
-
     private transient ShiftJump _shiftJump;
     private transient InteractionDialogAPI _dialog;
 
     public static void execute(ShiftJump shiftJump) {
         CampaignUIAPI ui = Global.getSector().getCampaignUI();
-        ShiftJumpDestinationPicker picker =
-                (ShiftJumpDestinationPicker)Global.getSettings().getPlugin(ID);
+        ShiftJumpDestinationPicker picker = new ShiftJumpDestinationPicker();
         picker.setShiftJump(shiftJump);
         ui.showInteractionDialog(picker, null);
     }

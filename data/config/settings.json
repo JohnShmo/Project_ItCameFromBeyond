@@ -1,8 +1,6 @@
 {
 	"plugins":{
-		# UI plugins
-		"icfb_ShiftJumpDestinationPicker":"org.shmo.icfb.campaign.abilities.ShiftJumpDestinationPicker",
-		# Combat plugins
+		### Combat plugins
 		"icfb_QuantumInversionPlugin":"org.shmo.icfb.combat.plugins.QuantumInversionPlugin",
 	},
 	"graphics":{
