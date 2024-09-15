@@ -3,12 +3,7 @@ package org.shmo.icfb.combat.systems;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
-import org.lazywizard.lazylib.combat.entities.SimpleEntity;
 import org.lwjgl.util.vector.Vector2f;
-import org.magiclib.plugins.MagicAutoTrails;
-import org.magiclib.plugins.MagicTrailPlugin;
-import org.magiclib.util.MagicFakeBeam;
-import org.magiclib.util.MagicRender;
 import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.utilities.ShmoMath;
 import org.shmo.icfb.utilities.ShmoRenderUtils;
@@ -29,12 +24,12 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
     public static class Frame {
 
         public static class WeaponData {
-            WeaponAPI weapon;
-            int ammo;
-            float health;
-            float angle;
-            float remainingCooldown;
-            boolean disabled;
+            public WeaponAPI weapon;
+            public int ammo;
+            public float health;
+            public float angle;
+            public float remainingCooldown;
+            public boolean disabled;
 
             public WeaponData(){}
             public WeaponData(WeaponAPI weapon) {
@@ -51,9 +46,7 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
                 weapon.setCurrHealth(health);
                 weapon.setCurrAngle(angle);
                 weapon.setRemainingCooldownTo(remainingCooldown);
-                if (disabled) {
-                    weapon.disable();
-                } else {
+                if (!disabled) {
                     weapon.repair();
                 }
             }
@@ -74,7 +67,45 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
                 result.health = ShmoMath.lerp(health, other.health, amount);
                 result.angle = ShmoMath.lerp(angle, other.angle, amount);
                 result.remainingCooldown = ShmoMath.lerp(remainingCooldown, other.remainingCooldown, amount);
-                result.disabled = amount >= 0.5f ? other.disabled : disabled;
+                result.disabled = amount > 0.5f ? other.disabled : disabled;
+
+                return result;
+            }
+        }
+
+        public static class EngineData {
+            public ShipEngineControllerAPI.ShipEngineAPI engine;
+            public float hitPoints;
+            public boolean disabled;
+
+            public EngineData(){}
+            public EngineData(ShipEngineControllerAPI.ShipEngineAPI engine) {
+                this.engine = engine;
+                hitPoints = engine.getHitpoints();
+                disabled = engine.isDisabled();
+            }
+
+            public void apply() {
+                engine.setHitpoints(hitPoints);
+                if (!disabled) {
+                    engine.repair();
+                }
+            }
+
+            public EngineData createTween(EngineData other, float amount) {
+                if (engine != other.engine)
+                    return null;
+
+                if (amount <= 0)
+                    return this;
+                if (amount >= 1)
+                    return other;
+
+                EngineData result = new EngineData();
+
+                result.engine = engine;
+                result.hitPoints = ShmoMath.lerp(hitPoints, other.hitPoints, amount);
+                result.disabled = amount > 0.5f ? other.disabled : disabled;
 
                 return result;
             }
@@ -82,22 +113,23 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
 
         public float timeStamp;
 
-        ShipAPI ship;
+        public ShipAPI ship;
 
         public float flux;
         public float hardFlux;
-        float overloadTime;
+        public float overloadTime;
 
         public float[][] armorGrid;
         public float hitPoints;
 
         public WeaponData[] weapons;
+        public EngineData[] engines;
 
-        float facing;
-        float xLocation;
-        float yLocation;
-        float xVelocity;
-        float yVelocity;
+        public float facing;
+        public float xLocation;
+        public float yLocation;
+        public float xVelocity;
+        public float yVelocity;
 
         public Frame(){}
         public Frame(ShipAPI ship, float timeStamp) {
@@ -115,6 +147,12 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
             weapons = new WeaponData[weaponList.size()];
             for (int i = 0; i < weapons.length; i++) {
                 weapons[i] = new WeaponData(weaponList.get(i));
+            }
+
+            List<ShipEngineControllerAPI.ShipEngineAPI> engineList = ship.getEngineController().getShipEngines();
+            engines = new EngineData[engineList.size()];
+            for (int i = 0; i < engines.length; i++) {
+                engines[i] = new EngineData(engineList.get(i));
             }
 
             facing = ship.getFacing();
@@ -136,9 +174,15 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
                 System.arraycopy(armorGrid[i], 0, shipArmor[i], 0, armorGrid[i].length);
             }
             ship.setHitpoints(hitPoints);
+            ship.syncWithArmorGridState();
+            ship.syncWeaponDecalsWithArmorDamage();
 
             for (WeaponData weapon : weapons) {
                 weapon.apply();
+            }
+
+            for (EngineData engine : engines) {
+                engine.apply();
             }
 
             ship.getLocation().set(xLocation, yLocation);
@@ -170,6 +214,11 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
             result.weapons = new WeaponData[weapons.length];
             for (int i = 0; i < result.weapons.length; i++) {
                 result.weapons[i] = weapons[i].createTween(other.weapons[i], amount);
+            }
+
+            result.engines = new EngineData[engines.length];
+            for (int i = 0; i < result.engines.length; i++) {
+                result.engines[i] = engines[i].createTween(other.engines[i], amount);
             }
 
             result.xLocation = ShmoMath.lerp(xLocation, other.xLocation, amount);
