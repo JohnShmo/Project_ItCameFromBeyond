@@ -19,6 +19,10 @@ public class QuantumInversionPlugin extends BaseEveryFrameCombatPlugin {
         final List<ShipAPI> allShips = engine.getShips();
 
         for (ShipAPI ship : allShips) {
+            if (ship == null)
+                continue;
+            if (ship.getSystem() == null)
+                continue;
             if (ship.getSystem().getId().equals(QuantumInversionSystem.ID))
                 result.add(ship);
         }
