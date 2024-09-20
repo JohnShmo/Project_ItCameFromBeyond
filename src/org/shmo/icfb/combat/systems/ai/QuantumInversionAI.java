@@ -92,10 +92,8 @@ public class QuantumInversionAI implements ShipSystemAIScript {
         float activateFraction = 0f;
         float doNotActivateFraction = 0f;
 
-        final List<ShipAPI> shipsNearCurr =
-                CombatUtils.getShipsWithinRange(currLocation, range);
-        final List<ShipAPI> shipsNearLast =
-                CombatUtils.getShipsWithinRange(lastLocation, range);
+        final List<ShipAPI> shipsNearCurr = CombatUtils.getShipsWithinRange(currLocation, range);
+        final List<ShipAPI> shipsNearLast = CombatUtils.getShipsWithinRange(lastLocation, range);
 
         for (ShipAPI enemy : shipsNearCurr) {
             if (enemy.getOwner() == _ship.getOwner())
@@ -125,10 +123,8 @@ public class QuantumInversionAI implements ShipSystemAIScript {
         float activateFraction = 0f;
         float doNotActivateFraction = 0f;
 
-        final List<ShipAPI> shipsNearCurr =
-                CombatUtils.getShipsWithinRange(currLocation, range);
-        final List<ShipAPI> shipsNearLast =
-                CombatUtils.getShipsWithinRange(lastLocation, range);
+        final List<ShipAPI> shipsNearCurr = CombatUtils.getShipsWithinRange(currLocation, range);
+        final List<ShipAPI> shipsNearLast = CombatUtils.getShipsWithinRange(lastLocation, range);
 
         for (ShipAPI enemy : shipsNearCurr) {
             if (enemy.getOwner() == _ship.getOwner())
