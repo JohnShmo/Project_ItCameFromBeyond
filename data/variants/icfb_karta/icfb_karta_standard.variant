@@ -1,0 +1,29 @@
+{
+    "displayName": "Standard",
+    "fluxCapacitors": 9,
+    "fluxVents": 20,
+    "goalVariant": true,
+    "hullId": "icfb_karta",
+    "hullMods": [
+        "targetingunit",
+        "missleracks"
+    ],
+    "quality": 0.0,
+    "variantId": "icfb_karta_standard",
+    "weaponGroups": [
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS 001": "lightmortar",
+                "WS 000": "lightmortar",
+                "WS 003": "arbalest",
+                "WS 004": "arbalest",
+                "WS 002": "ionbeam",
+                "WS 005": "jackhammer",
+                "WS 007": "pdlaser",
+                "WS 006": "pdlaser"
+            }
+        }
+    ]
+}

@@ -1,0 +1,214 @@
+{
+    "hullName": "Karta",
+    "hullId": "icfb_karta",
+    "hullSize": "DESTROYER",
+    "style": "MIDLINE",
+    "spriteName": "graphics/ItCameFromBeyond/hulls/Destroyer_1.png",
+    "height": 149,
+    "width": 124,
+    "center": [
+        62, 58
+    ],
+    "collisionRadius": 115,
+    "coversColor": "178,172,142,255",
+    "shieldCenter": [
+        12, 0
+    ],
+    "shieldRadius": 92,
+    "viewOffset": 0,
+    "builtInWings": [],
+    "builtInModules": null,
+    "weaponSlots": [
+        {
+            "id": "WS 000",
+            "size": "SMALL",
+            "type": "HYBRID",
+            "mount": "TURRET",
+            "arc": 90,
+            "angle": 325,
+            "locations": [
+                      62,      -17
+            ]
+        },
+        {
+            "id": "WS 001",
+            "size": "SMALL",
+            "type": "HYBRID",
+            "mount": "TURRET",
+            "arc": 90,
+            "angle": 35,
+            "locations": [
+                      62,       17
+            ]
+        },
+        {
+            "id": "WS 002",
+            "size": "MEDIUM",
+            "type": "ENERGY",
+            "mount": "HARDPOINT",
+            "arc": 5,
+            "angle": 0,
+            "locations": [
+                    85.5,        0
+            ]
+        },
+        {
+            "id": "WS 003",
+            "size": "MEDIUM",
+            "type": "BALLISTIC",
+            "mount": "HARDPOINT",
+            "arc": 10,
+            "angle": 0,
+            "locations": [
+                      47,       43
+            ]
+        },
+        {
+            "id": "WS 004",
+            "size": "MEDIUM",
+            "type": "BALLISTIC",
+            "mount": "HARDPOINT",
+            "arc": 10,
+            "angle": 0,
+            "locations": [
+                      47,      -43
+            ]
+        },
+        {
+            "id": "WS 005",
+            "size": "MEDIUM",
+            "type": "MISSILE",
+            "mount": "TURRET",
+            "arc": 180,
+            "angle": 0,
+            "locations": [
+                       4,        0
+            ]
+        },
+        {
+            "id": "WS 006",
+            "size": "SMALL",
+            "type": "HYBRID",
+            "mount": "TURRET",
+            "arc": 135,
+            "angle": 248,
+            "locations": [
+                     -11,      -44
+            ]
+        },
+        {
+            "id": "WS 007",
+            "size": "SMALL",
+            "type": "HYBRID",
+            "mount": "TURRET",
+            "arc": 135,
+            "angle": 112,
+            "locations": [
+                     -11,       44
+            ]
+        }
+    ],
+    "engineSlots": [
+        {
+            "location": [
+                -58, 39
+            ],
+            "length": 18.5,
+            "width": 7,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "MIDLINE"
+        },
+        {
+            "location": [
+                -58, -39
+            ],
+            "length": 18.5,
+            "width": 7,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "MIDLINE"
+        },
+        {
+            "location": [
+                -56, 28
+            ],
+            "length": 33.5,
+            "width": 9,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "MIDLINE"
+        },
+        {
+            "location": [
+                -56, -28
+            ],
+            "length": 33.5,
+            "width": 9,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "MIDLINE"
+        },
+        {
+            "location": [
+                -55, 15.5
+            ],
+            "length": 43.5,
+            "width": 12,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "MIDLINE"
+        },
+        {
+            "location": [
+                -55, -15.5
+            ],
+            "length": 43.5,
+            "width": 12,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "MIDLINE"
+        }
+    ],
+    "bounds": [
+           -43.5,      -10,
+           -51.5,    -10.5,
+             -55,    -43.5,
+             -30,      -43,
+           -17.5,    -34.5,
+        
+           -12.5,      -53,
+               8,    -48.5,
+              20,    -60.5,
+              32,      -52,
+            45.5,      -52,
+        
+            45.5,      -35,
+              21,    -34.5,
+              21,    -15.5,
+              74,      -31,
+            88.5,      -16,
+        
+            85.5,      -10,
+            85.5,       10,
+            88.5,       16,
+              74,       31,
+              21,     15.5,
+        
+              21,     34.5,
+            45.5,       35,
+            45.5,       52,
+              32,       52,
+              20,     60.5,
+        
+               8,     48.5,
+           -12.5,       53,
+           -17.5,     34.5,
+             -30,       43,
+             -55,     43.5,
+        
+           -51.5,     10.5,
+           -43.5,       10
+    # 32 points total.
+    ]
+}
