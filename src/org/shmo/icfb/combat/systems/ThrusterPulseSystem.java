@@ -1,11 +1,8 @@
 package org.shmo.icfb.combat.systems;
 
-import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
-import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
 import org.lwjgl.util.vector.Vector2f;
-import org.magiclib.util.MagicRender;
 import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.utilities.ShmoCombatUtils;
 import org.shmo.icfb.utilities.ShmoMath;

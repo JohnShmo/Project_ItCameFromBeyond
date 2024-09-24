@@ -1,0 +1,24 @@
+{
+	"baseHullId":"icfb_karta",
+	"skinHullId":"icfb_karta_pirates",
+	"hullName":"Karta (P)",
+	"descriptionId":"icfb_karta",
+	"descriptionPrefix":"This ship has been heavily modified - and poorly maintained - by its pirate crew.",
+	"tags":["pirate_bp"],
+	"tech":"Pirate",
+	"ordnancePoints":90,
+	"baseValueMult":.9,
+	"spriteName":"graphics/ItCameFromBeyond/hulls/Destroyer_1_Pirate.png",
+	"builtInMods":["ill_advised"],
+	"removeWeaponSlots":["WS 006","WS 007"],
+	"weaponSlotChanges":{
+		"WS 003":{
+			"type": "MISSILE"
+		},
+		"WS 004":{
+			"type": "MISSILE"
+		},
+	},
+	"builtInWeapons":{
+    },
+}

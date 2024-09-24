@@ -1,0 +1,39 @@
+{
+    "displayName": "Rocket",
+    "fluxCapacitors": 0,
+    "fluxVents": 13,
+    "goalVariant": true,
+    "hullId": "icfb_karta_pirates",
+    "hullMods": [
+        "missleracks",
+        "armoredweapons"
+    ],
+    "quality": 0.0,
+    "variantId": "icfb_karta_pirates_rocket",
+    "weaponGroups": [
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 002": "pulselaser"
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS 005": "annihilatorpod",
+                "WS 004": "annihilatorpod",
+                "WS 003": "annihilatorpod"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 000": "railgun",
+                "WS 001": "railgun"
+            }
+        }
+    ]
+}

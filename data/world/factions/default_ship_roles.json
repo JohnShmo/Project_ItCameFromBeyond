@@ -12,9 +12,10 @@
 		"icfb_froskur_overdriven": 2,
 	},
 	"combatMedium":{
-		"icfb_karta_standard": 6,
-		"icfb_karta_balanced": 8,
+		"icfb_karta_balanced": 7,
 		"icfb_karta_close_support": 7,
+		"icfb_karta_pirates_custom": 7,
+		"icfb_karta_pirates_rocket": 7,
 	},
 	"combatLarge":{
 		

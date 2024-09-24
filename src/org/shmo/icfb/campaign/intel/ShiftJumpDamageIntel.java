@@ -1,6 +1,5 @@
 package org.shmo.icfb.campaign.intel;
 
-import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.intel.BaseIntelPlugin;
 import com.fs.starfarer.api.ui.CustomPanelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
