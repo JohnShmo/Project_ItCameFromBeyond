@@ -1,6 +1,8 @@
 package org.shmo.icfb;
 
 import com.fs.starfarer.api.BaseModPlugin;
+import com.fs.starfarer.api.Global;
+import exerelin.campaign.SectorManager;
 import org.magiclib.util.MagicSettings;
 import org.shmo.icfb.campaign.scripts.QuestManager;
 import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
@@ -54,6 +56,11 @@ public class ItCameFromBeyondModPlugin extends BaseModPlugin {
     @Override
     public void onNewGame() {
         super.onNewGame();
+
+        boolean isNexEnabled = Global.getSettings().getModManager().isModEnabled("nexerelin");
+        if (!isNexEnabled || SectorManager.getManager().isCorvusMode()) {
+            new ItCameFromBeyondGen().generate(Global.getSector());
+        }
     }
 
     @Override
