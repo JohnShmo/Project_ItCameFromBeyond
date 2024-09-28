@@ -59,7 +59,7 @@ public class ItCameFromBeyondModPlugin extends BaseModPlugin {
 
         boolean isNexEnabled = Global.getSettings().getModManager().isModEnabled("nexerelin");
         if (!isNexEnabled || SectorManager.getManager().isCorvusMode()) {
-            new ItCameFromBeyondGen().generate(Global.getSector());
+            ItCameFromBeyondGen.generateForCorvusMode(Global.getSector());
         }
     }
 
