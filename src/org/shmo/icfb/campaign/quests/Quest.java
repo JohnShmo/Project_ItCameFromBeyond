@@ -184,7 +184,7 @@ public class Quest {
 
     private List<QuestStep> getSteps() { return _steps; }
 
-    private void progress() {
+    public void progress() {
         endCurrentStep();
         incrementStepIndex();
         startCurrentStep();

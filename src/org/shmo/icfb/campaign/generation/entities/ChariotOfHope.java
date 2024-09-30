@@ -18,6 +18,7 @@ import org.magiclib.campaign.MagicCaptainBuilder;
 import org.magiclib.campaign.MagicFleetBuilder;
 import org.magiclib.util.MagicCampaign;
 import org.shmo.icfb.campaign.ids.ItCameFromBeyondEntities;
+import org.shmo.icfb.campaign.ids.ItCameFromBeyondMemKeys;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,13 +37,33 @@ public class ChariotOfHope {
                 "venture_Exploration", StarSystemGenerator.random, 0
         );
         derelictData.ship.condition = ShipRecoverySpecial.ShipCondition.GOOD;
-        derelictData.ship.shipName = "Hope's Chariot";
+        derelictData.ship.shipName = "Chariot of Hope";
         derelictData.ship.pruneWeapons = true;
         derelictData.ship.addDmods = true;
-        SectorEntityToken derelict = system.addCustomEntity(ItCameFromBeyondEntities.CHARIOT_OF_HOPE, null,"wreck", Factions.NEUTRAL, derelictData);
+        derelictData.ship.nameAlwaysKnown = true;
+        SectorEntityToken derelict = system.addCustomEntity(
+                ItCameFromBeyondEntities.CHARIOT_OF_HOPE,
+                null,
+                "wreck",
+                Factions.NEUTRAL,
+                derelictData
+        );
         derelict.setCircularOrbitPointingDown(orbitFocus, angle, orbitDistance, orbitDays);
-        SalvageSpecialAssigner.ShipRecoverySpecialCreator creator = new SalvageSpecialAssigner.ShipRecoverySpecialCreator(null, 0, 0, false, null, null);
-        Misc.setSalvageSpecial(derelict, creator.createSpecial(derelict, null));
+        derelict.setDiscoverable(true);
+        derelict.setDiscoveryXP(2500f);
+
+        SalvageSpecialAssigner.ShipRecoverySpecialCreator creator = new SalvageSpecialAssigner.ShipRecoverySpecialCreator(
+                null,
+                0,
+                0,
+                false,
+                null,
+                null
+        );
+        ShipRecoverySpecial.ShipRecoverySpecialData specialData
+                = (ShipRecoverySpecial.ShipRecoverySpecialData)creator.createSpecial(derelict, null);
+        specialData.notNowOptionExits = true;
+        Misc.setSalvageSpecial(derelict, specialData);
         derelict.addTag(Tags.NOT_RANDOM_MISSION_TARGET);
 
         DefenderDataOverride defenderDataOverride = new DefenderDataOverride(
@@ -78,6 +99,7 @@ public class ChariotOfHope {
         derelict.getMemoryWithoutUpdate().set("$hasDefenders", true);
         derelict.getMemoryWithoutUpdate().set("$defenderFleetDefeated", false);
         derelict.getMemoryWithoutUpdate().set("$canNotSalvage", true);
+        derelict.getMemoryWithoutUpdate().set(ItCameFromBeyondMemKeys.IS_CHARIOT_OF_HOPE, true);
 
         sector.getMemoryWithoutUpdate().set(CONTAINING_SYSTEM_KEY, system);
 
