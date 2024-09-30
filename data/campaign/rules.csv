@@ -50,7 +50,7 @@ icfb_ContinueQuest returning_hope","""You!"" $heOrShe shouts furiously, ""You're
 
 You can only watch as the once composed official descends into a full-blown panic attack. $HeOrShe hyperventilates between slurs and babbling words of insult. Eventually, $personFirstName regains $hisOrHer composure.
 
-""Never come back here. Destroy what you found, before you doom us all.""
+""Never come back here. Destroy what you found before you doom us all.""
 
 $HeOrShe cuts the comm link.","cutCommLink:Leave",
 "#END Chariot of Hope Quest",,,,,,
