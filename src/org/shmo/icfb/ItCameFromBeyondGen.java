@@ -5,7 +5,9 @@ import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.impl.campaign.procgen.NebulaEditor;
 import com.fs.starfarer.api.impl.campaign.terrain.HyperspaceTerrainPlugin;
 import com.fs.starfarer.api.util.Misc;
+import org.shmo.icfb.campaign.generation.entities.ChariotOfHope;
 import org.shmo.icfb.campaign.generation.entities.WingsOfEnteria;
+import org.shmo.icfb.campaign.generation.systems.Kato;
 import org.shmo.icfb.campaign.generation.systems.NewEnteria;
 import org.shmo.icfb.campaign.ids.ItCameFromBeyondStarSystems;
 
@@ -35,6 +37,8 @@ public class ItCameFromBeyondGen {
     public static void generateForCorvusMode(SectorAPI sector) {
         final float newEnteriaLocationX = 1300;
         final float newEnteriaLocationY = -22200;
+        final float katoLocationX = -500;
+        final float katoLocationY = -22200;
         final float wingsOfEnteriaOrbitDistance = 600;
         final float wingsOfEnteriaOrbitDays = 20;
 
@@ -42,6 +46,7 @@ public class ItCameFromBeyondGen {
 
         // Generate systems
         final StarSystemAPI newEnteria = NewEnteria.generate(sector, newEnteriaLocationX, newEnteriaLocationY);
+        final StarSystemAPI kato = Kato.generate(sector, katoLocationX, katoLocationY);
 
         // Generate entities
         WingsOfEnteria.generate(
@@ -49,6 +54,13 @@ public class ItCameFromBeyondGen {
                 newEnteria.getEntityById(ItCameFromBeyondStarSystems.NewEnteria.LUMINARU_MAJOR),
                 wingsOfEnteriaOrbitDistance,
                 wingsOfEnteriaOrbitDays
+        );
+        ChariotOfHope.generate(
+                sector,
+                kato.getEntityById(ItCameFromBeyondStarSystems.Kato.MOLLY),
+                -90,
+                170,
+                15
         );
     }
 

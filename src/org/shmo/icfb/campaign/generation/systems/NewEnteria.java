@@ -6,6 +6,9 @@ import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Conditions;
 import com.fs.starfarer.api.impl.campaign.ids.Industries;
 import com.fs.starfarer.api.impl.campaign.ids.Terrain;
+import com.fs.starfarer.api.impl.campaign.procgen.StarAge;
+import com.fs.starfarer.api.impl.campaign.procgen.StarSystemGenerator;
+import com.fs.starfarer.api.impl.campaign.terrain.BaseTiledTerrain;
 import com.fs.starfarer.api.impl.campaign.terrain.MagneticFieldTerrainPlugin;
 import org.magiclib.util.MagicCampaign;
 import org.shmo.icfb.ItCameFromBeyondGen;
@@ -18,13 +21,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class NewEnteria {
+
     public static StarSystemAPI generate(SectorAPI sector, float x, float y) {
-        final float luminaruOrbitDistance = 12000f;
-        final float luminaruOrbitDays = 500f;
-        final float huxleyOrbitDistance = 5600f;
-        final float huxleyOrbitDays = 200f;
-        final float heidiOrbitDistance = 2800f;
-        final float heidiOrbitDays = 80f;
         final Color systemLightColor = new Color(255,230,230);
 
         // Star System
@@ -32,22 +30,24 @@ public class NewEnteria {
         system.getLocation().set(x, y);
         system.setEnteredByPlayer(true);
         system.setLightColor(systemLightColor);
+        system.setProcgen(false);
         createStar(system);
         createStableLocations(system);
 
         // Planets
-        createLuminaru(system, luminaruOrbitDistance, luminaruOrbitDays);
-        createHuxley(sector, system, huxleyOrbitDistance, huxleyOrbitDays);
-        createHeidi(system, heidiOrbitDistance, heidiOrbitDays);
+        createLuminaru(system);
+        createLorelai(sector, system);
+        createHeidi(system);
 
         // Misc
+        createNebula(system);
         createJumpPoints(system);
         ItCameFromBeyondGen.generateHyperspace(system);
 
         return system;
     }
 
-    public static void createStableLocations(StarSystemAPI system) {
+    private static void createStableLocations(StarSystemAPI system) {
         PlanetAPI newEnteriaStar = system.getStar();
         SectorEntityToken stableLocation1 = system.addCustomEntity(
                 null,
@@ -65,7 +65,7 @@ public class NewEnteria {
         stableLocation2.setCircularOrbitPointingDown(newEnteriaStar, 245-60, 3800, 120);
     }
 
-    public static void createStar(StarSystemAPI system) {
+    private static void createStar(StarSystemAPI system) {
         system.initStar(
                 ItCameFromBeyondStarSystems.NewEnteria.STAR,
                 "star_red_dwarf",
@@ -77,7 +77,7 @@ public class NewEnteria {
         );
     }
 
-    public static void createJumpPoints(StarSystemAPI system) {
+    private static void createJumpPoints(StarSystemAPI system) {
         JumpPointAPI heidiJumpPoint = Global.getFactory().createJumpPoint(
                 ItCameFromBeyondStarSystems.NewEnteria.HEIDI + "_jump",
                 "Heidi Jump-point"
@@ -93,15 +93,17 @@ public class NewEnteria {
         system.addEntity(heidiJumpPoint);
     }
 
-    public static void createLuminaru(StarSystemAPI system, float orbitDistance, float orbitDays) {
+    private static void createLuminaru(StarSystemAPI system) {
         final PlanetAPI star = system.getStar();
-        final float angle = 100f;
-        final float luminaruRadius = 450;
-        final float luminaruMajorRadius = 120;
-        final float luminaruMajorOrbitDistance = 1500f;
+        final float angle = 100;
+        final float luminaruOrbitDistance = 12000;
+        final float luminaruOrbitDays = 500;
+        final float luminaruRadius = 490;
+        final float luminaruMajorRadius = 100;
+        final float luminaruMajorOrbitDistance = 1540;
         final float luminaruMajorOrbitDays = 28;
-        final float luminaruMajorRingSize = 600f;
-        final float luminaruMajorRingOrbitDays = 20f;
+        final float luminaruMajorRingSize = 600;
+        final float luminaruMajorRingOrbitDays = 20;
         final float luminaruMinorRadius = 90;
         final float luminaruMinorOrbitDistance = 1500f + (luminaruMajorRingSize*2) + 100;
         final float luminaruMinorOrbitDays = 60;
@@ -113,9 +115,12 @@ public class NewEnteria {
                 "gas_giant",
                 angle,
                 luminaruRadius,
-                orbitDistance,
-                orbitDays
+                luminaruOrbitDistance,
+                luminaruOrbitDays
         );
+        luminaru.getSpec().setCloudColor(new Color(150, 80, 90));
+        luminaru.getSpec().setAtmosphereColor(new Color(150, 100, 50));
+        luminaru.applySpecChanges();
 
         final PlanetAPI luminaruMajor = system.addPlanet(
                 ItCameFromBeyondStarSystems.NewEnteria.LUMINARU_MAJOR,
@@ -132,7 +137,7 @@ public class NewEnteria {
                 ItCameFromBeyondStarSystems.NewEnteria.LUMINARU_MINOR,
                 luminaru,
                 "Luminaru Minor",
-                "barren",
+                "barren-bombarded",
                 angle,
                 luminaruMinorRadius,
                 luminaruMinorOrbitDistance,
@@ -166,7 +171,7 @@ public class NewEnteria {
           luminaru,
           90,
           luminaruMinorOrbitDistance + luminaruMinorRadius + luminaruMajorRingSize + 100,
-                luminaruMajorRingSize * 3,
+                luminaruMajorRingSize * 2,
           80f,
           100f
         );
@@ -177,7 +182,7 @@ public class NewEnteria {
                 256f,
                 3,
                 Color.WHITE,
-                luminaruMajorRingSize * 3,
+                luminaruMajorRingSize * 2,
                 luminaruMinorOrbitDistance + luminaruMinorRadius + luminaruMajorRingSize + 100,
                 100f,
                 null,
@@ -185,15 +190,17 @@ public class NewEnteria {
         );
     }
 
-    public static void createHuxley(SectorAPI sector, StarSystemAPI system, float orbitDistance, float orbitDays) {
+    private static void createLorelai(SectorAPI sector, StarSystemAPI system) {
         final PlanetAPI star = system.getStar();
-        final float angle = 900f;
+        final float orbitDistance = 5600;
+        final float orbitDays = 200;
+        final float angle = 900;
         final float radius = 200;
 
         PlanetAPI huxley = system.addPlanet(
-                ItCameFromBeyondStarSystems.NewEnteria.HUXLEY,
+                ItCameFromBeyondStarSystems.NewEnteria.LORELAI,
                 star,
-                "Huxley",
+                "Lorelai",
                 "terran-eccentric",
                 angle,
                 radius,
@@ -229,8 +236,8 @@ public class NewEnteria {
 
         MarketAPI market = MagicCampaign.addSimpleMarket(
                 huxley,
-                ItCameFromBeyondMarkets.HUXLEY,
-                "Huxley",
+                ItCameFromBeyondMarkets.LORELAI,
+                "Lorelai",
                 5,
                 ItCameFromBeyondFactions.BOUNDLESS,
                 false,
@@ -238,7 +245,8 @@ public class NewEnteria {
                 new ArrayList<>(Arrays.asList(
                         Conditions.POPULATION_5,
                         Conditions.FARMLAND_RICH,
-                        Conditions.HOT,
+                        Conditions.EXTREME_WEATHER,
+                        Conditions.TECTONIC_ACTIVITY,
                         Conditions.HABITABLE,
                         Conditions.ORGANICS_COMMON,
                         Conditions.ORE_MODERATE,
@@ -267,8 +275,10 @@ public class NewEnteria {
         sector.getEconomy().addMarket(market, true);
     }
 
-    public static void createHeidi(StarSystemAPI system, float orbitDistance, float orbitDays) {
+    private static void createHeidi(StarSystemAPI system) {
         final PlanetAPI star = system.getStar();
+        final float orbitDistance = 2800;
+        final float orbitDays = 80;
         final float angle = 245+60;
         final float radius = 140;
 
@@ -283,5 +293,23 @@ public class NewEnteria {
                 orbitDays
         );
         heidi.setSkipForJumpPointAutoGen(true);
+    }
+
+    private static void createNebula(StarSystemAPI system) {
+        final PlanetAPI star = system.getStar();
+        final PlanetAPI luminaru = (PlanetAPI)system.getEntityById(ItCameFromBeyondStarSystems.NewEnteria.LUMINARU);
+        SectorEntityToken nebula = system.addTerrain(Terrain.NEBULA, new BaseTiledTerrain.TileParams(
+                "   xx " +
+                        "  xx x" +
+                        " xxxx " +
+                        "xxxxxx" +
+                        "  xx  " +
+                        "    x ",
+                6, 6, // size of the nebula grid, should match above string
+                "terrain", "nebula_amber", 4, 4, null));
+        nebula.getLocation().set(luminaru.getLocation().x + 1000f, luminaru.getLocation().y);
+        nebula.setCircularOrbit(star, 140f, 15000, 800);
+
+        StarSystemGenerator.addSystemwideNebula(system, StarAge.OLD);
     }
 }

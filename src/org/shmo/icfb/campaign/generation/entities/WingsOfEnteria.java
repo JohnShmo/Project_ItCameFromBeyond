@@ -1,8 +1,10 @@
 package org.shmo.icfb.campaign.generation.entities;
 
+import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.SectorAPI;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.campaign.SpecialItemData;
+import com.fs.starfarer.api.campaign.StarSystemAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Conditions;
 import com.fs.starfarer.api.impl.campaign.ids.Industries;
@@ -14,8 +16,15 @@ import org.shmo.icfb.campaign.ids.ItCameFromBeyondMarkets;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class WingsOfEnteria {
+    private static final String CONTAINING_SYSTEM_KEY = "$" + ItCameFromBeyondEntities.WINGS_OF_ENTERIA + ":containingSystem";
+
+    public static StarSystemAPI getContainingSystem() {
+        return (StarSystemAPI) Global.getSector().getMemoryWithoutUpdate().get(CONTAINING_SYSTEM_KEY);
+    }
+
     public static SectorEntityToken generate(SectorAPI sector, SectorEntityToken orbitFocus, float orbitDistance, float orbitDays) {
         final SectorEntityToken wingsOfEnteria = orbitFocus.getContainingLocation().addCustomEntity(
                 ItCameFromBeyondEntities.WINGS_OF_ENTERIA,
@@ -34,9 +43,8 @@ public class WingsOfEnteria {
                 ItCameFromBeyondFactions.BOUNDLESS,
                 false,
                 false,
-                new ArrayList<>(Arrays.asList(
-                        Conditions.POPULATION_6,
-                        Conditions.HABITABLE
+                new ArrayList<>(Collections.singletonList(
+                        Conditions.POPULATION_6
                 )),
                 new ArrayList<>(Arrays.asList(
                         Industries.POPULATION,
@@ -62,6 +70,9 @@ public class WingsOfEnteria {
         wingsOfEnteriaMarket.getIndustry(Industries.ORBITALWORKS).setSpecialItem(pristineNano);
         wingsOfEnteriaMarket.reapplyIndustries();
         sector.getEconomy().addMarket(wingsOfEnteriaMarket, true);
+
+        sector.getMemoryWithoutUpdate().set(CONTAINING_SYSTEM_KEY, orbitFocus.getContainingLocation());
+
         return wingsOfEnteria;
     }
 }
