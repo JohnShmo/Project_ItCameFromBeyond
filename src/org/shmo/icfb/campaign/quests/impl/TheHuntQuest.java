@@ -1,16 +1,18 @@
-package org.shmo.icfb.campaign.quests.impl.factories;
+package org.shmo.icfb.campaign.quests.impl;
 
 import com.fs.starfarer.api.Global;
 import org.shmo.icfb.campaign.intel.events.ShiftDriveEvent;
 import org.shmo.icfb.campaign.quests.Quest;
 import org.shmo.icfb.campaign.quests.factories.QuestFactory;
-import org.shmo.icfb.campaign.quests.impl.UnwantedCompany;
 
-public class UnwantedCompanyFactory implements QuestFactory {
+public class TheHuntQuest implements QuestFactory {
+    public static final String ID = "the_hunt";
+    public static final String NAME = "The Hunt";
+
     @Override
     public Quest create() {
-        Quest quest = new Quest(UnwantedCompany.ID);
-        quest.setName(UnwantedCompany.NAME);
+        Quest quest = new Quest(ID);
+        quest.setName(NAME);
         quest.setIcon(Global.getSettings().getSpriteName(ShiftDriveEvent.ICON_CATEGORY, ShiftDriveEvent.ICON_ID));
         quest.addTag("Shift Drive");
 

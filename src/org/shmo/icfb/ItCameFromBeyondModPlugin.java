@@ -51,16 +51,13 @@ public class ItCameFromBeyondModPlugin extends BaseModPlugin {
     public void onGameLoad(boolean newGame) {
         super.onGameLoad(newGame);
         initializeScripts();
+        executeSectorGenIfNeeded();
     }
 
     @Override
     public void onNewGame() {
         super.onNewGame();
-
-        boolean isNexEnabled = Global.getSettings().getModManager().isModEnabled("nexerelin");
-        if (!isNexEnabled || SectorManager.getManager().isCorvusMode()) {
-            ItCameFromBeyondGen.generateForCorvusMode(Global.getSector());
-        }
+        executeSectorGenIfNeeded();
     }
 
     @Override
@@ -81,5 +78,13 @@ public class ItCameFromBeyondModPlugin extends BaseModPlugin {
         if (json == null)
             return;
         _settings.loadFromJSON(json);
+    }
+
+    private void executeSectorGenIfNeeded() {
+        boolean isNexEnabled = Global.getSettings().getModManager().isModEnabled("nexerelin");
+        if (!isNexEnabled || SectorManager.getManager().isCorvusMode()) {
+            if (!ItCameFromBeyondGen.hasAlreadyGeneratedForCorvus(Global.getSector()))
+                ItCameFromBeyondGen.generateForCorvusMode(Global.getSector());
+        }
     }
 }

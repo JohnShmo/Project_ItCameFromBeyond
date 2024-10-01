@@ -36,7 +36,7 @@ You stroke your chin in contemplation, you are aware of how secretive and temper
 icfb_salvageChariotOfHopePostRecovery,PostShipRecoverySpecial,"$icfb_isChariotOfHope","icfb_StartReturningHope",,,
 icfb_talkAboutChariotOption,PopulateOptions,"$isPerson
 $icfb_isBoundlessOfficialForChariotQuest",,,"0:icfb_talkAboutChariotOptionSelect1:Ask about the bounty associated with the device found aboard the Chariot of Hope",
-icfb_talkAboutChariot1,DialogOptionSelected,"$option == icfb_talkAboutChariotOptionSelect1","SetShortcut cutCommLink ""ESCAPE""","""Oh?"" $heOrShe asks, somewhat taken aback by the topic, ""An old bounty... I can't exactly recall anything in particular that matches the description. You'll need to send me more detailed information about what you found out there.""
+icfb_talkAboutChariot1,DialogOptionSelected,"$option == icfb_talkAboutChariotOptionSelect1","SetShortcut cutCommLink ""ESCAPE""","""Oh?"" $heOrShe asks, taken aback by the topic, ""An old bounty... I can't exactly recall anything in particular that matches the description. You'll need to send me more detailed information about what you found out there.""
 
 $HeOrShe pauses for a moment, $hisOrHer expression is wavering. You see a bead of sweat run down $hisOrHer face, even through the fuzzy comm screen. There's a certain... tension here.
 
@@ -52,6 +52,8 @@ You can only watch as the once composed official descends into a full-blown pani
 
 ""Never come back here. Destroy what you found before you doom us all.""
 
-$HeOrShe cuts the comm link.","cutCommLink:Leave",
+$HeOrShe cuts the comm link.
+
+It would probably be best not to ask anyone else about this. You feel the collective dirty looks of a hundred Boundless bureaucrats, since you have a inkling $personFirstName will inevitably smear your name. The question of what to do with the mysterious device lingers in your mind as you stare at the static on your Tri-pod. Perhaps an opportunity will arise later.","cutCommLink:Leave",
 "#END Chariot of Hope Quest",,,,,,
 

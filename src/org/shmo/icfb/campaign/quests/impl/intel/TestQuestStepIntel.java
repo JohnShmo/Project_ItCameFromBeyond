@@ -1,8 +1,8 @@
 package org.shmo.icfb.campaign.quests.impl.intel;
 
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
-import org.shmo.icfb.campaign.quests.intel.DefeatFleetQuestStepIntel;
 import org.shmo.icfb.campaign.quests.impl.TestQuest;
+import org.shmo.icfb.campaign.quests.intel.DefeatFleetQuestStepIntel;
 
 public class TestQuestStepIntel extends DefeatFleetQuestStepIntel {
     public TestQuestStepIntel() {

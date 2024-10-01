@@ -1,4 +1,4 @@
-package org.shmo.icfb.campaign.quests.impl.factories;
+package org.shmo.icfb.campaign.quests.impl;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
@@ -13,42 +13,52 @@ import org.shmo.icfb.campaign.ids.ItCameFromBeyondMarkets;
 import org.shmo.icfb.campaign.ids.ItCameFromBeyondMemKeys;
 import org.shmo.icfb.campaign.quests.Quest;
 import org.shmo.icfb.campaign.quests.factories.QuestFactory;
-import org.shmo.icfb.campaign.quests.impl.ReturningHope;
 import org.shmo.icfb.campaign.quests.intel.BaseQuestStepIntel;
 import org.shmo.icfb.campaign.quests.scripts.BaseQuestStepScript;
+import org.shmo.icfb.campaign.scripts.temp.AgentContactTimer;
 
 import java.util.List;
 
-public class ReturningHopeFactory implements QuestFactory {
+public class ReturningHopeQuest implements QuestFactory {
+
+    public static final String ID = "returning_hope";
+    public static final String NAME = "Returning Hope";
 
     @Override
     public Quest create() {
-        Quest quest = new Quest(ReturningHope.ID);
-        quest.setName(ReturningHope.NAME);
+        Quest quest = new Quest(ID);
+        quest.setName(NAME);
         quest.setIcon(Global.getSettings().getSpriteName("campaignMissions", "analyze_entity"));
         quest.addStep(new BaseQuestStepIntel() {
                           @Override
                           public void addNotificationBody(TooltipMakerAPI info) {
-
+                              info.addPara("Return the device.", 0);
                           }
 
                           @Override
                           public void addNotificationBulletPoints(TooltipMakerAPI info) {
-                              info.addPara(
-                                      "Ask a Boundless official about the strange device you found aboard"
-                                              + " the Chariot of Hope.",
-                                      0
-                              );
+
                           }
 
                           @Override
                           public void addDescriptionBody(TooltipMakerAPI info) {
-
+                                info.addPara("During your travels, you encountered a ship with a strange" +
+                                        " device onboard. An anonymously-registered bounty encourages you to return" +
+                                        " it to its rightful owner, whoever that is.",
+                                        10
+                                );
                           }
 
                           @Override
                           public void addDescriptionBulletPoints(TooltipMakerAPI info) {
-                              addNotificationBulletPoints(info);
+                              info.addPara(
+                                      "Ask a %s official about the strange device you found aboard"
+                                              + " the %s.",
+                                      10,
+                                      Misc.getHighlightColor(),
+                                      "Boundless",
+                                      "Chariot of Hope"
+                              );
                           }
 
                           @Override
@@ -69,10 +79,10 @@ public class ReturningHopeFactory implements QuestFactory {
                     public void start() {
                         _objectiveEntity =
                                 WingsOfEnteria.getContainingSystem().getEntityById(ItCameFromBeyondEntities.WINGS_OF_ENTERIA);
-                        Misc.makeImportant(_objectiveEntity, ReturningHope.ID);
+                        Misc.makeImportant(_objectiveEntity, ID);
                         _personEntity =
                                 Global.getSector().getEconomy().getMarket(ItCameFromBeyondMarkets.WINGS_OF_ENTERIA).getAdmin();
-                        Misc.makeImportant(_personEntity, ReturningHope.ID);
+                        Misc.makeImportant(_personEntity, ID);
                         _personEntity.getMemoryWithoutUpdate().set(ItCameFromBeyondMemKeys.IS_BOUNDLESS_OFFICIAL_FOR_CHARIOT_QUEST, true);
                     }
 
@@ -83,10 +93,11 @@ public class ReturningHopeFactory implements QuestFactory {
 
                     @Override
                     public void end() {
-                        Misc.makeUnimportant(_objectiveEntity, ReturningHope.ID);
-                        Misc.makeUnimportant(_personEntity, ReturningHope.ID);
+                        Misc.makeUnimportant(_objectiveEntity, ID);
+                        Misc.makeUnimportant(_personEntity, ID);
                         _personEntity.getMemoryWithoutUpdate().unset(ItCameFromBeyondMemKeys.IS_BOUNDLESS_OFFICIAL_FOR_CHARIOT_QUEST);
                         Global.getSector().getMemoryWithoutUpdate().set(ItCameFromBeyondMemKeys.IS_AWAITING_AGENT_CONTACT, true);
+                        Global.getSector().addScript(new AgentContactTimer(10));
                     }
 
                     @Override
@@ -95,7 +106,7 @@ public class ReturningHopeFactory implements QuestFactory {
                     }
                 }
         );
-        quest.addFinalStep();
+
         return quest;
     }
 

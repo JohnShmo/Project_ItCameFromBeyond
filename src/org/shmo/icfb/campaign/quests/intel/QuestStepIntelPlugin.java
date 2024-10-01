@@ -26,9 +26,9 @@ public class QuestStepIntelPlugin extends BaseIntelPlugin {
             info.addTitle(getName());
         _impl.addDescriptionBody(info);
         bullet(info);
-        info.setParaFontColor(Misc.getGrayColor());
+        //info.setParaFontColor(Misc.getGrayColor());
         _impl.addDescriptionBulletPoints(info);
-        info.setParaFontColor(Misc.getTextColor());
+        //info.setParaFontColor(Misc.getTextColor());
         unindent(info);
     }
 

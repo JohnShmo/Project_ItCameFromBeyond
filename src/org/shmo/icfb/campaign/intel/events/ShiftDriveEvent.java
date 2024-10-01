@@ -12,12 +12,9 @@ import com.fs.starfarer.api.util.Misc;
 import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.campaign.abilities.ShiftJump;
 import org.shmo.icfb.campaign.listeners.QuestListener;
-import org.shmo.icfb.campaign.quests.impl.OddOccurrences;
-import org.shmo.icfb.campaign.quests.impl.TheHunt;
-import org.shmo.icfb.campaign.quests.impl.UnwantedCompany;
-import org.shmo.icfb.campaign.quests.impl.factories.OddOccurrencesFactory;
-import org.shmo.icfb.campaign.quests.impl.factories.TheHuntFactory;
-import org.shmo.icfb.campaign.quests.impl.factories.UnwantedCompanyFactory;
+import org.shmo.icfb.campaign.quests.impl.OddOccurrencesQuest;
+import org.shmo.icfb.campaign.quests.impl.TheHuntQuest;
+import org.shmo.icfb.campaign.quests.impl.UnwantedCompanyQuest;
 import org.shmo.icfb.campaign.scripts.QuestManager;
 import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
 import org.shmo.icfb.campaign.listeners.ShiftDriveListener;
@@ -349,17 +346,17 @@ public class ShiftDriveEvent extends BaseEventIntel implements QuestListener, Sh
                 lockStage();
                 _currentMaximum = PROGRESS_MAJOR;
                 _checkPoint = PROGRESS_MINOR;
-                QuestManager.getInstance().add(new OddOccurrencesFactory());
+                QuestManager.getInstance().add(new OddOccurrencesQuest());
                 break;
             case MAJOR_EVENT:
                 lockStage();
                 _currentMaximum = MAX_PROGRESS;
                 _checkPoint = PROGRESS_MAJOR;
-                QuestManager.getInstance().add(new UnwantedCompanyFactory());
+                QuestManager.getInstance().add(new UnwantedCompanyQuest());
                 break;
             case DEADLY_EVENT:
                 lockStage();
-                QuestManager.getInstance().add(new TheHuntFactory());
+                QuestManager.getInstance().add(new TheHuntQuest());
                 break;
             case FUEL_UPGRADE:
                 ShiftDriveManager.getInstance().setShiftJumpFuelUpgrade(true);
@@ -408,17 +405,17 @@ public class ShiftDriveEvent extends BaseEventIntel implements QuestListener, Sh
     @Override
     public void notifyQuestCompleted(String questId) {
         switch (questId) {
-            case OddOccurrences.ID:
+            case OddOccurrencesQuest.ID:
                 unlockStage();
                 getStageStatus(Stage.MINOR_EVENT).setState(StageStatus.State.COMPLETE);
                 break;
 
-            case UnwantedCompany.ID:
+            case UnwantedCompanyQuest.ID:
                 unlockStage();
                 getStageStatus(Stage.MAJOR_EVENT).setState(StageStatus.State.COMPLETE);
                 break;
 
-            case TheHunt.ID:
+            case TheHuntQuest.ID:
                 unlockStage();
                 getStageStatus(Stage.DEADLY_EVENT).setState(StageStatus.State.INACTIVE);
                 if (ItCameFromBeyond.Global.getSettings().shiftDriveEvent.isTheHuntRepeatable)

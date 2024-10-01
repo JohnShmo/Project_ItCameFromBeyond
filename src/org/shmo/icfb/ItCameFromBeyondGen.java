@@ -1,6 +1,10 @@
 package org.shmo.icfb;
 
+import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
+import com.fs.starfarer.api.campaign.econ.MarketAPI;
+import com.fs.starfarer.api.characters.FullName;
+import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.impl.campaign.procgen.NebulaEditor;
 import com.fs.starfarer.api.impl.campaign.terrain.HyperspaceTerrainPlugin;
@@ -9,7 +13,8 @@ import org.shmo.icfb.campaign.generation.entities.ChariotOfHope;
 import org.shmo.icfb.campaign.generation.entities.WingsOfEnteria;
 import org.shmo.icfb.campaign.generation.systems.Kato;
 import org.shmo.icfb.campaign.generation.systems.NewEnteria;
-import org.shmo.icfb.campaign.ids.ItCameFromBeyondStarSystems;
+import org.shmo.icfb.campaign.ids.*;
+import org.shmo.icfb.campaign.ids.ItCameFromBeyondPeople;
 
 
 public class ItCameFromBeyondGen {
@@ -22,7 +27,7 @@ public class ItCameFromBeyondGen {
         FactionAPI church = sector.getFaction(Factions.LUDDIC_CHURCH);
         FactionAPI path = sector.getFaction(Factions.LUDDIC_PATH);
         FactionAPI league = sector.getFaction(Factions.PERSEAN);
-        FactionAPI boundless = sector.getFaction("icfb_boundless");
+        FactionAPI boundless = sector.getFaction(ItCameFromBeyondFactions.BOUNDLESS);
 
         boundless.setRelationship(path.getId(), RepLevel.HOSTILE);
         boundless.setRelationship(hegemony.getId(), RepLevel.SUSPICIOUS);
@@ -34,6 +39,37 @@ public class ItCameFromBeyondGen {
         boundless.setRelationship(player.getId(), RepLevel.SUSPICIOUS);
     }
 
+    public static PersonAPI createPerson(
+            String id,
+            MarketAPI market,
+            int commIndex,
+            boolean isAdmin,
+            String firstName,
+            String lastName,
+            FullName.Gender gender,
+            String factionId,
+            String rankId,
+            String postId,
+            String portraitSpriteCategory,
+            String portraitSpriteId
+    ) {
+        PersonAPI person = Global.getFactory().createPerson();
+        person.setId(id);
+        person.setName(new FullName(firstName, lastName, gender));
+        person.setFaction(factionId);
+        person.setPortraitSprite(Global.getSettings().getSpriteName(portraitSpriteCategory, portraitSpriteId));
+
+        person.setRankId(rankId);
+        person.setPostId(postId);
+
+        if (isAdmin)
+            market.setAdmin(person);
+        market.addPerson(person);
+        market.getCommDirectory().addPerson(person, commIndex);
+
+        return person;
+    }
+
     public static void generateForCorvusMode(SectorAPI sector) {
         final float newEnteriaLocationX = 1300;
         final float newEnteriaLocationY = -22200;
@@ -41,6 +77,8 @@ public class ItCameFromBeyondGen {
         final float katoLocationY = -22200;
         final float wingsOfEnteriaOrbitDistance = 600;
         final float wingsOfEnteriaOrbitDays = 20;
+
+        ItCameFromBeyond.Log.info("Generating for Corvus mode...");
 
         initFactionRelationships(sector);
 
@@ -62,6 +100,16 @@ public class ItCameFromBeyondGen {
                 170,
                 15
         );
+
+        // Generate people
+        ItCameFromBeyondPeople.generate(sector);
+
+        sector.getMemoryWithoutUpdate().set(ItCameFromBeyondMemKeys.GENERATED_FOR_CORVUS, true);
+        ItCameFromBeyond.Log.info("Finished generating for Corvus mode!");
+    }
+
+    public static boolean hasAlreadyGeneratedForCorvus(SectorAPI sector) {
+        return sector.getMemoryWithoutUpdate().contains(ItCameFromBeyondMemKeys.GENERATED_FOR_CORVUS);
     }
 
     public static void generateHyperspace(StarSystemAPI system) {

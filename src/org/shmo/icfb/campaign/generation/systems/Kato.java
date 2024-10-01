@@ -22,6 +22,7 @@ import com.fs.starfarer.combat.entities.terrain.Planet;
 import org.magiclib.campaign.MagicCaptainBuilder;
 import org.magiclib.campaign.MagicFleetBuilder;
 import org.magiclib.util.MagicCampaign;
+import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.ItCameFromBeyondGen;
 import org.shmo.icfb.campaign.ids.ItCameFromBeyondStarSystems;
 
@@ -34,6 +35,8 @@ import java.util.Map;
 public class Kato {
     public static StarSystemAPI generate(SectorAPI sector, float x, float y) {
         final Color systemLightColor = new Color(245,200,200);
+
+        ItCameFromBeyond.Log.info("- Generating Kato...");
 
         // Star System
         StarSystemAPI system = sector.createStarSystem("Kato");
@@ -73,10 +76,17 @@ public class Kato {
                 500,
                 20
         );
+
         SectorEntityToken researchStation = MiscellaneousThemeGenerator.addSalvageEntity(system, "station_research_remnant", Factions.NEUTRAL);
         researchStation.setCircularOrbitPointingDown(molly, 90, 170, 15);
 
-
+        SectorEntityToken warningBeacon = system.addCustomEntity(
+                "icfb_alice_warning_beacon",
+                null,
+                "warning_beacon",
+                Factions.NEUTRAL
+        );
+        warningBeacon.setCircularOrbit(alice, 80, 160, 13);
     }
 
     private static void createBlackHole(StarSystemAPI system) {

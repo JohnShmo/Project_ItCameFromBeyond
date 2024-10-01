@@ -9,8 +9,8 @@ import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.impl.campaign.ids.FleetTypes;
 import com.fs.starfarer.api.impl.campaign.ids.MemFlags;
 import org.magiclib.campaign.MagicFleetBuilder;
-import org.shmo.icfb.campaign.quests.scripts.DefeatFleetQuestStepScript;
 import org.shmo.icfb.campaign.quests.impl.TestQuest;
+import org.shmo.icfb.campaign.quests.scripts.DefeatFleetQuestStepScript;
 import org.shmo.icfb.campaign.factories.FleetFactory;
 
 public class TestQuestStepScript extends DefeatFleetQuestStepScript {

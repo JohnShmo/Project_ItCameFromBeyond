@@ -17,6 +17,7 @@ import com.fs.starfarer.api.util.Misc;
 import org.magiclib.campaign.MagicCaptainBuilder;
 import org.magiclib.campaign.MagicFleetBuilder;
 import org.magiclib.util.MagicCampaign;
+import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.campaign.ids.ItCameFromBeyondEntities;
 import org.shmo.icfb.campaign.ids.ItCameFromBeyondMemKeys;
 
@@ -31,6 +32,9 @@ public class ChariotOfHope {
     }
 
     public static SectorEntityToken generate(SectorAPI sector, SectorEntityToken orbitFocus, float angle, float orbitDistance, float orbitDays) {
+
+        ItCameFromBeyond.Log.info("- Generating Chariot of Hope...");
+
         StarSystemAPI system = orbitFocus.getStarSystem();
 
         DerelictShipEntityPlugin.DerelictShipData derelictData = DerelictShipEntityPlugin.createVariant(

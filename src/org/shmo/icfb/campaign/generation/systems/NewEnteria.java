@@ -11,6 +11,7 @@ import com.fs.starfarer.api.impl.campaign.procgen.StarSystemGenerator;
 import com.fs.starfarer.api.impl.campaign.terrain.BaseTiledTerrain;
 import com.fs.starfarer.api.impl.campaign.terrain.MagneticFieldTerrainPlugin;
 import org.magiclib.util.MagicCampaign;
+import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.ItCameFromBeyondGen;
 import org.shmo.icfb.campaign.ids.ItCameFromBeyondFactions;
 import org.shmo.icfb.campaign.ids.ItCameFromBeyondMarkets;
@@ -24,6 +25,8 @@ public class NewEnteria {
 
     public static StarSystemAPI generate(SectorAPI sector, float x, float y) {
         final Color systemLightColor = new Color(255,230,230);
+
+        ItCameFromBeyond.Log.info("- Generating New Enteria...");
 
         // Star System
         StarSystemAPI system = sector.createStarSystem("New Enteria");

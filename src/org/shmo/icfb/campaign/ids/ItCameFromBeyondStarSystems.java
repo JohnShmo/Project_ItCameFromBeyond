@@ -11,7 +11,7 @@ public class ItCameFromBeyondStarSystems {
     }
     public static class Kato {
         public static final String BLACK_HOLE = "icfb_kato";
-        public static final String ALICE = "icfb_alice";                    //
+        public static final String ALICE = "icfb_alice";
         public static final String MOLLY = "icfb_molly";
     }
 }

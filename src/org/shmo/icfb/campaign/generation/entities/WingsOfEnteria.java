@@ -10,6 +10,7 @@ import com.fs.starfarer.api.impl.campaign.ids.Conditions;
 import com.fs.starfarer.api.impl.campaign.ids.Industries;
 import com.fs.starfarer.api.impl.campaign.ids.MemFlags;
 import org.magiclib.util.MagicCampaign;
+import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.campaign.ids.ItCameFromBeyondEntities;
 import org.shmo.icfb.campaign.ids.ItCameFromBeyondFactions;
 import org.shmo.icfb.campaign.ids.ItCameFromBeyondMarkets;
@@ -26,6 +27,9 @@ public class WingsOfEnteria {
     }
 
     public static SectorEntityToken generate(SectorAPI sector, SectorEntityToken orbitFocus, float orbitDistance, float orbitDays) {
+
+        ItCameFromBeyond.Log.info("- Generating Wings of Enteria...");
+
         final SectorEntityToken wingsOfEnteria = orbitFocus.getContainingLocation().addCustomEntity(
                 ItCameFromBeyondEntities.WINGS_OF_ENTERIA,
                 "Wings of Enteria",

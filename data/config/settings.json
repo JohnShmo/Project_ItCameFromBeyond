@@ -6,6 +6,10 @@
 	"graphics":{
 		"icfb_icons":{
 			"shift_drive":"graphics/ItCameFromBeyond/icons/abilities/shift_drive.png",
+		},
+		"icfb_portraits":{
+			"shifter_01":"graphics/ItCameFromBeyond/portraits/Shifter_01.png",
+			"shifter_01_static":"graphics/ItCameFromBeyond/portraits/Shifter_01_Static.png",
 		}
 	},
 	"designTypeColors":{
