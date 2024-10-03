@@ -1,5 +1,13 @@
-{
-	# You can add strings here and get them in code using Global.getSettings().getString().
-	# This makes it much easier for people to translate your mod.
-	# See the vanilla strings.json file for examples and for tokens (variables) you can use and have the game replace.
+{	
+	"icfb_questIntel": {
+		"returningHope_bulletPoint_00" 	: "Ask a %s official about the strange device you found aboard the %s.",
+		"returningHope_descBody_00" : "During your travels, you encountered a ship with a strange device onboard. An anonymously-registered bounty encourages you to return it to its rightful owner, whoever that is.",
+		
+		"jumpstartRequired_notifBody_00" : "Transmission from: %s",
+		"jumpstartRequired_bulletPoint_00" : "Talk to %s",
+		"jumpstartRequired_descBody_00" : "You received a encrypted transmission from an agent located at %s. He seems rather eager to speak with you about something.",
+		"jumpstartRequired_button_00" : "Read message",
+		"jumpstartRequired_button_01" : "Hide message",
+		"jumpstartRequired_transmissionMessage" : "Salutations %s,\n\nI contact you on this blessed day in regards to an opportunity. An opportunity to subvert the evils of a certain organization, and their rampant anti-intellectualism. They would choose to hide the truth, and smear the names of those that seek it. I apologize for my need to be vague over this hypernet channel, but those with the inclination to interfere with our grand mission are always listening. Always listening. Seek me out as soon as you can.\n\nGreater Will provides,\n  - %s",
+	}
 }

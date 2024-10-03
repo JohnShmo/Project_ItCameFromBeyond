@@ -7,6 +7,7 @@ import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
+import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.campaign.generation.entities.WingsOfEnteria;
 import org.shmo.icfb.campaign.ids.ItCameFromBeyondEntities;
 import org.shmo.icfb.campaign.ids.ItCameFromBeyondMarkets;
@@ -32,33 +33,31 @@ public class ReturningHopeQuest implements QuestFactory {
         quest.addStep(new BaseQuestStepIntel() {
                           @Override
                           public void addNotificationBody(TooltipMakerAPI info) {
-                              info.addPara("Return the device.", 0);
+
                           }
 
                           @Override
                           public void addNotificationBulletPoints(TooltipMakerAPI info) {
-
+                              info.addPara(
+                                      ItCameFromBeyond.Misc.getQuestIntelString("returningHope_bulletPoint_00"),
+                                      0,
+                                      Misc.getHighlightColor(),
+                                      "Boundless",
+                                      "Chariot of Hope"
+                              );
                           }
 
                           @Override
                           public void addDescriptionBody(TooltipMakerAPI info) {
-                                info.addPara("During your travels, you encountered a ship with a strange" +
-                                        " device onboard. An anonymously-registered bounty encourages you to return" +
-                                        " it to its rightful owner, whoever that is.",
-                                        10
+                                info.addPara(
+                                        ItCameFromBeyond.Misc.getQuestIntelString("returningHope_descBody_00"),
+                                        0
                                 );
                           }
 
                           @Override
                           public void addDescriptionBulletPoints(TooltipMakerAPI info) {
-                              info.addPara(
-                                      "Ask a %s official about the strange device you found aboard"
-                                              + " the %s.",
-                                      10,
-                                      Misc.getHighlightColor(),
-                                      "Boundless",
-                                      "Chariot of Hope"
-                              );
+
                           }
 
                           @Override

@@ -4,9 +4,10 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
 import com.fs.starfarer.api.characters.PersonAPI;
-import com.fs.starfarer.api.ui.SectorMapAPI;
-import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
+import org.lwjgl.input.Keyboard;
+import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.campaign.ids.ItCameFromBeyondPeople;
 import org.shmo.icfb.campaign.quests.Quest;
 import org.shmo.icfb.campaign.quests.factories.QuestFactory;
@@ -19,6 +20,8 @@ public class JumpstartRequiredQuest implements QuestFactory {
     public static final String ID = "jumpstart_required";
     public static final String NAME = "Jumpstart Required";
 
+    public static final String SHOW_OR_HIDE_MESSAGE = "show_message";
+
     @Override
     public Quest create() {
         final Quest quest = new Quest(ID);
@@ -29,10 +32,22 @@ public class JumpstartRequiredQuest implements QuestFactory {
 
         quest.addStep(
                 new BaseQuestStepIntel() {
+                    private transient boolean _showTransmission = false;
+
                     @Override
                     public void addNotificationBody(TooltipMakerAPI info) {
                         info.addPara(
-                                "Transmission from: %s.",
+                                ItCameFromBeyond.Misc.getQuestIntelString("jumpstartRequired_notifBody_00"),
+                                0,
+                                Misc.getTextColor(),
+                                xent.getName().getFullName()
+                        );
+                    }
+
+                    @Override
+                    public void addNotificationBulletPoints(TooltipMakerAPI info) {
+                        info.addPara(
+                                ItCameFromBeyond.Misc.getQuestIntelString("jumpstartRequired_bulletPoint_00"),
                                 0,
                                 Misc.getHighlightColor(),
                                 xent.getName().getFullName()
@@ -40,24 +55,55 @@ public class JumpstartRequiredQuest implements QuestFactory {
                     }
 
                     @Override
-                    public void addNotificationBulletPoints(TooltipMakerAPI info) {
-                    }
-
-                    @Override
                     public void addDescriptionBody(TooltipMakerAPI info) {
+                        final float imageWidth = 128;
+                        final float imageHeight = 128;
+
+                        info.addImage(xent.getPortraitSprite(), imageWidth, imageHeight,0);
+                        info.addPara(xent.getName().getFullName(), 4);
+                        info.addRelationshipBar(xent, imageWidth,0);
                         info.addPara(
-                                "You received a transmission from an agent located at %s." +
-                                        " His name is %s, and he seems rather eager to speak with you about something.",
+                                ItCameFromBeyond.Misc.getQuestIntelString("jumpstartRequired_descBody_00"),
                                 10,
                                 Misc.getHighlightColor(),
                                 xent.getMarket().getName(),
                                 xent.getName().getFullName()
                         );
+
+                        ButtonAPI button = addGenericButton(
+                                info,
+                                imageWidth * 2,
+                                (!_showTransmission) ?
+                                    ItCameFromBeyond.Misc.getQuestIntelString("jumpstartRequired_button_00") :
+                                    ItCameFromBeyond.Misc.getQuestIntelString("jumpstartRequired_button_01"),
+                                SHOW_OR_HIDE_MESSAGE
+                        );
+                        button.setShortcut(Keyboard.KEY_T, true);
+
+                        if (!_showTransmission)
+                            return;
+
+                        LabelAPI message = info.addPara(
+                                ItCameFromBeyond.Misc.getQuestIntelString("jumpstartRequired_transmissionMessage"),
+                                10,
+                                Misc.getTextColor(),
+                                Global.getSector().getPlayerPerson().getName().getFullName(),
+                                xent.getName().getFullName()
+                        );
+                        message.italicize();
+                    }
+
+                    @Override
+                    public void buttonPressConfirmed(Object buttonId, IntelUIAPI ui) {
+                        if (buttonId.equals(SHOW_OR_HIDE_MESSAGE)) {
+                            _showTransmission = !_showTransmission;
+                            ui.recreateIntelUI();
+                        }
                     }
 
                     @Override
                     public void addDescriptionBulletPoints(TooltipMakerAPI info) {
-                        info.addPara("Talk to %s.", 10, Misc.getHighlightColor(), xent.getName().getFullName());
+
                     }
 
                     @Override

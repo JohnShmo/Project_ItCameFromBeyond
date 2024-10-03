@@ -65,5 +65,12 @@ public class ItCameFromBeyond {
                 default: return t;
             }
         }
+
+        public static String getQuestIntelString(String id) {
+            return com.fs.starfarer.api.Global.getSettings().getString(
+                    "icfb_questIntel",
+                    id
+            );
+        }
     }
 }

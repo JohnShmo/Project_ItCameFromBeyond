@@ -1,6 +1,7 @@
 package org.shmo.icfb.campaign.quests.intel;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
+import com.fs.starfarer.api.ui.IntelUIAPI;
 import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import org.shmo.icfb.campaign.quests.QuestStep;
@@ -18,6 +19,8 @@ public interface QuestStepIntel {
     void addNotificationBulletPoints(TooltipMakerAPI info);
     void addDescriptionBody(TooltipMakerAPI info);
     void addDescriptionBulletPoints(TooltipMakerAPI info);
+    void buttonPressConfirmed(Object buttonId, IntelUIAPI ui);
+    void buttonPressCancelled(Object buttonId, IntelUIAPI ui);
     SectorEntityToken getMapLocation(SectorMapAPI map);
     List<IntelInfoPlugin.ArrowData> getArrowData(SectorMapAPI map);
 }
