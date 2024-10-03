@@ -21,6 +21,8 @@ public interface QuestStepIntel {
     void addDescriptionBulletPoints(TooltipMakerAPI info);
     void buttonPressConfirmed(Object buttonId, IntelUIAPI ui);
     void buttonPressCancelled(Object buttonId, IntelUIAPI ui);
+    void setBodyPanelWidth(float width);
+    float getBodyPanelWidth();
     SectorEntityToken getMapLocation(SectorMapAPI map);
     List<IntelInfoPlugin.ArrowData> getArrowData(SectorMapAPI map);
 }

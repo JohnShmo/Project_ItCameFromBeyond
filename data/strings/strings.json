@@ -1,6 +1,6 @@
 {	
 	"icfb_questIntel": {
-		"returningHope_bulletPoint_00" 	: "Ask a %s official about the strange device you found aboard the %s.",
+		"returningHope_bulletPoint_00" 	: "Ask a %s official about the strange device you found aboard the Chariot of Hope.",
 		"returningHope_descBody_00" : "During your travels, you encountered a ship with a strange device onboard. An anonymously-registered bounty encourages you to return it to its rightful owner, whoever that is.",
 		
 		"jumpstartRequired_notifBody_00" : "Transmission from: %s",

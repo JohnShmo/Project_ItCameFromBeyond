@@ -10,6 +10,7 @@ import com.fs.starfarer.api.util.Misc;
 import org.shmo.icfb.ItCameFromBeyond;
 import org.shmo.icfb.campaign.generation.entities.WingsOfEnteria;
 import org.shmo.icfb.campaign.ids.ItCameFromBeyondEntities;
+import org.shmo.icfb.campaign.ids.ItCameFromBeyondFactions;
 import org.shmo.icfb.campaign.ids.ItCameFromBeyondMarkets;
 import org.shmo.icfb.campaign.ids.ItCameFromBeyondMemKeys;
 import org.shmo.icfb.campaign.quests.Quest;
@@ -41,9 +42,8 @@ public class ReturningHopeQuest implements QuestFactory {
                               info.addPara(
                                       ItCameFromBeyond.Misc.getQuestIntelString("returningHope_bulletPoint_00"),
                                       0,
-                                      Misc.getHighlightColor(),
-                                      "Boundless",
-                                      "Chariot of Hope"
+                                      Global.getSector().getFaction(ItCameFromBeyondFactions.BOUNDLESS).getBaseUIColor(),
+                                      "Boundless"
                               );
                           }
 

@@ -17,7 +17,9 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class BaseQuestStepIntel implements QuestStepIntel {
+    private static final float LIST_ITEM_TEXT_WIDTH = 261f;
     private QuestStep _questStep = null;
+    private transient float _bodyPanelWidth = 128;
 
     protected QuestStep getQuestStep() {
         return _questStep;
@@ -78,18 +80,13 @@ public abstract class BaseQuestStepIntel implements QuestStepIntel {
     @Override
     public void buttonPressCancelled(Object buttonId, IntelUIAPI ui) {}
 
-    public FactionAPI getFactionForUIColors() {
-        return Global.getSector().getPlayerFaction();
+    @Override
+    public void setBodyPanelWidth(float width) {
+        _bodyPanelWidth = width;
     }
 
-    public ButtonAPI addGenericButton(TooltipMakerAPI info, float width, String text, Object data) {
-        return addGenericButton(info, width,
-                getFactionForUIColors().getBaseUIColor(), getFactionForUIColors().getDarkUIColor(), text, data);
-    }
-
-    public ButtonAPI addGenericButton(TooltipMakerAPI info, float width, Color tc, Color bg, String text, Object data) {
-        float opad = 10f;
-        return info.addButton(text, data, tc, bg,
-                (int)(width), 20f, opad * 2f);
+    @Override
+    public float getBodyPanelWidth() {
+        return _bodyPanelWidth;
     }
 }

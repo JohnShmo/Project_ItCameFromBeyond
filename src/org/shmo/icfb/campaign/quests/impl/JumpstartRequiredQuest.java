@@ -20,7 +20,7 @@ public class JumpstartRequiredQuest implements QuestFactory {
     public static final String ID = "jumpstart_required";
     public static final String NAME = "Jumpstart Required";
 
-    public static final String SHOW_OR_HIDE_MESSAGE = "show_message";
+    public static final String SHOW_OR_HIDE_MESSAGE_BUTTON = "show_message";
 
     @Override
     public Quest create() {
@@ -49,34 +49,30 @@ public class JumpstartRequiredQuest implements QuestFactory {
                         info.addPara(
                                 ItCameFromBeyond.Misc.getQuestIntelString("jumpstartRequired_bulletPoint_00"),
                                 0,
-                                Misc.getHighlightColor(),
+                                xent.getFaction().getBaseUIColor(),
                                 xent.getName().getFullName()
                         );
                     }
 
                     @Override
                     public void addDescriptionBody(TooltipMakerAPI info) {
-                        final float imageWidth = 128;
-                        final float imageHeight = 128;
+                        final float width = getBodyPanelWidth();
+                        ItCameFromBeyond.Misc.tooltipAddPersonDetails(info, xent, width, 0, true);
 
-                        info.addImage(xent.getPortraitSprite(), imageWidth, imageHeight,0);
-                        info.addPara(xent.getName().getFullName(), 4);
-                        info.addRelationshipBar(xent, imageWidth,0);
                         info.addPara(
                                 ItCameFromBeyond.Misc.getQuestIntelString("jumpstartRequired_descBody_00"),
                                 10,
-                                Misc.getHighlightColor(),
-                                xent.getMarket().getName(),
-                                xent.getName().getFullName()
+                                xent.getMarket().getTextColorForFactionOrPlanet(),
+                                xent.getMarket().getName()
                         );
 
-                        ButtonAPI button = addGenericButton(
+                        ButtonAPI button = ItCameFromBeyond.Misc.tooltipAddGenericButton(
                                 info,
-                                imageWidth * 2,
+                                width,
                                 (!_showTransmission) ?
                                     ItCameFromBeyond.Misc.getQuestIntelString("jumpstartRequired_button_00") :
                                     ItCameFromBeyond.Misc.getQuestIntelString("jumpstartRequired_button_01"),
-                                SHOW_OR_HIDE_MESSAGE
+                                SHOW_OR_HIDE_MESSAGE_BUTTON
                         );
                         button.setShortcut(Keyboard.KEY_T, true);
 
@@ -95,7 +91,7 @@ public class JumpstartRequiredQuest implements QuestFactory {
 
                     @Override
                     public void buttonPressConfirmed(Object buttonId, IntelUIAPI ui) {
-                        if (buttonId.equals(SHOW_OR_HIDE_MESSAGE)) {
+                        if (buttonId.equals(SHOW_OR_HIDE_MESSAGE_BUTTON)) {
                             _showTransmission = !_showTransmission;
                             ui.recreateIntelUI();
                         }

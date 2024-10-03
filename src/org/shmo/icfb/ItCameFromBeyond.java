@@ -1,13 +1,18 @@
 package org.shmo.icfb;
 
+import com.fs.starfarer.api.campaign.FactionAPI;
+import com.fs.starfarer.api.characters.PersonAPI;
+import com.fs.starfarer.api.ui.Alignment;
+import com.fs.starfarer.api.ui.ButtonAPI;
+import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import com.fs.starfarer.api.ui.UIComponentAPI;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.shmo.icfb.campaign.abilities.ShiftJump;
 import org.shmo.icfb.campaign.abilities.ShiftJumpAbilityPlugin;
-import org.shmo.icfb.campaign.intel.events.ShiftDriveEvent;
-import org.shmo.icfb.campaign.scripts.QuestManager;
-import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
 import org.shmo.icfb.utilities.ShmoMath;
+
+import java.awt.*;
 
 public class ItCameFromBeyond {
     public static class Log {
@@ -70,6 +75,47 @@ public class ItCameFromBeyond {
             return com.fs.starfarer.api.Global.getSettings().getString(
                     "icfb_questIntel",
                     id
+            );
+        }
+
+        public static void tooltipAddPersonDetails(TooltipMakerAPI info, PersonAPI person, float width, float pad, boolean showName) {
+            final float imageHeight = 128;
+            final float barWidth = 128 + 10;
+            info.addImage(person.getPortraitSprite(), width, imageHeight,pad);
+            if (showName) {
+                info.addPara(person.getName().getFullName(), person.getFaction().getBaseUIColor(), 4).setAlignment(Alignment.MID);
+            }
+            info.addRelationshipBar(person, barWidth,0);
+            UIComponentAPI prev = info.getPrev();
+            prev.getPosition().setXAlignOffset((width / 2f) - (barWidth / 2f));
+            info.addSpacer(0f);
+            info.getPrev().getPosition().setXAlignOffset(-((width / 2f) - (barWidth / 2f)));
+        }
+
+        public static ButtonAPI tooltipAddGenericButton(TooltipMakerAPI info, float width, Color tc, Color bg, String text, Object data) {
+            float opad = 10f;
+            return info.addButton(text, data, tc, bg,
+                    (int)(width), 20f, opad * 2f);
+        }
+
+        public static ButtonAPI tooltipAddGenericButton(TooltipMakerAPI info, float width, String text, Object data) {
+            return tooltipAddGenericButton(
+                    info,
+                    width,
+                    com.fs.starfarer.api.Global.getSector().getPlayerFaction(),
+                    text,
+                    data
+            );
+        }
+
+        public static ButtonAPI tooltipAddGenericButton(TooltipMakerAPI info, float width, FactionAPI faction, String text, Object data) {
+            return tooltipAddGenericButton(
+                    info,
+                    width,
+                    faction.getBaseUIColor(),
+                    faction.getDarkUIColor(),
+                    text,
+                    data
             );
         }
     }

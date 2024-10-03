@@ -23,12 +23,11 @@ public class QuestStepIntelPlugin extends BaseIntelPlugin {
 
     @Override
     public void createSmallDescription(TooltipMakerAPI info, float width, float height) {
-        info.addSpacer(4);
+        _impl.setBodyPanelWidth(width);
+        info.addSpacer(10);
         _impl.addDescriptionBody(info);
         bullet(info);
-        //info.setParaFontColor(Misc.getGrayColor());
         _impl.addDescriptionBulletPoints(info);
-        //info.setParaFontColor(Misc.getTextColor());
         unindent(info);
     }
 
