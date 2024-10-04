@@ -5,7 +5,7 @@
 		
 		"jumpstartRequired_notifBody_00" : "Transmission from: %s",
 		"jumpstartRequired_bulletPoint_00" : "Talk to %s",
-		"jumpstartRequired_descBody_00" : "You received a encrypted transmission from an agent located at %s. He seems rather eager to speak with you about something.",
+		"jumpstartRequired_descBody_00" : "You received an encrypted transmission from an agent located at %s. He seems rather eager to speak with you about something.",
 		"jumpstartRequired_button_00" : "Read message",
 		"jumpstartRequired_button_01" : "Hide message",
 		"jumpstartRequired_transmissionMessage" : "Salutations %s,\n\nI contact you on this blessed day in regards to an opportunity. An opportunity to subvert the evils of a certain organization, and their rampant anti-intellectualism. They would choose to hide the truth, and smear the names of those that seek it. I apologize for my need to be vague over this hypernet channel, but those with the inclination to interfere with our grand mission are always listening. Always listening. Seek me out as soon as you can.\n\nGreater Will provides,\n  - %s",

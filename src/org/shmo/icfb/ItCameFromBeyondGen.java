@@ -1,74 +1,9 @@
 package org.shmo.icfb;
 
-import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
-import com.fs.starfarer.api.campaign.econ.MarketAPI;
-import com.fs.starfarer.api.characters.FullName;
-import com.fs.starfarer.api.characters.PersonAPI;
-import com.fs.starfarer.api.impl.campaign.ids.Factions;
-import com.fs.starfarer.api.impl.campaign.procgen.NebulaEditor;
-import com.fs.starfarer.api.impl.campaign.terrain.HyperspaceTerrainPlugin;
-import com.fs.starfarer.api.util.Misc;
-import org.shmo.icfb.campaign.generation.entities.ChariotOfHope;
-import org.shmo.icfb.campaign.generation.entities.WingsOfEnteria;
-import org.shmo.icfb.campaign.generation.systems.Kato;
-import org.shmo.icfb.campaign.generation.systems.NewEnteria;
-import org.shmo.icfb.campaign.ids.*;
-import org.shmo.icfb.campaign.ids.ItCameFromBeyondPeople;
-
+import org.shmo.icfb.campaign.*;
 
 public class ItCameFromBeyondGen {
-    public static void initFactionRelationships(SectorAPI sector) {
-        FactionAPI player = sector.getFaction(Factions.PLAYER);
-        FactionAPI hegemony = sector.getFaction(Factions.HEGEMONY);
-        FactionAPI tritachyon = sector.getFaction(Factions.TRITACHYON);
-        FactionAPI pirates = sector.getFaction(Factions.PIRATES);
-        FactionAPI kol = sector.getFaction(Factions.KOL);
-        FactionAPI church = sector.getFaction(Factions.LUDDIC_CHURCH);
-        FactionAPI path = sector.getFaction(Factions.LUDDIC_PATH);
-        FactionAPI league = sector.getFaction(Factions.PERSEAN);
-        FactionAPI boundless = sector.getFaction(ItCameFromBeyondFactions.BOUNDLESS);
-
-        boundless.setRelationship(path.getId(), RepLevel.HOSTILE);
-        boundless.setRelationship(hegemony.getId(), RepLevel.SUSPICIOUS);
-        boundless.setRelationship(pirates.getId(), RepLevel.HOSTILE);
-        boundless.setRelationship(tritachyon.getId(), RepLevel.SUSPICIOUS);
-        boundless.setRelationship(church.getId(), RepLevel.NEUTRAL);
-        boundless.setRelationship(kol.getId(), RepLevel.INHOSPITABLE);
-        boundless.setRelationship(league.getId(), RepLevel.INHOSPITABLE);
-        boundless.setRelationship(player.getId(), RepLevel.SUSPICIOUS);
-    }
-
-    public static PersonAPI createPerson(
-            String id,
-            MarketAPI market,
-            int commIndex,
-            boolean isAdmin,
-            String firstName,
-            String lastName,
-            FullName.Gender gender,
-            String factionId,
-            String rankId,
-            String postId,
-            String portraitSpriteCategory,
-            String portraitSpriteId
-    ) {
-        PersonAPI person = Global.getFactory().createPerson();
-        person.setId(id);
-        person.setName(new FullName(firstName, lastName, gender));
-        person.setFaction(factionId);
-        person.setPortraitSprite(Global.getSettings().getSpriteName(portraitSpriteCategory, portraitSpriteId));
-
-        person.setRankId(rankId);
-        person.setPostId(postId);
-
-        if (isAdmin)
-            market.setAdmin(person);
-        market.addPerson(person);
-        market.getCommDirectory().addPerson(person, commIndex);
-
-        return person;
-    }
 
     public static void generateForCorvusMode(SectorAPI sector) {
         final float newEnteriaLocationX = 1300;
@@ -80,53 +15,48 @@ public class ItCameFromBeyondGen {
 
         ItCameFromBeyond.Log.info("Generating for Corvus mode...");
 
-        initFactionRelationships(sector);
+        // Initialize factions
+        IcfbFactions.Boundless.initFaction(sector);
 
         // Generate systems
-        final StarSystemAPI newEnteria = NewEnteria.generate(sector, newEnteriaLocationX, newEnteriaLocationY);
-        final StarSystemAPI kato = Kato.generate(sector, katoLocationX, katoLocationY);
+        final StarSystemAPI newEnteria = IcfbStarSystems.NewEnteria.createSystem(sector, newEnteriaLocationX, newEnteriaLocationY);
+        final StarSystemAPI kato = IcfbStarSystems.Kato.createSystem(sector, katoLocationX, katoLocationY);
 
         // Generate entities
-        WingsOfEnteria.generate(
+        SectorEntityToken wingsOfEnteria = IcfbEntities.WingsOfEnteria.createEntity(
                 sector,
-                newEnteria.getEntityById(ItCameFromBeyondStarSystems.NewEnteria.LUMINARU_MAJOR),
+                newEnteria.getEntityById(IcfbStarSystems.NewEnteria.LUMINARU_MAJOR),
                 wingsOfEnteriaOrbitDistance,
                 wingsOfEnteriaOrbitDays
         );
-        ChariotOfHope.generate(
+        IcfbEntities.ChariotOfHope.createEntity(
                 sector,
-                kato.getEntityById(ItCameFromBeyondStarSystems.Kato.MOLLY),
+                kato.getEntityById(IcfbStarSystems.Kato.MOLLY),
                 -90,
                 170,
                 15
         );
 
-        // Generate people
-        ItCameFromBeyondPeople.generate(sector);
+        // Generate markets
+        IcfbMarkets.WingsOfEnteria.createMarket(
+                sector,
+                wingsOfEnteria,
+                null
+        );
+        IcfbMarkets.Lorelai.createMarket(
+                sector,
+                newEnteria.getEntityById(IcfbStarSystems.NewEnteria.LORELAI),
+                null
+        );
 
-        sector.getMemoryWithoutUpdate().set(ItCameFromBeyondMemKeys.GENERATED_FOR_CORVUS, true);
+        // Generate people
+        IcfbPeople.generateForCorvus(sector);
+
+        sector.getMemoryWithoutUpdate().set(IcfbMemFlags.GENERATED_FOR_CORVUS, true);
         ItCameFromBeyond.Log.info("Finished generating for Corvus mode!");
     }
 
     public static boolean hasAlreadyGeneratedForCorvus(SectorAPI sector) {
-        return sector.getMemoryWithoutUpdate().contains(ItCameFromBeyondMemKeys.GENERATED_FOR_CORVUS);
-    }
-
-    public static void generateHyperspace(StarSystemAPI system) {
-        system.autogenerateHyperspaceJumpPoints(true, true);
-
-        // Clear away hyperspace clouds
-        final HyperspaceTerrainPlugin plugin = (HyperspaceTerrainPlugin) Misc.getHyperspaceTerrain().getPlugin();
-        final NebulaEditor editor = new NebulaEditor(plugin);
-        final float minRadius = plugin.getTileSize() * 2;
-        final float radius = system.getMaxRadiusInHyperspace();
-        editor.clearArc(
-                system.getLocation().x, system.getLocation().y,
-                0, radius + minRadius, 0, 360
-        );
-        editor.clearArc(
-                system.getLocation().x, system.getLocation().y,
-                0, radius + minRadius, 0, 360, 0.25f
-        );
+        return sector.getMemoryWithoutUpdate().contains(IcfbMemFlags.GENERATED_FOR_CORVUS);
     }
 }

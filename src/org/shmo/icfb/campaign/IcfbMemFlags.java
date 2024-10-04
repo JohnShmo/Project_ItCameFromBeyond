@@ -1,6 +1,6 @@
-package org.shmo.icfb.campaign.ids;
+package org.shmo.icfb.campaign;
 
-public class ItCameFromBeyondMemKeys {
+public class IcfbMemFlags {
     public static final String GENERATED_FOR_CORVUS = "$icfb_generatedForCorvus";
 
     public static final String IS_CHARIOT_OF_HOPE = "$icfb_isChariotOfHope";

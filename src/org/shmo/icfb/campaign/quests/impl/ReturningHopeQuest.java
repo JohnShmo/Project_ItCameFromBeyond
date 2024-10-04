@@ -8,11 +8,10 @@ import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.shmo.icfb.ItCameFromBeyond;
-import org.shmo.icfb.campaign.generation.entities.WingsOfEnteria;
-import org.shmo.icfb.campaign.ids.ItCameFromBeyondEntities;
-import org.shmo.icfb.campaign.ids.ItCameFromBeyondFactions;
-import org.shmo.icfb.campaign.ids.ItCameFromBeyondMarkets;
-import org.shmo.icfb.campaign.ids.ItCameFromBeyondMemKeys;
+import org.shmo.icfb.campaign.IcfbEntities;
+import org.shmo.icfb.campaign.IcfbFactions;
+import org.shmo.icfb.campaign.IcfbMarkets;
+import org.shmo.icfb.campaign.IcfbMemFlags;
 import org.shmo.icfb.campaign.quests.Quest;
 import org.shmo.icfb.campaign.quests.factories.QuestFactory;
 import org.shmo.icfb.campaign.quests.intel.BaseQuestStepIntel;
@@ -42,7 +41,7 @@ public class ReturningHopeQuest implements QuestFactory {
                               info.addPara(
                                       ItCameFromBeyond.Misc.getQuestIntelString("returningHope_bulletPoint_00"),
                                       0,
-                                      Global.getSector().getFaction(ItCameFromBeyondFactions.BOUNDLESS).getBaseUIColor(),
+                                      IcfbFactions.Boundless.getFaction().getBaseUIColor(),
                                       "Boundless"
                               );
                           }
@@ -62,7 +61,7 @@ public class ReturningHopeQuest implements QuestFactory {
 
                           @Override
                           public SectorEntityToken getMapLocation(SectorMapAPI map) {
-                              return WingsOfEnteria.getContainingSystem().getEntityById(ItCameFromBeyondEntities.WINGS_OF_ENTERIA);
+                              return IcfbEntities.WingsOfEnteria.getEntity();
                           }
 
                           @Override
@@ -77,12 +76,12 @@ public class ReturningHopeQuest implements QuestFactory {
                     @Override
                     public void start() {
                         _objectiveEntity =
-                                WingsOfEnteria.getContainingSystem().getEntityById(ItCameFromBeyondEntities.WINGS_OF_ENTERIA);
+                                IcfbEntities.WingsOfEnteria.getEntity();
                         Misc.makeImportant(_objectiveEntity, ID);
                         _personEntity =
-                                Global.getSector().getEconomy().getMarket(ItCameFromBeyondMarkets.WINGS_OF_ENTERIA).getAdmin();
+                                IcfbMarkets.WingsOfEnteria.getMarket().getAdmin();
                         Misc.makeImportant(_personEntity, ID);
-                        _personEntity.getMemoryWithoutUpdate().set(ItCameFromBeyondMemKeys.IS_BOUNDLESS_OFFICIAL_FOR_CHARIOT_QUEST, true);
+                        _personEntity.getMemoryWithoutUpdate().set(IcfbMemFlags.IS_BOUNDLESS_OFFICIAL_FOR_CHARIOT_QUEST, true);
                     }
 
                     @Override
@@ -94,8 +93,8 @@ public class ReturningHopeQuest implements QuestFactory {
                     public void end() {
                         Misc.makeUnimportant(_objectiveEntity, ID);
                         Misc.makeUnimportant(_personEntity, ID);
-                        _personEntity.getMemoryWithoutUpdate().unset(ItCameFromBeyondMemKeys.IS_BOUNDLESS_OFFICIAL_FOR_CHARIOT_QUEST);
-                        Global.getSector().getMemoryWithoutUpdate().set(ItCameFromBeyondMemKeys.IS_AWAITING_AGENT_CONTACT, true);
+                        _personEntity.getMemoryWithoutUpdate().unset(IcfbMemFlags.IS_BOUNDLESS_OFFICIAL_FOR_CHARIOT_QUEST);
+                        Global.getSector().getMemoryWithoutUpdate().set(IcfbMemFlags.IS_AWAITING_AGENT_CONTACT, true);
                         Global.getSector().addScript(new AgentContactTimer(10));
                     }
 

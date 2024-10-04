@@ -8,11 +8,12 @@ import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
 import org.lwjgl.input.Keyboard;
 import org.shmo.icfb.ItCameFromBeyond;
-import org.shmo.icfb.campaign.ids.ItCameFromBeyondPeople;
+import org.shmo.icfb.campaign.IcfbPeople;
 import org.shmo.icfb.campaign.quests.Quest;
 import org.shmo.icfb.campaign.quests.factories.QuestFactory;
 import org.shmo.icfb.campaign.quests.intel.BaseQuestStepIntel;
 import org.shmo.icfb.campaign.quests.scripts.BaseQuestStepScript;
+import org.shmo.icfb.utilities.ShmoGuiUtils;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class JumpstartRequiredQuest implements QuestFactory {
         quest.setName(NAME);
         quest.setIcon(Global.getSettings().getSpriteName("icfb_portraits", "shifter_01_static"));
 
-        final PersonAPI xent = ItCameFromBeyondPeople.XentAlabaster.getInstance();
+        final PersonAPI xent = IcfbPeople.XentAlabaster.getPerson();
 
         quest.addStep(
                 new BaseQuestStepIntel() {
@@ -57,7 +58,7 @@ public class JumpstartRequiredQuest implements QuestFactory {
                     @Override
                     public void addDescriptionBody(TooltipMakerAPI info) {
                         final float width = getBodyPanelWidth();
-                        ItCameFromBeyond.Misc.tooltipAddPersonDetails(info, xent, width, 0, true);
+                        ShmoGuiUtils.addPersonDetails(info, xent, width, 0, true);
 
                         info.addPara(
                                 ItCameFromBeyond.Misc.getQuestIntelString("jumpstartRequired_descBody_00"),
@@ -66,7 +67,7 @@ public class JumpstartRequiredQuest implements QuestFactory {
                                 xent.getMarket().getName()
                         );
 
-                        ButtonAPI button = ItCameFromBeyond.Misc.tooltipAddGenericButton(
+                        ButtonAPI button = ShmoGuiUtils.addGenericButton(
                                 info,
                                 width,
                                 (!_showTransmission) ?
