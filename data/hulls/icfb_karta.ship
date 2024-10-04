@@ -153,8 +153,8 @@
             "location": [
                 -55, 15.5
             ],
-            "length": 43.5,
-            "width": 12,
+            "length": 54,
+            "width": 14,
             "angle": 180,
             "contrailSize": 12,
             "style": "MIDLINE"
@@ -163,10 +163,30 @@
             "location": [
                 -55, -15.5
             ],
-            "length": 43.5,
-            "width": 12,
+            "length": 54,
+            "width": 14,
             "angle": 180,
             "contrailSize": 12,
+            "style": "MIDLINE"
+        },
+        {
+            "location": [
+                6.5, -58.5
+            ],
+            "length": 36,
+            "width": 12,
+            "angle": 225,
+            "contrailSize": 128,
+            "style": "MIDLINE"
+        },
+        {
+            "location": [
+                6.5, 58.5
+            ],
+            "length": 36,
+            "width": 12,
+            "angle": 135,
+            "contrailSize": 128,
             "style": "MIDLINE"
         }
     ],
