@@ -45,11 +45,11 @@
             "id": "WS 002",
             "size": "MEDIUM",
             "type": "ENERGY",
-            "mount": "HARDPOINT",
-            "arc": 5,
-            "angle": 0,
+            "mount": "TURRET",
+            "arc": 180,
+            "angle": 0.5,
             "locations": [
-                    85.5,        0
+                     3.5,        0
             ]
         },
         {
@@ -60,7 +60,7 @@
             "arc": 10,
             "angle": 0,
             "locations": [
-                      47,       43
+                      46,       43
             ]
         },
         {
@@ -71,18 +71,18 @@
             "arc": 10,
             "angle": 0,
             "locations": [
-                      47,      -43
+                      46,      -43
             ]
         },
         {
             "id": "WS 005",
             "size": "MEDIUM",
             "type": "MISSILE",
-            "mount": "TURRET",
-            "arc": 180,
+            "mount": "HARDPOINT",
+            "arc": 0,
             "angle": 0,
             "locations": [
-                       4,        0
+                      86,        0
             ]
         },
         {

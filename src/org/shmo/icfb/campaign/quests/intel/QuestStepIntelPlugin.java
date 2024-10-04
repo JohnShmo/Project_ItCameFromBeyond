@@ -15,6 +15,7 @@ public class QuestStepIntelPlugin extends BaseIntelPlugin {
 
     public QuestStepIntelPlugin(QuestStepIntel impl) {
         _impl = impl;
+        setImportant(true);
     }
 
     public QuestStepIntel getImpl() {
@@ -42,16 +43,6 @@ public class QuestStepIntelPlugin extends BaseIntelPlugin {
         _impl.addNotificationBulletPoints(info);
         info.setParaFontColor(Misc.getTextColor());
         unindent(info);
-    }
-
-    @Override
-    public boolean isImportant() {
-        return true;
-    }
-
-    @Override
-    public boolean canTurnImportantOff() {
-        return true;
     }
 
     @Override

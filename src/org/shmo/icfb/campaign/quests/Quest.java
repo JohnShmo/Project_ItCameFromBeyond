@@ -96,6 +96,7 @@ public class Quest {
 
         addTag(Tags.INTEL_ACCEPTED);
         addTag(Tags.INTEL_MISSIONS);
+        addTag(Tags.INTEL_STORY);
     }
 
     public String getId() {
