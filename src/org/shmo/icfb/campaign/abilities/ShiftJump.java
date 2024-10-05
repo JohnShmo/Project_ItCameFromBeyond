@@ -8,7 +8,9 @@ import com.fs.starfarer.api.fleet.RepairTrackerAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.lazywizard.lazylib.MathUtils;
 import org.lwjgl.util.vector.Vector2f;
-import org.shmo.icfb.ItCameFromBeyond;
+import org.shmo.icfb.IcfbGlobal;
+import org.shmo.icfb.IcfbLog;
+import org.shmo.icfb.IcfbMisc;
 import org.shmo.icfb.campaign.intel.ShiftJumpDamageIntel;
 import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
 import org.shmo.icfb.utilities.ShmoMath;
@@ -52,7 +54,7 @@ public class ShiftJump {
         final PlanetAPI starPlanet = (PlanetAPI) star;
         final float distance = 2f * (star.getRadius()
                 + starPlanet.getSpec().getCoronaSize())
-                + ItCameFromBeyond.Global.getSettings().shiftJump.arrivalDistanceFromDestination;
+                + IcfbGlobal.getSettings().shiftJump.arrivalDistanceFromDestination;
         final Vector2f offset = MathUtils.getRandomPointOnCircumference(null, distance);
         return starPlanet.getStarSystem().createToken(offset.x, offset.y);
     }
@@ -101,7 +103,7 @@ public class ShiftJump {
         final float normalCostPerLY = fleet.getLogistics().getFuelCostPerLightYear();
         final float costPerLY =
                 normalCostPerLY * (1f +
-                        (ItCameFromBeyond.Global.getSettings().shiftJump.baseExtraFuelPercent *
+                        (IcfbGlobal.getSettings().shiftJump.baseExtraFuelPercent *
                                 getFuelCostMultiplier()));
         return (int)(costPerLY * distanceInLY);
     }
@@ -113,26 +115,26 @@ public class ShiftJump {
 
     private void spendFuel(CampaignFleetAPI fleet, SectorEntityToken target) {
         final int cost = computeFuelCost(fleet, target);
-        ItCameFromBeyond.Log.info("Shift Jump: Consumed { " + cost + " } fuel.");
+        IcfbLog.info("Shift Jump: Consumed { " + cost + " } fuel.");
         fleet.getCargo().removeFuel(cost);
         setFuelToRefund(cost);
     }
 
     private void refundFuel(CampaignFleetAPI fleet) {
         fleet.getCargo().addFuel(getFuelToRefund());
-        ItCameFromBeyond.Log.info("Shift Jump: Refunded { " + getFuelToRefund() + " } fuel.");
+        IcfbLog.info("Shift Jump: Refunded { " + getFuelToRefund() + " } fuel.");
         resetFuelToRefund();
     }
 
     public int getMaxRangeLY() {
-        return (int)(ItCameFromBeyond.Global.getSettings().shiftJump.baseMaxRangeLY * getMaxRangeMultiplier());
+        return (int)(IcfbGlobal.getSettings().shiftJump.baseMaxRangeLY * getMaxRangeMultiplier());
     }
 
     public float computeCRCostFractional(float t) {
         return ShmoMath.lerp(0,
-                ItCameFromBeyond.Global.getSettings().shiftJump.crPenaltyAtMaxRange * getCRUseMultiplier(),
-                ItCameFromBeyond.Misc.computeShiftJumpCRPenalty(
-                        ItCameFromBeyond.Global.getSettings().shiftJump.crPenaltyCurve, t
+                IcfbGlobal.getSettings().shiftJump.crPenaltyAtMaxRange * getCRUseMultiplier(),
+                IcfbMisc.computeShiftJumpCRPenalty(
+                        IcfbGlobal.getSettings().shiftJump.crPenaltyCurve, t
                 )
         );
     }
@@ -227,7 +229,7 @@ public class ShiftJump {
     // STATE MACHINE ===================================================================================================
 
     public void activate(CampaignFleetAPI fleet) {
-        ItCameFromBeyond.Log.info("Shift Jump: Activating...");
+        IcfbLog.info("Shift Jump: Activating...");
         setState(State.CHOOSING_DESTINATION, fleet);
     }
 
@@ -273,14 +275,14 @@ public class ShiftJump {
     }
 
     private void gotToChoosingDestinationState(CampaignFleetAPI fleet) {
-        ItCameFromBeyond.Log.info("Shift Jump: Choosing destination...");
+        IcfbLog.info("Shift Jump: Choosing destination...");
 
         if (fleet.isPlayerFleet())
             showDestinationPicker();
     }
 
     private void goToPrimedState(CampaignFleetAPI fleet) {
-        ItCameFromBeyond.Log.info("Shift Jump: Primed and charging...");
+        IcfbLog.info("Shift Jump: Primed and charging...");
 
         spawnPrimedPing(fleet);
         if (fleet.isPlayerFleet())
@@ -288,8 +290,8 @@ public class ShiftJump {
     }
 
     private void goToFinishedState(CampaignFleetAPI fleet) {
-        ItCameFromBeyond.Log.info("Shift Jump: Activation complete!");
-        ItCameFromBeyond.Log.info("Shift Jump: Jumped to { " + getTarget().getName() + " }!");
+        IcfbLog.info("Shift Jump: Activation complete!");
+        IcfbLog.info("Shift Jump: Jumped to { " + getTarget().getName() + " }!");
 
         applyCRCost(fleet, getTarget());
         resetFuelToRefund();
@@ -309,7 +311,7 @@ public class ShiftJump {
     }
 
     private void goToCanceledState(CampaignFleetAPI fleet) {
-        ItCameFromBeyond.Log.info("Shift Jump: Canceled.");
+        IcfbLog.info("Shift Jump: Canceled.");
 
         if (isState(State.PRIMED)) {
             refundFuel(fleet);

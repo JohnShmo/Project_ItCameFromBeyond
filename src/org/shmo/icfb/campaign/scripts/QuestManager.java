@@ -3,7 +3,7 @@ package org.shmo.icfb.campaign.scripts;
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
-import org.shmo.icfb.ItCameFromBeyond;
+import org.shmo.icfb.IcfbLog;
 import org.shmo.icfb.campaign.quests.Quest;
 import org.shmo.icfb.campaign.quests.factories.QuestFactory;
 import org.shmo.icfb.campaign.listeners.QuestListener;
@@ -69,14 +69,14 @@ public class QuestManager implements EveryFrameScript {
     }
 
     private void broadcastQuestCompleted(String questId) {
-        ItCameFromBeyond.Log.info("Quest with id: { " + questId + " } was completed.");
+        IcfbLog.info("Quest with id: { " + questId + " } was completed.");
         for (QuestListener listener : getListeners()) {
             listener.notifyQuestCompleted(questId);
         }
     }
 
     private void broadcastQuestStarted(String questId) {
-        ItCameFromBeyond.Log.info("Quest with id: { " + questId + " } was started.");
+        IcfbLog.info("Quest with id: { " + questId + " } was started.");
         for (QuestListener listener : getListeners()) {
             listener.notifyQuestStarted(questId);
         }

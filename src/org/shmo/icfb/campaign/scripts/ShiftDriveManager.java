@@ -4,7 +4,7 @@ import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
-import org.shmo.icfb.ItCameFromBeyond;
+import org.shmo.icfb.IcfbGlobal;
 import org.shmo.icfb.campaign.abilities.ShiftJump;
 import org.shmo.icfb.campaign.intel.events.ShiftDriveEvent;
 import org.shmo.icfb.factories.ScriptFactory;
@@ -64,7 +64,7 @@ public class ShiftDriveManager implements EveryFrameScript {
     }
 
     public void notifyShiftJumpUsed(CampaignFleetAPI fleet, float distanceLY) {
-        if (ItCameFromBeyond.Global.getSettings().shiftDriveEvent.isEnabled) {
+        if (IcfbGlobal.getSettings().shiftDriveEvent.isEnabled) {
             if (ShiftDriveEvent.getInstance() == null)
                 new ShiftDriveEvent();
         }
@@ -92,15 +92,15 @@ public class ShiftDriveManager implements EveryFrameScript {
     }
 
     private void applyUpgradesAndUnlock() {
-        ShiftJump shiftJump = ItCameFromBeyond.Global.getPlayerShiftJump();
+        ShiftJump shiftJump = IcfbGlobal.getPlayerShiftJump();
         if (shiftJump == null)
             return;
         if (!isShiftJumpUnlocked())
             setShiftJumpUnlocked(true);
         if (hasShiftJumpFuelUpgrade())
-            shiftJump.setFuelCostMultiplier(ItCameFromBeyond.Global.getSettings().shiftJump.fuelUpgradeMultiplier);
+            shiftJump.setFuelCostMultiplier(IcfbGlobal.getSettings().shiftJump.fuelUpgradeMultiplier);
         if (hasShiftJumpRangeUpgrade())
-            shiftJump.setMaxRangeMultiplier(ItCameFromBeyond.Global.getSettings().shiftJump.rangeUpgradeMultiplier);
+            shiftJump.setMaxRangeMultiplier(IcfbGlobal.getSettings().shiftJump.rangeUpgradeMultiplier);
     }
 
     @Override

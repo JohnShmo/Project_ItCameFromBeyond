@@ -1,73 +1,48 @@
 package org.shmo.icfb.campaign;
 
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.campaign.PersonImportance;
 import com.fs.starfarer.api.campaign.SectorAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
-import com.fs.starfarer.api.characters.FullName;
 import com.fs.starfarer.api.characters.PersonAPI;
-import com.fs.starfarer.api.impl.campaign.ids.Factions;
-import com.fs.starfarer.api.impl.campaign.ids.Ranks;
-import org.shmo.icfb.ItCameFromBeyond;
-import org.shmo.icfb.utilities.ShmoGenUtils;
+import org.shmo.icfb.IcfbLog;
+import org.shmo.icfb.campaign.gen.PersonFactory;
+import org.shmo.icfb.campaign.gen.impl.people.XentAlabasterCorvusModePersonFactory;
 
 public class IcfbPeople {
+    public static final PersonData XENT_ALABASTER = new PersonData("icfb_xent");
 
-    public static void generateForCorvus(SectorAPI sector) {
-        ItCameFromBeyond.Log.info("- Generating people...");
-        XentAlabaster.createPerson(sector);
+    public static void generateForCorvusMode(SectorAPI sector) {
+        IcfbLog.info("- Initializing people...");
+
+        XENT_ALABASTER.createPerson(
+                new XentAlabasterCorvusModePersonFactory(),
+                sector,
+                IcfbMarkets.WINGS_OF_ENTERIA.getMarket()
+        );
     }
 
-    private static PersonAPI getImportantPerson(SectorAPI sector, String personId) {
-        return sector.getImportantPeople().getPerson(personId);
-    }
+    public static class PersonData {
+        private final String _id;
 
-    private static void addImportantPerson(SectorAPI sector, PersonAPI person) {
-        sector.getImportantPeople().addPerson(person);
-    }
-
-    private static MarketAPI getImportantPersonMarket(SectorAPI sector, String personId) {
-        PersonAPI person = getImportantPerson(sector, personId);
-        if (person == null)
-            return null;
-        return person.getMarket();
-    }
-
-    public static class XentAlabaster {
-        public static final String ID = "icfb_xent";
-
-        public static PersonAPI getPerson() {
-            return getImportantPerson(Global.getSector(), ID);
+        public PersonData(String id) {
+            _id = id;
         }
 
-        public static MarketAPI getMarket() {
-            return getImportantPersonMarket(Global.getSector(), ID);
+        private void createPerson(PersonFactory factory, SectorAPI sector, MarketAPI market) {
+            PersonAPI person = factory.createPerson(sector, _id, market);
+            addImportantPerson(sector, person);
         }
 
-        public static void createPerson(SectorAPI sector) {
-            PersonAPI xent = sector.getImportantPeople().getPerson(ID);
-            if (xent != null) {
-                return;
-            }
+        public String getId() {
+            return _id;
+        }
 
-            xent = ShmoGenUtils.createPerson(
-                    ID,
-                    IcfbMarkets.WingsOfEnteria.getMarket(),
-                    100,
-                    false,
-                    "Xent",
-                    "Alabaster",
-                    FullName.Gender.MALE,
-                    Factions.INDEPENDENT,
-                    Ranks.AGENT,
-                    Ranks.POST_AGENT,
-                    "icfb_portraits",
-                    "shifter_01_static"
-            );
+        public PersonAPI getPerson() {
+            return Global.getSector().getImportantPeople().getPerson(_id);
+        }
 
-            xent.setImportance(PersonImportance.VERY_HIGH);
-            xent.getMarket().getCommDirectory().getEntryForPerson(xent).setHidden(true);
-            addImportantPerson(sector, xent);
+        private static void addImportantPerson(SectorAPI sector, PersonAPI person) {
+            sector.getImportantPeople().addPerson(person);
         }
     }
 }

@@ -79,11 +79,11 @@ public class QuestStepIntelPlugin extends BaseIntelPlugin {
 
     @Override
     public void buttonPressConfirmed(Object buttonId, IntelUIAPI ui) {
-        _impl.buttonPressConfirmed(buttonId, ui);
+        _impl.buttonPressConfirmed(buttonId, ui, this);
     }
 
     @Override
     public void buttonPressCancelled(Object buttonId, IntelUIAPI ui) {
-        _impl.buttonPressCancelled(buttonId, ui);
+        _impl.buttonPressCancelled(buttonId, ui, this);
     }
 }

@@ -2,41 +2,38 @@ package org.shmo.icfb.campaign;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.FactionAPI;
-import com.fs.starfarer.api.campaign.RepLevel;
 import com.fs.starfarer.api.campaign.SectorAPI;
-import com.fs.starfarer.api.impl.campaign.ids.Factions;
+import org.shmo.icfb.IcfbLog;
+import org.shmo.icfb.campaign.gen.impl.factions.BoundlessCorvusModeFactionFactory;
+import org.shmo.icfb.campaign.gen.FactionFactory;
 
 public class IcfbFactions {
+    public static final FactionData BOUNDLESS = new FactionData( "icfb_boundless");
 
-    public static class Boundless {
-        public static final String ID = "icfb_boundless";
+    public static void generateForCorvusMode(SectorAPI sector) {
+        IcfbLog.info("- Initializing factions...");
 
-        public static FactionAPI getFaction() {
-            return Global.getSector().getFaction(ID);
+        BOUNDLESS.createFaction(new BoundlessCorvusModeFactionFactory(), sector);
+    }
+
+    public static class FactionData {
+        private final String _id;
+
+        public FactionData(String id) {
+            _id = id;
         }
 
-        public static FactionAPI initFaction(SectorAPI sector) {
-            FactionAPI faction = getFaction();
+        private void createFaction(FactionFactory factory, SectorAPI sector) {
+            factory.createFaction(sector, _id);
+        }
 
-            FactionAPI player = sector.getFaction(Factions.PLAYER);
-            FactionAPI hegemony = sector.getFaction(Factions.HEGEMONY);
-            FactionAPI tritachyon = sector.getFaction(Factions.TRITACHYON);
-            FactionAPI pirates = sector.getFaction(Factions.PIRATES);
-            FactionAPI kol = sector.getFaction(Factions.KOL);
-            FactionAPI church = sector.getFaction(Factions.LUDDIC_CHURCH);
-            FactionAPI path = sector.getFaction(Factions.LUDDIC_PATH);
-            FactionAPI league = sector.getFaction(Factions.PERSEAN);
+        public String getId() {
+            return _id;
+        }
 
-            faction.setRelationship(path.getId(), RepLevel.HOSTILE);
-            faction.setRelationship(hegemony.getId(), RepLevel.SUSPICIOUS);
-            faction.setRelationship(pirates.getId(), RepLevel.HOSTILE);
-            faction.setRelationship(tritachyon.getId(), RepLevel.SUSPICIOUS);
-            faction.setRelationship(church.getId(), RepLevel.NEUTRAL);
-            faction.setRelationship(kol.getId(), RepLevel.INHOSPITABLE);
-            faction.setRelationship(league.getId(), RepLevel.INHOSPITABLE);
-            faction.setRelationship(player.getId(), RepLevel.SUSPICIOUS);
-
-            return faction;
+        public FactionAPI getFaction() {
+            return Global.getSector().getFaction(_id);
         }
     }
+
 }

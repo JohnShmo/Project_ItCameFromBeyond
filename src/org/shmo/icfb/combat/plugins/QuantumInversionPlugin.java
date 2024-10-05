@@ -5,7 +5,7 @@ import com.fs.starfarer.api.combat.BaseEveryFrameCombatPlugin;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.input.InputEventAPI;
-import org.shmo.icfb.ItCameFromBeyond;
+import org.shmo.icfb.IcfbGlobal;
 import org.shmo.icfb.combat.systems.QuantumInversionSystem;
 
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class QuantumInversionPlugin extends BaseEveryFrameCombatPlugin {
             return;
         _timePassed += amount;
         final float keyframeInterval =
-                ItCameFromBeyond.Global.getSettings().shipSystem.quantumInversionKeyframeInterval;
+                IcfbGlobal.getSettings().shipSystem.quantumInversionKeyframeInterval;
 
         final List<ShipAPI> ships = getShipsWithQuantumInversion(engine);
         for (ShipAPI ship : ships) {

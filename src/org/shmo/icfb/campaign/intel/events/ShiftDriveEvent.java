@@ -9,7 +9,7 @@ import com.fs.starfarer.api.impl.campaign.intel.events.EventFactor;
 import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import org.shmo.icfb.ItCameFromBeyond;
+import org.shmo.icfb.IcfbGlobal;
 import org.shmo.icfb.campaign.abilities.ShiftJump;
 import org.shmo.icfb.campaign.listeners.QuestListener;
 import org.shmo.icfb.campaign.quests.impl.OddOccurrencesQuest;
@@ -252,7 +252,7 @@ public class ShiftDriveEvent extends BaseEventIntel implements QuestListener, Sh
         info.setParaFontColor(Misc.getGrayColor());
         if (factorId == Factor.SHIFT_JUMP_USE) {
             ShiftDriveEventUseFactor useFactor = (ShiftDriveEventUseFactor)factor;
-            ShiftJump shiftJump = ItCameFromBeyond.Global.getPlayerShiftJump();
+            ShiftJump shiftJump = IcfbGlobal.getPlayerShiftJump();
             int fuelCost = 0;
             int crPercent = 0;
             if (shiftJump != null) {
@@ -418,7 +418,7 @@ public class ShiftDriveEvent extends BaseEventIntel implements QuestListener, Sh
             case TheHuntQuest.ID:
                 unlockStage();
                 getStageStatus(Stage.DEADLY_EVENT).setState(StageStatus.State.INACTIVE);
-                if (ItCameFromBeyond.Global.getSettings().shiftDriveEvent.isTheHuntRepeatable)
+                if (IcfbGlobal.getSettings().shiftDriveEvent.isTheHuntRepeatable)
                     setProgress(getProgress() - generateAmountToSubtractAfterDeadly());
                 break;
         }

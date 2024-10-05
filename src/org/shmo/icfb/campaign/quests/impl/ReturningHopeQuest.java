@@ -7,7 +7,7 @@ import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import org.shmo.icfb.ItCameFromBeyond;
+import org.shmo.icfb.IcfbMisc;
 import org.shmo.icfb.campaign.IcfbEntities;
 import org.shmo.icfb.campaign.IcfbFactions;
 import org.shmo.icfb.campaign.IcfbMarkets;
@@ -39,9 +39,9 @@ public class ReturningHopeQuest implements QuestFactory {
                           @Override
                           public void addNotificationBulletPoints(TooltipMakerAPI info) {
                               info.addPara(
-                                      ItCameFromBeyond.Misc.getQuestIntelString("returningHope_bulletPoint_00"),
+                                      IcfbMisc.getQuestIntelString("returningHope_bulletPoint_00"),
                                       0,
-                                      IcfbFactions.Boundless.getFaction().getBaseUIColor(),
+                                      IcfbFactions.BOUNDLESS.getFaction().getBaseUIColor(),
                                       "Boundless"
                               );
                           }
@@ -49,7 +49,7 @@ public class ReturningHopeQuest implements QuestFactory {
                           @Override
                           public void addDescriptionBody(TooltipMakerAPI info) {
                                 info.addPara(
-                                        ItCameFromBeyond.Misc.getQuestIntelString("returningHope_descBody_00"),
+                                        IcfbMisc.getQuestIntelString("returningHope_descBody_00"),
                                         0
                                 );
                           }
@@ -61,7 +61,7 @@ public class ReturningHopeQuest implements QuestFactory {
 
                           @Override
                           public SectorEntityToken getMapLocation(SectorMapAPI map) {
-                              return IcfbEntities.WingsOfEnteria.getEntity();
+                              return IcfbEntities.WINGS_OF_ENTERIA.getEntity();
                           }
 
                           @Override
@@ -76,10 +76,10 @@ public class ReturningHopeQuest implements QuestFactory {
                     @Override
                     public void start() {
                         _objectiveEntity =
-                                IcfbEntities.WingsOfEnteria.getEntity();
+                                IcfbEntities.WINGS_OF_ENTERIA.getEntity();
                         Misc.makeImportant(_objectiveEntity, ID);
                         _personEntity =
-                                IcfbMarkets.WingsOfEnteria.getMarket().getAdmin();
+                                IcfbMarkets.WINGS_OF_ENTERIA.getMarket().getAdmin();
                         Misc.makeImportant(_personEntity, ID);
                         _personEntity.getMemoryWithoutUpdate().set(IcfbMemFlags.IS_BOUNDLESS_OFFICIAL_FOR_CHARIOT_QUEST, true);
                     }

@@ -17,7 +17,7 @@ public class icfb_ReturningHopeReputationHit extends BaseCommandPlugin {
     public boolean execute(String ruleId, InteractionDialogAPI dialog, List<Misc.Token> params, Map<String, MemoryAPI> memoryMap) {
         CoreReputationPlugin.CustomRepImpact impact = new CoreReputationPlugin.CustomRepImpact();
         impact.delta = -0.15f;
-        FactionAPI boundless = IcfbFactions.Boundless.getFaction();
+        FactionAPI boundless = IcfbFactions.BOUNDLESS.getFaction();
         if (boundless.getRelToPlayer().getRel() > -0.2f) {
             impact.delta += -0.15f - boundless.getRelToPlayer().getRel();
         }
@@ -25,7 +25,7 @@ public class icfb_ReturningHopeReputationHit extends BaseCommandPlugin {
         Global.getSector().adjustPlayerReputation(
                 new CoreReputationPlugin.RepActionEnvelope(CoreReputationPlugin.RepActions.CUSTOM,
                         impact, null, dialog != null ? dialog.getTextPanel() : null, false, true),
-                IcfbFactions.Boundless.ID);
+                IcfbFactions.BOUNDLESS.getId());
         return true;
     }
 }

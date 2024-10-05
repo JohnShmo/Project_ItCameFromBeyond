@@ -6,8 +6,7 @@ import com.fs.starfarer.api.impl.campaign.intel.events.BaseEventIntel;
 import com.fs.starfarer.api.impl.campaign.intel.events.BaseFactorTooltip;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import org.shmo.icfb.ItCameFromBeyond;
-import org.shmo.icfb.ItCameFromBeyondSettings;
+import org.shmo.icfb.IcfbGlobal;
 
 import java.awt.*;
 
@@ -23,8 +22,8 @@ public class ShiftDriveEventUseFactor extends BaseEventFactor {
         _timeStamp = Global.getSector().getClock().getTimestamp();
         _progress =
                 (int)(_distanceLY *
-                        ItCameFromBeyond.Global.getSettings().shiftDriveEvent.pointsPerLYTraveledWithShiftJump)
-                        + ItCameFromBeyond.Global.getSettings().shiftDriveEvent.pointsPerShiftJumpUse;
+                        IcfbGlobal.getSettings().shiftDriveEvent.pointsPerLYTraveledWithShiftJump)
+                        + IcfbGlobal.getSettings().shiftDriveEvent.pointsPerShiftJumpUse;
     }
 
     @Override
@@ -77,14 +76,14 @@ public class ShiftDriveEventUseFactor extends BaseEventFactor {
                 tooltip.addPara(str1,
                         pad, highlight,
                         "Shift Jump",
-                        String.valueOf(ItCameFromBeyond.Global.getSettings().shiftDriveEvent.pointsPerShiftJumpUse)
+                        String.valueOf(IcfbGlobal.getSettings().shiftDriveEvent.pointsPerShiftJumpUse)
                 );
                 tooltip.addPara(str2,
                         pad, highlight,
                         String.valueOf((int)getDistance()),
                         "Shift Jump",
                         String.valueOf((int)(_distanceLY *
-                                ItCameFromBeyond.Global.getSettings().shiftDriveEvent.pointsPerLYTraveledWithShiftJump))
+                                IcfbGlobal.getSettings().shiftDriveEvent.pointsPerLYTraveledWithShiftJump))
                 );
             }
         };

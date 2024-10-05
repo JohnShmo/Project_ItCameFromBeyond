@@ -3,7 +3,7 @@ package org.shmo.icfb;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
-public class ItCameFromBeyondSettings {
+public class IcfbSettings {
 
     public static class ShiftJumpSettings {
 

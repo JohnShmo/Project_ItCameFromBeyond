@@ -7,11 +7,12 @@ import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
 import org.lwjgl.input.Keyboard;
-import org.shmo.icfb.ItCameFromBeyond;
+import org.shmo.icfb.IcfbMisc;
 import org.shmo.icfb.campaign.IcfbPeople;
 import org.shmo.icfb.campaign.quests.Quest;
 import org.shmo.icfb.campaign.quests.factories.QuestFactory;
 import org.shmo.icfb.campaign.quests.intel.BaseQuestStepIntel;
+import org.shmo.icfb.campaign.quests.intel.QuestStepIntelPlugin;
 import org.shmo.icfb.campaign.quests.scripts.BaseQuestStepScript;
 import org.shmo.icfb.utilities.ShmoGuiUtils;
 
@@ -29,7 +30,7 @@ public class JumpstartRequiredQuest implements QuestFactory {
         quest.setName(NAME);
         quest.setIcon(Global.getSettings().getSpriteName("icfb_portraits", "shifter_01_static"));
 
-        final PersonAPI xent = IcfbPeople.XentAlabaster.getPerson();
+        final PersonAPI xent = IcfbPeople.XENT_ALABASTER.getPerson();
 
         quest.addStep(
                 new BaseQuestStepIntel() {
@@ -38,7 +39,7 @@ public class JumpstartRequiredQuest implements QuestFactory {
                     @Override
                     public void addNotificationBody(TooltipMakerAPI info) {
                         info.addPara(
-                                ItCameFromBeyond.Misc.getQuestIntelString("jumpstartRequired_notifBody_00"),
+                                IcfbMisc.getQuestIntelString("jumpstartRequired_notifBody_00"),
                                 0,
                                 Misc.getTextColor(),
                                 xent.getName().getFullName()
@@ -48,7 +49,7 @@ public class JumpstartRequiredQuest implements QuestFactory {
                     @Override
                     public void addNotificationBulletPoints(TooltipMakerAPI info) {
                         info.addPara(
-                                ItCameFromBeyond.Misc.getQuestIntelString("jumpstartRequired_bulletPoint_00"),
+                                IcfbMisc.getQuestIntelString("jumpstartRequired_bulletPoint_00"),
                                 0,
                                 xent.getFaction().getBaseUIColor(),
                                 xent.getName().getFullName()
@@ -61,7 +62,7 @@ public class JumpstartRequiredQuest implements QuestFactory {
                         ShmoGuiUtils.addPersonDetails(info, xent, width, 0, true);
 
                         info.addPara(
-                                ItCameFromBeyond.Misc.getQuestIntelString("jumpstartRequired_descBody_00"),
+                                IcfbMisc.getQuestIntelString("jumpstartRequired_descBody_00"),
                                 10,
                                 xent.getMarket().getTextColorForFactionOrPlanet(),
                                 xent.getMarket().getName()
@@ -71,8 +72,8 @@ public class JumpstartRequiredQuest implements QuestFactory {
                                 info,
                                 width,
                                 (!_showTransmission) ?
-                                    ItCameFromBeyond.Misc.getQuestIntelString("jumpstartRequired_button_00") :
-                                    ItCameFromBeyond.Misc.getQuestIntelString("jumpstartRequired_button_01"),
+                                    IcfbMisc.getQuestIntelString("jumpstartRequired_button_00") :
+                                    IcfbMisc.getQuestIntelString("jumpstartRequired_button_01"),
                                 SHOW_OR_HIDE_MESSAGE_BUTTON
                         );
                         button.setShortcut(Keyboard.KEY_T, true);
@@ -81,7 +82,7 @@ public class JumpstartRequiredQuest implements QuestFactory {
                             return;
 
                         LabelAPI message = info.addPara(
-                                ItCameFromBeyond.Misc.getQuestIntelString("jumpstartRequired_transmissionMessage"),
+                                IcfbMisc.getQuestIntelString("jumpstartRequired_transmissionMessage"),
                                 10,
                                 Misc.getTextColor(),
                                 Global.getSector().getPlayerPerson().getName().getFullName(),
@@ -91,10 +92,10 @@ public class JumpstartRequiredQuest implements QuestFactory {
                     }
 
                     @Override
-                    public void buttonPressConfirmed(Object buttonId, IntelUIAPI ui) {
+                    public void buttonPressConfirmed(Object buttonId, IntelUIAPI ui, QuestStepIntelPlugin plugin) {
                         if (buttonId.equals(SHOW_OR_HIDE_MESSAGE_BUTTON)) {
                             _showTransmission = !_showTransmission;
-                            ui.recreateIntelUI();
+                            ui.updateUIForItem(plugin);
                         }
                     }
 

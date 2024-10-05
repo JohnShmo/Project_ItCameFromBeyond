@@ -9,20 +9,20 @@ import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
 import org.shmo.icfb.utilities.ScriptInitializer;
 import org.json.JSONObject;
 
-public class ItCameFromBeyondModPlugin extends BaseModPlugin {
+public class IcfbModPlugin extends BaseModPlugin {
 
-    private static ItCameFromBeyondModPlugin INSTANCE;
-    public static ItCameFromBeyondModPlugin getInstance() {
+    private static IcfbModPlugin INSTANCE;
+    public static IcfbModPlugin getInstance() {
         return INSTANCE;
     }
 
-    private ItCameFromBeyondSettings _settings;
-    public ItCameFromBeyondSettings getSettings() {
+    private IcfbSettings _settings;
+    public IcfbSettings getSettings() {
         return _settings;
     }
 
     private void initializeScripts() {
-        ItCameFromBeyond.Log.info("" +
+        IcfbLog.info("" +
                 "\n#######################\n" +
                 "\nINITIALIZING SCRIPTS...\n" +
                 "\n#######################\n"
@@ -31,7 +31,7 @@ public class ItCameFromBeyondModPlugin extends BaseModPlugin {
         ScriptInitializer.initializeScript(new ShiftDriveManager.Factory());
         ScriptInitializer.initializeScript(new QuestManager.Factory());
 
-        ItCameFromBeyond.Log.info("" +
+        IcfbLog.info("" +
                 "\n#######################\n" +
                 "\nINITIALIZING SCRIPTS COMPLETE!\n" +
                 "\n#######################\n"
@@ -42,9 +42,9 @@ public class ItCameFromBeyondModPlugin extends BaseModPlugin {
     public void onApplicationLoad() throws Exception {
         INSTANCE = this;
         super.onApplicationLoad();
-        ItCameFromBeyond.Log.info("Loading plugin...");
+        IcfbLog.info("Loading plugin...");
         loadSettings();
-        ItCameFromBeyond.Log.info("Plugin loaded successfully!");
+        IcfbLog.info("Plugin loaded successfully!");
     }
 
     @Override
@@ -72,7 +72,7 @@ public class ItCameFromBeyondModPlugin extends BaseModPlugin {
     }
 
     private void loadSettings() {
-        _settings = new ItCameFromBeyondSettings();
+        _settings = new IcfbSettings();
         MagicSettings.loadModSettings();
         JSONObject json = MagicSettings.modSettings.optJSONObject("ItCameFromBeyond");
         if (json == null)
@@ -83,8 +83,8 @@ public class ItCameFromBeyondModPlugin extends BaseModPlugin {
     private void executeSectorGenIfNeeded() {
         boolean isNexEnabled = Global.getSettings().getModManager().isModEnabled("nexerelin");
         if (!isNexEnabled || SectorManager.getManager().isCorvusMode()) {
-            if (!ItCameFromBeyondGen.hasAlreadyGeneratedForCorvus(Global.getSector()))
-                ItCameFromBeyondGen.generateForCorvusMode(Global.getSector());
+            if (!IcfbGen.hasAlreadyGeneratedForCorvus(Global.getSector()))
+                IcfbGen.generateForCorvusMode(Global.getSector());
         }
     }
 }

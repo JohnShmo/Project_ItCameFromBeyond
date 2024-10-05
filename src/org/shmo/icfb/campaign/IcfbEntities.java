@@ -2,157 +2,70 @@ package org.shmo.icfb.campaign;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
-import com.fs.starfarer.api.impl.campaign.DerelictShipEntityPlugin;
-import com.fs.starfarer.api.impl.campaign.ids.*;
-import com.fs.starfarer.api.impl.campaign.procgen.DefenderDataOverride;
-import com.fs.starfarer.api.impl.campaign.procgen.StarSystemGenerator;
-import com.fs.starfarer.api.impl.campaign.procgen.themes.SalvageSpecialAssigner;
-import com.fs.starfarer.api.impl.campaign.rulecmd.salvage.special.ShipRecoverySpecial;
-import com.fs.starfarer.api.util.Misc;
-import org.magiclib.campaign.MagicCaptainBuilder;
-import org.magiclib.campaign.MagicFleetBuilder;
-import org.magiclib.util.MagicCampaign;
-import org.shmo.icfb.ItCameFromBeyond;
-
-import java.util.*;
+import org.shmo.icfb.IcfbLog;
+import org.shmo.icfb.campaign.gen.EntityFactory;
+import org.shmo.icfb.campaign.gen.impl.entities.ChariotOfHopeCorvusModeEntityFactory;
+import org.shmo.icfb.campaign.gen.impl.entities.WingsOfEnteriaCorvusModeEntityFactory;
 
 public class IcfbEntities {
+    public static EntityData WINGS_OF_ENTERIA = new EntityData("icfb_wings_of_enteria");
+    public static EntityData CHARIOT_OF_HOPE = new EntityData("icfb_chariot_of_hope");
 
-    private static void setContainingSystem(SectorAPI sector, String containingSystemKey, StarSystemAPI system) {
-        sector.getMemoryWithoutUpdate().set(containingSystemKey, system);
+    public static void generateForCorvusMode(SectorAPI sector) {
+        IcfbLog.info("- Initializing entities...");
+
+        WINGS_OF_ENTERIA.createEntity(
+                new WingsOfEnteriaCorvusModeEntityFactory(),
+                sector,
+                IcfbPlanets.NEW_ENTERIA.LUMINARU_MAJOR.getPlanet(),
+                90,
+                600,
+                20
+        );
+
+        CHARIOT_OF_HOPE.createEntity(
+                new ChariotOfHopeCorvusModeEntityFactory(),
+                sector,
+                IcfbPlanets.KATO.MOLLY.getPlanet(),
+                -90,
+                170,
+                15
+        );
     }
 
-    private static StarSystemAPI getContainingSystem(SectorAPI sector, String containingSystemKey) {
-        return (StarSystemAPI) sector.getMemoryWithoutUpdate().get(containingSystemKey);
-    }
+    public static class EntityData {
+        private final String _id;
 
-    private static SectorEntityToken getEntity(SectorAPI sector, String containingSystemKey, String entityId) {
-        StarSystemAPI system = getContainingSystem(sector, containingSystemKey);
-        if (system == null)
-            return null;
-        return system.getEntityById(entityId);
-    }
-
-    public static class WingsOfEnteria {
-        public static final String ID = "icfb_wings_of_enteria";
-        private static final String CONTAINING_SYSTEM_KEY = "$" + ID + ":containingSystem";
-
-        public static StarSystemAPI getContainingSystem() {
-            return IcfbEntities.getContainingSystem(Global.getSector(), CONTAINING_SYSTEM_KEY);
+        public EntityData(String id) {
+            _id = id;
         }
 
-        public static SectorEntityToken getEntity() {
-            return IcfbEntities.getEntity(Global.getSector(), CONTAINING_SYSTEM_KEY, ID);
+        private void createEntity(EntityFactory factory, SectorAPI sector, SectorEntityToken orbitFocus, float angle, float orbitDistance, float orbitDays) {
+            SectorEntityToken entity = factory.createEntity(sector, _id, orbitFocus, angle, orbitDistance, orbitDays);
+            setContainingLocation(entity.getContainingLocation());
         }
 
-        public static SectorEntityToken createEntity(SectorAPI sector, SectorEntityToken orbitFocus, float orbitDistance, float orbitDays) {
-
-            ItCameFromBeyond.Log.info("- Generating Wings of Enteria...");
-
-            final SectorEntityToken entity = orbitFocus.getContainingLocation().addCustomEntity(
-                    ID,
-                    "Wings of Enteria",
-                    ID,
-                    Factions.NEUTRAL
-            );
-            entity.setCircularOrbit(orbitFocus, 90, orbitDistance, orbitDays);
-            entity.setCustomDescriptionId(ID);
-            entity.getMemoryWithoutUpdate().set(MemFlags.STORY_CRITICAL, true);
-            setContainingSystem(sector, CONTAINING_SYSTEM_KEY, orbitFocus.getStarSystem());
-
-            return entity;
-        }
-    }
-
-    public static class ChariotOfHope {
-        public static final String ID = "icfb_chariot_of_hope";
-        private static final String CONTAINING_SYSTEM_KEY = "$" + ID + ":containingSystem";
-
-        public static StarSystemAPI getContainingSystem() {
-            return IcfbEntities.getContainingSystem(Global.getSector(), CONTAINING_SYSTEM_KEY);
+        public String getId() {
+            return _id;
         }
 
-        public static SectorEntityToken getEntity() {
-            return IcfbEntities.getEntity(Global.getSector(), CONTAINING_SYSTEM_KEY, ID);
+        public SectorEntityToken getEntity() {
+            LocationAPI location = getContainingLocation();
+            if (location == null)
+                return null;
+            return location.getEntityById(_id);
         }
 
-        public static SectorEntityToken createEntity(SectorAPI sector, SectorEntityToken orbitFocus, float angle, float orbitDistance, float orbitDays) {
+        public LocationAPI getContainingLocation() {
+            return (LocationAPI) Global.getSector().getMemoryWithoutUpdate().get(getContainingLocationKey());
+        }
 
-            ItCameFromBeyond.Log.info("- Generating Chariot of Hope...");
+        private String getContainingLocationKey() {
+            return "$" + _id + ":containingLocation";
+        }
 
-            StarSystemAPI system = orbitFocus.getStarSystem();
-
-            DerelictShipEntityPlugin.DerelictShipData derelictData = DerelictShipEntityPlugin.createVariant(
-                    "venture_Exploration", StarSystemGenerator.random, 0
-            );
-            derelictData.ship.condition = ShipRecoverySpecial.ShipCondition.GOOD;
-            derelictData.ship.shipName = "Chariot of Hope";
-            derelictData.ship.pruneWeapons = true;
-            derelictData.ship.addDmods = true;
-            derelictData.ship.nameAlwaysKnown = true;
-            SectorEntityToken entity = system.addCustomEntity(
-                    ID,
-                    null,
-                    "wreck",
-                    Factions.NEUTRAL,
-                    derelictData
-            );
-            entity.setCircularOrbitPointingDown(orbitFocus, angle, orbitDistance, orbitDays);
-            entity.setDiscoverable(true);
-            entity.setDiscoveryXP(2500f);
-
-            SalvageSpecialAssigner.ShipRecoverySpecialCreator creator = new SalvageSpecialAssigner.ShipRecoverySpecialCreator(
-                    null,
-                    0,
-                    0,
-                    false,
-                    null,
-                    null
-            );
-            ShipRecoverySpecial.ShipRecoverySpecialData specialData
-                    = (ShipRecoverySpecial.ShipRecoverySpecialData)creator.createSpecial(entity, null);
-            specialData.notNowOptionExits = true;
-            Misc.setSalvageSpecial(entity, specialData);
-            entity.addTag(Tags.NOT_RANDOM_MISSION_TARGET);
-
-            DefenderDataOverride defenderDataOverride = new DefenderDataOverride(
-                    Factions.OMEGA,
-                    1f,
-                    300f,
-                    300f
-            );
-            Misc.setDefenderOverride(entity, defenderDataOverride);
-
-            MagicFleetBuilder defenderBuilder = MagicCampaign.createFleetBuilder();
-            MagicCaptainBuilder captainBuilder = MagicCampaign.createCaptainBuilder(Factions.OMEGA);
-            captainBuilder.setAICoreType(Commodities.BETA_CORE);
-            captainBuilder.setIsAI(true);
-            captainBuilder.setPersonality("reckless");
-            captainBuilder.setLevel(5);
-            defenderBuilder.setFleetFaction(Factions.OMEGA);
-            defenderBuilder.setCaptain(captainBuilder.create());
-            defenderBuilder.setSpawnLocation(null);
-            defenderBuilder.setFleetName("Automated Defenders");
-            defenderBuilder.setFlagshipVariant("shard_left_Defense");
-            Map<String, Integer> supportFleet = new HashMap<>();
-            supportFleet.put("shard_right_Attack", 1);
-            supportFleet.put("lumen_Standard", 2);
-            supportFleet.put("fulgent_Assault", 1);
-            supportFleet.put("fulgent_Support", 1);
-            supportFleet.put("brilliant_Standard", 1);
-            defenderBuilder.setSupportFleet(supportFleet);
-
-            CampaignFleetAPI defenders = defenderBuilder.create();
-
-            entity.getMemoryWithoutUpdate().set("$defenderFleet", defenders);
-            entity.getMemoryWithoutUpdate().set("$hasDefenders", true);
-            entity.getMemoryWithoutUpdate().set("$defenderFleetDefeated", false);
-            entity.getMemoryWithoutUpdate().set("$canNotSalvage", true);
-            entity.getMemoryWithoutUpdate().set(IcfbMemFlags.IS_CHARIOT_OF_HOPE, true);
-
-            setContainingSystem(sector, CONTAINING_SYSTEM_KEY, system);
-
-            return entity;
+        private void setContainingLocation(LocationAPI location) {
+            Global.getSector().getMemoryWithoutUpdate().set(getContainingLocationKey(), location);
         }
     }
 }

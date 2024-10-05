@@ -3,7 +3,7 @@ package org.shmo.icfb.campaign.quests;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
 import com.fs.starfarer.api.impl.campaign.ids.Tags;
-import org.shmo.icfb.ItCameFromBeyond;
+import org.shmo.icfb.IcfbLog;
 import org.shmo.icfb.campaign.quests.intel.QuestCompleteIntel;
 import org.shmo.icfb.campaign.quests.intel.QuestStepIntel;
 import org.shmo.icfb.campaign.quests.intel.QuestStepIntelPlugin;
@@ -67,7 +67,7 @@ public class Quest {
         }
         if (step.intel != null) {
             sendIntelForStep(step);
-            ItCameFromBeyond.Log.info("Quest step with name: { " + step.intel.getName() + " } was started.");
+            IcfbLog.info("Quest step with name: { " + step.intel.getName() + " } was started.");
         }
     }
 
@@ -76,7 +76,7 @@ public class Quest {
             return;
         if (step.intel != null) {
             removeIntelForStep(step);
-            ItCameFromBeyond.Log.info("Quest step with name: { " + step.intel.getName() + " } was ended.");
+            IcfbLog.info("Quest step with name: { " + step.intel.getName() + " } was ended.");
         }
         if (step.script != null) {
             step.script.end();

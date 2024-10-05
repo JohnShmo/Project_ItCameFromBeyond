@@ -75,10 +75,10 @@ public abstract class BaseQuestStepIntel implements QuestStepIntel {
     public abstract List<IntelInfoPlugin.ArrowData> getArrowData(SectorMapAPI map);
 
     @Override
-    public void buttonPressConfirmed(Object buttonId, IntelUIAPI ui) {}
+    public void buttonPressConfirmed(Object buttonId, IntelUIAPI ui, QuestStepIntelPlugin plugin) {}
 
     @Override
-    public void buttonPressCancelled(Object buttonId, IntelUIAPI ui) {}
+    public void buttonPressCancelled(Object buttonId, IntelUIAPI ui, QuestStepIntelPlugin plugin) {}
 
     @Override
     public void setBodyPanelWidth(float width) {

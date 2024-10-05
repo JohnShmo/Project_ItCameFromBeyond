@@ -19,8 +19,8 @@ public interface QuestStepIntel {
     void addNotificationBulletPoints(TooltipMakerAPI info);
     void addDescriptionBody(TooltipMakerAPI info);
     void addDescriptionBulletPoints(TooltipMakerAPI info);
-    void buttonPressConfirmed(Object buttonId, IntelUIAPI ui);
-    void buttonPressCancelled(Object buttonId, IntelUIAPI ui);
+    void buttonPressConfirmed(Object buttonId, IntelUIAPI ui, QuestStepIntelPlugin plugin);
+    void buttonPressCancelled(Object buttonId, IntelUIAPI ui, QuestStepIntelPlugin plugin);
     void setBodyPanelWidth(float width);
     float getBodyPanelWidth();
     SectorEntityToken getMapLocation(SectorMapAPI map);
