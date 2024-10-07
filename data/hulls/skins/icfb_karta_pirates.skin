@@ -6,7 +6,7 @@
 	"descriptionPrefix":"This ship has been heavily modified - and poorly maintained - by its pirate crew.",
 	"tags":["pirate_bp"],
 	"tech":"Pirate",
-	"ordnancePoints":90,
+	"ordnancePoints":85,
 	"baseValueMult":.9,
 	"spriteName":"graphics/ItCameFromBeyond/hulls/Destroyer_1_Pirate.png",
 	"builtInMods":["ill_advised"],

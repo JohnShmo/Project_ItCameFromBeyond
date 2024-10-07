@@ -14,6 +14,7 @@
 	"combatMedium":{
 		"icfb_karta_balanced": 7,
 		"icfb_karta_close_support": 7,
+		"icfb_karta_attack": 7,
 		"icfb_karta_pirates_custom": 7,
 		"icfb_karta_pirates_rocket": 7,
 	},

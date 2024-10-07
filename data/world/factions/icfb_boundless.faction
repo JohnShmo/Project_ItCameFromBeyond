@@ -67,6 +67,7 @@
 	"knownWeapons":{
 		"tags":["ind", "merc", "independent"],
 		"weapons":[
+			"gazer", "gazerpod", "gorgon", "gorgonpod", "dragon", "dragonpod", "hydra", "breach", "breachpod"
 		],
 	},
 	"priorityWeapons":{
