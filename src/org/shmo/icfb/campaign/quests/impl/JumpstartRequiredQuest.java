@@ -1,6 +1,7 @@
 package org.shmo.icfb.campaign.quests.impl;
 
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.RepLevel;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
 import com.fs.starfarer.api.characters.PersonAPI;
@@ -224,7 +225,14 @@ public class JumpstartRequiredQuest implements QuestFactory {
 
                     @Override
                     public void advance(float deltaTime) {
-
+                        if (
+                                xent.getRelToPlayer().isAtWorst(RepLevel.FRIENDLY) &&
+                                        !Global.getSector()
+                                                .getMemoryWithoutUpdate()
+                                                .getBoolean(IcfbMemFlags.XENT_OFFERING_SPECIAL_MISSION)
+                        ) {
+                            Global.getSector().getMemoryWithoutUpdate().set(IcfbMemFlags.XENT_OFFERING_SPECIAL_MISSION, true);
+                        }
                     }
 
                     @Override

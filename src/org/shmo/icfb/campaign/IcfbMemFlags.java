@@ -10,4 +10,5 @@ public class IcfbMemFlags {
     public static final String CAN_SELECT_CORRECT_XENT_GREETING = "$icfbCanSelectCorrectXentGreeting";
     public static final String KNOWS_BOUNDLESS_ARE_ALIENS = "$icfbKnowsBoundlessAreAliens";
     public static final String ACCEPTING_XENT_MISSIONS = "$icfbAcceptingXentMissions";
+    public static final String XENT_OFFERING_SPECIAL_MISSION = "$icfbXentOfferingSpecialMission";
 }
