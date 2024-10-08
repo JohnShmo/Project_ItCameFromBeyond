@@ -12,23 +12,23 @@ import org.shmo.icfb.utilities.MemoryHelper;
 
 import java.util.*;
 
-public class QuestManager implements EveryFrameScript {
-    public static final String KEY = "$icfb_QuestManager";
+public class IcfbQuestManager implements EveryFrameScript {
+    public static final String KEY = "$IcfbQuestManager";
     public static final String QUEST_MAP_KEY = KEY + ":questMap";
     public static final String LISTENERS_KEY = KEY + ":listeners";
 
     public static class Factory implements ScriptFactory {
         @Override
         public EveryFrameScript createOrGetInstance() {
-            EveryFrameScript script = QuestManager.getInstance();
+            EveryFrameScript script = IcfbQuestManager.getInstance();
             if (script == null)
-                script = new QuestManager();
+                script = new IcfbQuestManager();
             return script;
         }
     }
 
-    public static QuestManager getInstance() {
-        return (QuestManager)Global.getSector().getMemoryWithoutUpdate().get(KEY);
+    public static IcfbQuestManager getInstance() {
+        return (IcfbQuestManager)Global.getSector().getMemoryWithoutUpdate().get(KEY);
     }
 
     private Map<String, Quest> getQuestMap() {
@@ -56,7 +56,7 @@ public class QuestManager implements EveryFrameScript {
         return result;
     }
 
-    public QuestManager() {
+    public IcfbQuestManager() {
         Global.getSector().getMemoryWithoutUpdate().set(KEY, this);
     }
 

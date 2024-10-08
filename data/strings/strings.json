@@ -1,13 +1,21 @@
 {	
 	"icfb_questIntel": {
+		## RETURNING HOPE	
 		"returningHope_bulletPoint_00" 	: "Ask a %s official about the strange device you found aboard the Chariot of Hope.",
-		"returningHope_descBody_00" : "During your travels, you encountered a ship with a strange device onboard. An anonymously-registered bounty encourages you to return it to its rightful owner, whoever that is.",
+		"returningHope_descBody_00" : "During your travels, you encountered a ship with a strange device onboard. An anonymously registered bounty encourages you to return it to its rightful owner, whoever that is.",
 		
+		## JUMPSTART REQUIRED		
 		"jumpstartRequired_notifBody_00" : "Transmission from: %s",
 		"jumpstartRequired_bulletPoint_00" : "Talk to %s",
 		"jumpstartRequired_descBody_00" : "You received an encrypted transmission from an agent located at %s. He seems rather eager to speak with you about something.",
 		"jumpstartRequired_button_00" : "Read message",
 		"jumpstartRequired_button_01" : "Hide message",
 		"jumpstartRequired_transmissionMessage" : "Salutations %s,\n\nI contact you on this blessed day in regards to an opportunity. An opportunity to subvert the evils of a certain organization, and their rampant anti-intellectualism. They would choose to hide the truth, and smear the names of those that seek it. I apologize for my need to be vague over this hypernet channel, but those with the inclination to interfere with our grand mission are always listening. Always listening. Seek me out as soon as you can.\n\nGreater Will provides,\n  - %s",
+		
+		"jumpstartRequired_notifBody_10" : "Dirty work",
+		"jumpstartRequired_bulletPoint_10" : "Complete missions for %s to uncover the secrets of shift drive.",
+		"jumpstartRequired_descBody_10" : "You received an encrypted transmission from an agent located at %s. He was rather eager to speak with you about something.",
+		"jumpstartRequired_descBody_11" :"After speaking with him, he told you about shift drive technology. It was allegedly implemented by %s to journey across the stars unhindered by the collapsed gate network. He explained that by working with him, you could have this technology for yourself.",
+		"jumpstartRequired_descBody_12" :"Work with %s until more is revealed about the elusive shift drive.",
 	}
 }

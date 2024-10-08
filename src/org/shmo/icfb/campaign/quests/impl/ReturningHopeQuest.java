@@ -48,10 +48,12 @@ public class ReturningHopeQuest implements QuestFactory {
 
                           @Override
                           public void addDescriptionBody(TooltipMakerAPI info) {
-                                info.addPara(
-                                        IcfbMisc.getQuestIntelString("returningHope_descBody_00"),
-                                        0
-                                );
+                              info.addImage(IcfbFactions.BOUNDLESS.getFaction().getLogo(), getBodyPanelWidth(), 0);
+
+                              info.addPara(
+                                      IcfbMisc.getQuestIntelString("returningHope_descBody_00"),
+                                      10
+                              );
                           }
 
                           @Override
@@ -70,18 +72,10 @@ public class ReturningHopeQuest implements QuestFactory {
                           }
                       },
                 new BaseQuestStepScript() {
-                    private SectorEntityToken _objectiveEntity = null;
-                    private PersonAPI _personEntity = null;
 
                     @Override
                     public void start() {
-                        _objectiveEntity =
-                                IcfbEntities.WINGS_OF_ENTERIA.getEntity();
-                        Misc.makeImportant(_objectiveEntity, ID);
-                        _personEntity =
-                                IcfbMarkets.WINGS_OF_ENTERIA.getMarket().getAdmin();
-                        Misc.makeImportant(_personEntity, ID);
-                        _personEntity.getMemoryWithoutUpdate().set(IcfbMemFlags.IS_BOUNDLESS_OFFICIAL_FOR_CHARIOT_QUEST, true);
+                        Global.getSector().getMemoryWithoutUpdate().set(IcfbMemFlags.TALK_TO_BOUNDLESS_OFFICIAL_FOR_CHARIOT_QUEST, true);
                     }
 
                     @Override
@@ -91,10 +85,8 @@ public class ReturningHopeQuest implements QuestFactory {
 
                     @Override
                     public void end() {
-                        Misc.makeUnimportant(_objectiveEntity, ID);
-                        Misc.makeUnimportant(_personEntity, ID);
-                        _personEntity.getMemoryWithoutUpdate().unset(IcfbMemFlags.IS_BOUNDLESS_OFFICIAL_FOR_CHARIOT_QUEST);
-                        Global.getSector().getMemoryWithoutUpdate().set(IcfbMemFlags.IS_AWAITING_AGENT_CONTACT, true);
+                        Global.getSector().getMemoryWithoutUpdate().unset(IcfbMemFlags.TALK_TO_BOUNDLESS_OFFICIAL_FOR_CHARIOT_QUEST);
+                        Global.getSector().getMemoryWithoutUpdate().set(IcfbMemFlags.AWAITING_AGENT_CONTACT, true);
                         Global.getSector().addScript(new AgentContactTimer(10));
                     }
 

@@ -15,8 +15,8 @@ import org.shmo.icfb.campaign.listeners.QuestListener;
 import org.shmo.icfb.campaign.quests.impl.OddOccurrencesQuest;
 import org.shmo.icfb.campaign.quests.impl.TheHuntQuest;
 import org.shmo.icfb.campaign.quests.impl.UnwantedCompanyQuest;
-import org.shmo.icfb.campaign.scripts.QuestManager;
-import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
+import org.shmo.icfb.campaign.scripts.IcfbQuestManager;
+import org.shmo.icfb.campaign.scripts.IcfbShiftDriveManager;
 import org.shmo.icfb.campaign.listeners.ShiftDriveListener;
 
 import java.awt.*;
@@ -146,8 +146,8 @@ public class ShiftDriveEvent extends BaseEventIntel implements QuestListener, Sh
 
         addFactor(new ShiftDriveEventDecayFactor());
 
-        ShiftDriveManager.getInstance().addListener(this);
-        QuestManager.getInstance().addListener(this);
+        IcfbShiftDriveManager.getInstance().addListener(this);
+        IcfbQuestManager.getInstance().addListener(this);
     }
 
     @Override
@@ -346,25 +346,25 @@ public class ShiftDriveEvent extends BaseEventIntel implements QuestListener, Sh
                 lockStage();
                 _currentMaximum = PROGRESS_MAJOR;
                 _checkPoint = PROGRESS_MINOR;
-                QuestManager.getInstance().add(new OddOccurrencesQuest());
+                IcfbQuestManager.getInstance().add(new OddOccurrencesQuest());
                 break;
             case MAJOR_EVENT:
                 lockStage();
                 _currentMaximum = MAX_PROGRESS;
                 _checkPoint = PROGRESS_MAJOR;
-                QuestManager.getInstance().add(new UnwantedCompanyQuest());
+                IcfbQuestManager.getInstance().add(new UnwantedCompanyQuest());
                 break;
             case DEADLY_EVENT:
                 lockStage();
-                QuestManager.getInstance().add(new TheHuntQuest());
+                IcfbQuestManager.getInstance().add(new TheHuntQuest());
                 break;
             case FUEL_UPGRADE:
-                ShiftDriveManager.getInstance().setShiftJumpFuelUpgrade(true);
+                IcfbShiftDriveManager.getInstance().setShiftJumpFuelUpgrade(true);
                 getStageStatus(Stage.FUEL_UPGRADE).setState(StageStatus.State.COMPLETE);
                 _checkPoint = PROGRESS_FUEL_UPGRADE;
                 break;
             case RANGE_UPGRADE:
-                ShiftDriveManager.getInstance().setShiftJumpRangeUpgrade(true);
+                IcfbShiftDriveManager.getInstance().setShiftJumpRangeUpgrade(true);
                 getStageStatus(Stage.RANGE_UPGRADE).setState(StageStatus.State.COMPLETE);
                 _checkPoint = PROGRESS_RANGE_UPGRADE;
                 break;

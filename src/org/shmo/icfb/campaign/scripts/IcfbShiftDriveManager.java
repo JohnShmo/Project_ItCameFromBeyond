@@ -14,9 +14,9 @@ import org.shmo.icfb.utilities.MemoryHelper;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ShiftDriveManager implements EveryFrameScript {
-    public static final String KEY = "$icfb_ShiftDriveManager";
-    public static final String LISTENERS_KEY = KEY + ".listeners";
+public class IcfbShiftDriveManager implements EveryFrameScript {
+    public static final String KEY = "$IcfbShiftDriveManager";
+    public static final String LISTENERS_KEY = KEY + ":listeners";
     public static final String SHIFT_JUMP_UNLOCKED_KEY = KEY + ":shiftJumpUnlocked";
     public static final String RANGE_UPGRADE_UNLOCKED_KEY = KEY + ":rangeUpgradeUnlocked";
     public static final String FUEL_UPGRADE_UNLOCKED_KEY = KEY + ":fuelUpgradeUnlocked";
@@ -24,18 +24,18 @@ public class ShiftDriveManager implements EveryFrameScript {
     public static class Factory implements ScriptFactory {
         @Override
         public EveryFrameScript createOrGetInstance() {
-            EveryFrameScript script = ShiftDriveManager.getInstance();
+            EveryFrameScript script = IcfbShiftDriveManager.getInstance();
             if (script == null)
-                script = new ShiftDriveManager();
+                script = new IcfbShiftDriveManager();
             return script;
         }
     }
 
-    public static ShiftDriveManager getInstance() {
-        return (ShiftDriveManager)Global.getSector().getMemoryWithoutUpdate().get(KEY);
+    public static IcfbShiftDriveManager getInstance() {
+        return (IcfbShiftDriveManager)Global.getSector().getMemoryWithoutUpdate().get(KEY);
     }
 
-    public ShiftDriveManager() {
+    public IcfbShiftDriveManager() {
         Global.getSector().getMemoryWithoutUpdate().set(KEY, this);
     }
 

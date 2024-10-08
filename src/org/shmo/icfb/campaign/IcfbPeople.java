@@ -12,12 +12,12 @@ public class IcfbPeople {
     public static final PersonData XENT_ALABASTER = new PersonData("icfb_xent");
 
     public static void generateForCorvusMode(SectorAPI sector) {
-        IcfbLog.info("- Initializing people...");
+        IcfbLog.info("  Initializing people...");
 
         XENT_ALABASTER.createPerson(
                 new XentAlabasterCorvusModePersonFactory(),
                 sector,
-                IcfbMarkets.WINGS_OF_ENTERIA.getMarket()
+                sector.getEconomy().getMarket(IcfbMarkets.WINGS_OF_ENTERIA.getId())
         );
     }
 
@@ -28,9 +28,18 @@ public class IcfbPeople {
             _id = id;
         }
 
-        private void createPerson(PersonFactory factory, SectorAPI sector, MarketAPI market) {
+        public void createPerson(PersonFactory factory, SectorAPI sector, MarketAPI market) {
+            IcfbLog.info("    Creating person: { " + _id + " }...");
+            if (isGenerated()) {
+                IcfbLog.info("      Skipped!");
+                return;
+            }
+
             PersonAPI person = factory.createPerson(sector, _id, market);
             addImportantPerson(sector, person);
+            IcfbLog.info("      Done");
+
+            markAsGenerated();
         }
 
         public String getId() {
@@ -43,6 +52,22 @@ public class IcfbPeople {
 
         private static void addImportantPerson(SectorAPI sector, PersonAPI person) {
             sector.getImportantPeople().addPerson(person);
+        }
+
+        public boolean isGenerated() {
+            return Global.getSector().getMemoryWithoutUpdate().getBoolean(getIsGeneratedKey());
+        }
+
+        private void markAsGenerated() {
+            Global.getSector().getMemoryWithoutUpdate().set(getIsGeneratedKey(), true);
+        }
+
+        private String getKey() {
+            return "$IcfbPeople:" + _id;
+        }
+
+        private String getIsGeneratedKey() {
+            return getKey() + ":isGenerated";
         }
     }
 }

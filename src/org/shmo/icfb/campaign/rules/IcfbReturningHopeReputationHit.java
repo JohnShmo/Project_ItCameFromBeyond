@@ -12,7 +12,7 @@ import org.shmo.icfb.campaign.IcfbFactions;
 import java.util.List;
 import java.util.Map;
 
-public class icfb_ReturningHopeReputationHit extends BaseCommandPlugin {
+public class IcfbReturningHopeReputationHit extends BaseCommandPlugin {
     @Override
     public boolean execute(String ruleId, InteractionDialogAPI dialog, List<Misc.Token> params, Map<String, MemoryAPI> memoryMap) {
         CoreReputationPlugin.CustomRepImpact impact = new CoreReputationPlugin.CustomRepImpact();

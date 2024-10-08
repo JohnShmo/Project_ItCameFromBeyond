@@ -39,11 +39,11 @@ public class KatoCorvusModeStarSystemFactory implements StarSystemFactory {
     }
 
     private static void createAlice(StarSystemAPI system) {
-        IcfbPlanets.KATO.ALICE.registerPlanet(system);
-        IcfbPlanets.KATO.MOLLY.registerPlanet(system);
+        IcfbPlanets.ALICE.registerPlanet(system);
+        IcfbPlanets.MOLLY.registerPlanet(system);
 
         PlanetAPI alice = system.addPlanet(
-                IcfbPlanets.KATO.ALICE.getId(),
+                IcfbPlanets.ALICE.getId(),
                 system.getStar(),
                 "Alice",
                 "cryovolcanic",
@@ -54,7 +54,7 @@ public class KatoCorvusModeStarSystemFactory implements StarSystemFactory {
         );
 
         PlanetAPI molly = system.addPlanet(
-                IcfbPlanets.KATO.MOLLY.getId(),
+                IcfbPlanets.MOLLY.getId(),
                 alice,
                 "Molly",
                 "frozen2",
@@ -77,8 +77,10 @@ public class KatoCorvusModeStarSystemFactory implements StarSystemFactory {
     }
 
     private static void createBlackHole(StarSystemAPI system) {
+        IcfbPlanets.KATO_STAR.registerPlanet(system);
+
         PlanetAPI kato = system.initStar(
-                IcfbPlanets.KATO.STAR.getId(),
+                IcfbPlanets.KATO_STAR.getId(),
                 "black_hole",
                 400f,
                 0,

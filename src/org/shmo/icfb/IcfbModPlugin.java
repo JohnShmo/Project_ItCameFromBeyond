@@ -4,8 +4,8 @@ import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.api.Global;
 import exerelin.campaign.SectorManager;
 import org.magiclib.util.MagicSettings;
-import org.shmo.icfb.campaign.scripts.QuestManager;
-import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
+import org.shmo.icfb.campaign.scripts.IcfbQuestManager;
+import org.shmo.icfb.campaign.scripts.IcfbShiftDriveManager;
 import org.shmo.icfb.utilities.ScriptInitializer;
 import org.json.JSONObject;
 
@@ -21,6 +21,8 @@ public class IcfbModPlugin extends BaseModPlugin {
         return _settings;
     }
 
+    private boolean _alreadyGeneratedForNewGame = false;
+
     private void initializeScripts() {
         IcfbLog.info("" +
                 "\n#######################\n" +
@@ -28,8 +30,8 @@ public class IcfbModPlugin extends BaseModPlugin {
                 "\n#######################\n"
         );
 
-        ScriptInitializer.initializeScript(new ShiftDriveManager.Factory());
-        ScriptInitializer.initializeScript(new QuestManager.Factory());
+        ScriptInitializer.initializeScript(new IcfbShiftDriveManager.Factory());
+        ScriptInitializer.initializeScript(new IcfbQuestManager.Factory());
 
         IcfbLog.info("" +
                 "\n#######################\n" +
@@ -51,13 +53,21 @@ public class IcfbModPlugin extends BaseModPlugin {
     public void onGameLoad(boolean newGame) {
         super.onGameLoad(newGame);
         initializeScripts();
-        executeSectorGenIfNeeded();
+        if (!_alreadyGeneratedForNewGame)
+            executeSectorGen();
+        _alreadyGeneratedForNewGame = false;
+    }
+
+    @Override
+    public void onEnabled(boolean wasEnabledBefore) {
+        super.onEnabled(wasEnabledBefore);
     }
 
     @Override
     public void onNewGame() {
         super.onNewGame();
-        executeSectorGenIfNeeded();
+        executeSectorGen();
+        _alreadyGeneratedForNewGame = true;
     }
 
     @Override
@@ -80,11 +90,10 @@ public class IcfbModPlugin extends BaseModPlugin {
         _settings.loadFromJSON(json);
     }
 
-    private void executeSectorGenIfNeeded() {
+    private void executeSectorGen() {
         boolean isNexEnabled = Global.getSettings().getModManager().isModEnabled("nexerelin");
         if (!isNexEnabled || SectorManager.getManager().isCorvusMode()) {
-            if (!IcfbGen.hasAlreadyGeneratedForCorvus(Global.getSector()))
-                IcfbGen.generateForCorvusMode(Global.getSector());
+            IcfbGen.generateForCorvusMode(Global.getSector());
         }
     }
 }

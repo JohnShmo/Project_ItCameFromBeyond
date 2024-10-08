@@ -12,7 +12,7 @@ import org.shmo.icfb.IcfbGlobal;
 import org.shmo.icfb.IcfbLog;
 import org.shmo.icfb.IcfbMisc;
 import org.shmo.icfb.campaign.intel.ShiftJumpDamageIntel;
-import org.shmo.icfb.campaign.scripts.ShiftDriveManager;
+import org.shmo.icfb.campaign.scripts.IcfbShiftDriveManager;
 import org.shmo.icfb.utilities.ShmoMath;
 
 import java.util.ArrayList;
@@ -306,7 +306,7 @@ public class ShiftJump {
         resetTarget();
 
         if (fleet.isPlayerFleet()) {
-            ShiftDriveManager.getInstance().notifyShiftJumpUsed(fleet, distance);
+            IcfbShiftDriveManager.getInstance().notifyShiftJumpUsed(fleet, distance);
         }
     }
 

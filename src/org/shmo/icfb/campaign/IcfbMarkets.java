@@ -16,7 +16,7 @@ public class IcfbMarkets {
     public static MarketData LORELAI = new MarketData("icfb_lorelai_market");
 
     public static void generateForCorvusMode(SectorAPI sector) {
-        IcfbLog.info("- Initializing markets...");
+        IcfbLog.info("  Initializing markets...");
 
         WINGS_OF_ENTERIA.createMarket(
                 new WingsOfEnteriaCorvusModeMarketFactory(),
@@ -31,7 +31,7 @@ public class IcfbMarkets {
                 new LorelaiCorvusModeMarketFactory(),
                 sector,
                 IcfbFactions.BOUNDLESS.getId(),
-                IcfbPlanets.NEW_ENTERIA.LORELAI.getPlanet(),
+                IcfbPlanets.LORELAI.getPlanet(),
                 null,
                 true
         );
@@ -44,18 +44,33 @@ public class IcfbMarkets {
             _id = id;
         }
 
-        private void createMarket(MarketFactory factory, SectorAPI sector, String factionId, SectorEntityToken entity, Set<SectorEntityToken> connectedEntities, boolean withJunkAndChatter) {
-            MarketAPI market = factory.createMarket(sector, _id, factionId, entity);
+        public void createMarket(MarketFactory factory, SectorAPI sector, String factionId, SectorEntityToken entity, Set<SectorEntityToken> connectedEntities, boolean withJunkAndChatter) {
+            IcfbLog.info("    Creating market: { " + _id + " }...");
+            if (isGenerated()) {
+                IcfbLog.info("      Skipped!");
+                return;
+            }
 
             entity.setFaction(factionId);
             if (connectedEntities != null) {
                 for (SectorEntityToken connectedEntity : connectedEntities) {
                     connectedEntity.setFaction(factionId);
+                }
+            }
+
+            MarketAPI market = factory.createMarket(sector, _id, factionId, entity);
+
+            if (connectedEntities != null) {
+                for (SectorEntityToken connectedEntity : connectedEntities) {
                     market.getConnectedEntities().add(connectedEntity);
                 }
             }
+
             market.reapplyIndustries();
             sector.getEconomy().addMarket(market, withJunkAndChatter);
+            IcfbLog.info("      Done");
+
+            markAsGenerated();
         }
 
         public String getId() {
@@ -64,6 +79,22 @@ public class IcfbMarkets {
 
         public MarketAPI getMarket() {
             return Global.getSector().getEconomy().getMarket(_id);
+        }
+
+        public boolean isGenerated() {
+            return Global.getSector().getMemoryWithoutUpdate().getBoolean(getIsGeneratedKey());
+        }
+
+        private void markAsGenerated() {
+            Global.getSector().getMemoryWithoutUpdate().set(getIsGeneratedKey(), true);
+        }
+
+        private String getKey() {
+            return "$IcfbMarkets:" + _id;
+        }
+
+        private String getIsGeneratedKey() {
+            return getKey() + ":isGenerated";
         }
     }
 }

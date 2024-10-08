@@ -60,10 +60,10 @@ public class NewEnteriaCorvusModeStarSystemFactory implements StarSystemFactory 
     }
 
     private static void createStar(StarSystemAPI system) {
-        IcfbPlanets.NEW_ENTERIA.STAR.registerPlanet(system);
+        IcfbPlanets.NEW_ENTERIA_STAR.registerPlanet(system);
 
         system.initStar(
-                IcfbPlanets.NEW_ENTERIA.STAR.getId(),
+                IcfbPlanets.NEW_ENTERIA_STAR.getId(),
                 "star_red_dwarf",
                 600f,
                 300f,
@@ -75,10 +75,10 @@ public class NewEnteriaCorvusModeStarSystemFactory implements StarSystemFactory 
 
     private static void createJumpPoints(StarSystemAPI system) {
         JumpPointAPI heidiJumpPoint = Global.getFactory().createJumpPoint(
-                IcfbPlanets.NEW_ENTERIA.HEIDI.getId() + "_jump",
+                IcfbPlanets.HEIDI.getId() + "_jump",
                 "Heidi Jump-point"
         );
-        SectorEntityToken heidi = IcfbPlanets.NEW_ENTERIA.HEIDI.getPlanet();
+        SectorEntityToken heidi = IcfbPlanets.HEIDI.getPlanet();
         heidiJumpPoint.setCircularOrbit(
                 system.getStar(),
                 245+60,
@@ -90,9 +90,9 @@ public class NewEnteriaCorvusModeStarSystemFactory implements StarSystemFactory 
     }
 
     private static void createLuminaru(StarSystemAPI system) {
-        IcfbPlanets.NEW_ENTERIA.LUMINARU.registerPlanet(system);
-        IcfbPlanets.NEW_ENTERIA.LUMINARU_MAJOR.registerPlanet(system);
-        IcfbPlanets.NEW_ENTERIA.LUMINARU_MINOR.registerPlanet(system);
+        IcfbPlanets.LUMINARU.registerPlanet(system);
+        IcfbPlanets.LUMINARU_MAJOR.registerPlanet(system);
+        IcfbPlanets.LUMINARU_MINOR.registerPlanet(system);
 
         final PlanetAPI star = system.getStar();
         final float angle = 100;
@@ -109,7 +109,7 @@ public class NewEnteriaCorvusModeStarSystemFactory implements StarSystemFactory 
         final float luminaruMinorOrbitDays = 60;
 
         final PlanetAPI luminaru = system.addPlanet(
-                IcfbPlanets.NEW_ENTERIA.LUMINARU.getId(),
+                IcfbPlanets.LUMINARU.getId(),
                 star,
                 "Luminaru",
                 "gas_giant",
@@ -123,7 +123,7 @@ public class NewEnteriaCorvusModeStarSystemFactory implements StarSystemFactory 
         luminaru.applySpecChanges();
 
         final PlanetAPI luminaruMajor = system.addPlanet(
-                IcfbPlanets.NEW_ENTERIA.LUMINARU_MAJOR.getId(),
+                IcfbPlanets.LUMINARU_MAJOR.getId(),
                 luminaru,
                 "Luminaru Major",
                 "lava",
@@ -134,7 +134,7 @@ public class NewEnteriaCorvusModeStarSystemFactory implements StarSystemFactory 
         );
 
         system.addPlanet(
-                IcfbPlanets.NEW_ENTERIA.LUMINARU_MINOR.getId(),
+                IcfbPlanets.LUMINARU_MINOR.getId(),
                 luminaru,
                 "Luminaru Minor",
                 "barren-bombarded",
@@ -191,7 +191,7 @@ public class NewEnteriaCorvusModeStarSystemFactory implements StarSystemFactory 
     }
 
     private static void createLorelai(StarSystemAPI system) {
-        IcfbPlanets.NEW_ENTERIA.LORELAI.registerPlanet(system);
+        IcfbPlanets.LORELAI.registerPlanet(system);
 
         final PlanetAPI star = system.getStar();
         final float orbitDistance = 5600;
@@ -200,7 +200,7 @@ public class NewEnteriaCorvusModeStarSystemFactory implements StarSystemFactory 
         final float radius = 200;
 
         PlanetAPI planet = system.addPlanet(
-                IcfbPlanets.NEW_ENTERIA.LORELAI.getId(),
+                IcfbPlanets.LORELAI.getId(),
                 star,
                 "Lorelai",
                 "terran-eccentric",
@@ -237,7 +237,7 @@ public class NewEnteriaCorvusModeStarSystemFactory implements StarSystemFactory 
     }
 
     private static void createHeidi(StarSystemAPI system) {
-        IcfbPlanets.NEW_ENTERIA.HEIDI.registerPlanet(system);
+        IcfbPlanets.HEIDI.registerPlanet(system);
 
         final PlanetAPI star = system.getStar();
         final float orbitDistance = 2800;
@@ -246,7 +246,7 @@ public class NewEnteriaCorvusModeStarSystemFactory implements StarSystemFactory 
         final float radius = 140;
 
         PlanetAPI heidi = system.addPlanet(
-                IcfbPlanets.NEW_ENTERIA.HEIDI.getId(),
+                IcfbPlanets.HEIDI.getId(),
                 star,
                 "Heidi",
                 "irradiated",
@@ -260,7 +260,7 @@ public class NewEnteriaCorvusModeStarSystemFactory implements StarSystemFactory 
 
     private static void createNebula(StarSystemAPI system) {
         final PlanetAPI star = system.getStar();
-        final PlanetAPI luminaru = IcfbPlanets.NEW_ENTERIA.LUMINARU.getPlanet();
+        final PlanetAPI luminaru = IcfbPlanets.LUMINARU.getPlanet();
         SectorEntityToken nebula = system.addTerrain(Terrain.NEBULA, new BaseTiledTerrain.TileParams(
                 "   xx " +
                         "  xx x" +

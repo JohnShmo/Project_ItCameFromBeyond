@@ -7,6 +7,12 @@ import com.fs.starfarer.api.characters.FullName;
 import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.impl.campaign.ids.Ranks;
+import com.fs.starfarer.api.impl.campaign.ids.Tags;
+import com.fs.starfarer.api.impl.campaign.ids.Voices;
+import com.fs.starfarer.api.impl.campaign.missions.hub.BaseHubMissionCreator;
+import com.fs.starfarer.api.impl.campaign.missions.hub.BaseMissionHub;
+import com.fs.starfarer.api.impl.campaign.missions.hub.MissionHub;
+import com.fs.starfarer.api.loading.PersonMissionSpec;
 import org.shmo.icfb.campaign.gen.PersonFactory;
 import org.shmo.icfb.utilities.ShmoGenUtils;
 
@@ -27,8 +33,10 @@ public class XentAlabasterCorvusModePersonFactory implements PersonFactory {
                 "shifter_01_static"
         );
 
-        person.setImportance(PersonImportance.VERY_HIGH);
+        person.setImportance(PersonImportance.HIGH);
+        person.addTag(Tags.CONTACT_MILITARY);
         person.getMarket().getCommDirectory().getEntryForPerson(person).setHidden(true);
+        BaseMissionHub.set(person, new BaseMissionHub(person));
 
         return person;
     }

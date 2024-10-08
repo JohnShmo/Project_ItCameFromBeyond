@@ -3,8 +3,9 @@ package org.shmo.icfb.campaign.scripts.temp;
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
 import org.shmo.icfb.IcfbLog;
+import org.shmo.icfb.campaign.IcfbMemFlags;
 import org.shmo.icfb.campaign.quests.impl.JumpstartRequiredQuest;
-import org.shmo.icfb.campaign.scripts.QuestManager;
+import org.shmo.icfb.campaign.scripts.IcfbQuestManager;
 
 public class AgentContactTimer implements EveryFrameScript {
     private final long _start;
@@ -35,7 +36,7 @@ public class AgentContactTimer implements EveryFrameScript {
 
         final float daysElapsed = Global.getSector().getClock().getElapsedDaysSince(_start);
         if (daysElapsed >= _days) {
-            QuestManager.getInstance().add(new JumpstartRequiredQuest());
+            IcfbQuestManager.getInstance().add(new JumpstartRequiredQuest());
             IcfbLog.info("Agent timer finished");
             _done = true;
         }

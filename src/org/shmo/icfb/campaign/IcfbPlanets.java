@@ -4,20 +4,16 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
 
 public class IcfbPlanets {
-    public static class NEW_ENTERIA {
-        public static PlanetData STAR = new PlanetData("icfb_new_enteria");
-        public static PlanetData HEIDI = new PlanetData("icfb_heidi");
-        public static PlanetData LORELAI = new PlanetData("icfb_lorelai");
-        public static PlanetData LUMINARU = new PlanetData("icfb_luminaru");
-        public static PlanetData LUMINARU_MAJOR = new PlanetData("icfb_luminaru_major");
-        public static PlanetData LUMINARU_MINOR = new PlanetData("icfb_luminaru_minor");
-    }
+    public static PlanetData NEW_ENTERIA_STAR = new PlanetData("icfb_new_enteria");
+    public static PlanetData HEIDI = new PlanetData("icfb_heidi");
+    public static PlanetData LORELAI = new PlanetData("icfb_lorelai");
+    public static PlanetData LUMINARU = new PlanetData("icfb_luminaru");
+    public static PlanetData LUMINARU_MAJOR = new PlanetData("icfb_luminaru_major");
+    public static PlanetData LUMINARU_MINOR = new PlanetData("icfb_luminaru_minor");
 
-    public static class KATO {
-        public static PlanetData STAR = new PlanetData("icfb_kato");
-        public static PlanetData ALICE = new PlanetData("icfb_alice");
-        public static PlanetData MOLLY = new PlanetData("icfb_molly");
-    }
+    public static PlanetData KATO_STAR = new PlanetData("icfb_kato");
+    public static PlanetData ALICE = new PlanetData("icfb_alice");
+    public static PlanetData MOLLY = new PlanetData("icfb_molly");
 
     public static class PlanetData {
         private final String _id;
@@ -45,8 +41,12 @@ public class IcfbPlanets {
             return (StarSystemAPI) Global.getSector().getMemoryWithoutUpdate().get(getContainingStarSystemKey());
         }
 
+        private String getKey() {
+            return "$IcfbPlanets:" + _id;
+        }
+
         private String getContainingStarSystemKey() {
-            return "$" + _id + ":containingStarSystem";
+            return getKey() + ":containingStarSystem";
         }
 
         private void setContainingStarSystem(LocationAPI location) {

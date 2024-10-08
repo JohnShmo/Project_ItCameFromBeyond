@@ -13,7 +13,7 @@ public class IcfbStarSystems {
     public static final StarSystemData KATO = new StarSystemData("Kato");
 
     public static void generateForCorvusMode(SectorAPI sector) {
-        IcfbLog.info("- Initializing star systems...");
+        IcfbLog.info("  Initializing star systems...");
 
         NEW_ENTERIA.createStarSystem(
                 new NewEnteriaCorvusModeStarSystemFactory(),
@@ -37,12 +37,37 @@ public class IcfbStarSystems {
             _name = name;
         }
 
-        private void createStarSystem(StarSystemFactory factory, SectorAPI sector, float x, float y) {
+        public void createStarSystem(StarSystemFactory factory, SectorAPI sector, float x, float y) {
+            IcfbLog.info("    Creating star system: { " + _name + " }...");
+            if (isGenerated()) {
+                IcfbLog.info("      Skipped!");
+                return;
+            }
+
             factory.createStarSystem(sector, _name, x, y);
+            IcfbLog.info("      Done");
+
+            markAsGenerated();
         }
 
         public StarSystemAPI getStarSystem() {
             return Global.getSector().getStarSystem(_name);
+        }
+
+        public boolean isGenerated() {
+            return Global.getSector().getMemoryWithoutUpdate().getBoolean(getIsGeneratedKey());
+        }
+
+        private void markAsGenerated() {
+            Global.getSector().getMemoryWithoutUpdate().set(getIsGeneratedKey(), true);
+        }
+
+        private String getKey() {
+            return "$IcfbStarSystems:" + _name;
+        }
+
+        private String getIsGeneratedKey() {
+            return getKey() + ":isGenerated";
         }
     }
 }
