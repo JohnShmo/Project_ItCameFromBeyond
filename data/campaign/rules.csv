@@ -408,10 +408,55 @@ icfbXentSpecialMission2,DialogOptionSelected,"$option == icfbXentSpecialMissionO
 AddXP 15000
 AddStoryPoints 1","Your crew works to load the device on a large shuttle. Once the coordinates are plugged in, you await word from your logistics team. Before they're even able to get to you about the status of the delivery, however, credits are transferred to your account in piecemeal amounts from various simultaneous sources.
 
-""Thank you for your cooperation thus far, $playerSirOrMadam $playerLastName,"" Xent says after reconnecting to you comm link, ""Now - for the next part of your great work.""","0:icfbXentSpecialMissionOpt3:Continue",
-icfbXentSpecialMission3,DialogOptionSelected,"$option == icfbXentSpecialMissionOpt3",,"placeholder","0:icfbXentSpecialMissionOpt4:Continue",
+""Thank you for your cooperation thus far, $playerSirOrMadam $playerLastName,"" Xent says after reconnecting to you comm link, ""Now - for the next part of your trial.""
+
+You recieve word that the shuttle was loaded with something else for its return to your fleet.","0:icfbXentSpecialMissionOpt3:Continue",
+icfbXentSpecialMission3,DialogOptionSelected,"$option == icfbXentSpecialMissionOpt3",,"""You are to take this instrument package to systems with powerful gravity wells - preferably black holes or neutron stars,"" he explains. His image warps momentarily, accompanied by the usual static. In his place, a simulated model of a 3-dimensional gravitational field appears, rotating and zooming on notable features.
+
+""Use your fleet's long range scanners as close as possible to these fields. The data collected about the particular structure of their local spacetime will be invaluable to our great work.""
+
+You see your quartermaster cringe at the idea of putting the fleet so close to dangerous bodies. The maintenance costs won't be pretty.
+
+""The readings from five different such celestial phenomenon should be sufficient,"" Xent concludes.","0:icfbXentSpecialMissionOpt4:Continue",
 icfbXentSpecialMission4,DialogOptionSelected,"$option == icfbXentSpecialMissionOpt4","SetShortcut cutCommLink ""ESCAPE""
-IcfbContinueQuest jumpstart_required","placeholder","0:cutCommLink:Cut the comm link",
+IcfbContinueQuest jumpstart_required","""Take great care,"" he warns, ""The Boundless are on to us. It is not unlikely that you will encounter hunter fleets, trying to impede our great work.""
+
+The image of his face reappears, and falls into a grimace.
+
+""No matter what, do NOT allow them to arrest the measuring instrument from you, $playerSirOrMadam $playerLastName. All of our great work will be for nought if it falls in the wrong hands,"" he says. He allows the silence to hang for some time, probably to emphasize his admonishment. But then he smiles again - for the second time.
+
+""The Greater Will provides.""
+
+His face disappears in to sustained static.","0:cutCommLink:Cut the comm link",
 "#END Xent Special Mission",,,,,,
+,,,,,,
+# Boundless Fleet Harassment,,,,,,
+icfbJRFleetEncounterCheck,BeginFleetEncounter,"$faction.id == icfb_boundless
+$icfbIsJRFleet score:100
+$icfbWantsToTalk
+!$ignorePlayerCommRequests
+!$icfbReachedAgreement","$icfbJRFleetConvo = true 0
+AddText ""You're being hailed by the $faction $otherShipOrFleet."" $faction.baseColor
+$hailing = true 0",,,
+icfbJRFleetEncounterPre,OpenCommLink,"$entity.icfbJRFleetConvo score:100","$entity.ignorePlayerCommRequests = true 1
+$entity.icfbWantsToTalk = false
+$entity.icfbJRBoundlessFleetConvo = false
+FireBest icfbJRFleetConvoStart",,,
+icfbJRFleetEncounter0,icfbJRFleetConvoStart,,"FireAll icfbJRPopulateFleetEncounterOptions","""Hark, ye servant of the devil,"" $heOrShe says. The captain looks behind $himOrHerself and grins to a nearby officer. Are they taking this seriously? $PersonRank $personName turns back to face you, smirking with confidence.
+
+""Listen bud, the gig is up. Nobody here has to get hurt if you just play along nicely,"" $heOrShe pauses for a moment, changing posture, ""That guy you've been workin' as a lapdog for? He's been playing you like a fiddle.""",,
+icfbJRAskAboutXentOption,icfbJRPopulateFleetEncounterOptions,"!$icfbJRBoundlessFleetEncounterAskAboutXentOptSelected
+!$icfbJRCantAskQuestions",,,"0:icfbJRAskAboutXentOpt:""What do you know about my employer?""",
+icfbJRAskIntentionsOption,icfbJRPopulateFleetEncounterOptions,"!$icfbJRAskIntentionsOptSelected
+!$icfbJRCantAskQuestions",,,"1:icfbJRAskIntentionsOpt:""What do you want?""",
+icfbJRPlayDumbOption,icfbJRPopulateFleetEncounterOptions,"!$icfbJRPlayDumbOptSelected
+!$icfbJRCantAskQuestions",,,"2:icfbJRPlayDumbOpt:""I have no idea what you are talking about.""",
+icfbJRStoryPointOption,icfbJRPopulateFleetEncounterOptions,"$icfbJRCanTrySolutions","SetStoryOption icfbJRStoryPointOpt general ""Arrange for a fake shift drive prototype device to be sent over.""",,"50:icfbJRStoryPointOpt:Bluff your way out of this",
+icfbJRThreatenOption,icfbJRPopulateFleetEncounterOptions,"$icfbJRCanTrySolutions",,,"51:icfbJRThreatenOpt:""Get out of my way, or I will make you."" (threaten)",
+icfbJRBribeOption,icfbJRPopulateFleetEncounterOptions,"$icfbJRCanTrySolutions
+!$icfbJRTriedBribe",,,"52:icfbJRBribeOpt:""Perhaps we can come to an 'agreement'."" (bribe)",
+icfbJRAgreeOption,icfbJRPopulateFleetEncounterOptions,"$icfbJRCanTrySolutions",,,"53:icfbJRAgreeOpt:Let them scan your instrument package",
+icfbJRCutCommsOption,icfbJRPopulateFleetEncounterOptions,"$icfbJRCanCutComms","SetShortcut cutCommLink ""ESCAPE""",,"100:cutCommLink Cut the comm link",
+"#END Boundless Fleet Harassment",,,,,,
 "#END Jumpstart Required Quest",,,,,,
 
