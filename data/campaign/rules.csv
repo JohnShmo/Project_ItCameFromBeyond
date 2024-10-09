@@ -49,7 +49,9 @@ icfbTalkAboutChariot2,DialogOptionSelected,"$option == icfbTalkAboutChariotOptio
 
 ""N-no. This is impossible!"" $heOrShe exclaims, ""This was supposed to be lost forever... we left this behind forever!""","icfbTalkAboutChariotOptionSelect3:""Is there something wrong?""",
 icfbTalkAboutChariot3,DialogOptionSelected,"$option == icfbTalkAboutChariotOptionSelect3","IcfbReturningHopeReputationHit
-IcfbContinueQuest returning_hope","""You!"" $heOrShe shouts furiously, ""You're one of them, I know it! Demon, devil, MONSTER!""
+IcfbContinueQuest returning_hope
+AddXP 15000
+AddStoryPoints 1","""You!"" $heOrShe shouts furiously, ""You're one of them, I know it! Demon, devil, MONSTER!""
 
 You can only watch as the once composed official descends into a full-blown panic attack. $HeOrShe hyperventilates between slurs and babbling words of insult. Eventually, $personFirstName regains $hisOrHer composure.
 
@@ -387,13 +389,29 @@ AddText ""If you accept the responsibility of this task, you will no longer reci
 
 His image is plastered with the anticipation of a cold, unfeeling predator. You feel his eyes piercing your soul from behind that visor of his.
 
-""Fortunately, this isn't a time sensitive matter. You can take as long as you need to decide to undertake this trial. And once you start, you shall have as many cycles as it takes to complete it. We both know what the prize is,"" he finishes, awaiting your response.","0:icfbXentSpecialMissionOpt1:""I'm ready."" (accept)
+""Fortunately, this isn't a time sensitive matter. You can take as long as you need to decide whether to undertake this trial. And once you start, you shall have as many cycles as it takes. We both know what the prize is,"" he finishes, awaiting your response.","0:icfbXentSpecialMissionOpt1:""I'm ready."" (accept)
 100:mh_close:""Nevermind."" (decline)",
-icfbXentSpecialMission1,DialogOptionSelected,"$option == icfbXentSpecialMissionOpt1",,,"0:icfbXentSpecialMissionOpt2:Continue",
-icfbXentSpecialMission2,DialogOptionSelected,"$option == icfbXentSpecialMissionOpt2",,,"0:icfbXentSpecialMissionOpt3:Continue",
-icfbXentSpecialMission3,DialogOptionSelected,"$option == icfbXentSpecialMissionOpt3",,,"0:icfbXentSpecialMissionOpt4:Continue",
+icfbXentSpecialMission1,DialogOptionSelected,"$option == icfbXentSpecialMissionOpt1",,"""And so it begins,"" he says plainly. For the first time you see a small smile creep across his face.
+
+""First order of business: I need you to surrender the device you salvaged from the Chariot of Hope all that time ago. Don't worry, you will be compensated for this transaction.""
+
+Your Tri-Pad hums to life with detailed instructions for delivery. A dead drop location on a remote part of the colony.
+
+""Once I confirm the delivery, you will be paid in kind.""","0:icfbXentSpecialMissionOpt2:Order the device to be sent to the provided coordinates
+1:icfbXentAskAboutChariotDeviceOpt:""Before I do, may I ask why?""",
+icfbXentAskAboutChariotDevice0,DialogOptionSelected,"$option == icfbXentAskAboutChariotDeviceOpt",,"Xent's smile fades slightly. Perhaps the preverbal winds were taken out of his sails.
+
+""$PlayerSirOrMadam $playerLastName... It would be most difficult to restore a shift drive if I didn't have one to work with in the first place,"" he drones out. Was that a hint of condescension?
+
+""I am aware of your tendency to 'collect' things; Warehouses full of military grade equipment that will never again see the light of a star. Trust me, this device will be more useful to you once I'm through working with it.""","0:icfbXentSpecialMissionOpt2:Order the device to be sent to the provided coordinates","Add another rule that checks if the player has stuff in abandoned stations, for another extra funny line or two."
+icfbXentSpecialMission2,DialogOptionSelected,"$option == icfbXentSpecialMissionOpt2","AddCredits 30000
+AddXP 15000
+AddStoryPoints 1","Your crew works to load the device on a large shuttle. Once the coordinates are plugged in, you await word from your logistics team. Before they're even able to get to you about the status of the delivery, however, credits are transferred to your account in piecemeal amounts from various simultaneous sources.
+
+""Thank you for your cooperation thus far, $playerSirOrMadam $playerLastName,"" Xent says after reconnecting to you comm link, ""Now - for the next part of your great work.""","0:icfbXentSpecialMissionOpt3:Continue",
+icfbXentSpecialMission3,DialogOptionSelected,"$option == icfbXentSpecialMissionOpt3",,"placeholder","0:icfbXentSpecialMissionOpt4:Continue",
 icfbXentSpecialMission4,DialogOptionSelected,"$option == icfbXentSpecialMissionOpt4","SetShortcut cutCommLink ""ESCAPE""
-IcfbContinueQuest jumpstart_required",,"0:cutCommLink:Cut the comm link",
+IcfbContinueQuest jumpstart_required","placeholder","0:cutCommLink:Cut the comm link",
 "#END Xent Special Mission",,,,,,
 "#END Jumpstart Required Quest",,,,,,
 
