@@ -35,8 +35,9 @@ public class XentAlabasterCorvusModePersonFactory implements PersonFactory {
 
         person.setImportance(PersonImportance.HIGH);
         person.addTag(Tags.CONTACT_MILITARY);
-        person.getMarket().getCommDirectory().getEntryForPerson(person).setHidden(true);
         BaseMissionHub.set(person, new BaseMissionHub(person));
+        if (market != null)
+            person.getMarket().getCommDirectory().getEntryForPerson(person).setHidden(true);
 
         return person;
     }

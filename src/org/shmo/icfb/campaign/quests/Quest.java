@@ -28,7 +28,7 @@ public class Quest {
     public static void sendIntelForStep(QuestStep step) {
         QuestStepIntelPlugin intelPlugin = new QuestStepIntelPlugin(step.intel);
         removeIntelForStep(step); // <-- Just in case
-        intelPlugin.getImpl().init(step);
+        intelPlugin.getImpl().init(step, intelPlugin);
         Global.getSector().getIntelManager().addIntel(intelPlugin);
     }
 

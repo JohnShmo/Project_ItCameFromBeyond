@@ -48,7 +48,8 @@ $HeOrShe pauses for a moment, $hisOrHer expression is wavering. You see a bead o
 icfbTalkAboutChariot2,DialogOptionSelected,"$option == icfbTalkAboutChariotOptionSelect2",,"$personFirstName examines their Tri-pad tentatively. $HisOrHer eyes grow wide with what can only be described as horror, mouth agape in shock.
 
 ""N-no. This is impossible!"" $heOrShe exclaims, ""This was supposed to be lost forever... we left this behind forever!""","icfbTalkAboutChariotOptionSelect3:""Is there something wrong?""",
-icfbTalkAboutChariot3,DialogOptionSelected,"$option == icfbTalkAboutChariotOptionSelect3","IcfbReturningHopeReputationHit
+icfbTalkAboutChariot3,DialogOptionSelected,"$option == icfbTalkAboutChariotOptionSelect3","$global.icfbNameOfScaredBoundlessOfficial = $personName
+IcfbReturningHopeReputationHit
 IcfbContinueQuest returning_hope
 AddXP 15000
 AddStoryPoints 1","""You!"" $heOrShe shouts furiously, ""You're one of them, I know it! Demon, devil, MONSTER!""
@@ -120,21 +121,21 @@ icfbXentContinue3,DialogOptionSelected,"$option == icfbXentContinueOpt3",,"Xent'
 
 ""Shift drive. Our chariot of hope.""","0:icfbXentContinueOpt4:Continue",
 icfbXentContinue4,DialogOptionSelected,"$option == icfbXentContinueOpt4","IcfbContinueQuest jumpstart_required
-$icfbCanReactToZig = true","""To awaken this lost technology, I will require you to perform some number of... tasks,"" he says. You feel as though you've heard something like this before, ""The Boundless are keen on suppressing any attempts to unlock their coveted shift drive. They plan to use it as a weapon to conquer your sector, and cannot afford to let its secrets become unraveled.""
+$icfbCanReactToZig = true
+UpdateMemory","""To awaken this lost technology, I will require you to perform some number of... tasks,"" he says. You feel as though you've heard something like this before, ""The Boundless are keen on suppressing any attempts to unlock their coveted shift drive. They plan to use it as a weapon to conquer your sector, and cannot afford to let its secrets become unraveled.""
 
 Something about the reasoning he provides seems artificial, but you can't really place why that might be.
 
-""The Greater Will provides, $playerSirOrMadam $playerLastName. The Greater Will provides.""","0:cutCommLink:Leave",
+""The Greater Will provides, $playerSirOrMadam $playerLastName. The Greater Will provides.""","0:icfbXentContinueOpt5:Continue",
 icfbXentContinue5,DialogOptionSelected,"$option == icfbXentContinueOpt5","FireAll icfbXentPopulateMissionsOptions",,,
 "#END Xent Convo",,,,,,
 ,,,,,,
 # Xent Missions,,,,,,
 icfbXentGreeting1,PickGreeting,"$isPerson
-$global.icfbAcceptingXentMissions
 $id == icfb_xent","ShowPersonVisual
 FireAll icfbXentPopulateMissionsOptions","""Our work continues...""",,
 icfbXentMHOpenText,MHOpenText,"$id == icfb_xent","FireBest ContactPreMissionListText","""Let us see,"" he says, his face unmoving.",,
-icfbXentAddHubOptions,icfbXentPopulateMissionsOptions,,"FireBest UpdateMHOpenOptionText",,"5:mh_open:""Do you have any work for me?""",
+icfbXentAddHubOptions,icfbXentPopulateMissionsOptions,"$global.icfbAcceptingXentMissions","FireBest UpdateMHOpenOptionText",,"5:mh_open:""Do you have any work for me?""",
 icfbXentAddLeaveOption,icfbXentPopulateMissionsOptions,,"SetShortcut cutCommLink ""ESCAPE""",,"100:cutCommLink:Cut the comm link",
 icfbXentNoMissions,ContactPreMissionListText,"$mh_count <= 0
 $id == icfb_xent",,"""No work presents itself to us at the moment. Patience, and the Greater Will shall provide.""",,
@@ -377,7 +378,6 @@ icfbXentDevForceSpecialMissionOption0,icfbXentPopulateMissionsOptions,"$global.i
 icfbXentDevForceSpecialMission,DialogOptionSelected,"$option == icfbXentDevForceSpecialMissionOpt","$global.icfbXentOfferingSpecialMission = true
 FireAll icfbXentPopulateMissionsOptions",,,
 icfbXentGreeting2,PickGreeting,"$isPerson
-$global.icfbAcceptingXentMissions
 $id == icfb_xent
 $global.icfbXentOfferingSpecialMission","ShowPersonVisual
 FireAll icfbXentPopulateMissionsOptions","""Our work continues..."" Xent Alabaster nods his head very slightly. You can tell he has something more to say.
@@ -430,33 +430,172 @@ The image of his face reappears, and falls into a grimace.
 His face disappears in to sustained static.","0:cutCommLink:Cut the comm link",
 "#END Xent Special Mission",,,,,,
 ,,,,,,
-# Boundless Fleet Harassment,,,,,,
-icfbJRFleetEncounterCheck,BeginFleetEncounter,"$faction.id == icfb_boundless
-$icfbIsJRFleet score:100
-$icfbWantsToTalk
-!$ignorePlayerCommRequests
-!$icfbReachedAgreement","$icfbJRFleetConvo = true 0
-AddText ""You're being hailed by the $faction $otherShipOrFleet."" $faction.baseColor
-$hailing = true 0",,,
-icfbJRFleetEncounterPre,OpenCommLink,"$entity.icfbJRFleetConvo score:100","$entity.ignorePlayerCommRequests = true 1
-$entity.icfbWantsToTalk = false
-$entity.icfbJRBoundlessFleetConvo = false
-FireBest icfbJRFleetConvoStart",,,
-icfbJRFleetEncounter0,icfbJRFleetConvoStart,,"FireAll icfbJRPopulateFleetEncounterOptions","""Hark, ye servant of the devil,"" $heOrShe says. The captain looks behind $himOrHerself and grins to a nearby officer. Are they taking this seriously? $PersonRank $personName turns back to face you, smirking with confidence.
+# Mercenary Fleet Encounter,,,,,,
+icfbJRFleetEncounter0,icfbJRFleetConvoStart,,"$icfbJRBribeAmount = 100000
+UpdateMemory
+FireAll icfbJRPopulateFleetEncounterOptions","""Hark, ye servant of the devil,"" $heOrShe says. The captain looks behind $himOrHerself and grins to a nearby officer. Are they taking this seriously? $PersonRank $personName turns back to face you, smirking with confidence.
 
 ""Listen bud, the gig is up. Nobody here has to get hurt if you just play along nicely,"" $heOrShe pauses for a moment, changing posture, ""That guy you've been workin' as a lapdog for? He's been playing you like a fiddle.""",,
-icfbJRAskAboutXentOption,icfbJRPopulateFleetEncounterOptions,"!$icfbJRBoundlessFleetEncounterAskAboutXentOptSelected
+icfbJRCutCommsOption,icfbJRPopulateFleetEncounterOptions,"$icfbJRCanCutComms","SetShortcut cutCommLink ""ESCAPE""",,"100:cutCommLink:Cut the comm link",
+,,,,,,
+# Init,,,,,,
+icfbJRFleetEncounterCheck,BeginFleetEncounter,"$icfbIsJRFleet score:100
+!$ignorePlayerCommRequests
+!$icfbAlreadyTalked","$icfbJRFleetConvo = true 0
+AddText ""You're being hailed by the $faction $otherShipOrFleet."" $faction.baseColor
+$hailing = true 0",,,
+icfbJRFleetEncounterPre,OpenCommLink,"$entity.icfbJRFleetConvo score:100
+!$entity.icfbAlreadyTalked","$entity.ignorePlayerCommRequests = true 1
+$entity.icfbAlreadyTalked = true
+$entity.icfbJRFleetConvo = false
+FireBest icfbJRFleetConvoStart",,,
+"#END Init",,,,,,
+,,,,,,
+# Questions,,,,,,
+,,,,,,
+# Ask About Xent,,,,,,
+icfbJRAskAboutXentOption,icfbJRPopulateFleetEncounterOptions,"!$icfbJRAskAboutXentOptSelected
 !$icfbJRCantAskQuestions",,,"0:icfbJRAskAboutXentOpt:""What do you know about my employer?""",
+icfbJRAskAboutXent0,DialogOptionSelected,"$option == icfbJRAskAboutXentOpt","$icfbJRAskAboutXentOptSelected = true
+$icfbJRPlayDumbOptSelected = true
+UpdateMemory","The $personFaction commander throws $hisOrHer hands behind $hisOrHer head in confidence, ""You really have no idea what you're dealing with here, do you?""
+
+$HeOrShe shakes $hisOrHer head in earnest. $HeOrShe taps a few times on $hisOrHer Tri-Pod, and you see a profile of Xent Alabaster show up on your screen.
+
+""Tell me captain, do you often just make deals with people you have absolutely zero intel on? My informants tell me this 'Xent Alabaster' is essentially a ghost. No civilian records, no affiliations, nothing. Wana know why?""","0:icfbJRAskAboutXentOpt1:""I have a feeling you're going to tell me anyway.""",
+icfbJRAskAboutXent1,DialogOptionSelected,"$option == icfbJRAskAboutXentOpt1",,"""Now you're gettin' it!"" $personFirstName exclaims. Another smirk pushes up $hisOrHer mouth, ""This Xent guy is part of a crazy cult called 'The Shifters'. Nasty folk, or so I understand.""
+
+Diagrams of partially blurred ship designs, heavily redacted images of warped faces, and disfigured bodies appear on your display - all overlapping like scattered case files on a desk.
+
+""The Boundless were founded by a group of escapees, you see. People tryin' to get away from the madness. Ol' Xenty boy is a holdover from that death cult.""","0:icfbJRAskAboutXentOpt1Branch0:""Gee, it sure would have been nice to know that when I came to the Boundless the first time.""
+1:icfbJRAskAboutXentOpt1Branch1:""I don't believe you, it's the Boundless that are the enemy.""",
+icfbJRAskAboutXent1Branch0,DialogOptionSelected,"$option == icfbJRAskAboutXentOpt1Branch0",,"""Hell, you really gave poor $global.icfbNameOfScaredBoundlessOfficial a scare,"" $heOrShe says, scratching $hisOrHer chin, ""They went around talking about you like you were a Shifter yourself. That shift drive stuff is something that sparks... bad memories for them, I think.""
+
+$personFirstName appears lost in thought for a moment, ""Technically speaking, I shouldn't really know any of this. My guys are good - real good. Don't think for a second that I got any of this information directly from the Boundless themselves.""","0:icfbJRAskAboutXentOpt2:Continue",
+icfbJRAskAboutXent1Branch1,DialogOptionSelected,"$option == icfbJRAskAboutXentOpt1Branch1",,"""I don't really like them as much as the next guy, captain,"" $heOrShe says, frowning slightly, ""A bunch of bureaucrats scared shitless by ghosts of their past.""
+
+""I only took this job so I could get to you without raising too much suspicion. I kinda expected someone a little more open to 'ideas', so to speak,"" $heOrShe sighs, ""Technically speaking, I shouldn't really know any of this. My guys are good - real good. Don't think for a second that I got any of this information directly from the Boundless themselves.""","0:icfbJRAskAboutXentOpt2:Continue",
+icfbJRAskAboutXent2,DialogOptionSelected,"$option == icfbJRAskAboutXentOpt2","FireAll icfbJRPopulateFleetEncounterOptions","""Anyway, Xent Alabaster is - from what I can tell - some kind of 'priest', or leader within the ranks of the cult. He wants to remake a shift drive, but to be honest I couldn't tell you why,"" $heOrShe says, ""And I'm still unclear about why the Boundless are so terrified by the prospect.""
+
+$personFirstName smiles coyly, ""That's where you come in.""",,
+"#END Ask About Xent",,,,,,
+,,,,,,
+# Ask Intentions,,,,,,
 icfbJRAskIntentionsOption,icfbJRPopulateFleetEncounterOptions,"!$icfbJRAskIntentionsOptSelected
-!$icfbJRCantAskQuestions",,,"1:icfbJRAskIntentionsOpt:""What do you want?""",
+!$icfbJRCantAskQuestions",,,"1:icfbJRAskIntentionsOpt:""What do you want from me?""",
+icfbJRAskIntentions0,DialogOptionSelected,"$option == icfbJRAskIntentionsOpt","$icfbJRAskIntentionsOptSelected = true
+$icfbJRCanTrySolutions = true
+UpdateMemory","""It's pretty simple: I need you to let me scan that instrument package Ol' Xenty gave you,"" the captain states with an air of smugness. $HeOrShe seems to believe this should surprise you.
+
+""I don't want to keep it or anything - that defeats the purpose. I just want to know more about what your 'employer' is up to. You'll just run along, and I'll pretend like I didn't see you afterwards.""","0:icfbJRAskIntentionsOpt1:""For what reason?""",
+icfbJRAskIntentions1,DialogOptionSelected,"$option == icfbJRAskIntentionsOpt1","FireAll icfbJRPopulateFleetEncounterOptions","""Well - if you have what I think you do - then I can figure out exactly why Xent Alabaster would want to help you build a shift drive,"" $heOrShe says confidently, ""You'll go through with his little mission, and once you get ahold of the prize, I'll be in a better position to counter him if he tries anything suspicious.""
+
+""We might even consider this the start of a 'fruitful collaboration',"" the captain winks.",,
+"#END Ask Intentions",,,,,,
+,,,,,,
+# Play Dumb,,,,,,
 icfbJRPlayDumbOption,icfbJRPopulateFleetEncounterOptions,"!$icfbJRPlayDumbOptSelected
 !$icfbJRCantAskQuestions",,,"2:icfbJRPlayDumbOpt:""I have no idea what you are talking about.""",
-icfbJRStoryPointOption,icfbJRPopulateFleetEncounterOptions,"$icfbJRCanTrySolutions","SetStoryOption icfbJRStoryPointOpt general ""Arrange for a fake shift drive prototype device to be sent over.""",,"50:icfbJRStoryPointOpt:Bluff your way out of this",
+icfbJRPlayDumb0,DialogOptionSelected,"$option == icfbJRPlayDumbOpt","$icfbJRPlayDumbOptSelected = true
+AdjustRepActivePerson -1
+UpdateMemory
+FireAll icfbJRPopulateFleetEncounterOptions","The captain seems slightly surprised by your bold-faced lie.
+
+""Color me convinced. Truly a master class negotiator right here,"" $heOrShe emotes theatrically, ""Playing dumb is such a classic, or maybe you ain't 'playing' dumb - and you're just that stupid.""
+
+$personFirstName suddenly adopts an uncharacteristically serious demeanor, ""Listen carefully, I was hired to take you out by the Boundless - and not for chump change, either. You can go along with my little scheme here, or I'll just have to take your head as a prize instead. I need SOMETHING to show for this.""",,
+"#END Play Dumb",,,,,,
+"#END Questions",,,,,,
+,,,,,,
+# Solutions,,,,,,
+icfbJRStoryPointOption,# icfbJRPopulateFleetEncounterOptions,"$icfbJRCanTrySolutions","SetStoryOption icfbJRStoryPointOpt general ""Arrange for a fake shift drive prototype device to be sent over""",,"50:icfbJRStoryPointOpt:Bluff your way out of this",
+,,,,,,
+# Agree,,,,,,
+icfbJRAgreeOption,icfbJRPopulateFleetEncounterOptions,"$icfbJRCanTrySolutions",,,"30:icfbJRAgreeOpt:Let them scan your instrument package",
+icfbJRAgree0,DialogOptionSelected,"$option == icfbJRAgreeOpt","$global.icfbLetMercenaryScanXentDevice = true
+$icfbJRCanTrySolutions = false
+$icfbJRCanCutComms = true
+$icfbJRPlayDumbOptSelected = true
+AdjustRepActivePerson 5
+MakeOtherFleetNonHostile
+MakeOtherFleetAllowDisengage
+UpdateMemory
+FireAll icfbJRPopulateFleetEncounterOptions","The captain smiles. $HeOrShe barks some orders at $hisOrHer subordinates, and requests that you temporarily eject the package into space.
+
+Some time passes, and then you get the green light to recover it, ""Thanks for makin' this easy on me. I look forward to working with you in the future, captain.""",,
+"#END Agree",,,,,,
+,,,,,,
+# Threaten,,,,,,
 icfbJRThreatenOption,icfbJRPopulateFleetEncounterOptions,"$icfbJRCanTrySolutions",,,"51:icfbJRThreatenOpt:""Get out of my way, or I will make you."" (threaten)",
+icfbJRThreaten0,DialogOptionSelected,"$option == icfbJRThreatenOpt","$global.icfbThreatenedMercenary = true
+$icfbJRCanTrySolutions = false
+$icfbJRCanCutComms = true
+$icfbJRCantAskQuestions = true
+AdjustRepActivePerson -10
+MakeOtherFleetHostile
+MakeOtherFleetAllowDisengage
+MakeOtherFleetNoRepImpact
+UpdateMemory
+FireAll icfbJRPopulateFleetEncounterOptions","""So be it. I was afraid you'd act like this,"" $personFirstName sighs with an air of disappointment, ""Looks like I won't be able to convince you otherwise.""
+
+Your comm link goes static as the connection drops suddenly.",,
+"#END Threaten",,,,,,
+,,,,,,
+# Bribe,,,,,,
 icfbJRBribeOption,icfbJRPopulateFleetEncounterOptions,"$icfbJRCanTrySolutions
-!$icfbJRTriedBribe",,,"52:icfbJRBribeOpt:""Perhaps we can come to an 'agreement'."" (bribe)",
-icfbJRAgreeOption,icfbJRPopulateFleetEncounterOptions,"$icfbJRCanTrySolutions",,,"53:icfbJRAgreeOpt:Let them scan your instrument package",
-icfbJRCutCommsOption,icfbJRPopulateFleetEncounterOptions,"$icfbJRCanCutComms","SetShortcut cutCommLink ""ESCAPE""",,"100:cutCommLink Cut the comm link",
-"#END Boundless Fleet Harassment",,,,,,
+!$icfbJRTriedBribe",,,"52:icfbJRBribeOpt:""Perhaps we can come to a different 'agreement'."" (bribe)",
+icfbJRBribe0,DialogOptionSelected,"$option == icfbJRBribeOpt
+IcfbPlayerHasCredits 100000","$icfbJRTriedBribe = true
+SetTextHighlights $icfbJRBribeAmount","$personFirstName raises an eyebrow.
+
+""Does this mission of yours really mean so much? I mean, I can find other avenues if you're willing to pay me for my trouble,"" $heOrShe says incredulously, ""They didn't offer me a small sum, either, so I guess this is another test of your loyalty or whatever.""
+
+$HeOrShe checks something on their Tri-Pad, and looks back up to you, ""$icfbJRBribeAmount credits should cover this.""","0:icfbJRBribeAcceptOpt:Pay the bribe
+1:icfbJRBribeRefuseOpt:Refuse the offer",
+icfbJRBribeCantPay0,DialogOptionSelected,"$option == icfbJRBribeOpt","$icfbJRTriedBribe = true
+SetTextHighlights $icfbJRBribeAmount","$personFirstName raises an eyebrow.
+
+""Does this mission of yours really mean so much? I mean, I can find other avenues if you're willing to pay me for my trouble,"" $heOrShe says incredulously, ""They didn't offer me a small sum, either, so I guess this is another test of your loyalty or whatever.""
+
+$HeOrShe checks something on their Tri-Pad, and looks back up to you, ""$icfbJRBribeAmount credits should cover this.""","0:icfbJRBribeRefuseOpt:Refuse the offer",
+icfbJRBribeAccept0,DialogOptionSelected,"$option == icfbJRBribeAcceptOpt","$global.icfbBribedMercenary = true
+$icfbJRCanTrySolutions = false
+$icfbJRCanCutComms = true
+$icfbJRPlayDumbOptSelected = true
+MakeOtherFleetNonHostile
+MakeOtherFleetAllowDisengage
+UpdateMemory
+FireAll icfbJRPopulateFleetEncounterOptions","""Alright then, carry on. I may or may not see you some other time,"" $heOrShe says with a yawn.",,
+icfbJRBribeRefuse0,DialogOptionSelected,"$option == icfbJRBribeRefuseOpt","AdjustRepActivePerson -5
+UpdateMemory
+FireAll icfbJRPopulateFleetEncounterOptions","""You are a flakey person - you know that, captain?"" $heOrShe spits impatiently.",,
+"#END Bribe",,,,,,
+"#END Solutions",,,,,,
+"#END Mercenary Fleet Encounter",,,,,,
+,,,,,,
+# Finale,,,,,,
+icfbXentGreeting3,PickGreeting,"$isPerson
+$global.icfbXentSpecialMissionComplete
+$id == icfb_xent","ShowPersonVisual","""Ah, welcome back, $playerSirOrMadam $playerLastName"" Xent starts, ""I imagine you have gathered the data I requested.""
+
+A long pause deafens the conversation with anticipation. You give your crew the go-ahead to transfer the instrument package back to the dead drop location from before.
+
+""Very good..."" he mutters with an electronic whine.","0:icfbXentJRFinaleOpt0:Wait for the exchange to finish",
+icfbXentJRFinale0,DialogOptionSelected,"$option == icfbXentJRFinaleOpt0",,"Several hours pass without much word from the shuttle crew. Then Xent reopens the comm link.
+
+""It is done, then,"" he says, ""This chapter of our great work is complete. Using this data, I have calibrated our shift drive.""
+
+Your computer displays are suddenly flooded with images and spreadsheets; your engineers rush to assess the situation.
+
+""Captain, you're gonna want to see this,"" one of them says. Her screen bares explicit instructions for how to integrate the shift drive with your fleet - among other things. Just then, your shuttle crew arrive with the news that they've recovered the device you previously left with Xent Alabaster. It's been heavily modified, and tuned to your fleet's travel drive signature.","0:icfbXentJRFinaleOpt1:Continue",
+icfbXentJRFinale1,DialogOptionSelected,"$option == icfbXentJRFinaleOpt1","AddXP 15000
+AddAbility icfb_shift_jump
+SetShortcut cutCommLink ""ESCAPE""
+IcfbContinueQuest jumpstart_required","""Enjoy your new wings, $playerSirOrMadam $playerLastName. For now, I shall hide myself once again. I will be watching - and waiting,"" Xent says, his image slowly fading into static.
+
+""The Greater Will provides.""
+
+Your display turns black.","0:cutCommLink:Cut the comm link",
+"#END Finale",,,,,,
 "#END Jumpstart Required Quest",,,,,,
 

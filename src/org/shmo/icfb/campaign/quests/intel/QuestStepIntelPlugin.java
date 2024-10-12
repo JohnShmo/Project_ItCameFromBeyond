@@ -27,6 +27,7 @@ public class QuestStepIntelPlugin extends BaseIntelPlugin {
         _impl.setBodyPanelWidth(width);
         info.addSpacer(10);
         _impl.addDescriptionBody(info);
+        info.addSpacer(10);
         bullet(info);
         _impl.addDescriptionBulletPoints(info);
         unindent(info);

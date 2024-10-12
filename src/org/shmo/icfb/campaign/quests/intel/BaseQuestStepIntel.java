@@ -1,24 +1,20 @@
 package org.shmo.icfb.campaign.quests.intel;
 
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
-import com.fs.starfarer.api.impl.campaign.intel.contacts.ContactIntel;
-import com.fs.starfarer.api.ui.ButtonAPI;
 import com.fs.starfarer.api.ui.IntelUIAPI;
 import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import org.shmo.icfb.campaign.quests.QuestStep;
-import org.shmo.icfb.campaign.quests.intel.QuestStepIntel;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Set;
 
 public abstract class BaseQuestStepIntel implements QuestStepIntel {
     private static final float LIST_ITEM_TEXT_WIDTH = 261f;
     private QuestStep _questStep = null;
+    private QuestStepIntelPlugin _plugin = null;
     private transient float _bodyPanelWidth = 128;
 
     protected QuestStep getQuestStep() {
@@ -26,13 +22,30 @@ public abstract class BaseQuestStepIntel implements QuestStepIntel {
     }
 
     @Override
-    public void init(QuestStep step) {
+    public void init(QuestStep step, QuestStepIntelPlugin plugin) {
         _questStep = step;
+        _plugin = plugin;
+    }
+
+    @Override
+    public QuestStepIntelPlugin getPlugin() {
+        return _plugin;
+    }
+
+    @Override
+    public void showUpdate() {
+        QuestStepIntelPlugin plugin = getPlugin();
+        if (Global.getSector().getIntelManager().hasIntel(plugin)) {
+            Global.getSector().getIntelManager().removeIntel(plugin);
+            plugin.setNew(true);
+            Global.getSector().getIntelManager().addIntel(plugin);
+        }
     }
 
     @Override
     public void cleanup() {
         _questStep = null;
+        _plugin = null;
     }
 
     @Override

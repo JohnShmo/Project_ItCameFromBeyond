@@ -17,5 +17,14 @@
 		"jumpstartRequired_descBody_10" : "You received an encrypted transmission from an agent located at %s. He was rather eager to speak with you about something.",
 		"jumpstartRequired_descBody_11" :"After speaking with him, he told you about shift drive technology. It was allegedly implemented by %s to journey across the stars unhindered by the collapsed gate network. He explained that by working with him, you could have this technology for yourself.",
 		"jumpstartRequired_descBody_12" :"Work with %s until more is revealed about the elusive shift drive.",
+		
+		"jumpstartRequired_notifBody_20" : "Looking for the big ones",
+		"jumpstartRequired_bulletPoint_20" : "Scan extremely massive celestial bodies with your sensor burst: %s / %s",
+		"jumpstartRequired_descBody_20" :"You were given a mission: take a specialized sensor package and use it to gather data about especially massive celestial objects. Black holes and neutron stars should fit this criteria, according to your employer. It's possible hostile fleets will be waiting to intercept you, so take care. The shift drive will be within your grasp soon enough.",
+		
+		"jumpstartRequired_notifBody_30" : "One small jump",
+		"jumpstartRequired_bulletPoint_30" : "Return to %s.",
+		"jumpstartRequired_descBody_30" :"You were given a mission: take a specialized sensor package and use it to gather data about especially massive celestial objects. Black holes and neutron stars should fit this criteria, according to your employer.",
+		"jumpstartRequired_descBody_31" :"Now that you've completed your mission, return to %s.",
 	}
 }

@@ -6,10 +6,12 @@ import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
 import org.shmo.icfb.IcfbLog;
 import org.shmo.icfb.campaign.gen.PersonFactory;
+import org.shmo.icfb.campaign.gen.impl.people.AriaSerokaKotovCorvusModePersonFactory;
 import org.shmo.icfb.campaign.gen.impl.people.XentAlabasterCorvusModePersonFactory;
 
 public class IcfbPeople {
     public static final PersonData XENT_ALABASTER = new PersonData("icfb_xent");
+    public static final PersonData ARIA_SEROKA_KOTOV = new PersonData("icfb_aria");
 
     public static void generateForCorvusMode(SectorAPI sector) {
         IcfbLog.info("  Initializing people...");
@@ -17,7 +19,13 @@ public class IcfbPeople {
         XENT_ALABASTER.createPerson(
                 new XentAlabasterCorvusModePersonFactory(),
                 sector,
-                sector.getEconomy().getMarket(IcfbMarkets.WINGS_OF_ENTERIA.getId())
+                sector.getEconomy().getMarket(IcfbMarkets.LORELAI.getId())
+        );
+
+        ARIA_SEROKA_KOTOV.createPerson(
+                new AriaSerokaKotovCorvusModePersonFactory(),
+                sector,
+                null
         );
     }
 

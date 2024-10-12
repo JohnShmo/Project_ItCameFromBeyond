@@ -10,11 +10,13 @@ import java.util.List;
 import java.util.Set;
 
 public interface QuestStepIntel {
-    void init(QuestStep step);
+    void init(QuestStep step, QuestStepIntelPlugin plugin);
     void cleanup();
     String getName();
     String getIcon();
     Set<String> getTags();
+    QuestStepIntelPlugin getPlugin();
+    void showUpdate();
     void addNotificationBody(TooltipMakerAPI info);
     void addNotificationBulletPoints(TooltipMakerAPI info);
     void addDescriptionBody(TooltipMakerAPI info);

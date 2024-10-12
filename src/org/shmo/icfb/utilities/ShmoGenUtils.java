@@ -33,10 +33,12 @@ public class ShmoGenUtils {
         person.setRankId(rankId);
         person.setPostId(postId);
 
-        if (isAdmin)
-            market.setAdmin(person);
-        market.addPerson(person);
-        market.getCommDirectory().addPerson(person, commIndex);
+        if (market != null) {
+            if (isAdmin)
+                market.setAdmin(person);
+            market.addPerson(person);
+            market.getCommDirectory().addPerson(person, commIndex);
+        }
 
         return person;
     }
