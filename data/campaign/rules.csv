@@ -462,7 +462,7 @@ UpdateMemory","The $personFaction commander throws $hisOrHer hands behind $hisOr
 
 $HeOrShe shakes $hisOrHer head in earnest. $HeOrShe taps a few times on $hisOrHer Tri-Pod, and you see a profile of Xent Alabaster show up on your screen.
 
-""Tell me captain, do you often just make deals with people you have absolutely zero intel on? My informants tell me this 'Xent Alabaster' is essentially a ghost. No civilian records, no affiliations, nothing. Wana know why?""","0:icfbJRAskAboutXentOpt1:""I have a feeling you're going to tell me anyway.""",
+""Tell me captain, do you often just make deals with people you have absolutely zero intel on? My informants tell me this 'Xent Alabaster' is essentially a ghost. No civilian records, no affiliations, nothing. Wanna know why?""","0:icfbJRAskAboutXentOpt1:""I have a feeling you're going to tell me anyway.""",
 icfbJRAskAboutXent1,DialogOptionSelected,"$option == icfbJRAskAboutXentOpt1",,"""Now you're gettin' it!"" $personFirstName exclaims. Another smirk pushes up $hisOrHer mouth, ""This Xent guy is part of a crazy cult called 'The Shifters'. Nasty folk, or so I understand.""
 
 Diagrams of partially blurred ship designs, heavily redacted images of warped faces, and disfigured bodies appear on your display - all overlapping like scattered case files on a desk.
