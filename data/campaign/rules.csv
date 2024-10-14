@@ -15,7 +15,8 @@ icfbSalvageChariotOfHopeDefenders3,DialogOptionSelected,"$option == icfbSalvageC
 Your bridge is eerily silent. Your crew awaits your next orders.",,
 icfbSalvageChariotOfHopePostBattle,BeatDefendersContinue,"$icfbIsChariotOfHope score:100
 $salvageSpecialData != null
-$customType == wreck",,"A final flash of molten hull erupts from the last of the automated defenders. Your communications team informs you that a final ""scream"" of garbage data and repeated phrases was transmitted the instant the enemy was defeated.
+$customType == wreck","$entity.defenderFleetDefeated = true
+$entity.hasDefenders = false","A final flash of molten hull erupts from the last of the automated defenders. Your communications team informs you that a final ""scream"" of garbage data and repeated phrases was transmitted the instant the enemy was defeated.
 
 > GOBACKGOBACKGOBACKGOBACK
 
@@ -550,7 +551,7 @@ SetTextHighlights $icfbJRBribeAmount","$personFirstName raises an eyebrow.
 
 ""Does this mission of yours really mean so much? I mean, I can find other avenues if you're willing to pay me for my trouble,"" $heOrShe says incredulously, ""They didn't offer me a small sum, either, so I guess this is another test of your loyalty or whatever.""
 
-$HeOrShe checks something on their Tri-Pad, and looks back up to you, ""$icfbJRBribeAmount credits should cover this.""","0:icfbJRBribeAcceptOpt:Pay the bribe
+$HeOrShe checks something on $hisOrHer Tri-Pad, and looks back up to you, ""$icfbJRBribeAmount credits should cover this.""","0:icfbJRBribeAcceptOpt:Pay the bribe
 1:icfbJRBribeRefuseOpt:Refuse the offer",
 icfbJRBribeCantPay0,DialogOptionSelected,"$option == icfbJRBribeOpt","$icfbJRTriedBribe = true
 SetTextHighlights $icfbJRBribeAmount","$personFirstName raises an eyebrow.
