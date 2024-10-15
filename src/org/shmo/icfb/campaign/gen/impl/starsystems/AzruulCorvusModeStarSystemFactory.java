@@ -140,9 +140,9 @@ public class AzruulCorvusModeStarSystemFactory implements StarSystemFactory {
                 IcfbPlanets.AURUCELLO.getId(),
                 system.getCenter(),
                 "Aurucello",
-                Planets.ARID,
+                "barren-desert",
                 100,
-                120,
+                90,
                 3500,
                 80
         );

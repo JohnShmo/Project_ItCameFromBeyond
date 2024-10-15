@@ -26,7 +26,9 @@ public class CeladonCorvusModeMarketFactory implements MarketFactory {
                         Conditions.POPULATION_4,
                         Conditions.VOLATILES_ABUNDANT,
                         Conditions.RARE_ORE_ABUNDANT,
-                        Conditions.ORE_ABUNDANT
+                        Conditions.ORE_ABUNDANT,
+                        Conditions.HOT,
+                        Conditions.NO_ATMOSPHERE
                 )),
                 new ArrayList<>(Arrays.asList(
                         Industries.POPULATION,
