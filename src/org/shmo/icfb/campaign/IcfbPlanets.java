@@ -15,6 +15,13 @@ public class IcfbPlanets {
     public static PlanetData ALICE = new PlanetData("icfb_alice");
     public static PlanetData MOLLY = new PlanetData("icfb_molly");
 
+    public static PlanetData AZRUUL_STAR_1 = new PlanetData("icfb_azruul_1");
+    public static PlanetData AZRUUL_STAR_2 = new PlanetData("icfb_azruul_2");
+    public static PlanetData AURUCELLO = new PlanetData("icfb_aurucello");
+    public static PlanetData CELADON = new PlanetData("icfb_celadon");
+    public static PlanetData PANGEA = new PlanetData("icfb_pangea");
+    public static PlanetData LANTERNIA = new PlanetData("icfb_lanternia");
+
     public static class PlanetData {
         private final String _id;
 

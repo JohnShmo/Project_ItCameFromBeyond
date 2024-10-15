@@ -4,6 +4,7 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
 import org.shmo.icfb.IcfbLog;
 import org.shmo.icfb.campaign.gen.StarSystemFactory;
+import org.shmo.icfb.campaign.gen.impl.starsystems.AzruulCorvusModeStarSystemFactory;
 import org.shmo.icfb.campaign.gen.impl.starsystems.KatoCorvusModeStarSystemFactory;
 import org.shmo.icfb.campaign.gen.impl.starsystems.NewEnteriaCorvusModeStarSystemFactory;
 
@@ -11,6 +12,7 @@ import org.shmo.icfb.campaign.gen.impl.starsystems.NewEnteriaCorvusModeStarSyste
 public class IcfbStarSystems {
     public static final StarSystemData NEW_ENTERIA = new StarSystemData("New Enteria");
     public static final StarSystemData KATO = new StarSystemData("Kato");
+    public static final StarSystemData AZRUUL = new StarSystemData("Azruul");
 
     public static void generateForCorvusMode(SectorAPI sector) {
         IcfbLog.info("  Initializing star systems...");
@@ -22,11 +24,18 @@ public class IcfbStarSystems {
                 -22200
         );
 
+        AZRUUL.createStarSystem(
+                new AzruulCorvusModeStarSystemFactory(),
+                sector,
+                -1000,
+                -23500
+        );
+
         KATO.createStarSystem(
                 new KatoCorvusModeStarSystemFactory(),
                 sector,
-                -500,
-                -22200
+                38000,
+                24200
         );
     }
 

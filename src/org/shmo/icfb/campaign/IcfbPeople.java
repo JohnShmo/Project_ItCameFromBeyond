@@ -19,7 +19,7 @@ public class IcfbPeople {
         XENT_ALABASTER.createPerson(
                 new XentAlabasterCorvusModePersonFactory(),
                 sector,
-                sector.getEconomy().getMarket(IcfbMarkets.LORELAI.getId())
+                sector.getEconomy().getMarket(IcfbMarkets.CELADON.getId())
         );
 
         ARIA_SEROKA_KOTOV.createPerson(

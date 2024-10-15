@@ -4,9 +4,12 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.SectorAPI;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
+import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import org.shmo.icfb.IcfbLog;
 import org.shmo.icfb.campaign.gen.MarketFactory;
+import org.shmo.icfb.campaign.gen.impl.markets.CeladonCorvusModeMarketFactory;
 import org.shmo.icfb.campaign.gen.impl.markets.LorelaiCorvusModeMarketFactory;
+import org.shmo.icfb.campaign.gen.impl.markets.PangeaCorvusModeMarketFactory;
 import org.shmo.icfb.campaign.gen.impl.markets.WingsOfEnteriaCorvusModeMarketFactory;
 
 import java.util.*;
@@ -14,6 +17,8 @@ import java.util.*;
 public class IcfbMarkets {
     public static MarketData WINGS_OF_ENTERIA = new MarketData("icfb_wings_of_enteria_market");
     public static MarketData LORELAI = new MarketData("icfb_lorelai_market");
+    public static MarketData CELADON = new MarketData("icfb_celadon_market");
+    public static MarketData PANGEA = new MarketData("icfb_pangea_market");
 
     public static void generateForCorvusMode(SectorAPI sector) {
         IcfbLog.info("  Initializing markets...");
@@ -32,6 +37,24 @@ public class IcfbMarkets {
                 sector,
                 IcfbFactions.BOUNDLESS.getId(),
                 IcfbPlanets.LORELAI.getPlanet(),
+                null,
+                true
+        );
+
+        CELADON.createMarket(
+                new CeladonCorvusModeMarketFactory(),
+                sector,
+                Factions.INDEPENDENT,
+                IcfbPlanets.CELADON.getPlanet(),
+                null,
+                false
+        );
+
+        PANGEA.createMarket(
+                new PangeaCorvusModeMarketFactory(),
+                sector,
+                IcfbFactions.BOUNDLESS.getId(),
+                IcfbPlanets.PANGEA.getPlanet(),
                 null,
                 true
         );

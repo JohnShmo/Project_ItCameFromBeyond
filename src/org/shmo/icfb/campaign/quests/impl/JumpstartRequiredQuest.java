@@ -230,7 +230,7 @@ public class JumpstartRequiredQuest implements QuestFactory {
                     @Override
                     public void advance(float deltaTime) {
                         if (
-                                xent.getRelToPlayer().isAtWorst(RepLevel.FRIENDLY) &&
+                                xent.getRelToPlayer().getRel() >= 0.4f &&
                                         !Global.getSector()
                                                 .getMemoryWithoutUpdate()
                                                 .getBoolean(IcfbMemFlags.XENT_OFFERING_SPECIAL_MISSION)
