@@ -21,14 +21,14 @@ public class IcfbStarSystems {
                 new NewEnteriaCorvusModeStarSystemFactory(),
                 sector,
                 1300,
-                -22200
+                -19200
         );
 
         AZRUUL.createStarSystem(
                 new AzruulCorvusModeStarSystemFactory(),
                 sector,
                 -1000,
-                -23500
+                -20500
         );
 
         KATO.createStarSystem(

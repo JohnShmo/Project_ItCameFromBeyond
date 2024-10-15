@@ -1,0 +1,85 @@
+{
+    "playableFaction":true,
+    "corvusCompatible":true,
+    
+    "rebelFleetSuffix":"Traitors",
+    
+    "marketSpawnWeight":2,
+
+    "startRelationships":{  
+		"persean":-0.4,
+		"tritachyon": -0.2,
+		"hegemony":-0.2,
+		"luddic_church":0.1,
+	},
+    "maxRelationships":{ 
+		"remnant":-0.51,
+	},
+    "diplomacyPositiveChance":{ 
+		"persean":0.9,
+		"hegemony":0.9, 
+		"tritachyon":0.9, 
+	},
+    "diplomacyNegativeChance":{ 
+		"persean":1.1,
+		"hegemony":1.1, 
+		"tritachyon":1.1, 
+	},
+    "dispositions":{
+        "persean": -5,
+        "hegemony": -5,
+        "tritachyon": -5,
+        "luddic_church": 5,
+    },
+    "alignments":{
+        "technocratic":-0.5,
+        "hierarchical":1,
+        "militarist":0,
+        "diplomatic":0,
+        "ideological":0.75,
+    },
+    "diplomacyTraits":["paranoid", "weak-willed", "temperamental", "neutralist"],
+    
+    # chance of the faction being picked to send a colony expedition. Default 0 (disabled)
+    "colonyExpeditionChance":1,	# baseline expansion behaviour
+    "colonyTargetValuator":"exerelin.campaign.colony.IndustrialColonyTargetValuator",
+    
+    "groundBattleSettings":{
+        "moraleDamageTakenMult":0.9,
+    },
+    
+    "specialForcesNamerClass":"exerelin.campaign.intel.specialforces.namer.PlanetNamer",
+    #"specialForcesFlagshipVariants":{ "paragon_Elite":1, "astral_Strike":0.5 },
+    
+    "startShipsSolo":[
+	  ["icfb_froskur_attack"],
+	],
+    "startShipsCombatSmall":[
+      ["icfb_karta_close_support", "icfb_froskur_attack", "icfb_froskur_support"],
+    ],
+    #"startShipsTradeSmall":[],
+    #"startShipsCombatLarge":[],
+    #"startShipsTradeLarge":[],
+    #"startShipsExplorerLarge":[],
+    #"startShipsCarrierSmall":[],
+    #"startShipsCarrierLarge":[],
+    #"startShipsGrandFleet":[],
+    
+    "startSpecialItems":[
+    ],
+    
+    "defenceStations":[
+        {"ids":["orbitalstation", "battlestation", "starfortress"], "weight":0.5},
+        {"ids":["orbitalstation_mid", "battlestation_mid", "starfortress_mid"]},
+    ],
+	
+    "industrySeeds":[
+        {"id":"orbitalworks", "mult":0.1},
+        {"id":"fuelprod", "mult":0.1},
+        {"id":"lightindustry", "mult":0.1},
+    ],
+    
+    "bonusSeeds":[
+        {"id":"nanoforge_pristine", "count":1},
+    ],
+}

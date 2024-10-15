@@ -23,7 +23,7 @@ public class BoundlessCorvusModeFactionFactory implements FactionFactory {
         faction.setRelationship(hegemony.getId(), RepLevel.SUSPICIOUS);
         faction.setRelationship(pirates.getId(), RepLevel.HOSTILE);
         faction.setRelationship(tritachyon.getId(), RepLevel.SUSPICIOUS);
-        faction.setRelationship(church.getId(), RepLevel.NEUTRAL);
+        faction.setRelationship(church.getId(), RepLevel.FAVORABLE);
         faction.setRelationship(kol.getId(), RepLevel.INHOSPITABLE);
         faction.setRelationship(league.getId(), RepLevel.INHOSPITABLE);
         faction.setRelationship(player.getId(), RepLevel.SUSPICIOUS);

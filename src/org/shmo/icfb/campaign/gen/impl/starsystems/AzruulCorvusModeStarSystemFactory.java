@@ -140,7 +140,7 @@ public class AzruulCorvusModeStarSystemFactory implements StarSystemFactory {
                 IcfbPlanets.AURUCELLO.getId(),
                 system.getCenter(),
                 "Aurucello",
-                Planets.DESERT,
+                Planets.ARID,
                 100,
                 120,
                 3500,
@@ -160,7 +160,7 @@ public class AzruulCorvusModeStarSystemFactory implements StarSystemFactory {
 
         system.addAsteroidBelt(
                 system.getCenter(),
-                500,
+                900,
                 5700,
                 130,
                 180,
@@ -172,24 +172,60 @@ public class AzruulCorvusModeStarSystemFactory implements StarSystemFactory {
                 system.getCenter(),
                 "Pangea",
                 Planets.PLANET_TERRAN,
-                140,
+                0,
                 180,
                 6900,
                 240
         );
+        pangea.getSpec().setGlowTexture(Global.getSettings().getSpriteName("hab_glows", "volturn"));
+        pangea.getSpec().setGlowColor(Color.WHITE);
+        pangea.getSpec().setUseReverseLightForGlow(true);
+        pangea.applySpecChanges();
         SectorEntityToken magField = system.addTerrain(
                 Terrain.MAGNETIC_FIELD,
                 new MagneticFieldTerrainPlugin.MagneticFieldParams(
-                        150,
-                        pangea.getRadius(),
+                        pangea.getRadius() + 400,
+                        (pangea.getRadius() + 400) * 0.5f,
                         pangea,
-                        pangea.getRadius() * 1.2f,
-                        pangea.getRadius() * 2f,
-                        Color.WHITE,
-                        0.8f
+                        pangea.getRadius() + 50,
+                        pangea.getRadius() + 450,
+                        new Color(80, 40, 100, 40),
+                        0.65f,
+                        new Color(140, 100, 235),
+                        new Color(180, 110, 210),
+                        new Color(150, 140, 190),
+                        new Color(140, 190, 210),
+                        new Color(90, 200, 170),
+                        new Color(65, 230, 160),
+                        new Color(20, 220, 70)
                 )
         );
-        magField.setCircularOrbit(pangea, 0, pangea.getRadius(), -100);
+        magField.setCircularOrbit(pangea, 0, 0, -100);
+        final float shadeOrbitRadius = pangea.getRadius() + 450;
+        final float shadeBaseAngle = 180;
+        final float shadeAngleOffset = 30;
+        final float shadeOrbitDays = pangea.getCircularOrbitPeriod();
+        SectorEntityToken shade1 = system.addCustomEntity(
+                pangea.getId() + "_shade_1",
+                "Stellar Shade",
+                "stellar_shade",
+                IcfbFactions.BOUNDLESS.getId()
+        );
+        shade1.setCircularOrbitPointingDown(pangea, shadeBaseAngle, shadeOrbitRadius, shadeOrbitDays);
+        SectorEntityToken shade2 = system.addCustomEntity(
+                pangea.getId() + "_shade_2",
+                "Stellar Shade",
+                "stellar_shade",
+                IcfbFactions.BOUNDLESS.getId()
+        );
+        shade2.setCircularOrbitPointingDown(pangea, shadeBaseAngle + shadeAngleOffset, shadeOrbitRadius, shadeOrbitDays);
+        SectorEntityToken shade3 = system.addCustomEntity(
+                pangea.getId() + "_shade_3",
+                "Stellar Shade",
+                "stellar_shade",
+                IcfbFactions.BOUNDLESS.getId()
+        );
+        shade3.setCircularOrbitPointingDown(pangea, shadeBaseAngle - shadeAngleOffset, shadeOrbitRadius, shadeOrbitDays);
 
         final PlanetAPI lanternia = system.addPlanet(
                 IcfbPlanets.LANTERNIA.getId(),
@@ -208,7 +244,7 @@ public class AzruulCorvusModeStarSystemFactory implements StarSystemFactory {
                 "Lanterluna",
                 Planets.BARREN2,
                 120,
-                80,
+                65,
                 400,
                 30
         );
@@ -216,7 +252,7 @@ public class AzruulCorvusModeStarSystemFactory implements StarSystemFactory {
         StarSystemGenerator.addOrbitingEntities(
                 system,
                 system.getCenter(),
-                StarAge.OLD,
+                StarAge.YOUNG,
                 2,
                 4,
                 10000,
