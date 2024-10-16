@@ -44,6 +44,7 @@
 	"knownShips":{
 		"tags":["ind", "merc", "independent"],
 		"hulls":[
+			"icfb_hakarl"
 		],
 	},
 	# listing ships here will make the faction mostly use them even if other hulls become available
@@ -52,6 +53,7 @@
 		"hulls":[
 			"icfb_froskur",
 			"icfb_karta",
+			"icfb_hakarl",
 		],
 	},
 	"knownFighters":{

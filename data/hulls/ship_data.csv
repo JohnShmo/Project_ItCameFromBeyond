@@ -1,11 +1,11 @@
 name,id,designation,tech/manufacturer,system id,fleet pts,hitpoints,armor rating,max flux,8/6/5/4%,flux dissipation,ordnance points,fighter bays,max speed,acceleration,deceleration,max turn rate,turn acceleration,mass,shield type,defense id,shield arc,shield upkeep,shield efficiency,phase cost,phase upkeep,min crew,max crew,cargo,fuel,fuel/ly,range,max burn,base value,cr %/day,CR to deploy,peak CR sec,CR loss/sec,supplies/rec,supplies/mo,c/s,c/f,f/s,f/f,crew/s,crew/f,hints,tags,rarity,breakProb,minPieces,maxPieces,travel drive,number
 # See https://starsector.fandom.com/wiki/Ship_Data_CSV,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-Froskur,icfb_froskur,Frigate,Boundless,icfb_thruster_pulse,7,2000,400,2500,,250,50,,120,180,120,60,120,250,FRONT,,240,0.25,0.85,,,12,25,35,20,1,20,9,12000,8,10,300,0.25,6,6,,,,,,,,"merc, ind",,0.4,2,2,,5001
+Froskur,icfb_froskur,Frigate,Boundless,icfb_thruster_pulse,7,2000,400,2500,,250,50,,120,180,120,60,120,250,FRONT,,240,0.25,0.85,,,12,25,35,20,1,20,9,12000,8,10,300,0.25,6,6,,,,,,,,"merc, ind, rare_bp",,0.4,2,2,,5001
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-Karta,icfb_karta,Destroyer,Boundless,maneuveringjets,10,4800,550,4100,,260,100,,95,55,40,35,60,400,FRONT,,240,0.4,0.85,,,45,90,95,60,2,30,9,40000,5,12,360,0.25,10,10,,,,,,,,"merc, ind",,0.5,2,3,,5011
+Karta,icfb_karta,Destroyer,Boundless,maneuveringjets,10,4800,550,4100,,260,100,,95,55,40,35,60,400,FRONT,,240,0.4,0.85,,,45,90,95,60,2,30,9,40000,5,12,360,0.25,10,10,,,,,,,,"merc, ind, rare_bp",,0.5,2,3,,5011
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Hakarl,icfb_hakarl,Battlecruiser,Boundless,orion_device,22,10000,1100,16500,,1000,300,,70,45,40,15,15,2500,FRONT,,120,0.25,0.85,,,350,400,200,300,10,30,8,200000,3,12,600,0.25,38,38,,,,,,,,rare_bp,0.85,0.5,2,4,,5031
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,

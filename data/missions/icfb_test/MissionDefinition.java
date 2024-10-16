@@ -19,10 +19,12 @@ public class MissionDefinition implements MissionDefinitionPlugin {
 
 		api.addToFleet(FleetSide.PLAYER, "icfb_froskur_attack", FleetMemberType.SHIP, "Froskur", true);
 		api.addToFleet(FleetSide.PLAYER, "icfb_karta_close_support", FleetMemberType.SHIP, "Karta", false);
+		api.addToFleet(FleetSide.PLAYER, "icfb_hakarl_standard", FleetMemberType.SHIP, "Hakarl", false);
 		api.addToFleet(FleetSide.PLAYER, "icfb_karta_pirates_custom", FleetMemberType.SHIP, "Karta (P)", false);
 
 		api.addToFleet(FleetSide.ENEMY, "icfb_froskur_attack", FleetMemberType.SHIP, "Froskur Badguy", false);
 		api.addToFleet(FleetSide.ENEMY, "icfb_karta_close_support", FleetMemberType.SHIP, "Karta Badguy", false);
+		api.addToFleet(FleetSide.ENEMY, "icfb_hakarl_standard", FleetMemberType.SHIP, "Hakarl Badguy", false);
 		api.addToFleet(FleetSide.ENEMY, "icfb_karta_pirates_custom", FleetMemberType.SHIP, "Karta (P) Badguy", false);
 
 		api.addObjective(0, 4000, BattleObjectives.SENSOR_JAMMER);

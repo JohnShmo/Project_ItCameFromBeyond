@@ -1,0 +1,70 @@
+{
+    "displayName": "Attack",
+    "fluxCapacitors": 18,
+    "fluxVents": 50,
+    "goalVariant": true,
+    "hullId": "icfb_hakarl",
+    "hullMods": [
+        "missleracks",
+        "magazines",
+        "armoredweapons",
+        "hardenedshieldemitter"
+    ],
+    "quality": 0.0,
+    "variantId": "icfb_hakarl_attack",
+    "weaponGroups": [
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 001": "hellbore",
+                "WS 000": "hellbore"
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 016": "autopulse"
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS 003": "sabotpod",
+                "WS 002": "sabotpod",
+                "WS 015": "sabotpod",
+                "WS 014": "sabotpod"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 005": "ionpulser",
+                "WS 004": "ionpulser"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 012": "vulcan",
+                "WS 013": "vulcan",
+                "WS 011": "vulcan",
+                "WS 010": "vulcan",
+                "WS 009": "vulcan",
+                "WS 008": "vulcan"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 007": "railgun",
+                "WS 006": "railgun"
+            }
+        }
+    ]
+}

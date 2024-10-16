@@ -1,0 +1,5 @@
+name,id,tier,rarity,tech/manufacturer,tags,uiTags,base value,unlocked,hidden,hiddenEverywhere,cost_frigate,cost_dest,cost_cruiser,cost_capital,script,desc,short,sModDesc,sprite
+,,,,,,,,,,,,,,,,,,,
+# built-in hullmods,,,,,,,,,,,,,,,,,,,
+Target Acquisition Array,icfb_target_acquisition_array,,,,,,,,TRUE,,0,0,0,0,org.shmo.icfb.combat.hullmods.TargetAcquisitionArray,Extends the range of ballistic and energy weapons by %s/%s/%s depending on weapon size (small/medium/large).,Extends non-missile weapon range.,,graphics/hullmods/advanced_targeting_core.png
+,,,,,,,,,,,,,,,,,,,
