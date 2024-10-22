@@ -16,18 +16,18 @@
 		"remnant":-0.51,
 	},
     "diplomacyPositiveChance":{ 
-		"persean":0.9,
-		"hegemony":0.9, 
+		"persean":0.8,
+		"hegemony":0.8, 
 		"tritachyon":0.9, 
 	},
     "diplomacyNegativeChance":{ 
-		"persean":1.1,
-		"hegemony":1.1, 
+		"persean":1.25,
+		"hegemony":1.25, 
 		"tritachyon":1.1, 
 	},
     "dispositions":{
-        "persean": -5,
-        "hegemony": -5,
+        "persean": -10,
+        "hegemony": -10,
         "tritachyon": -5,
         "luddic_church": 5,
     },
@@ -66,6 +66,7 @@
     #"startShipsGrandFleet":[],
     
     "startSpecialItems":[
+		[["icfb_boundless_package", ""]],
     ],
     
     "defenceStations":[

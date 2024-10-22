@@ -1,0 +1,6 @@
+name,id,tags,tech/manufacturer,rarity,base price,stack size,cargo space,baseRaidDanger,icon,sound id,sound id drop,plugin,plugin params,desc,order
+,,,,,,,,,,,,,,,
+# industry-slotted items,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+# blueprints,,,,,,,,,,,,,,,
+Boundless Blueprint Package,icfb_boundless_package,package_bp,Boundless,,30000,1000,1,,graphics/ItCameFromBeyond/icons/cargo/Boundless_BP.png,ui_chip_pickup,ui_bp_package_drop,com.fs.starfarer.api.campaign.impl.items.MultiBlueprintItemPlugin,icfb_boundless_bp,"Enables heavy industry to construct the more common ship hulls, weapons, and fighter LPCs from the ""Boundless"" school of design.",200

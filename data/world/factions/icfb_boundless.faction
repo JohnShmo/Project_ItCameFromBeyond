@@ -42,7 +42,7 @@
 		],
 	},
 	"knownShips":{
-		"tags":["ind", "merc", "independent"],
+		"tags":["ind", "independent", "icfb_boundless_bp"],
 		"hulls":[
 			"icfb_hakarl"
 		],
@@ -121,6 +121,7 @@
 	"illegalCommodities":[
 		"drugs",
 		"organs",
+		"ai_cores",
 	],
 	"portraits":{
 		"standard_male":[
@@ -189,8 +190,8 @@
 		"offersCommissions":true,
 		"engagesInHostilities":true,
 		"buysAICores":true,
-		"AICoreValueMult":4,
-		"AICoreRepMult":0,
+		"AICoreValueMult":3,
+		"AICoreRepMult":0.5,
 		"buysSurveyData":true,
 		"hostilityImpactOnGrowth":true,
 		"caresAboutAtrocities":true,
