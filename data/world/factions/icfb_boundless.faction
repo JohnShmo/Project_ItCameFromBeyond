@@ -93,11 +93,11 @@
 		"carriers":2,
 		"phaseShips":1,
 		
-		"officerQuality":3,
+		"officerQuality":4,
 		"shipQuality":2,
-		"numShips":2,
+		"numShips":1,
 		
-		"shipSize":3,
+		"shipSize":4,
 		
 		"aggression":2,
 		

@@ -16,6 +16,9 @@
     ],
     "shieldRadius": 99.5,
     "viewOffset": 0,
+    "builtInMods": [
+        "escort_package"
+    ],
     "builtInWings": [],
     "builtInModules": null,
     "weaponSlots": [

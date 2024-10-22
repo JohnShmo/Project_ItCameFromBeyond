@@ -1,0 +1,26 @@
+FRIGATES:
+Kaldur-class corvette
+Hrafn-class frigate
+Froskur-class frigate
+Skjoldr-class heavy frigate
+
+DESTROYERS:
+Karta-class destroyer
+Vik-class destroyer
+Hrim-class light carrier
+
+CRUISERS:
+Vindur-class cruiser
+Ormr-class cruiser
+
+CAPITALS:
+Hakarl-class battlecruiser
+Dreki-class battleship
+
+CIVILIAN:
+Vagn-class combat freighter (frigate)
+Saehest-class light freighter (frigate)
+Flutningur-class combat freighter (destroyer)
+Hval-class freighter (cruiser)
+Straum-class light tanker (frigate)
+Fjor-class tanker (cruiser)

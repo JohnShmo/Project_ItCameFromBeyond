@@ -9,7 +9,7 @@
 	"ordnancePoints":85,
 	"baseValueMult":.9,
 	"spriteName":"graphics/ItCameFromBeyond/hulls/Destroyer_1_Pirate.png",
-	"builtInMods":["ill_advised"],
+	"removeBuiltInMods":["escort_package"],
 	"removeWeaponSlots":["WS 006","WS 007"],
 	"weaponSlotChanges":{
 		"WS 003":{
