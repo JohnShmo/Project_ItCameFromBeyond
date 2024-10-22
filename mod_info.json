@@ -4,7 +4,7 @@
   "author": "John Shmo",
   "utility": "false",
   # Using the long version format lets the game correctly compare major/minor/patch versions.
-  "version": { "major": '0', "minor": '0', "patch": '1' },
+  "version": { "major": "indev", "minor": "1", "patch": "0a" },
   "description": "TODO: Add description...",
   "gameVersion": "0.97a-RC11",
   "dependencies": [
