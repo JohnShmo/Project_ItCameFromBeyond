@@ -68,12 +68,12 @@ public class ChariotOfHopeCorvusModeEntityFactory implements EntityFactory {
         Misc.setDefenderOverride(entity, defenderDataOverride);
 
         MagicFleetBuilder defenderBuilder = MagicCampaign.createFleetBuilder();
-        MagicCaptainBuilder captainBuilder = MagicCampaign.createCaptainBuilder(Factions.OMEGA);
+        MagicCaptainBuilder captainBuilder = MagicCampaign.createCaptainBuilder(Factions.REMNANTS);
         captainBuilder.setAICoreType(Commodities.BETA_CORE);
         captainBuilder.setIsAI(true);
         captainBuilder.setPersonality("reckless");
         captainBuilder.setLevel(5);
-        defenderBuilder.setFleetFaction(Factions.OMEGA);
+        defenderBuilder.setFleetFaction(Factions.REMNANTS);
         defenderBuilder.setCaptain(captainBuilder.create());
         defenderBuilder.setSpawnLocation(null);
         defenderBuilder.setFleetName("Automated Defenders");
