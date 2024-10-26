@@ -16,7 +16,9 @@ additional content and mechanics to the game.
 - ***New spaceships***
   - Four new playable frigates. [UNFINISHED]
     - Kaldur-class corvette
-    - Hrafn-class frigate
+    - Hrafn-class frigate [WIP]
+  
+    ![image info](./graphics/ItCameFromBeyond/hulls/Frigate_2.png)
     - Froskur-class frigate [DONE!]
 
     ![image info](./graphics/ItCameFromBeyond/hulls/Frigate_1.png)
