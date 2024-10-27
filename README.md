@@ -22,7 +22,9 @@ additional content and mechanics to the game.
     - Froskur-class frigate [DONE!]
 
     ![image info](./graphics/ItCameFromBeyond/hulls/Frigate_1.png)
-    - Skjoldr-class heavy frigate
+    - Skjoldr-class heavy frigate [WIP]
+
+    ![image info](./graphics/ItCameFromBeyond/hulls/Frigate_3.png)
   - Three new playable destroyers. [UNFINISHED]
     - Karta-class destroyer [DONE!]
 

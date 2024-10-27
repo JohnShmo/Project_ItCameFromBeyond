@@ -1,0 +1,27 @@
+{
+    "displayName": "Balanced",
+    "fluxCapacitors": 7,
+    "fluxVents": 10,
+    "goalVariant": true,
+    "hullId": "icfb_skjoldr",
+    "hullMods": [
+        "auxiliarythrusters",
+        "armoredweapons",
+        "turretgyros",
+        "fluxdistributor",
+        "stabilizedshieldemitter"
+    ],
+    "quality": 0.0,
+    "variantId": "icfb_skjoldr_balanced",
+    "weaponGroups": [
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "SYSTEM_SLOT 000": "heavyac",
+                "SYSTEM_SLOT 001": "heavyac",
+                "SYSTEM_SLOT 002": "heavymortar"
+            }
+        }
+    ]
+}

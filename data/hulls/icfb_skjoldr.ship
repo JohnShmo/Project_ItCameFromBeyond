@@ -1,0 +1,134 @@
+{
+    "hullName": "Skjoldr",
+    "hullId": "icfb_skjoldr",
+    "hullSize": "FRIGATE",
+    "style": "MIDLINE",
+    "spriteName": "graphics/ItCameFromBeyond/hulls/Frigate_3.png",
+    "height": 97,
+    "width": 120,
+    "center": [
+        60, 43.5
+    ],
+    "collisionRadius": 85.5,
+    "coversColor": "",
+    "shieldCenter": [
+        -0.5, 0
+    ],
+    "shieldRadius": 72,
+    "viewOffset": 0,
+    "builtInWings": [],
+    "builtInModules": null,
+    "weaponSlots": [
+        {
+            "id": "SYSTEM_SLOT 001",
+            "size": "MEDIUM",
+            "type": "BALLISTIC",
+            "mount": "TURRET",
+            "arc": 130,
+            "angle": 325,
+            "locations": [
+                    -6.5,      -28
+            ]
+        },
+        {
+            "id": "SYSTEM_SLOT 000",
+            "size": "MEDIUM",
+            "type": "BALLISTIC",
+            "mount": "TURRET",
+            "arc": 130,
+            "angle": 35,
+            "locations": [
+                    -6.5,       28
+            ]
+        },
+        {
+            "id": "SYSTEM_SLOT 002",
+            "size": "MEDIUM",
+            "type": "BALLISTIC",
+            "mount": "TURRET",
+            "arc": 215,
+            "angle": 0,
+            "locations": [
+                    20.5,        0
+            ]
+        }
+    ],
+    "engineSlots": [
+        {
+            "location": [
+                -42, -31.5
+            ],
+            "length": 18.5,
+            "width": 8,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "LOW_TECH"
+        },
+        {
+            "location": [
+                -42, 31.5
+            ],
+            "length": 18.5,
+            "width": 8,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "LOW_TECH"
+        },
+        {
+            "location": [
+                -43, -20
+            ],
+            "length": 23,
+            "width": 11,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "LOW_TECH"
+        },
+        {
+            "location": [
+                -43, 20
+            ],
+            "length": 23,
+            "width": 11,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "LOW_TECH"
+        },
+        {
+            "location": [
+                -44, -8
+            ],
+            "length": 28,
+            "width": 12,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "LOW_TECH"
+        },
+        {
+            "location": [
+                -44, 8
+            ],
+            "length": 28,
+            "width": 12,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "LOW_TECH"
+        }
+    ],
+    "bounds": [
+             -40,        6,
+             -40,     24.5,
+             -27,       57,
+            24.5,       20,
+              33,       20,
+        
+              33,      -20,
+            24.5,      -20,
+             -27,      -57,
+             -40,    -24.5,
+             -40,       -6,
+        
+             -30,        0
+    # 11 points total.
+    ]
+}

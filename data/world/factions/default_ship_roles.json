@@ -5,11 +5,17 @@
 		"icfb_froskur_attack": 7,
 		"icfb_froskur_support": 7,
 		"icfb_froskur_overdriven": 2,
+		"icfb_skjoldr_balanced": 6,
+		"icfb_skjoldr_close_support": 6,
+		"icfb_skjoldr_overdriven": 2,
 	},
 	"combatSmall":{
 		"icfb_froskur_attack": 7,
 		"icfb_froskur_support": 7,
 		"icfb_froskur_overdriven": 2,
+		"icfb_skjoldr_balanced": 7,
+		"icfb_skjoldr_close_support": 7,
+		"icfb_skjoldr_overdriven": 3,
 	},
 	"combatMedium":{
 		"icfb_karta_balanced": 7,

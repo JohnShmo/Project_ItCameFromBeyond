@@ -1,0 +1,25 @@
+{
+    "displayName": "Close Support",
+    "fluxCapacitors": 3,
+    "fluxVents": 10,
+    "goalVariant": true,
+    "hullId": "icfb_skjoldr",
+    "hullMods": [
+        "targetingunit",
+        "turretgyros",
+        "armoredweapons"
+    ],
+    "quality": 0.0,
+    "variantId": "icfb_skjoldr_close_support",
+    "weaponGroups": [
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "SYSTEM_SLOT 000": "hveldriver",
+                "SYSTEM_SLOT 001": "hveldriver",
+                "SYSTEM_SLOT 002": "heavymauler"
+            }
+        }
+    ]
+}

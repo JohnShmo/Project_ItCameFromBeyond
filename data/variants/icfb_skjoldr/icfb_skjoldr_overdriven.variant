@@ -1,0 +1,25 @@
+{
+    "displayName": "Overdriven",
+    "fluxCapacitors": 0,
+    "fluxVents": 6,
+    "goalVariant": true,
+    "hullId": "icfb_skjoldr",
+    "hullMods": [
+        "safetyoverrides",
+        "auxiliarythrusters",
+        "hardened_subsystems"
+    ],
+    "quality": 0.0,
+    "variantId": "icfb_skjoldr_overdriven",
+    "weaponGroups": [
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "SYSTEM_SLOT 002": "chaingun",
+                "SYSTEM_SLOT 000": "heavymg",
+                "SYSTEM_SLOT 001": "heavymg"
+            }
+        }
+    ]
+}
