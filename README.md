@@ -15,7 +15,9 @@ additional content and mechanics to the game.
   - Shifters: ***REDACTED*** [UNFINISHED]
 - ***New spaceships***
   - Four new playable frigates. [UNFINISHED]
-    - Kaldur-class corvette
+    - Kaldur-class corvette [WIP]
+
+    ![image info](./graphics/ItCameFromBeyond/hulls/Corvette_1.png)
     - Hrafn-class frigate [WIP]
   
     ![image info](./graphics/ItCameFromBeyond/hulls/Frigate_2.png)
