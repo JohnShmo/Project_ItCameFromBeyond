@@ -17,12 +17,14 @@ public class MissionDefinition implements MissionDefinitionPlugin {
 		api.setFleetTagline(FleetSide.PLAYER, "Good guys");
 		api.setFleetTagline(FleetSide.ENEMY, "Bad guys");
 
-		api.addToFleet(FleetSide.PLAYER, "icfb_froskur_attack", FleetMemberType.SHIP, "Froskur", true);
+		api.addToFleet(FleetSide.PLAYER, "icfb_kaldur_patrol", FleetMemberType.SHIP, "Kaldur", true);
+		api.addToFleet(FleetSide.PLAYER, "icfb_froskur_attack", FleetMemberType.SHIP, "Froskur", false);
 		api.addToFleet(FleetSide.PLAYER, "icfb_skjoldr_balanced", FleetMemberType.SHIP, "Skjoldr", false);
 		api.addToFleet(FleetSide.PLAYER, "icfb_karta_close_support", FleetMemberType.SHIP, "Karta", false);
 		api.addToFleet(FleetSide.PLAYER, "icfb_hakarl_standard", FleetMemberType.SHIP, "Hakarl", false);
 		api.addToFleet(FleetSide.PLAYER, "icfb_karta_pirates_custom", FleetMemberType.SHIP, "Karta (P)", false);
 
+		api.addToFleet(FleetSide.ENEMY, "icfb_kaldur_patrol", FleetMemberType.SHIP, "Kaldur Badguy", false);
 		api.addToFleet(FleetSide.ENEMY, "icfb_froskur_attack", FleetMemberType.SHIP, "Froskur Badguy", false);
 		api.addToFleet(FleetSide.ENEMY, "icfb_skjoldr_balanced", FleetMemberType.SHIP, "Skjoldr Badguy", false);
 		api.addToFleet(FleetSide.ENEMY, "icfb_karta_close_support", FleetMemberType.SHIP, "Karta Badguy", false);

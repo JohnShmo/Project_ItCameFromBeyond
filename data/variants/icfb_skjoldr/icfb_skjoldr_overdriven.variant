@@ -14,9 +14,15 @@
     "weaponGroups": [
         {
             "autofire": false,
-            "mode": "ALTERNATING",
+            "mode": "LINKED",
             "weapons": {
-                "SYSTEM_SLOT 002": "chaingun",
+                "SYSTEM_SLOT 002": "chaingun"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
                 "SYSTEM_SLOT 000": "heavymg",
                 "SYSTEM_SLOT 001": "heavymg"
             }

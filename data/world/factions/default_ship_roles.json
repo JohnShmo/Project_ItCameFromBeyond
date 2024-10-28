@@ -2,17 +2,27 @@
 	# should be a copy of "combatSmall", minus variants that are annoying to fight in low numbers
 	# for example, no Hyperions or fast beam-based kiting loadouts, or ships with damper field
 	"combatSmallForSmallFleet":{
+		"icfb_kaldur_patrol": 7,
+		"icfb_kaldur_strike": 5,
+		"icfb_kaldur_support": 7,
+		
 		"icfb_froskur_attack": 7,
 		"icfb_froskur_support": 7,
 		"icfb_froskur_overdriven": 2,
+		
 		"icfb_skjoldr_balanced": 6,
 		"icfb_skjoldr_close_support": 6,
 		"icfb_skjoldr_overdriven": 2,
 	},
 	"combatSmall":{
+		"icfb_kaldur_patrol": 7,
+		"icfb_kaldur_strike": 5,
+		"icfb_kaldur_support": 7,
+		
 		"icfb_froskur_attack": 7,
 		"icfb_froskur_support": 7,
 		"icfb_froskur_overdriven": 2,
+		
 		"icfb_skjoldr_balanced": 7,
 		"icfb_skjoldr_close_support": 7,
 		"icfb_skjoldr_overdriven": 3,
@@ -21,6 +31,7 @@
 		"icfb_karta_balanced": 7,
 		"icfb_karta_close_support": 7,
 		"icfb_karta_attack": 7,
+		
 		"icfb_karta_pirates_custom": 7,
 		"icfb_karta_pirates_rocket": 7,
 	},

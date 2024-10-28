@@ -1,0 +1,129 @@
+{
+    "hullName": "Kaldur",
+    "hullId": "icfb_kaldur",
+    "hullSize": "FRIGATE",
+    "style": "MIDLINE",
+    "spriteName": "graphics/ItCameFromBeyond/hulls/Corvette_1.png",
+    "height": 68,
+    "width": 66,
+    "center": [
+        33, 34
+    ],
+    "collisionRadius": 52.5,
+    "coversColor": "",
+    "shieldCenter": [
+        0, 0
+    ],
+    "shieldRadius": 45.5,
+    "viewOffset": 0,
+    "builtInMods": [
+        "pointdefenseai"
+    ],
+    "builtInWings": [],
+    "builtInModules": null,
+    "weaponSlots": [
+        {
+            "id": "WS 000",
+            "size": "SMALL",
+            "type": "HYBRID",
+            "mount": "TURRET",
+            "arc": 180,
+            "angle": 0,
+            "locations": [
+                      13,        0
+            ]
+        },
+        {
+            "id": "WS 001",
+            "size": "SMALL",
+            "type": "HYBRID",
+            "mount": "TURRET",
+            "arc": 200,
+            "angle": 180,
+            "locations": [
+                     -14,        0
+            ]
+        },
+        {
+            "id": "WS 002",
+            "size": "SMALL",
+            "type": "UNIVERSAL",
+            "mount": "TURRET",
+            "arc": 125,
+            "angle": 315,
+            "locations": [
+                       5,      -17
+            ]
+        },
+        {
+            "id": "WS 003",
+            "size": "SMALL",
+            "type": "UNIVERSAL",
+            "mount": "TURRET",
+            "arc": 125,
+            "angle": 45,
+            "locations": [
+                       5,       17
+            ]
+        }
+    ],
+    "engineSlots": [
+        {
+            "location": [
+                -6.5, 26
+            ],
+            "length": 18.5,
+            "width": 8,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "LOW_TECH"
+        },
+        {
+            "location": [
+                -6.5, -26
+            ],
+            "length": 18.5,
+            "width": 8,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "LOW_TECH"
+        },
+        {
+            "location": [
+                -34.5, -5.5
+            ],
+            "length": 26,
+            "width": 11,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "LOW_TECH"
+        },
+        {
+            "location": [
+                -34.5, 5.5
+            ],
+            "length": 26,
+            "width": 11,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "LOW_TECH"
+        }
+    ],
+    "bounds": [
+             -30,      4.5,
+             -30,     12.5,
+             -17,     12.5,
+               4,     30.5,
+              14,       13,
+        
+              31,        0,
+              14,      -13,
+               4,    -30.5,
+             -17,    -12.5,
+             -30,    -12.5,
+        
+             -30,     -4.5,
+           -19.5,        0
+    # 12 points total.
+    ]
+}

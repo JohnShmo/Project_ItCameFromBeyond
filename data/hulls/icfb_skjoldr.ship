@@ -9,12 +9,12 @@
     "center": [
         60, 43.5
     ],
-    "collisionRadius": 85.5,
+    "collisionRadius": 91.5,
     "coversColor": "",
     "shieldCenter": [
-        -0.5, 0
+        -1, 0
     ],
-    "shieldRadius": 72,
+    "shieldRadius": 79,
     "viewOffset": 0,
     "builtInWings": [],
     "builtInModules": null,

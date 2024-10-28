@@ -51,6 +51,7 @@
 	"priorityShips":{
 		"tags":[],
 		"hulls":[
+			"icfb_kaldur",
 			"icfb_froskur",
 			"icfb_skjoldr",
 			"icfb_karta",

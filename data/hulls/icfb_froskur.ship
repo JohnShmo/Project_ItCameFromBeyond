@@ -14,7 +14,7 @@
     "shieldCenter": [
         5.5, 0
     ],
-    "shieldRadius": 64.5,
+    "shieldRadius": 67,
     "viewOffset": 0,
     "builtInWings": [],
     "builtInModules": null,
