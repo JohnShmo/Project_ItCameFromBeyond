@@ -22,4 +22,4 @@ icfb_hakarl,SHIP,"The Hakarl-class battlecruiser is a formidable, albeit unconve
 Early testing of the ship’s explosive propulsion resulted in several high-profile accidents, leading some within the Boundless to question the viability of the design. These mishaps gave the Hakarl-class a notorious reputation long before it ever saw battle, and even now, there are whispers that serving aboard one is a cursed assignment. The battlecruiser's namesake, a large predatory sea creature from Boundless homeworld mythology, speaks to its predatory nature.",,,,,,,
 ,,,,,,,,,
 icfb_thruster_pulse,SHIP_SYSTEM,Briefly (and massively) boosts speed in the current direction of travel.,,,,,,,
-icfb_ballistic_preloader,SHIP_SYSTEM,"Frontloads ammunition racks with special charges. Projectiles fired by ballistic weapons after using the system deal bonus damage, up to a certain number of shots (depending on the weapon).",,,,,,,
+icfb_ballistic_preloader,SHIP_SYSTEM,"Frontloads ammunition racks with special charges. Projectiles fired by ballistic weapons after using the system deal bonus damage, up to a certain number of shots (depending on the weapon). Generates flux on use.",,,,,,,
