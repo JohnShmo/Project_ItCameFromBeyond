@@ -9,12 +9,12 @@
     "center": [
         33, 34
     ],
-    "collisionRadius": 52.5,
+    "collisionRadius": 93.5,
     "coversColor": "",
     "shieldCenter": [
         0, 0
     ],
-    "shieldRadius": 45.5,
+    "shieldRadius": 55,
     "viewOffset": 0,
     "builtInMods": [
         "pointdefenseai"
@@ -72,8 +72,8 @@
             "location": [
                 -6.5, 26
             ],
-            "length": 18.5,
-            "width": 8,
+            "length": 34.5,
+            "width": 9,
             "angle": 180,
             "contrailSize": 12,
             "style": "LOW_TECH"
@@ -82,8 +82,8 @@
             "location": [
                 -6.5, -26
             ],
-            "length": 18.5,
-            "width": 8,
+            "length": 34.5,
+            "width": 9,
             "angle": 180,
             "contrailSize": 12,
             "style": "LOW_TECH"
@@ -92,8 +92,8 @@
             "location": [
                 -34.5, -5.5
             ],
-            "length": 26,
-            "width": 11,
+            "length": 62.5,
+            "width": 14,
             "angle": 180,
             "contrailSize": 12,
             "style": "LOW_TECH"
@@ -102,8 +102,8 @@
             "location": [
                 -34.5, 5.5
             ],
-            "length": 26,
-            "width": 11,
+            "length": 62.5,
+            "width": 14,
             "angle": 180,
             "contrailSize": 12,
             "style": "LOW_TECH"

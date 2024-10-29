@@ -2,6 +2,7 @@
 	"plugins":{
 		## Combat plugins
 		"icfb_QuantumInversionPlugin":"org.shmo.icfb.combat.plugins.QuantumInversionPlugin",
+		"icfb_BallisticPreloaderPlugin":"org.shmo.icfb.combat.plugins.BallisticPreloaderPlugin",
 	},
 	"graphics":{
 		"icfb_icons":{

@@ -16,6 +16,9 @@
     ],
     "shieldRadius": 79,
     "viewOffset": 0,
+    "builtInMods": [
+        "icfb_ballistic_preloader_hullmod"
+    ],
     "builtInWings": [],
     "builtInModules": null,
     "weaponSlots": [
@@ -49,7 +52,7 @@
             "arc": 215,
             "angle": 0,
             "locations": [
-                    20.5,        0
+                    19.5,        0
             ]
         }
     ],

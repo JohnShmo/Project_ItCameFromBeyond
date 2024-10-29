@@ -1,0 +1,13 @@
+{
+	"id":"icfb_ballistic_preloader",
+	"type":"STAT_MOD",
+	"aiType":"WEAPON_BOOST",
+	
+	"statsScript":"org.shmo.icfb.combat.systems.BallisticPreloader",
+	
+	"weaponGlowColor":[255,100,100,155],
+	"weaponTypes":[BALLISTIC],
+	
+	"useSound":"system_fast_missile_racks",
+	"outOfUsesSound":"gun_out_of_ammo",
+}

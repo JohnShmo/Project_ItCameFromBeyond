@@ -3,4 +3,5 @@ name,id,flux/second,f/s (base rate),f/s (base cap),flux/use,f/u (base rate),f/u 
 # See https://starsector.fandom.com/wiki/Ship_Systems_CSV.,,,,,,,,,,,,,,,,,,,,,,,,,,,
 # Maneuvering Jets,maneuveringjets,,,,,,,,,,1,5,1,5,,,,,,,,,,,,,graphics/icons/hullsys/maneuvering_jets.png
 Thruster Pulse,icfb_thruster_pulse,,,,,,,,3,0.15,0.25,0.25,0.25,0,,TRUE,,TRUE,,,,TRUE,,TRUE,,,graphics/icons/hullsys/maneuvering_jets.png
-Quantum Inversion,icfb_quantum_inversion,,,,,,,,,,1,1,1,8,,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,,,graphics/icons/hullsys/maneuvering_jets.png
+Quantum Inversion,icfb_quantum_inversion,,,,,,,,,,1,1,1,8,,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,,,graphics/icons/hullsys/temporal_shell.png
+Ballistic Preloader,icfb_ballistic_preloader,,,,,,0.20,,1,0.05,0.5,0.25,0.25,0,,TRUE,TRUE,,TRUE,,,,,TRUE,,,graphics/icons/hullsys/ammo_feeder.png

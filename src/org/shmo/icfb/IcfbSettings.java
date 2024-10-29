@@ -109,12 +109,20 @@ public class IcfbSettings {
         private static final float DEFAULT_THRUSTER_PULSE_IMPULSE_MAGNITUDE = 1000f;
         private static final float DEFAULT_QUANTUM_INVERSION_MAX_TIME_SPAN = 4f;
         private static final float DEFAULT_QUANTUM_INVERSION_KEYFRAME_INTERVAL = 0.1f;
+        private static final float DEFAULT_BALLISTIC_PRELOADER_SMALL_POOL = 500f;
+        private static final float DEFAULT_BALLISTIC_PRELOADER_MEDIUM_POOL = 1000f;
+        private static final float DEFAULT_BALLISTIC_PRELOADER_LARGE_POOL = 1500f;
+        private static final float DEFAULT_BALLISTIC_PRELOADER_BONUS_DAMAGE_PERCENT = 50f;
 
         // FIELDS ======================================================================================================
 
         public float thrusterPulseImpulseMagnitude = DEFAULT_THRUSTER_PULSE_IMPULSE_MAGNITUDE;
         public float quantumInversionMaxTimeSpan = DEFAULT_QUANTUM_INVERSION_MAX_TIME_SPAN;
         public float quantumInversionKeyframeInterval = DEFAULT_QUANTUM_INVERSION_KEYFRAME_INTERVAL;
+        public float ballisticPreloaderSmallPool = DEFAULT_BALLISTIC_PRELOADER_SMALL_POOL;
+        public float ballisticPreloaderMediumPool = DEFAULT_BALLISTIC_PRELOADER_MEDIUM_POOL;
+        public float ballisticPreloaderLargePool = DEFAULT_BALLISTIC_PRELOADER_LARGE_POOL;
+        public float ballisticPreloaderBonusDamagePercent = DEFAULT_BALLISTIC_PRELOADER_BONUS_DAMAGE_PERCENT;
 
         // METHODS =====================================================================================================
         public void loadFromJSON(@NotNull JSONObject json) {
@@ -124,6 +132,14 @@ public class IcfbSettings {
                     (float)json.optDouble("quantumInversionMaxTimeSpan", DEFAULT_QUANTUM_INVERSION_MAX_TIME_SPAN);
             quantumInversionKeyframeInterval =
                     (float)json.optDouble("quantumInversionKeyframeInterval", DEFAULT_QUANTUM_INVERSION_KEYFRAME_INTERVAL);
+            ballisticPreloaderSmallPool =
+                    (float)json.optDouble("ballisticPreloaderSmallPool", DEFAULT_BALLISTIC_PRELOADER_SMALL_POOL);
+            ballisticPreloaderMediumPool =
+                    (float)json.optDouble("ballisticPreloaderMediumPool", DEFAULT_BALLISTIC_PRELOADER_MEDIUM_POOL);
+            ballisticPreloaderLargePool =
+                    (float)json.optDouble("ballisticPreloaderLargePool", DEFAULT_BALLISTIC_PRELOADER_LARGE_POOL);
+            ballisticPreloaderBonusDamagePercent =
+                    (float)json.optDouble("ballisticPreloaderBonusDamagePercent", DEFAULT_BALLISTIC_PRELOADER_BONUS_DAMAGE_PERCENT);
         }
     }
 

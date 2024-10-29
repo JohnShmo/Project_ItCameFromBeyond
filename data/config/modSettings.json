@@ -10,7 +10,7 @@
 			"baseMaxRangeLY": 10.0,
 			"rangeUpgradeMultiplier": 2.0,
 			
-			"arrivalDistanceFromDestination": 400.0,
+			"arrivalDistanceFromDestination": 500.0,
 		},
 		"shiftDriveEvent": {
 			"isEnabled": false, # Probably don't enable this yet lol
@@ -22,11 +22,17 @@
 		},
 		"shipSystem": {
 			## Thruster Pulse
-			"thrusterPulseImpulseMagnitude": 1000.0,
+			"thrusterPulseImpulseMagnitude": 1200.0,
 			
 			## Quantum Inversion
 			"quantumInversionMaxTimeSpan": 4.0, 		# seconds
 			"quantumInversionKeyframeInterval": 0.1, 	# seconds
+			
+			## Ballistic Preloader
+			"ballisticPreloaderSmallPool": 600.0,
+			"ballisticPreloaderMediumPool": 1000.0,
+			"ballisticPreloaderLargePool": 1600.0,
+			"ballisticPreloaderBonusDamagePercent": 70.0,
 		}
 	}
 }

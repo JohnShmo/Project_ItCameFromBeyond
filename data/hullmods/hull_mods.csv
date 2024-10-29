@@ -2,4 +2,4 @@ name,id,tier,rarity,tech/manufacturer,tags,uiTags,base value,unlocked,hidden,hid
 ,,,,,,,,,,,,,,,,,,,
 # built-in hullmods,,,,,,,,,,,,,,,,,,,
 Target Acquisition Array,icfb_target_acquisition_array,,,,,,,,TRUE,,0,0,0,0,org.shmo.icfb.combat.hullmods.TargetAcquisitionArray,Extends the range of ballistic and energy weapons by %s/%s/%s depending on weapon size (small/medium/large).,Extends non-missile weapon range.,,graphics/hullmods/advanced_targeting_core.png
-,,,,,,,,,,,,,,,,,,,
+Ballistic Preloader Hullmod,icfb_ballistic_preloader_hullmod,,,,,,,,TRUE,TRUE,0,0,0,0,org.shmo.icfb.combat.hullmods.BallisticPreloaderHullmod,,,,graphics/hullmods/advanced_targeting_core.png
