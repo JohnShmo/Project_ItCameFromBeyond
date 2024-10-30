@@ -34,7 +34,7 @@ public class WingsOfEnteriaCorvusModeMarketFactory implements MarketFactory {
                         Industries.HEAVYBATTERIES,
                         Industries.REFINING,
                         Industries.ORBITALWORKS,
-                        Industries.MILITARYBASE
+                        Industries.HIGHCOMMAND
                 )),
                 true,
                 true,

@@ -5,6 +5,7 @@ import com.fs.starfarer.api.campaign.SectorAPI;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
+import com.fs.starfarer.api.impl.campaign.ids.Industries;
 import org.shmo.icfb.IcfbLog;
 import org.shmo.icfb.campaign.gen.MarketFactory;
 import org.shmo.icfb.campaign.gen.impl.markets.CeladonCorvusModeMarketFactory;
@@ -58,6 +59,15 @@ public class IcfbMarkets {
                 null,
                 true
         );
+
+        // Corrects industry for older version of mod ==================================================================
+        MarketAPI wingsOfEnteria = WINGS_OF_ENTERIA.getMarket();
+        if (wingsOfEnteria.hasIndustry(Industries.MILITARYBASE)) {
+            wingsOfEnteria.removeIndustry(Industries.MILITARYBASE, MarketAPI.MarketInteractionMode.REMOTE, true);
+            wingsOfEnteria.addIndustry(Industries.HIGHCOMMAND);
+            wingsOfEnteria.reapplyIndustries();
+        }
+        // =============================================================================================================
     }
 
     public static class MarketData {
