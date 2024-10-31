@@ -4,6 +4,7 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
 import com.fs.starfarer.api.characters.PersonAPI;
+import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
@@ -28,6 +29,7 @@ public class ReturningHopeQuest implements QuestFactory {
     @Override
     public Quest create() {
         Quest quest = new Quest(ID);
+        quest.addTag(Tags.INTEL_STORY);
         quest.setName(NAME);
         quest.setIcon(Global.getSettings().getSpriteName("campaignMissions", "analyze_entity"));
         quest.addStep(new BaseQuestStepIntel() {

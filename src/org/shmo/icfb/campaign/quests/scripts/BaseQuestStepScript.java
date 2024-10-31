@@ -29,5 +29,5 @@ public abstract class BaseQuestStepScript implements QuestStepScript {
     }
 
     @Override
-    public abstract boolean isComplete();
+    public boolean isComplete() { return false; }
 }

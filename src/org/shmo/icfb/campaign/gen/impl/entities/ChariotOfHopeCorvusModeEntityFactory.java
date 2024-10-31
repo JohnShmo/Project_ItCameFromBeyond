@@ -60,7 +60,7 @@ public class ChariotOfHopeCorvusModeEntityFactory implements EntityFactory {
         entity.addTag(Tags.NOT_RANDOM_MISSION_TARGET);
 
         DefenderDataOverride defenderDataOverride = new DefenderDataOverride(
-                Factions.OMEGA,
+                Factions.REMNANTS,
                 1f,
                 300f,
                 300f

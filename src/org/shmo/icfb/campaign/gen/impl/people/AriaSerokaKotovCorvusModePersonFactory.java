@@ -37,6 +37,7 @@ public class AriaSerokaKotovCorvusModePersonFactory implements PersonFactory {
         person.getStats().setSkillLevel(Skills.HELMSMANSHIP, 1);
         person.getStats().setSkillLevel(Skills.WOLFPACK_TACTICS, 1);
         person.getStats().setSkillLevel(Skills.COORDINATED_MANEUVERS, 1);
+        person.getStats().setSkillLevel(Skills.CONTAINMENT_PROCEDURES, 1);
 
         return person;
     }

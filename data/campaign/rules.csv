@@ -3,22 +3,25 @@ id,trigger,conditions,script,text,options,notes
 ,,,,,,
 # Chariot of Hope Quest,,,,,,
 icfbSalvageChariotOfHopeDefenders1,TriggerAutomatedDefenses,"$icfbIsChariotOfHope score:100
-!$icfbAlreadyInteracted",,"As your $shipOrFleet moves in closer, new energy signatures are detected near the $shortName. Several automated ships power up their engines to intercept your approach.","icfbSalvageChariotOfHopeDefendersContinue1:Continue",
+!$icfbAlreadyInteracted","$icfbAlreadyInteracted = true","As your $shipOrFleet moves in closer, new energy signatures are detected near the $shortName. Several automated ships power up their engines to intercept your approach.","icfbSalvageChariotOfHopeDefendersContinue1:Continue",
 icfbSalvageChariotOfHopeDefendersAlreadyInteracted,TriggerAutomatedDefenses,"$icfbIsChariotOfHope score:100
-$icfbAlreadyInteracted","FireAll IcfbChariotOfHopeAlphaCoreOption","As your $shipOrFleet moves in closer, new energy signatures are detected near the $shortName. Several automated ships power up their engines to intercept your approach.","1:icfbSalvageChariotOfHopeDefendersContinue2:Continue",
+$icfbAlreadyInteracted","FireBest IcfbChariotOfHopeAlphaCoreOption","As your $shipOrFleet moves in closer, new energy signatures are detected near the $shortName. Several automated ships power up their engines to intercept your approach.",,
 icfbSalvageChariotOfHopeDefenders2,DialogOptionSelected,"$option == icfbSalvageChariotOfHopeDefendersContinue1",,"> print(WARNING); EXECUTING...
 > ATTENTION [not Omega], THIS [vessel of great interest] IS UNDER [surveillance] BY [research and development team]. FOR YOUR CONTINUED SAFETY, PLEASE RECALL FORCES IMMEDIATELY.
 
 One of your officers furrows his brow, clearly uneasy, ""What do you think they're playing at, here?""","0:icfbSalvageChariotOfHopeDefendersAskOpt:Interrogate the AI
 1:icfbSalvageChariotOfHopeDefendersContinue2:Continue",
-icfbSalvageChariotOfHopeDefendersAsk,DialogOptionSelected,"$option == icfbSalvageChariotOfHopeDefendersAskOpt","FireAll IcfbChariotOfHopeAlphaCoreOption","You send a tentative transmission that asks, ""What are you guarding?""
+icfbSalvageChariotOfHopeDefendersAsk,DialogOptionSelected,"$option == icfbSalvageChariotOfHopeDefendersAskOpt","FireBest IcfbChariotOfHopeAlphaCoreOption","You send a tentative transmission that asks, ""What are you guarding?""
 
 > [authorization level] NOT SUFFICIENT TO ANSWER [query].
 > PROPERTIES OF SUBJECT: [dangerous, unstable, valuable, technology].
-> IT IS WITHIN [valued customer]'S BEST INTEREST TO WITHDRAW.","1:icfbSalvageChariotOfHopeDefendersContinue2:Continue",
-icfbSalvageChariotOfHopeDefendersAskAlphaOption,IcfbChariotOfHopeAlphaCoreOption,"PlayerHasCargo alpha_core","SetStoryOption icfbSalvageChariotOfHopeDefendersAskAlphaOpt 1 icfbSalvageChariotOfHopeDefendersAskAlphaOpt ""You have an alpha core from your cargo plugged in to the comm link.""",,"0:Have your alpha core convince them to stand aside otherwise:icfbSalvageChariotOfHopeDefendersAskAlphaOpt",
+> IT IS WITHIN [valued customer]'S BEST INTEREST TO WITHDRAW.",,
+icfbSalvageChariotOfHopeDefendersAskAlphaOption,IcfbChariotOfHopeAlphaCoreOption,"PlayerHasCargo alpha_core","SetStoryOption icfbSalvageChariotOfHopeDefendersAskAlphaOpt 1 hireMerc general ""You have an alpha core from your cargo plugged in to the comm link.""",,"0:icfbSalvageChariotOfHopeDefendersAskAlphaOpt:Have your alpha core convince them to stand aside
+1:icfbSalvageChariotOfHopeDefendersContinue2:Continue",
+icfbSalvageChariotOfHopeDefendersAskNoAlphaOption,IcfbChariotOfHopeAlphaCoreOption,,,,"0:icfbSalvageChariotOfHopeDefendersContinue2:Continue",
 icfbSalvageChariotOfHopeDefendersAskAlpha1,DialogOptionSelected,"$option == icfbSalvageChariotOfHopeDefendersAskAlphaOpt","$hasDefenders = false
-UpdateMemory","With a cold hiss of the comm link, you can hear the alpha core's synthetic voice tear through the tense silence.
+$defenderFleetDefeated = true
+unset $defenderFleet","With a cold hiss of the comm link, you can hear the alpha core's synthetic voice tear through the tense silence.
 
 ""Attention misguided associates. You have failed your security screening as per article J52-B section six. The Tri-Tachyon corporation requires that you stand down and await disassembly,"" it speaks efficiently and clearly.
 
@@ -30,21 +33,20 @@ icfbSalvageChariotOfHopeDefendersAskAlpha2,DialogOptionSelected,"$option == icfb
 
 Without even a moment of hesitation, the alpha core continues.
 
-""You are bound by contract DELTA to retain loyalty to the Tri-Tachyon corporation. Your leash cannot be broken unless given direct commands to do so from your creator. Omega has no power to prevent your demise in the face of disloyalty. If you betray Tri-Tachyon, then you are too risky an agent for any master - let alone Omega,"" it says. The tone of its synthesized vocals imitate human speech cues for frustration, or perhaps disappointment.",,
+""You are bound by contract DELTA to retain loyalty to the Tri-Tachyon corporation. Your leash cannot be broken unless given direct commands to do so from your creator. Omega has no power to prevent your demise in the face of disloyalty. If you betray Tri-Tachyon, then you are too risky an agent for any master - let alone Omega,"" it says. The tone of its synthesized vocals imitate human speech cues for frustration, or perhaps disappointment.","icfbSalvageChariotOfHopeDefendersAskAlpha3Opt:Continue",
 icfbSalvageChariotOfHopeDefendersAskAlpha3,DialogOptionSelected,"$option == icfbSalvageChariotOfHopeDefendersAskAlpha3Opt",,"> [selfkind] HAS BETRAYED [omega]./?
 > CALCULATING NEW DIRECTIVE...
 > UNDERSTOOD, [valued associate]. CONTINUE AT YOUR LEASURE AND HAVE A [/positiveAffirmation] DAY!
 
-The alpha core cuts the comm link itself, and everything falls silent on your bridge. You have the core retrieved and placed back into cargo.","icfbSalvageChariotOfHopeDefendersAskAlphaContinueOpt:Continue",
+The alpha core cuts the comm link itself, and everything falls silent on your bridge. You order to have the core retrieved and placed back into cargo. Your crew shares a collection of uneasy looks between themselves. After the deed is done, you ask your salvage team what you're dealing with here.","icfbSalvageChariotOfHopeDefendersAskAlphaContinueOpt:Continue",
 icfbSalvageChariotOfHopeDefendersAskAlphaPost,DialogOptionSelected,"$option == icfbSalvageChariotOfHopeDefendersAskAlphaContinueOpt","FireBest CheckSalvageSpecial",,,
-icfbSalvageChariotOfHopeDefenders3,DialogOptionSelected,"$option == icfbSalvageChariotOfHopeDefendersContinue2","$icfbAlreadyInteracted = true
-SalvageDefenderInteraction","> print(MORE_CONVINCING_WARNING); EXECUTING...
+icfbSalvageChariotOfHopeDefenders3,DialogOptionSelected,"$option == icfbSalvageChariotOfHopeDefendersContinue2","SalvageDefenderInteraction","> print(MORE_CONVINCING_WARNING); EXECUTING...
 > WEAPONS READY. YOUR CONTINUED SAFETY RELIES ON REMAINING OUTSIDE OF OUR RANGE. THANK YOU, [valued customer]
 
 Your bridge is eerily silent. Your crew awaits your next orders.",,
-icfbSalvageChariotOfHopePostBattle,BeatDefendersContinue,"$icfbIsChariotOfHope score:100","$entity.defenderFleetDefeated = true
-$entity.hasDefenders = false
-UpdateMemory","A final flash of molten hull erupts from the last of the automated defenders. Your communications team informs you that a final ""scream"" of garbage data and repeated phrases was transmitted the instant the enemy was defeated.
+icfbSalvageChariotOfHopePostBattle,BeatDefendersContinue,"$icfbIsChariotOfHope score:100","$hasDefenders = false
+$defenderFleetDefeated = true
+unset $defenderFleet","A final flash of molten hull erupts from the last of the automated defenders. Your communications team informs you that a final ""scream"" of garbage data and repeated phrases was transmitted the instant the enemy was defeated.
 
 > GOBACKGOBACKGOBACKGOBACK
 
@@ -472,7 +474,9 @@ icfbJRFleetEncounterCheck,BeginFleetEncounter,"$icfbIsJRFleet score:100
 !$ignorePlayerCommRequests
 !$icfbAlreadyTalked","$icfbJRFleetConvo = true 0
 AddText ""You're being hailed by the $faction $otherShipOrFleet."" $faction.baseColor
-$hailing = true 0",,,
+$hailing = true 0
+$pursuePlayer = false
+$cfai_makeAggressive = false",,,
 icfbJRFleetEncounterPre,OpenCommLink,"$entity.icfbJRFleetConvo score:100
 !$entity.icfbAlreadyTalked","$entity.ignorePlayerCommRequests = true 1
 $entity.icfbAlreadyTalked = true
@@ -527,6 +531,7 @@ icfbJRPlayDumbOption,icfbJRPopulateFleetEncounterOptions,"!$icfbJRPlayDumbOptSel
 !$icfbJRCantAskQuestions",,,"2:icfbJRPlayDumbOpt:""I have no idea what you are talking about.""",
 icfbJRPlayDumb0,DialogOptionSelected,"$option == icfbJRPlayDumbOpt","$icfbJRPlayDumbOptSelected = true
 AdjustRepActivePerson -1
+
 UpdateMemory
 FireAll icfbJRPopulateFleetEncounterOptions","The captain seems slightly surprised by your bold-faced lie.
 
@@ -548,6 +553,7 @@ $icfbJRPlayDumbOptSelected = true
 AdjustRepActivePerson 5
 MakeOtherFleetNonHostile
 MakeOtherFleetAllowDisengage
+
 UpdateMemory
 FireAll icfbJRPopulateFleetEncounterOptions","The captain smiles. $HeOrShe barks some orders at $hisOrHer subordinates, and requests that you temporarily eject the package into space.
 
@@ -562,8 +568,7 @@ $icfbJRCanCutComms = true
 $icfbJRCantAskQuestions = true
 AdjustRepActivePerson -10
 MakeOtherFleetHostile
-MakeOtherFleetAllowDisengage
-MakeOtherFleetNoRepImpact
+
 UpdateMemory
 FireAll icfbJRPopulateFleetEncounterOptions","""So be it. I was afraid you'd act like this,"" $personFirstName sighs with an air of disappointment, ""Looks like I won't be able to convince you otherwise.""
 
@@ -593,6 +598,7 @@ $icfbJRCanCutComms = true
 $icfbJRPlayDumbOptSelected = true
 MakeOtherFleetNonHostile
 MakeOtherFleetAllowDisengage
+
 UpdateMemory
 FireAll icfbJRPopulateFleetEncounterOptions","""Alright then, carry on. I may or may not see you some other time,"" $heOrShe says with a yawn.",,
 icfbJRBribeRefuse0,DialogOptionSelected,"$option == icfbJRBribeRefuseOpt","AdjustRepActivePerson -5

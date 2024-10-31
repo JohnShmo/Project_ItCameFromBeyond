@@ -36,6 +36,7 @@ public class JumpstartRequiredQuest implements QuestFactory {
     @Override
     public Quest create() {
         final Quest quest = new Quest(ID);
+        quest.addTag(Tags.INTEL_STORY);
         quest.setName(NAME);
         quest.setIcon(Global.getSettings().getSpriteName("icfb_portraits", "shifter_01_static"));
 
@@ -144,11 +145,6 @@ public class JumpstartRequiredQuest implements QuestFactory {
                         Misc.makeUnimportant(xent.getMarket().getPrimaryEntity(), ID);
                         Global.getSector().getMemoryWithoutUpdate().unset(IcfbMemFlags.AWAITING_AGENT_CONTACT);
                     }
-
-                    @Override
-                    public boolean isComplete() {
-                        return false;
-                    }
                 }
         );
 
@@ -244,11 +240,6 @@ public class JumpstartRequiredQuest implements QuestFactory {
                         Global.getSector().getMemoryWithoutUpdate().unset(IcfbMemFlags.ACCEPTING_XENT_MISSIONS);
                         Global.getSector().getMemoryWithoutUpdate().unset(IcfbMemFlags.XENT_OFFERING_SPECIAL_MISSION);
                     }
-
-                    @Override
-                    public boolean isComplete() {
-                        return false;
-                    }
                 }
         );
 
@@ -300,11 +291,6 @@ public class JumpstartRequiredQuest implements QuestFactory {
                     }
 
                     @Override
-                    public void buttonPressConfirmed(Object buttonId, IntelUIAPI ui, QuestStepIntelPlugin plugin) {
-
-                    }
-
-                    @Override
                     public void addDescriptionBulletPoints(TooltipMakerAPI info) {
                         addNotificationBulletPoints(info);
                     }
@@ -342,7 +328,11 @@ public class JumpstartRequiredQuest implements QuestFactory {
 
                     @Override
                     public void end() {
-                        despawnMercenaryFleet();
+                        if (_mercenaryFleet != null && _mercenaryFleet.getContainingLocation() != null) {
+                            despawnMercenaryFleet();
+                            _mercenaryFleet.getContainingLocation().removeEntity(_mercenaryFleet);
+                        }
+                        _mercenaryFleet = null;
                     }
 
                     @Override
@@ -359,8 +349,10 @@ public class JumpstartRequiredQuest implements QuestFactory {
                         CampaignFleetAPI fleet = createMercenaryFleet();
                         LocationAPI location = playerFleet.getContainingLocation();
                         location.addEntity(fleet);
-                        fleet.setLocation(playerFleet.getLocation().getX() + 500, playerFleet.getLocation().getY() + 200);
+                        fleet.setLocation(playerFleet.getLocation().getX() + 300, playerFleet.getLocation().getY() + 200);
                         Misc.makeImportant(fleet, ID);
+                        fleet.addAssignment(FleetAssignment.INTERCEPT, playerFleet, 999999);
+                        fleet.getAbility(Abilities.EMERGENCY_BURN).activate();
                         _alreadySpawnedMercenaryFleet = true;
                         _mercenaryFleet = fleet;
                     }
@@ -373,7 +365,7 @@ public class JumpstartRequiredQuest implements QuestFactory {
                         fb.setFleetFaction(Factions.INDEPENDENT);
                         fb.setFleetType(FleetTypes.TASK_FORCE);
                         fb.setFleetName("Mercenary Fleet");
-                        fb.setMinFP(50 + (int)(playerFleet.getFleetPoints() * 1.15f));
+                        fb.setMinFP(50 + (int) (playerFleet.getFleetPoints() * 1.15f));
                         fb.setTransponderOn(true);
                         fb.setFlagshipVariant("retribution_Standard");
                         fb.setFlagshipName("Aria's Hammer");
@@ -381,13 +373,13 @@ public class JumpstartRequiredQuest implements QuestFactory {
                         fb.setQualityOverride(1.25f);
 
                         CampaignFleetAPI fleet = fb.create();
+                        fleet.addAbility(Abilities.EMERGENCY_BURN);
                         fleet.getMemoryWithoutUpdate().set(IcfbMemFlags.IS_JR_MERCENARY_FLEET, true);
+                        fleet.getMemoryWithoutUpdate().set(MemFlags.MEMORY_KEY_LOW_REP_IMPACT, true);
                         fleet.getMemoryWithoutUpdate().set(MemFlags.MEMORY_KEY_MAKE_PREVENT_DISENGAGE, true);
                         fleet.getMemoryWithoutUpdate().set(MemFlags.STORY_CRITICAL, true);
-                        fleet.getMemoryWithoutUpdate().set(MemFlags.MEMORY_KEY_NEVER_AVOID_PLAYER_SLOWLY, true);
+                        fleet.getMemoryWithoutUpdate().set(MemFlags.MEMORY_KEY_MAKE_AGGRESSIVE, true);
                         fleet.getMemoryWithoutUpdate().set(MemFlags.MEMORY_KEY_PURSUE_PLAYER, true);
-                        fleet.getMemoryWithoutUpdate().set(MemFlags.MEMORY_KEY_ALLOW_LONG_PURSUIT, true);
-                        fleet.getMemoryWithoutUpdate().set(MemFlags.MEMORY_KEY_MAKE_ALWAYS_PURSUE, true);
                         fleet.getMemoryWithoutUpdate().set(MemFlags.FLEET_IGNORED_BY_OTHER_FLEETS, true);
                         fleet.getMemoryWithoutUpdate().set(MemFlags.FLEET_DO_NOT_IGNORE_PLAYER, true);
                         fleet.getMemoryWithoutUpdate().set(MemFlags.MEMORY_KEY_SAW_PLAYER_WITH_TRANSPONDER_ON, true);
@@ -415,12 +407,11 @@ public class JumpstartRequiredQuest implements QuestFactory {
                             return;
 
                         _mercenaryFleet.getMemoryWithoutUpdate().unset(IcfbMemFlags.IS_JR_MERCENARY_FLEET);
+                        _mercenaryFleet.getMemoryWithoutUpdate().unset(MemFlags.MEMORY_KEY_LOW_REP_IMPACT);
                         _mercenaryFleet.getMemoryWithoutUpdate().unset(MemFlags.MEMORY_KEY_MAKE_PREVENT_DISENGAGE);
                         _mercenaryFleet.getMemoryWithoutUpdate().unset(MemFlags.STORY_CRITICAL);
-                        _mercenaryFleet.getMemoryWithoutUpdate().unset(MemFlags.MEMORY_KEY_NEVER_AVOID_PLAYER_SLOWLY);
+                        _mercenaryFleet.getMemoryWithoutUpdate().unset(MemFlags.MEMORY_KEY_MAKE_AGGRESSIVE);
                         _mercenaryFleet.getMemoryWithoutUpdate().unset(MemFlags.MEMORY_KEY_PURSUE_PLAYER);
-                        _mercenaryFleet.getMemoryWithoutUpdate().unset(MemFlags.MEMORY_KEY_ALLOW_LONG_PURSUIT);
-                        _mercenaryFleet.getMemoryWithoutUpdate().unset(MemFlags.MEMORY_KEY_MAKE_ALWAYS_PURSUE);
                         _mercenaryFleet.getMemoryWithoutUpdate().unset(MemFlags.FLEET_DO_NOT_IGNORE_PLAYER);
                         Misc.makeUnimportant(_mercenaryFleet, ID);
 
@@ -449,27 +440,16 @@ public class JumpstartRequiredQuest implements QuestFactory {
                         final CampaignFleetAPI playerFleet = Global.getSector().getPlayerFleet();
                         if (playerFleet == null)
                             return false;
-                        final int minObjectiveProgress = 1;
+                        final int minObjectiveProgress = 3;
                         final boolean wasInHyperspaceRecently = _isInHyperspace;
 
                         _isInHyperspace = playerFleet.isInHyperspace();
 
                         if (minObjectiveProgress > SpecialMission.getObjectiveProgress())
                             return false;
-                        if (!wasInHyperspaceRecently)
+                        if (wasInHyperspaceRecently)
                             return false;
-                        if (_isInHyperspace)
-                            return false;
-
-                        boolean systemContainsObjective = false;
-                        List<SectorEntityToken> objects = SpecialMission.getPotentialObjectsInSystem(playerFleet.getStarSystem());
-                        for (SectorEntityToken object : objects) {
-                            if (!SpecialMission.isObjectScanned(object)) {
-                                systemContainsObjective = true;
-                                break;
-                            }
-                        }
-                        return systemContainsObjective;
+                        return _isInHyperspace;
                     }
 
                     private void checkSensorBursts() {
@@ -563,11 +543,6 @@ public class JumpstartRequiredQuest implements QuestFactory {
                     }
 
                     @Override
-                    public void buttonPressConfirmed(Object buttonId, IntelUIAPI ui, QuestStepIntelPlugin plugin) {
-
-                    }
-
-                    @Override
                     public void addDescriptionBulletPoints(TooltipMakerAPI info) {
 
                     }
@@ -605,11 +580,6 @@ public class JumpstartRequiredQuest implements QuestFactory {
                         BaseMissionHub.set(xent, null);
                         xent.getMarket().getCommDirectory().getEntryForPerson(xent).setHidden(true);
                     }
-
-                    @Override
-                    public boolean isComplete() {
-                        return false;
-                    }
                 }
         );
 
@@ -643,7 +613,9 @@ public class JumpstartRequiredQuest implements QuestFactory {
                 if (planet.getTypeId().equals(StarTypes.BLACK_HOLE) ||
                         planet.getTypeId().equals(StarTypes.NEUTRON_STAR) ||
                         planet.getTypeId().equals(StarTypes.BLUE_SUPERGIANT) ||
-                        planet.getTypeId().equals(StarTypes.WHITE_DWARF)
+                        planet.getTypeId().equals(StarTypes.WHITE_DWARF) ||
+                        planet.getTypeId().equals("US_star_blue_giant") ||
+                        planet.getTypeId().equals("US_star_white")
                 ) {
                     result.add(planet);
                 }

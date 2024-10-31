@@ -13,6 +13,7 @@ import com.fs.starfarer.api.impl.campaign.missions.hub.BaseHubMissionCreator;
 import com.fs.starfarer.api.impl.campaign.missions.hub.BaseMissionHub;
 import com.fs.starfarer.api.impl.campaign.missions.hub.MissionHub;
 import com.fs.starfarer.api.loading.PersonMissionSpec;
+import com.fs.starfarer.api.util.Misc;
 import org.shmo.icfb.campaign.gen.PersonFactory;
 import org.shmo.icfb.campaign.quests.impl.JumpstartRequiredQuest;
 import org.shmo.icfb.utilities.ShmoGenUtils;
@@ -36,8 +37,10 @@ public class XentAlabasterCorvusModePersonFactory implements PersonFactory {
 
         person.setImportance(PersonImportance.HIGH);
         person.addTag(Tags.CONTACT_MILITARY);
-        if (market != null)
+        if (market != null) {
             person.getMarket().getCommDirectory().getEntryForPerson(person).setHidden(true);
+            Misc.makeStoryCritical(market, id);
+        }
 
         return person;
     }

@@ -17,7 +17,6 @@ public class WingsOfEnteriaCorvusModeEntityFactory implements EntityFactory {
         );
         entity.setCircularOrbit(orbitFocus, angle, orbitDistance, orbitDays);
         entity.setCustomDescriptionId("icfb_wings_of_enteria");
-        entity.getMemoryWithoutUpdate().set(MemFlags.STORY_CRITICAL, true);
 
         return entity;
     }
