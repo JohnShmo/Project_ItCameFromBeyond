@@ -19,6 +19,9 @@
     "builtInMods": [
         "escort_package"
     ],
+    "builtInWeapons": {
+        "DECO 000": "icfb_lights_karta"
+    },
     "builtInWings": [],
     "builtInModules": null,
     "weaponSlots": [
@@ -108,6 +111,17 @@
             "angle": 135,
             "locations": [
                      -11,       44
+            ]
+        },
+        {
+            "id": "DECO 000",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 0,
+            "angle": 0,
+            "locations": [
+                      40,        0
             ]
         }
     ],
