@@ -5,6 +5,9 @@
 		"icfb_BallisticPreloaderPlugin":"org.shmo.icfb.combat.plugins.BallisticPreloaderPlugin",
 	},
 	"graphics":{
+		"icfb_intel":{
+			"xent_fis":"graphics/icons/abilities/direct_jump.png",
+		},
 		"icfb_icons":{
 			"shift_drive":"graphics/ItCameFromBeyond/icons/abilities/shift_drive.png",
 		},
@@ -12,7 +15,7 @@
 			"aria":"graphics/ItCameFromBeyond/portraits/Aria.png",
 			"shifter_01":"graphics/ItCameFromBeyond/portraits/Shifter_01.png",
 			"shifter_01_static":"graphics/ItCameFromBeyond/portraits/Shifter_01_Static.png",
-		}
+		},
 	},
 	"designTypeColors":{
 		"Boundless":[245,169,199,255],

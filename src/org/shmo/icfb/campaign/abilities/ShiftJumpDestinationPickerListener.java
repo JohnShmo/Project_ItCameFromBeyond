@@ -5,8 +5,10 @@ import com.fs.starfarer.api.campaign.BaseCampaignEntityPickerListener;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.InteractionDialogAPI;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
+import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
+import org.shmo.icfb.IcfbMisc;
 
 import java.awt.*;
 
@@ -54,27 +56,30 @@ public class ShiftJumpDestinationPickerListener extends BaseCampaignEntityPicker
         final int available = (int) _playerFleet.getCargo().getFuel();
         final int maxRange = _shiftJump.getMaxRangeLY();
         final int distance = (int)Misc.getDistanceLY(_playerFleet, entity);
+        final float supplyCost = IcfbMisc.computeSupplyCostForCRRecovery(_shiftJump.computeCRCost(_playerFleet, entity), _playerFleet);
 
-        Color reqColor = Misc.getHighlightColor();
-        Color availableColor = Misc.getHighlightColor();
+        Color requiredFuelColor = Misc.getHighlightColor();
+        Color highlightColor = Misc.getHighlightColor();
         if (cost > available) {
-            reqColor = Misc.getNegativeHighlightColor();
+            requiredFuelColor = Misc.getNegativeHighlightColor();
         }
 
         info.setParaSmallInsignia();
 
         info.beginGrid(200f, 3, Misc.getGrayColor());
         info.setGridFontSmallInsignia();
-        info.addToGrid(0, 0,"    Maximum range (LY):", String.valueOf(maxRange), availableColor);
-        info.addToGrid(1, 0,"    Distance (LY):", String.valueOf(distance), availableColor);
+        info.addToGrid(0, 0,"    Maximum range (LY):", String.valueOf(maxRange), highlightColor);
+        info.addToGrid(1, 0, " |  Fuel available:", Misc.getWithDGS(available), highlightColor);
         if (crPenalty > 0)
-            info.addToGrid(2, 0, "    CR penalty:", crPenalty + "%", Misc.getNegativeHighlightColor());
+            info.addToGrid(2, 0, " |  CR penalty:", crPenalty + "%", highlightColor);
         info.addGrid(0);
 
-        info.beginGrid(200f, 2, Misc.getGrayColor());
+        info.beginGrid(200f, 3, Misc.getGrayColor());
         info.setGridFontSmallInsignia();
-        info.addToGrid(0, 0, "    Fuel required:", Misc.getWithDGS(cost), reqColor);
-        info.addToGrid(1, 0, "    Fuel available:", Misc.getWithDGS(available), availableColor);
+        info.addToGrid(0, 0,"    Distance (LY):", String.valueOf(distance), highlightColor);
+        info.addToGrid(1, 0, " |  Fuel required:", Misc.getWithDGS(cost), requiredFuelColor);
+        if (crPenalty > 0)
+            info.addToGrid(2, 0, " |  Recovery cost:", Misc.getRoundedValueMaxOneAfterDecimal(supplyCost), highlightColor);
         info.addGrid(0);
     }
 

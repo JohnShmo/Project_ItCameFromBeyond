@@ -2,7 +2,7 @@
 	"ItCameFromBeyond": {
 		"shiftJump": {
 			"crPenaltyAtMaxRange": 0.5,
-			"crPenaltyCurve": "MEDIUM", # "FAST", "MEDIUM", "SLOW"
+			"crPenaltyCurve": "FAST", # "FAST", "MEDIUM", "SLOW"
 			
 			"baseExtraFuelPercent": 0.25,
 			"fuelUpgradeMultiplier": 0.5,

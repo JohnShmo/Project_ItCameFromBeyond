@@ -7,6 +7,7 @@ import com.fs.starfarer.api.impl.campaign.abilities.BaseDurationAbility;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.shmo.icfb.IcfbGlobal;
+import org.shmo.icfb.IcfbMisc;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -97,9 +98,9 @@ public class ShiftJumpAbilityPlugin extends BaseDurationAbility {
         final int extraFuelPercent =
                 (int)((IcfbGlobal.getSettings().shiftJump.baseExtraFuelPercent *
                     getImpl().getFuelCostMultiplier()) * 100f);
-        final int crPercentShort = (int)(getImpl().computeCRCostFractional(0.25f) * 100f);
-        final int crPercentMedium = (int)(getImpl().computeCRCostFractional(0.5f) * 100f);
-        final int crPercentMax = (int)(getImpl().computeCRCostFractional(1.0f) * 100f);
+        final float crShort = IcfbMisc.computeSupplyCostForCRRecovery(getImpl().computeCRCostFractional(0.25f), fleet);
+        final float crMedium = IcfbMisc.computeSupplyCostForCRRecovery(getImpl().computeCRCostFractional(0.5f), fleet);
+        final float crMax = IcfbMisc.computeSupplyCostForCRRecovery(getImpl().computeCRCostFractional(1.0f), fleet);
         final float pad = 10f;
 
         tooltip.addTitle("Shift Jump");
@@ -113,13 +114,16 @@ public class ShiftJumpAbilityPlugin extends BaseDurationAbility {
         tooltip.addPara("%s per light year traveled: %s"
                 + "\nCompared to flying through hyperspace, this consumes an extra %s for the distance traveled.",
                 pad, fuel,
-                "Fuel cost", String.valueOf(fuelPerLY), extraFuelPercent + "%"
+                "Fuel cost", Misc.getWithDGS(fuelPerLY), extraFuelPercent + "%"
         );
 
-        tooltip.addPara("The %s for using Shift Jump across short distances is roughly %s."
+        tooltip.addPara("The %s from using Shift Jump across short distances is roughly %s."
                 + " Across medium distances it is about %s. At maximum range it is %s.",
                 pad, highlight,
-                "combat readiness penalty", crPercentShort + "%", crPercentMedium + "%", crPercentMax + "%"
+                "supplies to recover",
+                Misc.getRoundedValueMaxOneAfterDecimal(crShort),
+                Misc.getRoundedValueMaxOneAfterDecimal(crMedium),
+                Misc.getRoundedValueMaxOneAfterDecimal(crMax)
         );
     }
 

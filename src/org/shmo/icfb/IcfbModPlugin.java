@@ -2,8 +2,11 @@ package org.shmo.icfb;
 
 import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import exerelin.campaign.SectorManager;
 import org.magiclib.util.MagicSettings;
+import org.shmo.icfb.campaign.abilities.ShiftJump;
+import org.shmo.icfb.campaign.abilities.ShiftJumpAbilityPlugin;
 import org.shmo.icfb.campaign.scripts.IcfbQuestManager;
 import org.shmo.icfb.campaign.scripts.IcfbShiftDriveManager;
 import org.shmo.icfb.utilities.ScriptInitializer;
@@ -79,6 +82,8 @@ public class IcfbModPlugin extends BaseModPlugin {
     @Override
     public void onNewGameAfterTimePass() {
         super.onNewGameAfterTimePass();
+
+
     }
 
     private void loadSettings() {
