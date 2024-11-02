@@ -1,0 +1,13 @@
+{
+  "masterVersionFile": "https://raw.githubusercontent.com/JohnShmo/Project_ItCameFromBeyond/master/Shmo_ICFB.version",
+  "modName": "It Came From Beyond",
+  "modThreadId": "30923",
+  "directDownloadURL": "https://github.com/JohnShmo/Project_ItCameFromBeyond/releases/latest/download/ItCameFromBeyond.zip",
+  "changelogURL": "https://raw.githubusercontent.com/JohnShmo/Project_ItCameFromBeyond/master/CHANGELOGS.md",
+  "modVersion":
+    {
+      "major": "0",
+      "minor": "0",
+      "patch": "1a-indev"
+    }
+}

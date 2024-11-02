@@ -1,9 +1,9 @@
 {
   "id": "Shmo_ICFB",
-  "name": "It Came Frome Beyond",
+  "name": "It Came From Beyond",
   "author": "John Shmo",
   "utility": "false",
-  "version": { "major": "0", "minor": "0", "patch": "4a-indev" },
+  "version": { "major": "0", "minor": "0", "patch": "5a-indev" },
   "description": "Adds the Boundless - a new faction with mysterious origins. Includes a new campaign ability, ships, and a brand new storyline.",
   "gameVersion": "0.97a-RC11",
   "dependencies": [
