@@ -98,9 +98,9 @@ public class ShiftJumpAbilityPlugin extends BaseDurationAbility {
         final int extraFuelPercent =
                 (int)((IcfbGlobal.getSettings().shiftJump.baseExtraFuelPercent *
                     getImpl().getFuelCostMultiplier()) * 100f);
-        final float crShort = IcfbMisc.computeSupplyCostForCRRecovery(getImpl().computeCRCostFractional(0.25f), fleet);
-        final float crMedium = IcfbMisc.computeSupplyCostForCRRecovery(getImpl().computeCRCostFractional(0.5f), fleet);
-        final float crMax = IcfbMisc.computeSupplyCostForCRRecovery(getImpl().computeCRCostFractional(1.0f), fleet);
+        final float crShort = IcfbMisc.computeSupplyCostForCRRecovery(fleet, getImpl().computeCRCostFractional(0.25f));
+        final float crMedium = IcfbMisc.computeSupplyCostForCRRecovery(fleet, getImpl().computeCRCostFractional(0.5f));
+        final float crMax = IcfbMisc.computeSupplyCostForCRRecovery(fleet, getImpl().computeCRCostFractional(1.0f));
         final float pad = 10f;
 
         tooltip.addTitle("Shift Jump");

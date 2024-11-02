@@ -5,7 +5,6 @@ import com.fs.starfarer.api.campaign.BaseCampaignEntityPickerListener;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.InteractionDialogAPI;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
-import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.shmo.icfb.IcfbMisc;
@@ -56,7 +55,7 @@ public class ShiftJumpDestinationPickerListener extends BaseCampaignEntityPicker
         final int available = (int) _playerFleet.getCargo().getFuel();
         final int maxRange = _shiftJump.getMaxRangeLY();
         final int distance = (int)Misc.getDistanceLY(_playerFleet, entity);
-        final float supplyCost = IcfbMisc.computeSupplyCostForCRRecovery(_shiftJump.computeCRCost(_playerFleet, entity), _playerFleet);
+        final float supplyCost = IcfbMisc.computeSupplyCostForCRRecovery(_playerFleet, _shiftJump.computeCRCost(_playerFleet, entity));
 
         Color requiredFuelColor = Misc.getHighlightColor();
         Color highlightColor = Misc.getHighlightColor();

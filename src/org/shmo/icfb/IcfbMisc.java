@@ -1,7 +1,6 @@
 package org.shmo.icfb;
 
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
-import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import org.shmo.icfb.utilities.ShmoMath;
 
@@ -29,15 +28,19 @@ public class IcfbMisc {
         );
     }
 
-    public static float computeSupplyCostForCRRecovery(float crLoss, CampaignFleetAPI fleet) {
+    public static float computeSupplyCostForCRRecovery(CampaignFleetAPI fleet, float crLoss) {
         List<FleetMemberAPI> members = fleet.getFleetData().getMembersListCopy();
         float totalSupplies = 0;
         for (FleetMemberAPI member : members) {
-            final float deploymentCostSupplies = member.getDeploymentCostSupplies();
-            final float deploymentCostCR = member.getDeployCost() * 100f;
-            final float suppliesPerCR = deploymentCostSupplies / deploymentCostCR;
-            totalSupplies += suppliesPerCR * (crLoss * 100f);
+            totalSupplies += computeSupplyCostForCRRecovery(member, crLoss);
         }
         return totalSupplies;
+    }
+
+    public static float computeSupplyCostForCRRecovery(FleetMemberAPI fleetMember, float crLoss) {
+        final float deploymentCostSupplies = fleetMember.getDeploymentCostSupplies();
+        final float deploymentCostCR = fleetMember.getDeployCost() * 100f;
+        final float suppliesPerCR = deploymentCostSupplies / deploymentCostCR;
+        return suppliesPerCR * (crLoss * 100f);
     }
 }
