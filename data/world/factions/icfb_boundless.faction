@@ -12,6 +12,12 @@
 	"logo":"graphics/ItCameFromBeyond/factions/Boundless.png",
 	"crest":"graphics/ItCameFromBeyond/factions/Boundless_Crest.png",
 	"shipNamePrefix":"BSS",
+	"music":{
+		"theme":"icfb_boundless_hostile_encounter",
+		"encounter_neutral":"icfb_boundless_hostile_encounter",
+		"encounter_hostile":"icfb_boundless_hostile_encounter",
+		"encounter_friendly":"icfb_boundless_hostile_encounter",
+	},
 	"shipNameSources":{
 		"GREEK":4,
 		"CELTIC":2,
