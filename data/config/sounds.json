@@ -7,5 +7,12 @@
 				"volume":1
 			}, 
 		],
+		"icfb_boundless_station":[
+			{
+				"file":"icfb_boundless_station.ogg",
+				"source":"sounds/music",
+				"volume":1
+			}, 
+		],
 	},
 }
