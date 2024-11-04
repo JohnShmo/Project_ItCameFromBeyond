@@ -30,4 +30,22 @@ public class ShmoCombatUtils {
         acceleration.normalise();
         return ShmoMath.rotateVector(acceleration, ship.getFacing());
     }
+
+    public static @NotNull Vector2f computeShipAccelerationVectorLocal(@NotNull ShipAPI ship) {
+        ShipEngineControllerAPI engineController = ship.getEngineController();
+        float acceleratingForwards = engineController.isAccelerating() ? 1f : 0f;
+        float acceleratingBackwards = engineController.isAcceleratingBackwards() ? 1f : 0f;
+        float acceleratingLeft = engineController.isStrafingLeft() ? 1f : 0f;
+        float acceleratingRight = engineController.isStrafingRight() ? 1f : 0f;
+
+        Vector2f acceleration = new Vector2f(
+                acceleratingForwards - acceleratingBackwards,
+                acceleratingLeft - acceleratingRight
+        );
+        if (acceleration.lengthSquared() == 0)
+            return acceleration;
+
+        acceleration.normalise();
+        return acceleration;
+    }
 }

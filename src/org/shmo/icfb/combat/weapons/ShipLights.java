@@ -11,6 +11,8 @@ import org.shmo.icfb.utilities.ShmoMath;
 import java.awt.*;
 
 public class ShipLights implements EveryFrameWeaponEffectPlugin {
+    private static final float FADE_SPEED = 0.33333f;
+
     private Color _on = null;
     private Color _off = null;
     private float _currentFadeT = 0f;
@@ -18,13 +20,13 @@ public class ShipLights implements EveryFrameWeaponEffectPlugin {
     private int _currentFrame = 0;
 
     private void fadeOut(float amount) {
-        _currentFadeT = _currentFadeT - amount;
+        _currentFadeT = _currentFadeT - amount * FADE_SPEED;
         if (_currentFadeT < 0)
             _currentFadeT = 0;
     }
 
     private void fadeIn(float amount) {
-        _currentFadeT = _currentFadeT + amount;
+        _currentFadeT = _currentFadeT + amount * FADE_SPEED;
         if (_currentFadeT > 1)
             _currentFadeT = 1;
     }

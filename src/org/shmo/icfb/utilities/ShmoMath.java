@@ -267,4 +267,44 @@ public class ShmoMath {
                 ? (1 - easeOutBounce(1 - 2 * t)) / 2
                 : (1 + easeOutBounce(2 * t - 1)) / 2);
     }
+
+    public static float angleDifference(float angle1, float angle2) {
+        // Normalize angles to range [0, 360)
+        angle1 = (angle1 % 360 + 360) % 360;
+        angle2 = (angle2 % 360 + 360) % 360;
+
+        // Calculate the raw difference
+        float difference = Math.abs(angle1 - angle2);
+
+        // Ensure the smallest circular difference is returned
+        return Math.min(difference, 360 - difference);
+    }
+
+    public static float signedAngleDifference(float angle1, float angle2) {
+        // Normalize angles to range [0, 360)
+        angle1 = ((angle1 % 360) + 360) % 360;
+        angle2 = ((angle2 % 360) + 360) % 360;
+
+        // Calculate the signed difference
+        float difference = angle1 - angle2;
+
+        // Adjust the difference to be within the range [-180, 180]
+        if (difference > 180) {
+            difference -= 360;
+        } else if (difference < -180) {
+            difference += 360;
+        }
+
+        return difference;
+    }
+
+    public static float dampen(float value, float max, float strength) {
+        // Apply damping using a non-linear curve where each output is greater than the one before
+        float ratio = value / max;
+
+        // Use a modified curve that retains increasing outputs
+
+        return value * (1 - (float)Math.pow(ratio, strength));
+    }
+
 }
