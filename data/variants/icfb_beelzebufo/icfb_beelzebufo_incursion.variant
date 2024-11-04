@@ -1,0 +1,38 @@
+{
+    "displayName": "Incursion",
+    "fluxCapacitors": 10,
+    "fluxVents": 10,
+    "goalVariant": true,
+    "hullId": "icfb_beelzebufo",
+    "hullMods": [
+        "targetingunit",
+        "adaptive_coils",
+        "magazines",
+        "solar_shielding"
+    ],
+    "quality": 0.0,
+    "variantId": "icfb_beelzebufo_incursion",
+    "weaponGroups": [
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 000": "riftcascade"
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 001": "minipulser"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 002": "shockrepeater"
+            }
+        }
+    ]
+}

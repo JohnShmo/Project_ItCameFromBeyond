@@ -13,6 +13,9 @@
 		"icfb_skjoldr_balanced": 6,
 		"icfb_skjoldr_close_support": 6,
 		"icfb_skjoldr_overdriven": 2,
+		
+		# Shifter
+		"icfb_beelzebufo_incursion": 8,
 	},
 	"combatSmall":{
 		"icfb_kaldur_patrol": 7,
@@ -26,6 +29,9 @@
 		"icfb_skjoldr_balanced": 7,
 		"icfb_skjoldr_close_support": 7,
 		"icfb_skjoldr_overdriven": 3,
+		
+		# Shifter
+		"icfb_beelzebufo_incursion": 8,
 	},
 	"combatMedium":{
 		"icfb_karta_balanced": 7,

@@ -19,7 +19,7 @@
 	},
 	"designTypeColors":{
 		"Boundless":[245,169,199,255],
-		"Shifters":[209,86,156,255],
+		"Shifter":[209,86,156,255],
 	},
 	"ruleCommandPackages":[
 		"org.shmo.icfb.campaign.rules",

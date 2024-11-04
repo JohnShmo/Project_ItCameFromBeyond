@@ -1,0 +1,236 @@
+{
+    "hullName": "Beelzebufo",
+    "hullId": "icfb_beelzebufo",
+    "hullSize": "FRIGATE",
+    "style": "OMEGA",
+    "spriteName": "graphics/ItCameFromBeyond/hulls/REDACTED/Frigate_1_Shifter.png",
+    "height": 87,
+    "width": 90,
+    "center": [
+        45, 43.5
+    ],
+    "collisionRadius": 94.5,
+    "coversColor": "",
+    "shieldCenter": [
+        0, 0
+    ],
+    "shieldRadius": 66.5,
+    "viewOffset": 0,
+    "builtInWeapons": {
+        "WS 006": "icfb_tendril_medium",
+        "WS 008": "icfb_tendril_small",
+        "WS 004": "icfb_tendril_small",
+        "WS 010": "icfb_tendril_extra_small",
+        "WS 011": "icfb_tendril_extra_small",
+        "WS 009": "icfb_tendril_extra_small",
+        "WS 012": "icfb_tendril_extra_small",
+        "WS 005": "icfb_tendril_medium",
+        "WS 007": "icfb_tendril_small",
+        "WS 003": "icfb_tendril_small"
+    },
+    "builtInWings": [],
+    "builtInModules": null,
+    "weaponSlots": [
+        {
+            "id": "WS 000",
+            "size": "LARGE",
+            "type": "UNIVERSAL",
+            "mount": "HARDPOINT",
+            "arc": 0,
+            "angle": 0,
+            "locations": [
+                    19.5,        0
+            ]
+        },
+        {
+            "id": "WS 001",
+            "size": "SMALL",
+            "type": "UNIVERSAL",
+            "mount": "HARDPOINT",
+            "arc": 0,
+            "angle": 0,
+            "locations": [
+                    37.5,      -23
+            ]
+        },
+        {
+            "id": "WS 002",
+            "size": "SMALL",
+            "type": "UNIVERSAL",
+            "mount": "TURRET",
+            "arc": 360,
+            "angle": 51.5,
+            "locations": [
+                   -16.5,       35
+            ]
+        },
+        {
+            "id": "WS 003",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 182,
+            "angle": 270,
+            "locations": [
+                   -38.5,      -33
+            ]
+        },
+        {
+            "id": "WS 004",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 182,
+            "angle": 90,
+            "locations": [
+                   -38.5,       33
+            ]
+        },
+        {
+            "id": "WS 005",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 176,
+            "angle": 230,
+            "locations": [
+                     -45,      -25
+            ]
+        },
+        {
+            "id": "WS 006",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 176,
+            "angle": 130,
+            "locations": [
+                     -45,       25
+            ]
+        },
+        {
+            "id": "WS 007",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 179,
+            "angle": 194,
+            "locations": [
+                     -55,    -17.5
+            ]
+        },
+        {
+            "id": "WS 008",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 179,
+            "angle": 166,
+            "locations": [
+                     -55,     17.5
+            ]
+        },
+        {
+            "id": "WS 009",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 177,
+            "angle": 211,
+            "locations": [
+                     -60,      -27
+            ]
+        },
+        {
+            "id": "WS 010",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 177,
+            "angle": 149,
+            "locations": [
+                     -60,       27
+            ]
+        },
+        {
+            "id": "WS 011",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 178,
+            "angle": 103,
+            "locations": [
+                   -48.5,     36.5
+            ]
+        },
+        {
+            "id": "WS 012",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 178,
+            "angle": 257,
+            "locations": [
+                   -48.5,    -36.5
+            ]
+        }
+    ],
+    "engineSlots": [
+        {
+            "location": [
+                -44, 7.5
+            ],
+            "length": 53.5,
+            "width": 8,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "OMEGA"
+        },
+        {
+            "location": [
+                -44, -7.5
+            ],
+            "length": 53.5,
+            "width": 8,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "OMEGA"
+        },
+        {
+            "location": [
+                -39, -15
+            ],
+            "length": 38,
+            "width": 7,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "OMEGA"
+        },
+        {
+            "location": [
+                -39, 15
+            ],
+            "length": 38,
+            "width": 7,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "OMEGA"
+        }
+    ],
+    "bounds": [
+             -28,     36.5,
+           -13.5,     38.5,
+           -19.5,       12,
+              11,     33.5,
+              29,       31,
+        
+              21,        0,
+              29,      -31,
+              11,    -33.5,
+           -19.5,      -12,
+           -28.5,      -31,
+        
+             -38,        0
+    # 11 points total.
+    ]
+}
