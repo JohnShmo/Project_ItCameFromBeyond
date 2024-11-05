@@ -12,7 +12,7 @@ Hakarl,icfb_hakarl,Battlecruiser,Boundless,orion_device,22,11000,1100,16250,,100
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 # SHIFTER,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-,icfb_beelzebufo,Beelzebufo,Shifter,icfb_quantum_inversion,5,2000,400,5000,,400,80,,130,190,130,70,130,250,PHASE,phasecloak,90,,,0.03,0.04,12,25,35,20,1,20,9,500000,8,10,300,0.25,5,5,,,,,,,"UNBOARDABLE, HIDE_IN_CODEX","icfb_shifter, no_autofit, restricted",,0.4,2,2,,6000
+,icfb_beelzebufo,Beelzebufo,Shifter,icfb_quantum_inversion,5,2000,350,4250,,350,80,,130,190,130,70,130,250,PHASE,phasecloak,90,,,0.03,0.04,12,25,35,20,1,20,10,500000,8,10,300,0.25,5,5,,,,,,,"UNBOARDABLE, HIDE_IN_CODEX","icfb_shifter, no_autofit, restricted",,0.4,2,2,,6000
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
