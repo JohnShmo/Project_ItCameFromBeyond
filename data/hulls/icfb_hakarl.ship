@@ -21,7 +21,8 @@
         "distributed_fire_control"
     ],
     "builtInWeapons": {
-        "WS 017": "pusherplate_lt"
+        "WS 017": "pusherplate_lt",
+        "WS 021": "icfb_lights_hakarl"
     },
     "builtInWings": [],
     "builtInModules": null,
@@ -255,6 +256,17 @@
             "angle": 270,
             "locations": [
                       91,      -73
+            ]
+        },
+        {
+            "id": "WS 021",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 0,
+            "angle": 0,
+            "locations": [
+                      15,        0
             ]
         }
     ],
