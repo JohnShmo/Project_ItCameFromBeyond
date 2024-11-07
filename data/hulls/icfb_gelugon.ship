@@ -1,0 +1,206 @@
+{
+    "hullName": "Gelugon",
+    "hullId": "icfb_gelugon",
+    "hullSize": "FRIGATE",
+    "style": "OMEGA",
+    "spriteName": "graphics/ItCameFromBeyond/hulls/REDACTED/Corvette_1_Shifter.png",
+    "height": 87,
+    "width": 66,
+    "center": [
+        33, 43.5
+    ],
+    "collisionRadius": 87,
+    "coversColor": "",
+    "shieldCenter": [
+        0, 0
+    ],
+    "shieldRadius": 63.5,
+    "viewOffset": 0,
+    "builtInWeapons": {
+        "WS 003": "icfb_tendril_small",
+        "WS 007": "icfb_tendril_small",
+        "WS 005": "icfb_tendril_small",
+        "WS 004": "icfb_tendril_small",
+        "WS 006": "icfb_tendril_small",
+        "WS 002": "icfb_tendril_small",
+        "WS 009": "icfb_tendril_extra_small",
+        "WS 011": "icfb_tendril_extra_small",
+        "WS 010": "icfb_tendril_extra_small",
+        "WS 008": "icfb_tendril_extra_small"
+    },
+    "builtInWings": [],
+    "builtInModules": null,
+    "weaponSlots": [
+        {
+            "id": "WS 000",
+            "size": "SMALL",
+            "type": "UNIVERSAL",
+            "mount": "TURRET",
+            "arc": 180,
+            "angle": 0,
+            "locations": [
+                    22.5,        0
+            ]
+        },
+        {
+            "id": "WS 001",
+            "size": "SMALL",
+            "type": "UNIVERSAL",
+            "mount": "TURRET",
+            "arc": 180,
+            "angle": 180,
+            "locations": [
+                    -4.5,        0
+            ]
+        },
+        {
+            "id": "WS 002",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 180,
+            "angle": 270,
+            "locations": [
+                       7,    -34.5
+            ]
+        },
+        {
+            "id": "WS 003",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 180,
+            "angle": 90,
+            "locations": [
+                       7,     34.5
+            ]
+        },
+        {
+            "id": "WS 004",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 180,
+            "angle": 225,
+            "locations": [
+                   -22.5,      -23
+            ]
+        },
+        {
+            "id": "WS 005",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 180,
+            "angle": 135,
+            "locations": [
+                   -22.5,       23
+            ]
+        },
+        {
+            "id": "WS 006",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 180,
+            "angle": 254,
+            "locations": [
+                    -9.5,      -33
+            ]
+        },
+        {
+            "id": "WS 007",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 180,
+            "angle": 106,
+            "locations": [
+                    -9.5,       33
+            ]
+        },
+        {
+            "id": "WS 008",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 180,
+            "angle": 261,
+            "locations": [
+                    -2.5,    -38.5
+            ]
+        },
+        {
+            "id": "WS 009",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 180,
+            "angle": 99,
+            "locations": [
+                    -2.5,     38.5
+            ]
+        },
+        {
+            "id": "WS 010",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 180,
+            "angle": 239,
+            "locations": [
+                     -19,    -31.5
+            ]
+        },
+        {
+            "id": "WS 011",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 180,
+            "angle": 121,
+            "locations": [
+                     -19,     31.5
+            ]
+        }
+    ],
+    "engineSlots": [
+        {
+            "location": [
+                -25, 4.5
+            ],
+            "length": 63,
+            "width": 8,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "OMEGA"
+        },
+        {
+            "location": [
+                -25, -4.5
+            ],
+            "length": 63,
+            "width": 8,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "OMEGA"
+        }
+    ],
+    "bounds": [
+           -17.5,       -7,
+           -10.5,        0,
+           -17.5,        7,
+           -38.5,     11.5,
+              -9,     11.5,
+        
+              11,     30.5,
+            23.5,       13,
+            40.5,        0,
+            23.5,      -13,
+              11,    -30.5,
+        
+              -9,    -11.5,
+           -38.5,    -11.5
+    # 12 points total.
+    ]
+}
