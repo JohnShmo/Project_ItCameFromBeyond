@@ -16,6 +16,9 @@
     ],
     "shieldRadius": 67,
     "viewOffset": 0,
+    "builtInWeapons": {
+        "WS 000": "icfb_lights_froskur"
+    },
     "builtInWings": [],
     "builtInModules": null,
     "weaponSlots": [
@@ -72,6 +75,17 @@
             "angle": -135,
             "locations": [
                      -11,      -35
+            ]
+        },
+        {
+            "id": "WS 000",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 0,
+            "angle": 0,
+            "locations": [
+                     5.5,        0
             ]
         }
     ],
