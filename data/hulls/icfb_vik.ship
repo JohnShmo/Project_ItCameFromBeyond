@@ -1,0 +1,236 @@
+{
+    "hullName": "Vik",
+    "hullId": "icfb_vik",
+    "hullSize": "DESTROYER",
+    "style": "MIDLINE",
+    "spriteName": "graphics/ItCameFromBeyond/hulls/Destroyer_2.png",
+    "height": 149,
+    "width": 120,
+    "center": [
+        60, 74.5
+    ],
+    "collisionRadius": 141.5,
+    "coversColor": "",
+    "shieldCenter": [
+        0, 0
+    ],
+    "shieldRadius": 106,
+    "viewOffset": 0,
+    "builtInMods": [
+        "icfb_ballistic_preloader_hullmod"
+    ],
+    "builtInWeapons": {
+        "WS 010": "icfb_lights_vik"
+    },
+    "builtInWings": [],
+    "builtInModules": null,
+    "weaponSlots": [
+        {
+            "id": "WS 000",
+            "size": "SMALL",
+            "type": "BALLISTIC",
+            "mount": "HARDPOINT",
+            "arc": 10,
+            "angle": 0,
+            "locations": [
+                    55.5,       32
+            ]
+        },
+        {
+            "id": "WS 001",
+            "size": "SMALL",
+            "type": "BALLISTIC",
+            "mount": "HARDPOINT",
+            "arc": 10,
+            "angle": 0,
+            "locations": [
+                    55.5,      -32
+            ]
+        },
+        {
+            "id": "WS 002",
+            "size": "SMALL",
+            "type": "BALLISTIC",
+            "mount": "HARDPOINT",
+            "arc": 10,
+            "angle": 0,
+            "locations": [
+                    64.5,       16
+            ]
+        },
+        {
+            "id": "WS 003",
+            "size": "SMALL",
+            "type": "BALLISTIC",
+            "mount": "HARDPOINT",
+            "arc": 10,
+            "angle": 0,
+            "locations": [
+                    64.5,      -16
+            ]
+        },
+        {
+            "id": "WS 004",
+            "size": "SMALL",
+            "type": "BALLISTIC",
+            "mount": "HARDPOINT",
+            "arc": 10,
+            "angle": 0,
+            "locations": [
+                    68.5,        0
+            ]
+        },
+        {
+            "id": "WS 005",
+            "size": "SMALL",
+            "type": "COMPOSITE",
+            "mount": "TURRET",
+            "arc": 100,
+            "angle": 35,
+            "locations": [
+                    11.5,       48
+            ]
+        },
+        {
+            "id": "WS 006",
+            "size": "SMALL",
+            "type": "COMPOSITE",
+            "mount": "TURRET",
+            "arc": 100,
+            "angle": 325,
+            "locations": [
+                    11.5,      -48
+            ]
+        },
+        {
+            "id": "WS 007",
+            "size": "SMALL",
+            "type": "ENERGY",
+            "mount": "TURRET",
+            "arc": 235,
+            "angle": 180,
+            "locations": [
+                   -46.5,        0
+            ]
+        },
+        {
+            "id": "WS 008",
+            "size": "MEDIUM",
+            "type": "ENERGY",
+            "mount": "TURRET",
+            "arc": 180,
+            "angle": 25,
+            "locations": [
+                    29.5,       21
+            ]
+        },
+        {
+            "id": "WS 009",
+            "size": "MEDIUM",
+            "type": "ENERGY",
+            "mount": "TURRET",
+            "arc": 180,
+            "angle": 335,
+            "locations": [
+                    29.5,      -21
+            ]
+        },
+        {
+            "id": "WS 010",
+            "size": "SMALL",
+            "type": "DECORATIVE",
+            "mount": "TURRET",
+            "arc": 0,
+            "angle": 0,
+            "locations": [
+                    -3.5,        0
+            ]
+        }
+    ],
+    "engineSlots": [
+        {
+            "location": [
+                -72, -19.5
+            ],
+            "length": 49,
+            "width": 11,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "MIDLINE"
+        },
+        {
+            "location": [
+                -72, 19.5
+            ],
+            "length": 49,
+            "width": 11,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "MIDLINE"
+        },
+        {
+            "location": [
+                -73, -32
+            ],
+            "length": 49,
+            "width": 11,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "MIDLINE"
+        },
+        {
+            "location": [
+                -73, 32
+            ],
+            "length": 49,
+            "width": 11,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "MIDLINE"
+        },
+        {
+            "location": [
+                -75, -42.5
+            ],
+            "length": 43,
+            "width": 10,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "MIDLINE"
+        },
+        {
+            "location": [
+                -75, 42.5
+            ],
+            "length": 43,
+            "width": 10,
+            "angle": 180,
+            "contrailSize": 12,
+            "style": "MIDLINE"
+        }
+    ],
+    "bounds": [
+           -42.5,       14,
+           -64.5,     16.5,
+             -71,     48.5,
+           -42.5,     43.5,
+           -28.5,       32,
+        
+              10,       57,
+            15.5,       40,
+              42,       40,
+            65.5,       17,
+            65.5,      -17,
+        
+              42,      -40,
+            15.5,      -40,
+              10,      -57,
+           -28.5,      -32,
+           -42.5,    -43.5,
+        
+             -71,    -48.5,
+           -64.5,    -16.5,
+           -42.5,      -14
+    # 18 points total.
+    ]
+}
