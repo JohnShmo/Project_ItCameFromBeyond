@@ -1,4 +1,5 @@
 0.0.7b-indev (hotfix)
+
 - Added - Vik-class description
 - Adjusted - other text
 
