@@ -22,6 +22,7 @@ public class MissionDefinition implements MissionDefinitionPlugin {
 		api.addToFleet(FleetSide.PLAYER, "icfb_skjoldr_balanced", FleetMemberType.SHIP, "Skjoldr", false);
 		api.addToFleet(FleetSide.PLAYER, "icfb_karta_close_support", FleetMemberType.SHIP, "Karta", false);
 		api.addToFleet(FleetSide.PLAYER, "icfb_vik_standard", FleetMemberType.SHIP, "Vik", false);
+		api.addToFleet(FleetSide.PLAYER, "icfb_vindur_standard", FleetMemberType.SHIP, "Vindur", false);
 		api.addToFleet(FleetSide.PLAYER, "icfb_hakarl_standard", FleetMemberType.SHIP, "Hakarl", false);
 		api.addToFleet(FleetSide.PLAYER, "icfb_karta_pirates_custom", FleetMemberType.SHIP, "Karta (P)", false);
 
@@ -30,6 +31,7 @@ public class MissionDefinition implements MissionDefinitionPlugin {
 		api.addToFleet(FleetSide.ENEMY, "icfb_skjoldr_balanced", FleetMemberType.SHIP, "Skjoldr Badguy", false);
 		api.addToFleet(FleetSide.ENEMY, "icfb_karta_close_support", FleetMemberType.SHIP, "Karta Badguy", false);
 		api.addToFleet(FleetSide.ENEMY, "icfb_vik_standard", FleetMemberType.SHIP, "Vik Badguy", false);
+		api.addToFleet(FleetSide.ENEMY, "icfb_vindur_standard", FleetMemberType.SHIP, "Vindur", false);
 		api.addToFleet(FleetSide.ENEMY, "icfb_hakarl_standard", FleetMemberType.SHIP, "Hakarl Badguy", false);
 		api.addToFleet(FleetSide.ENEMY, "icfb_karta_pirates_custom", FleetMemberType.SHIP, "Karta (P) Badguy", false);
 

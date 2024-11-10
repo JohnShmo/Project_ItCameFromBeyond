@@ -1,0 +1,58 @@
+{
+    "displayName": "Standard",
+    "fluxCapacitors": 2,
+    "fluxVents": 30,
+    "goalVariant": true,
+    "hullId": "icfb_vindur",
+    "hullMods": [
+        "targetingunit",
+        "magazines",
+        "auxiliarythrusters"
+    ],
+    "quality": 0.0,
+    "variantId": "icfb_vindur_standard",
+    "weaponGroups": [
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 011": "autopulse"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 010": "mark9"
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS 008": "gorgon",
+                "WS 006": "gorgon",
+                "WS 009": "gorgon",
+                "WS 007": "gorgon"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 002": "ionbeam",
+                "WS 003": "ionbeam"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 005": "vulcan",
+                "WS 004": "vulcan",
+                "WS 001": "vulcan",
+                "WS 000": "vulcan"
+            }
+        }
+    ]
+}

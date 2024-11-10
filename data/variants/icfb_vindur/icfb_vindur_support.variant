@@ -1,0 +1,57 @@
+{
+    "displayName": "Support",
+    "fluxCapacitors": 5,
+    "fluxVents": 30,
+    "goalVariant": true,
+    "hullId": "icfb_vindur",
+    "hullMods": [
+        "targetingunit",
+        "advancedoptics"
+    ],
+    "quality": 0.0,
+    "variantId": "icfb_vindur_support",
+    "weaponGroups": [
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 011": "hil"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 010": "gauss"
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS 009": "sabot",
+                "WS 007": "sabot",
+                "WS 006": "sabot",
+                "WS 008": "sabot"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 002": "gravitonbeam",
+                "WS 003": "gravitonbeam"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 005": "vulcan",
+                "WS 004": "vulcan",
+                "WS 001": "vulcan",
+                "WS 000": "vulcan"
+            }
+        }
+    ]
+}

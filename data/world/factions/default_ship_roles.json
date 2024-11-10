@@ -38,7 +38,8 @@
 		"icfb_karta_pirates_rocket": 7,
 	},
 	"combatLarge":{
-		
+		"icfb_vindur_standard": 8,
+		"icfb_vindur_support": 8,
 	},
 	"combatCapital":{
 		"icfb_hakarl_standard":7,

@@ -1,3 +1,8 @@
+0.0.8a-indev
+
+- Added - Vindur-class cruiser
+- Adjusted - visuals
+
 0.0.7b-indev (hotfix)
 
 - Added - Vik-class description

@@ -6,6 +6,7 @@ name,id,tier,rarity,base value,range,damage/second,damage/shot,emp,impact,turn r
 # DECO,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Lights - Karta,icfb_lights_karta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,100
 Lights - Vik,icfb_lights_vik,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,100
+Lights - Vindur,icfb_lights_vindur,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,100
 Lights - Hakarl,icfb_lights_hakarl,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,100
 Lights - Froskur,icfb_lights_froskur,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,100
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
