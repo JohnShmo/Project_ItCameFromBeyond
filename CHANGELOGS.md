@@ -1,3 +1,7 @@
+0.0.8b-indev (hotfix)
+
+- Adjusted - visuals (made sprites less bad)
+
 0.0.8a-indev
 
 - Added - Vindur-class cruiser
