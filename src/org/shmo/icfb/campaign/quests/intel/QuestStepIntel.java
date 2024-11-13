@@ -27,4 +27,5 @@ public interface QuestStepIntel {
     float getBodyPanelWidth();
     SectorEntityToken getMapLocation(SectorMapAPI map);
     List<IntelInfoPlugin.ArrowData> getArrowData(SectorMapAPI map);
+    boolean forceNoMessage();
 }

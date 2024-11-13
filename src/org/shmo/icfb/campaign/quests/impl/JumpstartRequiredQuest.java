@@ -21,6 +21,8 @@ import org.shmo.icfb.campaign.quests.Quest;
 import org.shmo.icfb.campaign.quests.factories.QuestFactory;
 import org.shmo.icfb.campaign.quests.intel.BaseQuestStepIntel;
 import org.shmo.icfb.campaign.quests.intel.QuestStepIntelPlugin;
+import org.shmo.icfb.campaign.quests.missions.IcfbMissionHub;
+import org.shmo.icfb.campaign.quests.missions.IcfbMissions;
 import org.shmo.icfb.campaign.quests.scripts.BaseQuestStepScript;
 import org.shmo.icfb.utilities.ShmoGuiUtils;
 
@@ -129,7 +131,10 @@ public class JumpstartRequiredQuest implements QuestFactory {
                     @Override
                     public void start() {
                         xent.getMarket().getCommDirectory().getEntryForPerson(xent).setHidden(false);
-                        BaseMissionHub.set(xent, new XentMissionHub(xent));
+                        IcfbMissionHub.createHub(
+                                xent,
+                                IcfbMissions.SUBSPACE_FISSURE
+                        );
                         Misc.makeImportant(xent, ID);
                         Misc.makeImportant(xent.getMarket().getPrimaryEntity(), ID);
                     }
@@ -575,15 +580,13 @@ public class JumpstartRequiredQuest implements QuestFactory {
                     public void end() {
                         Misc.makeUnimportant(xent, ID);
                         Misc.makeUnimportant(xent.getMarket().getPrimaryEntity(), ID);
+                        IcfbMissionHub.removeHub(xent);
                         Global.getSector().getMemoryWithoutUpdate().unset(IcfbMemFlags.XENT_SPECIAL_MISSION_COMPLETE);
                         Global.getSector().getMemoryWithoutUpdate().set(IcfbMemFlags.JUMPSTART_REQUIRED_COMPLETE, true);
-                        BaseMissionHub.set(xent, null);
                         xent.getMarket().getCommDirectory().getEntryForPerson(xent).setHidden(true);
                     }
                 }
         );
-
-        quest.addFinalStep();
 
         return quest;
     }

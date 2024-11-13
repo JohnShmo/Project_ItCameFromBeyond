@@ -29,7 +29,7 @@ public class Quest {
         QuestStepIntelPlugin intelPlugin = new QuestStepIntelPlugin(step.intel);
         removeIntelForStep(step); // <-- Just in case
         intelPlugin.getImpl().init(step, intelPlugin);
-        Global.getSector().getIntelManager().addIntel(intelPlugin);
+        Global.getSector().getIntelManager().addIntel(intelPlugin, step.intel.forceNoMessage());
     }
 
     private static QuestStepIntelPlugin tryConvertToQuestIntelPlugin(IntelInfoPlugin intelPlugin) {
@@ -177,6 +177,10 @@ public class Quest {
         endStep(getCurrentStep());
     }
 
+    public boolean isOnFinalStep() {
+        return getSteps().size() - 1 == _stepIndex;
+    }
+
     private void incrementStepIndex() { setStepIndex(getStepIndex() + 1); }
     private void setStepIndex(int index) { _stepIndex = index; }
     private int getStepIndex() { return _stepIndex; }
@@ -187,6 +191,12 @@ public class Quest {
     public void progress() {
         endCurrentStep();
         incrementStepIndex();
+        startCurrentStep();
+    }
+
+    public void progressToFinalStep() {
+        endCurrentStep();
+        setStepIndex(getSteps().size() - 1);
         startCurrentStep();
     }
 

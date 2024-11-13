@@ -102,4 +102,9 @@ public abstract class BaseQuestStepIntel implements QuestStepIntel {
     public float getBodyPanelWidth() {
         return _bodyPanelWidth;
     }
+
+    @Override
+    public boolean forceNoMessage() {
+        return false;
+    }
 }
