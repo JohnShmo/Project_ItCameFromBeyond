@@ -18,13 +18,13 @@ public class SubspaceFissure extends BaseIcfbMission {
         Data data = getData();
         data.missionGiver = missionGiver;
 
-        data.starSystem = IcfbMisc.pickSystem(true);
-        if (data.starSystem == null) {
+        data.targetStarSystem = IcfbMisc.pickSystem(true);
+        if (data.targetStarSystem == null) {
             data.valid = false;
             return;
         }
 
-        data.creditReward = calculateReward(missionGiver.getMarket().getPrimaryEntity(), data.starSystem.getCenter());
+        data.creditReward = calculateReward(missionGiver.getMarket().getPrimaryEntity(), data.targetStarSystem.getCenter());
         data.xpReward = 5000;
         data.repReward = 0.1f;
         data.repPenalty = 0.05f;
@@ -42,6 +42,27 @@ public class SubspaceFissure extends BaseIcfbMission {
     public Quest create() {
         Quest quest = initQuest();
 
+        addStep(quest, 0, new BaseQuestStepScript() {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void advance(float deltaTime) {
+
+            }
+
+            @Override
+            public void end() {
+
+            }
+
+            @Override
+            public boolean isComplete() {
+                return false;
+            }
+        });
 
         addFinalStep(quest);
         return quest;

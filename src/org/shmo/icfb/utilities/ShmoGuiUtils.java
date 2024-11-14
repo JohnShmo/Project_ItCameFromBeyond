@@ -1,7 +1,9 @@
 package org.shmo.icfb.utilities;
 
+import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
+import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.ButtonAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
@@ -13,7 +15,7 @@ public class ShmoGuiUtils {
     public static void addPersonDetails(TooltipMakerAPI info, PersonAPI person, float width, float pad, boolean showName) {
         final float imageHeight = 128;
         final float barWidth = 128 + 10;
-        info.addImage(person.getPortraitSprite(), width, imageHeight,pad);
+        info.addImage(person.getPortraitSprite(), width, imageHeight, pad);
         if (showName) {
             info.addPara(person.getName().getFullName(), person.getFaction().getBaseUIColor(), 4).setAlignment(Alignment.MID);
         }
@@ -22,6 +24,14 @@ public class ShmoGuiUtils {
         prev.getPosition().setXAlignOffset((width / 2f) - (barWidth / 2f));
         info.addSpacer(0f);
         info.getPrev().getPosition().setXAlignOffset(-((width / 2f) - (barWidth / 2f)));
+    }
+
+    public static void addCenteredImage(TooltipMakerAPI info, String imageName, float width, float pad) {
+        SpriteAPI sprite = Global.getSettings().getSprite(imageName);
+        if (sprite == null)
+            return;
+        float imageHeight = sprite.getHeight();
+        info.addImage(imageName, width, imageHeight, pad);
     }
 
     public static ButtonAPI addGenericButton(TooltipMakerAPI info, float width, Color tc, Color bg, String text, Object data) {

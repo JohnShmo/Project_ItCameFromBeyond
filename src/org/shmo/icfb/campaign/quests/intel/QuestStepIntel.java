@@ -20,9 +20,11 @@ public interface QuestStepIntel {
     void addNotificationBody(TooltipMakerAPI info);
     void addNotificationBulletPoints(TooltipMakerAPI info);
     void addDescriptionBody(TooltipMakerAPI info);
+    void addPostDescriptionBody(TooltipMakerAPI info);
     void addDescriptionBulletPoints(TooltipMakerAPI info);
     void buttonPressConfirmed(Object buttonId, IntelUIAPI ui, QuestStepIntelPlugin plugin);
     void buttonPressCancelled(Object buttonId, IntelUIAPI ui, QuestStepIntelPlugin plugin);
+    void createConfirmationPrompt(Object buttonId, TooltipMakerAPI prompt);
     void setBodyPanelWidth(float width);
     float getBodyPanelWidth();
     SectorEntityToken getMapLocation(SectorMapAPI map);

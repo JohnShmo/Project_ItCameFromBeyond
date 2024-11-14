@@ -14,6 +14,7 @@ import org.shmo.icfb.campaign.quests.intel.BaseQuestStepIntel;
 import org.shmo.icfb.campaign.quests.scripts.BaseQuestScript;
 import org.shmo.icfb.campaign.quests.scripts.BaseQuestStepScript;
 import org.shmo.icfb.campaign.quests.scripts.QuestStepScript;
+import org.shmo.icfb.campaign.scripts.IcfbQuestManager;
 
 import java.awt.*;
 import java.util.*;
@@ -22,10 +23,11 @@ import java.util.List;
 public abstract class BaseIcfbMission implements IcfbMission {
     public static class Data {
         public PersonAPI missionGiver = null;
-        public StarSystemAPI starSystem = null;
-        public SectorEntityToken target = null;
+        public StarSystemAPI targetStarSystem = null;
+        public SectorEntityToken targetLocation = null;
         public FactionAPI targetFaction = null;
         public MarketAPI targetMarket = null;
+        public CampaignFleetAPI targetFleet = null;
         public int creditReward = 0;
         public int xpReward = 0;
         public float repReward = 0;
@@ -35,6 +37,7 @@ public abstract class BaseIcfbMission implements IcfbMission {
         public long startTimeStamp = 0;
         public boolean failed = false;
         public boolean valid = true;
+        public boolean canAbandon = true;
     }
 
     private final Data _data = new Data();
@@ -47,11 +50,7 @@ public abstract class BaseIcfbMission implements IcfbMission {
     public boolean callEvent(String ruleId, String action, InteractionDialogAPI dialog, List<Misc.Token> params, Map<String, MemoryAPI> memoryMap) {
 
         if ("showMap".equals(action)) {
-            SectorEntityToken mapLoc = null;
-            if (getData().target != null)
-                mapLoc = getData().target;
-            else if (getData().starSystem != null)
-                mapLoc = getData().starSystem.getCenter();
+            SectorEntityToken mapLoc = getMapLocation();
 
             if (mapLoc != null) {
                 String title = params.get(0).getStringWithTokenReplacement(ruleId, dialog, memoryMap);
@@ -115,9 +114,7 @@ public abstract class BaseIcfbMission implements IcfbMission {
 
                     @Override
                     public void advance(float deltaTime) {
-                        Data data = getData();
-                        if (data.timeLimitDays > 0
-                                && (Global.getSector().getClock().getElapsedDaysSince(data.startTimeStamp) > data.timeLimitDays) ) {
+                        if (isTimeUp()) {
                             fail();
                         }
                         if (isFailed() && !quest.isOnFinalStep()) {
@@ -224,10 +221,10 @@ public abstract class BaseIcfbMission implements IcfbMission {
                     public SectorEntityToken getMapLocation(SectorMapAPI map) {
                         final Data data = getData();
 
-                        if (data.target != null)
-                            return data.target;
-                        else if (data.starSystem != null)
-                            return data.starSystem.getCenter();
+                        if (data.targetLocation != null)
+                            return data.targetLocation;
+                        else if (data.targetStarSystem != null)
+                            return data.targetStarSystem.getCenter();
 
                         return null;
                     }
@@ -309,21 +306,26 @@ public abstract class BaseIcfbMission implements IcfbMission {
     public SectorEntityToken getMapLocation() {
         final Data data = getData();
 
-        if (data.target != null)
-            return data.target;
-        else if (data.starSystem != null)
-            return data.starSystem.getCenter();
+        if (data.targetLocation != null)
+            return data.targetLocation;
+        else if (data.targetMarket != null)
+            return data.targetMarket.getPrimaryEntity();
+        else if (data.targetStarSystem != null)
+            return data.targetStarSystem.getCenter();
 
         return null;
     }
 
     @Override
     public String getLocationName() {
-        if (_data.starSystem != null) {
-            return _data.starSystem.getName();
+        if (_data.targetStarSystem != null) {
+            return _data.targetStarSystem.getName();
         }
-        else if (_data.target != null && _data.target.getContainingLocation() != null && !_data.target.isInHyperspace()) {
-            return _data.target.getStarSystem().getName();
+        else if (_data.targetLocation != null && _data.targetLocation.getContainingLocation() != null && !_data.targetLocation.isInHyperspace()) {
+            return _data.targetLocation.getStarSystem().getName();
+        }
+        else if (_data.targetMarket != null) {
+            return _data.targetMarket.getContainingLocation().getName();
         }
         return null;
     }
@@ -339,8 +341,8 @@ public abstract class BaseIcfbMission implements IcfbMission {
             return _data.targetFaction.getDisplayName();
         else if (_data.targetMarket != null) {
             return _data.targetMarket.getFaction().getDisplayName();
-        } else if (_data.target != null && _data.target.getFaction() != null) {
-            return _data.target.getFaction().getDisplayName();
+        } else if (_data.targetLocation != null && _data.targetLocation.getFaction() != null) {
+            return _data.targetLocation.getFaction().getDisplayName();
         }
         return null;
     }
@@ -365,10 +367,14 @@ public abstract class BaseIcfbMission implements IcfbMission {
 
     public void fail() {
         _data.failed = true;
+        Quest quest = IcfbQuestManager.getInstance().getQuest(getData().missionGiver.getId() + ":" + getId());
+        if (quest == null)
+            return;
+        quest.progressToFinalStep();
     }
 
     public boolean isTimeUp() {
-        if (_data.timeLimitDays == 0)
+        if (_data.timeLimitDays <= 0)
             return false;
         return Global.getSector().getClock().getElapsedDaysSince(_data.startTimeStamp) > _data.timeLimitDays;
     }

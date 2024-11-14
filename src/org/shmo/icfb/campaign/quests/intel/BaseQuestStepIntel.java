@@ -82,6 +82,9 @@ public abstract class BaseQuestStepIntel implements QuestStepIntel {
     public abstract void addDescriptionBulletPoints(TooltipMakerAPI info);
 
     @Override
+    public void addPostDescriptionBody(TooltipMakerAPI info) { }
+
+    @Override
     public abstract SectorEntityToken getMapLocation(SectorMapAPI map);
 
     @Override
@@ -92,6 +95,9 @@ public abstract class BaseQuestStepIntel implements QuestStepIntel {
 
     @Override
     public void buttonPressCancelled(Object buttonId, IntelUIAPI ui, QuestStepIntelPlugin plugin) {}
+
+    @Override
+    public void createConfirmationPrompt(Object buttonId, TooltipMakerAPI prompt) {}
 
     @Override
     public void setBodyPanelWidth(float width) {

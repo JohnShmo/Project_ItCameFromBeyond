@@ -3,16 +3,26 @@ package org.shmo.icfb.campaign.quests.missions;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
+import com.fs.starfarer.api.characters.PersonAPI;
+import com.fs.starfarer.api.ui.IntelUIAPI;
 import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.shmo.icfb.campaign.quests.intel.BaseQuestStepIntel;
+import org.shmo.icfb.campaign.quests.intel.QuestStepIntelPlugin;
+import org.shmo.icfb.campaign.scripts.IcfbQuestManager;
+import org.shmo.icfb.utilities.ShmoGuiUtils;
 
+import java.awt.*;
 import java.util.List;
 
 public class IcfbMissionStepIntel extends BaseQuestStepIntel {
     private final BaseIcfbMission _mission;
     private final int _stageIndex;
+
+    enum DefaultButtons {
+        ABANDON
+    }
 
     public IcfbMissionStepIntel(BaseIcfbMission mission, int stageIndex) {
         _mission = mission;
@@ -43,6 +53,51 @@ public class IcfbMissionStepIntel extends BaseQuestStepIntel {
         addBulletPoints(info);
     }
 
+    @Override
+    public void addPostDescriptionBody(TooltipMakerAPI info) {
+        if (!_mission.getData().canAbandon)
+            return;
+        info.addSpacer(10);
+        ShmoGuiUtils.addGenericButton(info, getBodyPanelWidth(), "Abandon", DefaultButtons.ABANDON);
+    }
+
+    @Override
+    public void buttonPressConfirmed(Object buttonId, IntelUIAPI ui, QuestStepIntelPlugin plugin) {
+        PersonAPI person = _mission.getData().missionGiver;
+        float timePassedDays = Global.getSector().getClock().getElapsedDaysSince(_mission.getData().startTimeStamp);
+
+        if (buttonId == DefaultButtons.ABANDON) {
+            if (timePassedDays < 2) {
+                IcfbQuestManager.getInstance().remove(person.getId() + ":" + _mission.getId());
+            } else {
+                _mission.fail();
+            }
+            ui.recreateIntelUI();
+        }
+    }
+
+    @Override
+    public void createConfirmationPrompt(Object buttonId, TooltipMakerAPI prompt) {
+        PersonAPI person = _mission.getData().missionGiver;
+        float timePassedDays = Global.getSector().getClock().getElapsedDaysSince(_mission.getData().startTimeStamp);
+
+        if (buttonId == DefaultButtons.ABANDON) {
+            if (timePassedDays < 2) {
+                prompt.addPara(
+                        "Less than a day has passed since accepting this mission, meaning you can abandon it"
+                        + "without penalty.", 0
+                );
+            } else {
+                prompt.addPara(
+                        "Abandoning this mission will incur a reputation penalty with %s.",
+                        0,
+                        person.getFaction().getBaseUIColor(),
+                        person.getName().getFullName()
+                );
+            }
+        }
+    }
+
     private void addBulletPoints(TooltipMakerAPI info) {
         BaseIcfbMission.Data data = _mission.getData();
         if (data.creditReward != 0)
@@ -58,10 +113,10 @@ public class IcfbMissionStepIntel extends BaseQuestStepIntel {
     @Override
     public SectorEntityToken getMapLocation(SectorMapAPI map) {
         BaseIcfbMission.Data data = _mission.getData();
-        if (data.target != null)
-            return data.target;
-        else if (data.starSystem != null)
-            return data.starSystem.getCenter();
+        if (data.targetLocation != null)
+            return data.targetLocation;
+        else if (data.targetStarSystem != null)
+            return data.targetStarSystem.getCenter();
         return null;
     }
 

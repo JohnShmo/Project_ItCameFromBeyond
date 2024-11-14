@@ -31,6 +31,7 @@ public class QuestStepIntelPlugin extends BaseIntelPlugin {
         bullet(info);
         _impl.addDescriptionBulletPoints(info);
         unindent(info);
+        _impl.addPostDescriptionBody(info);
     }
 
     @Override
@@ -86,5 +87,11 @@ public class QuestStepIntelPlugin extends BaseIntelPlugin {
     @Override
     public void buttonPressCancelled(Object buttonId, IntelUIAPI ui) {
         _impl.buttonPressCancelled(buttonId, ui, this);
+    }
+
+    @Override
+    public void createConfirmationPrompt(Object buttonId, TooltipMakerAPI prompt) {
+        _impl.createConfirmationPrompt(buttonId, prompt);
+        super.createConfirmationPrompt(buttonId, prompt);
     }
 }
