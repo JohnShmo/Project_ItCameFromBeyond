@@ -41,7 +41,7 @@ public class IcfbMissionStepIntel extends BaseQuestStepIntel {
     @Override
     public void addDescriptionBody(TooltipMakerAPI info) {
         if (_mission.getDescriptionImage() != null) {
-            info.addImage(_mission.getDescriptionImage(), getBodyPanelWidth(), 0);
+            ShmoGuiUtils.addCenteredImage(info, _mission.getDescriptionImage(), getBodyPanelWidth(), 0);
         }
         info.addSpacer(10);
         _mission.addDescriptionBody(info, _stageIndex);
@@ -57,7 +57,6 @@ public class IcfbMissionStepIntel extends BaseQuestStepIntel {
     public void addPostDescriptionBody(TooltipMakerAPI info) {
         if (!_mission.getData().canAbandon)
             return;
-        info.addSpacer(10);
         ShmoGuiUtils.addGenericButton(info, getBodyPanelWidth(), "Abandon", DefaultButtons.ABANDON);
     }
 
@@ -67,7 +66,7 @@ public class IcfbMissionStepIntel extends BaseQuestStepIntel {
         float timePassedDays = Global.getSector().getClock().getElapsedDaysSince(_mission.getData().startTimeStamp);
 
         if (buttonId == DefaultButtons.ABANDON) {
-            if (timePassedDays < 2) {
+            if (timePassedDays < 1 || _mission.getData().repPenalty <= 0) {
                 IcfbQuestManager.getInstance().remove(person.getId() + ":" + _mission.getId());
             } else {
                 _mission.fail();
@@ -77,22 +76,46 @@ public class IcfbMissionStepIntel extends BaseQuestStepIntel {
     }
 
     @Override
+    public boolean doesButtonHaveConfirmDialog(Object buttonId) {
+        if (buttonId == DefaultButtons.ABANDON) {
+            return true;
+        }
+        return super.doesButtonHaveConfirmDialog(buttonId);
+    }
+
+    @Override
     public void createConfirmationPrompt(Object buttonId, TooltipMakerAPI prompt) {
-        PersonAPI person = _mission.getData().missionGiver;
-        float timePassedDays = Global.getSector().getClock().getElapsedDaysSince(_mission.getData().startTimeStamp);
+        BaseIcfbMission.Data data = _mission.getData();
+        PersonAPI person = data.missionGiver;
+        float timePassedDays = Global.getSector().getClock().getElapsedDaysSince(data.startTimeStamp);
 
         if (buttonId == DefaultButtons.ABANDON) {
-            if (timePassedDays < 2) {
-                prompt.addPara(
-                        "Less than a day has passed since accepting this mission, meaning you can abandon it"
-                        + "without penalty.", 0
-                );
+            if (data.repPenalty > 0) {
+                if (timePassedDays < 1) {
+                    prompt.addPara(
+                            "Less than a day has passed since accepting this mission, meaning you can abandon it "
+                                    + "without penalty. Are you sure you want to?", 0
+                    );
+                } else if (!_mission.getData().repAppliesToFaction) {
+                    prompt.addPara(
+                            "Abandoning this mission will incur a reputation penalty with %s. Are you sure you want to?",
+                            0,
+                            person.getFaction().getBaseUIColor(),
+                            person.getName().getFullName()
+                    );
+                } else {
+                    prompt.addPara(
+                            "Abandoning this mission will incur a reputation penalty with %s " +
+                                    "and %s. Are you sure you want to?",
+                            0,
+                            person.getFaction().getBaseUIColor(),
+                            person.getName().getFullName(),
+                            person.getFaction().getDisplayNameWithArticle()
+                    );
+                }
             } else {
                 prompt.addPara(
-                        "Abandoning this mission will incur a reputation penalty with %s.",
-                        0,
-                        person.getFaction().getBaseUIColor(),
-                        person.getName().getFullName()
+                        "Are you sure you want to abandon this mission?", 0
                 );
             }
         }
@@ -115,6 +138,8 @@ public class IcfbMissionStepIntel extends BaseQuestStepIntel {
         BaseIcfbMission.Data data = _mission.getData();
         if (data.targetLocation != null)
             return data.targetLocation;
+        else if (data.targetMarket != null)
+            return data.targetMarket.getPrimaryEntity();
         else if (data.targetStarSystem != null)
             return data.targetStarSystem.getCenter();
         return null;

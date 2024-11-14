@@ -94,4 +94,9 @@ public class QuestStepIntelPlugin extends BaseIntelPlugin {
         _impl.createConfirmationPrompt(buttonId, prompt);
         super.createConfirmationPrompt(buttonId, prompt);
     }
+
+    @Override
+    public boolean doesButtonHaveConfirmDialog(Object buttonId) {
+        return _impl.doesButtonHaveConfirmDialog(buttonId) || super.doesButtonHaveConfirmDialog(buttonId);
+    }
 }

@@ -97,6 +97,11 @@ public abstract class BaseQuestStepIntel implements QuestStepIntel {
     public void buttonPressCancelled(Object buttonId, IntelUIAPI ui, QuestStepIntelPlugin plugin) {}
 
     @Override
+    public boolean doesButtonHaveConfirmDialog(Object buttonId) {
+        return false;
+    }
+
+    @Override
     public void createConfirmationPrompt(Object buttonId, TooltipMakerAPI prompt) {}
 
     @Override

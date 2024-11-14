@@ -1,8 +1,13 @@
 package org.shmo.icfb.campaign.quests.impl.missions;
 
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.CampaignFleetAPI;
+import com.fs.starfarer.api.campaign.FleetAssignment;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.characters.PersonAPI;
+import com.fs.starfarer.api.fleet.FleetAPI;
+import com.fs.starfarer.api.impl.campaign.ids.Factions;
+import com.fs.starfarer.api.impl.campaign.ids.FleetTypes;
 import com.fs.starfarer.api.util.Misc;
 import org.shmo.icfb.IcfbMisc;
 import org.shmo.icfb.campaign.quests.Quest;
@@ -28,6 +33,7 @@ public class SubspaceFissure extends BaseIcfbMission {
         data.xpReward = 5000;
         data.repReward = 0.1f;
         data.repPenalty = 0.05f;
+        data.timeLimitDays = 180f;
     }
 
     private static int calculateReward(SectorEntityToken start, SectorEntityToken objective) {
@@ -43,9 +49,22 @@ public class SubspaceFissure extends BaseIcfbMission {
         Quest quest = initQuest();
 
         addStep(quest, 0, new BaseQuestStepScript() {
+            public CampaignFleetAPI fleet;
+
             @Override
             public void start() {
-
+                fleet = createFleet(
+                        Factions.HEGEMONY,
+                        FleetTypes.TASK_FORCE,
+                        "Test Fleet",
+                        200,
+                        true,
+                        false
+                );
+                CampaignFleetAPI player = Global.getSector().getPlayerFleet();
+                player.getContainingLocation().addEntity(fleet);
+                fleet.setLocation(player.getLocation().x + 200, player.getLocation().y + 200);
+                fleet.addAssignment(FleetAssignment.ORBIT_PASSIVE, player, 100000);
             }
 
             @Override
@@ -55,7 +74,7 @@ public class SubspaceFissure extends BaseIcfbMission {
 
             @Override
             public void end() {
-
+                despawnFleet(fleet, fleet);
             }
 
             @Override

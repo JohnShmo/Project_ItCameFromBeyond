@@ -6,9 +6,16 @@ import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
+import com.fs.starfarer.api.fleet.FleetAPI;
+import com.fs.starfarer.api.impl.campaign.ids.MemFlags;
 import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
+import javafx.util.Pair;
+import org.jetbrains.annotations.Nullable;
+import org.magiclib.campaign.MagicCaptainBuilder;
+import org.magiclib.campaign.MagicFleetBuilder;
+import org.shmo.icfb.IcfbMisc;
 import org.shmo.icfb.campaign.quests.Quest;
 import org.shmo.icfb.campaign.quests.intel.BaseQuestStepIntel;
 import org.shmo.icfb.campaign.quests.scripts.BaseQuestScript;
@@ -41,6 +48,9 @@ public abstract class BaseIcfbMission implements IcfbMission {
     }
 
     private final Data _data = new Data();
+    private String _questId;
+    private boolean _cleanedUp = false;
+    private final List<CampaignFleetAPI> _fleets = new ArrayList<>();
 
     public Data getData() {
         return _data;
@@ -96,7 +106,8 @@ public abstract class BaseIcfbMission implements IcfbMission {
     }
 
     protected Quest initQuest() {
-        final Quest quest = new Quest(_data.missionGiver.getId() + ":" + getId());
+        _questId = _data.missionGiver.getId() + ":" + getId();
+        final Quest quest = new Quest(_questId);
         quest.setName(getName());
         quest.setIcon(getIcon());
         final Set<String> tags = getIntelTags();
@@ -124,7 +135,8 @@ public abstract class BaseIcfbMission implements IcfbMission {
 
                     @Override
                     public void end() {
-                        cleanup();
+                        if (!_cleanedUp)
+                            BaseIcfbMission.this.cleanup();
                     }
                 }
         );
@@ -241,7 +253,9 @@ public abstract class BaseIcfbMission implements IcfbMission {
                     @Override
                     public void start() {
                         timeStamp = Global.getSector().getClock().getTimestamp();
-                        daysUntilDone = 5;
+                        daysUntilDone = 3;
+                        if (!_cleanedUp)
+                            BaseIcfbMission.this.cleanup();
 
                         final Data data = getData();
                         final CampaignFleetAPI playerFleet = Global.getSector().getPlayerFleet();
@@ -385,16 +399,225 @@ public abstract class BaseIcfbMission implements IcfbMission {
     }
 
     @Override
-    public void cleanup() {
-
-    }
-
-    @Override
     public boolean isValid() {
         return _data.valid && !_data.failed && isValidImpl();
     }
 
     protected boolean isValidImpl() {
         return true;
+    }
+
+    @Override
+    public void cleanup() {
+        _cleanedUp = true;
+        cleanupFleets();
+        cleanupImpl();
+    }
+
+    protected void cleanupImpl() {}
+
+    protected CampaignFleetAPI createFleet(MagicFleetBuilder fleetBuilder) {
+        CampaignFleetAPI fleet = fleetBuilder.create();
+        _fleets.add(fleet);
+        return fleet;
+    }
+
+    protected CampaignFleetAPI createFleet(
+            String factionId,
+            String fleetType,
+            String fleetName,
+            int fleetPoints,
+            boolean important,
+            boolean lowRepImpact
+    ) {
+        return createFleet(
+                factionId,
+                fleetType,
+                fleetName,
+                fleetPoints,
+                important,
+                lowRepImpact,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                false,
+                null
+        );
+    }
+
+    protected CampaignFleetAPI createFleet(
+            String factionId,
+            String fleetType,
+            String fleetName,
+            int fleetPoints,
+            boolean important,
+            boolean lowRepImpact,
+            @Nullable SectorEntityToken spawnLocation,
+            @Nullable SectorEntityToken despawnLocation,
+            @Nullable FleetAssignment assignment,
+            @Nullable SectorEntityToken assignmentTarget
+    ) {
+        return createFleet(
+                factionId,
+                fleetType,
+                fleetName,
+                fleetPoints,
+                important,
+                lowRepImpact,
+                spawnLocation,
+                despawnLocation,
+                assignment,
+                assignmentTarget,
+                null,
+                null,
+                null,
+                false,
+                null
+        );
+    }
+
+    protected CampaignFleetAPI createFleet(
+            String factionId,
+            String fleetType,
+            String fleetName,
+            int fleetPoints,
+            boolean important,
+            boolean lowRepImpact,
+            @Nullable PersonAPI captain,
+            @Nullable String flagshipVariant,
+            @Nullable String flagshipName,
+            boolean flagshipAlwaysRecoverable,
+            @Nullable Map<String, Integer> supportFleet
+    ) {
+        return createFleet(
+                factionId,
+                fleetType,
+                fleetName,
+                fleetPoints,
+                important,
+                lowRepImpact,
+                null,
+                null,
+                null,
+                null,
+                captain,
+                flagshipVariant,
+                fleetName,
+                flagshipAlwaysRecoverable,
+                supportFleet
+        );
+    }
+
+    protected CampaignFleetAPI createFleet(
+            String factionId,
+            String fleetType,
+            String fleetName,
+            int fleetPoints,
+            boolean important,
+            boolean lowRepImpact,
+            @Nullable SectorEntityToken spawnLocation,
+            @Nullable SectorEntityToken despawnLocation,
+            @Nullable FleetAssignment assignment,
+            @Nullable SectorEntityToken assignmentTarget,
+            @Nullable PersonAPI captain,
+            @Nullable String flagshipVariant,
+            @Nullable String flagshipName,
+            boolean flagshipAlwaysRecoverable,
+            @Nullable Map<String, Integer> supportFleet
+    ) {
+        MagicFleetBuilder builder = new MagicFleetBuilder();
+        builder.setFleetFaction(factionId);
+        builder.setFleetType(fleetType);
+        builder.setFleetName(fleetName);
+        builder.setIsImportant(important);
+        builder.setMinFP(fleetPoints);
+
+        if (spawnLocation != null) {
+            builder.setSpawnLocation(spawnLocation);
+        }
+        if (assignment != null) {
+            builder.setAssignment(assignment);
+            builder.setAssignmentTarget(assignmentTarget);
+        }
+        if (captain != null) {
+            builder.setCaptain(captain);
+        } else {
+            MagicCaptainBuilder captainBuilder = new MagicCaptainBuilder(factionId);
+            builder.setCaptain(captainBuilder.create());
+        }
+        if (flagshipVariant != null && !flagshipVariant.isEmpty()) {
+            builder.setFlagshipVariant(flagshipVariant);
+            if (flagshipName != null && !flagshipName.isEmpty()) {
+                builder.setFleetName(flagshipName);
+            }
+            builder.setFlagshipAlwaysRecoverable(flagshipAlwaysRecoverable);
+        }
+        if (supportFleet != null && !supportFleet.isEmpty()) {
+            builder.setSupportFleet(supportFleet);
+        }
+
+        CampaignFleetAPI fleet = builder.create();
+        fleet.getMemoryWithoutUpdate().set("$" + _questId + "_despawnLocation", despawnLocation);
+        if (important) {
+            Misc.makeImportant(fleet, null);
+        }
+        if (lowRepImpact) {
+            fleet.getMemoryWithoutUpdate().set(MemFlags.MEMORY_KEY_LOW_REP_IMPACT, true);
+        }
+        _fleets.add(fleet);
+        return fleet;
+    }
+
+    protected void despawnFleet(CampaignFleetAPI fleet, SectorEntityToken despawnLocation) {
+        fleet.getMemoryWithoutUpdate().set("$" + _questId + "_despawnLocation", despawnLocation);
+        despawnFleet(fleet);
+    }
+
+    protected void despawnFleet(CampaignFleetAPI fleet) {
+        if (fleet.getContainingLocation() == null || fleet.isExpired())
+            return;
+        MemoryAPI memory = fleet.getMemory();
+        if (memory.contains("$" + _questId + "_despawned"))
+            return;
+
+        SectorEntityToken despawnLocation = memory.getEntity("$" + _questId + "_despawnLocation");
+        if (despawnLocation == null) {
+            MarketAPI market = Misc.getBiggestMarketInLocation(fleet.getContainingLocation());
+            if (market.getFactionId().equals(fleet.getFaction().getId()))
+                despawnLocation = market.getPrimaryEntity();
+        }
+        if (despawnLocation == null) {
+            despawnLocation = IcfbMisc.pickMarket( 0, fleet.getFaction().getId()).getPrimaryEntity();
+        }
+        if (despawnLocation == null) {
+            despawnLocation = IcfbMisc.pickSystem().getCenter();
+        }
+        memory.unset(MemFlags.MEMORY_KEY_MAKE_HOSTILE);
+        memory.unset(MemFlags.MEMORY_KEY_MAKE_AGGRESSIVE);
+        memory.unset(MemFlags.FLEET_DO_NOT_IGNORE_PLAYER);
+        memory.unset(MemFlags.FLEET_BUSY);
+        memory.unset(MemFlags.MEMORY_KEY_ALLOW_LONG_PURSUIT);
+        memory.unset(MemFlags.MEMORY_KEY_PURSUE_PLAYER);
+        memory.unset(MemFlags.MEMORY_KEY_MAKE_ALWAYS_PURSUE);
+        memory.unset(MemFlags.MEMORY_KEY_NEVER_AVOID_PLAYER_SLOWLY);
+        memory.unset(MemFlags.MEMORY_KEY_MAKE_PREVENT_DISENGAGE);
+        memory.unset(MemFlags.MEMORY_KEY_MAKE_AGGRESSIVE_ONE_BATTLE_ONLY);
+        memory.unset(MemFlags.ENTITY_MISSION_IMPORTANT);
+        Misc.makeUnimportant(fleet, null);
+        memory.unset("$" + _questId + "_despawnLocation");
+        memory.set("$" + _questId + "_despawned", true);
+        fleet.clearAssignments();
+        fleet.addAssignment(FleetAssignment.GO_TO_LOCATION_AND_DESPAWN, despawnLocation, 100000);
+    }
+
+    private void cleanupFleets() {
+        for (CampaignFleetAPI fleet : _fleets) {
+            despawnFleet(fleet);
+        }
+        _fleets.clear();
     }
 }

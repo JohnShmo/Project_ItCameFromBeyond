@@ -25,6 +25,7 @@ public interface QuestStepIntel {
     void buttonPressConfirmed(Object buttonId, IntelUIAPI ui, QuestStepIntelPlugin plugin);
     void buttonPressCancelled(Object buttonId, IntelUIAPI ui, QuestStepIntelPlugin plugin);
     void createConfirmationPrompt(Object buttonId, TooltipMakerAPI prompt);
+    boolean doesButtonHaveConfirmDialog(Object buttonId);
     void setBodyPanelWidth(float width);
     float getBodyPanelWidth();
     SectorEntityToken getMapLocation(SectorMapAPI map);
