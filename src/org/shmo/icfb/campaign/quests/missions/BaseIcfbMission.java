@@ -561,6 +561,7 @@ public abstract class BaseIcfbMission implements IcfbMission {
         }
 
         CampaignFleetAPI fleet = builder.create();
+        fleet.getMemoryWithoutUpdate().set("$icfbQuestId", _questId);
         fleet.getMemoryWithoutUpdate().set("$" + _questId + "_despawnLocation", despawnLocation);
         if (important) {
             Misc.makeImportant(fleet, null);
@@ -608,6 +609,7 @@ public abstract class BaseIcfbMission implements IcfbMission {
         memory.unset(MemFlags.MEMORY_KEY_MAKE_AGGRESSIVE_ONE_BATTLE_ONLY);
         memory.unset(MemFlags.ENTITY_MISSION_IMPORTANT);
         Misc.makeUnimportant(fleet, null);
+        memory.unset("$icfbQuestId");
         memory.unset("$" + _questId + "_despawnLocation");
         memory.set("$" + _questId + "_despawned", true);
         fleet.clearAssignments();

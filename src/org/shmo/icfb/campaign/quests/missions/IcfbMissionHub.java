@@ -159,7 +159,7 @@ public class IcfbMissionHub implements CallEvent.CallableEvent, EveryFrameScript
 
     private void removeMission(String id) {
         MemoryAPI memory = _person.getMemoryWithoutUpdate();
-        memory.unset(id);
+        memory.unset("$" + id);
         memory.unset("$" + id + "__available__zz");
         memory.unset("$" + id + "_available");
         memory.unset("$" + id + "_reward");

@@ -20,4 +20,29 @@
 		"tags":["station"],
 		"layers":[STATIONS], # what layer(s) to render in. See CampaignEngineLayers.java for possible values
 	},
+	
+	"icfb_subspace_fissure": {
+		"defaultRadius":50, # used if radius<0 in addCustomEntity()
+		"icon":"graphics/icons/black_hole_well.png",
+		"sprite":"graphics/stations/gate_glow_concentric.png",
+		"spriteWidth":50,
+		"spriteHeight":50,
+		"detectionRange":2000,
+		"showInCampaign":true,
+		"showIconOnMap":true,
+		"showNameOnMap":false,
+		"scaleNameWithZoom":false,
+		"scaleIconWithZoom":true,
+		"renderCircleIndicator":true,
+		"renderCircleIndicatorSelectionFlash":true,
+		"defaultName":"Subspace Fissure", # used if name=null in addCustomEntity()
+		"nameInText":"subspace fissure",
+		"shortName":"fissure",
+		"aOrAn":"a",
+		"isOrAre":"is",
+		"customDescriptionId":"mission_location",
+		"interactionImage":"graphics/illustrations/free_orbit.jpg",
+		"tags":["has_interaction_dialog", "mission_location", "neutrino_high"],
+		"layers":[STATIONS], # what layer(s) to render in. See CampaignEngineLayers.java for possible values
+	}
 }

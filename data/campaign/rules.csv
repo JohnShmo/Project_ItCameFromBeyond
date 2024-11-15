@@ -470,6 +470,34 @@ Call $icfbHub listMissions",,,
 icfbFisDecline,DialogOptionSelected,"$option == icfbFis_decline","Call $icfbHub icfbFis hideMap
 Call $icfbHub listMissions",,,
 icfbFisOption,IcfbMHAddOption_icfbFis,,,,"10:icfbFis_option:Ask about investigating the spacial anomaly",
+,,,,,,
+# Fissure Interaction,,,,,,
+icfbFissureStartDialogSeen,OpenInteractionDialog,"$icfbSubspaceFissure score:1000
+$icfbSeen
+!$icfbInvestigated","ShowDefaultVisual
+FireAll PopulateOptions","A shimmering disturbance in spacetime floats close enough for you to gather visual confirmation by your bridge crew. That's it - the subspace fissure. Your gravimetric readings let you know you should probably keep a healthy distance.
+
+You are being tracked by a nearby hostile fleet, and cannot undergo the proper scanning procedures without great risk.",,
+icfbFissureStartDialog,OpenInteractionDialog,"$icfbSubspaceFissure score:1000
+!$icfbInvestigated","ShowDefaultVisual
+FireAll PopulateOptions","A shimmering disturbance in spacetime floats close enough for you to gather visual confirmation by your bridge crew. That's it - the subspace fissure. Your gravimetric readings let you know you should probably keep a healthy distance.
+
+The spacial anomaly looms ominously against the stary backdrop. A pulsing lullaby sings, echoing within your mind for just a moment. Your second-in-command looks nervously over to you, noticing your brief trance.
+
+""Well, here it is,"" he says, snapping you out of it, ""Shall we do what we came here for?""",,
+icfbFissureStartDialogInvestigated,OpenInteractionDialog,"$icfbSubspaceFissure score:1000
+$icfbInvestigated","ShowDefaultVisual
+FireAll PopulateOptions","A shimmering disturbance in spacetime floats close enough for you to gather visual confirmation by your bridge crew. That's it - the subspace fissure. Your gravimetric readings let you know you should probably keep a healthy distance.
+
+The spacial anomaly looms ominously against the stary backdrop. A pulsing lullaby sings, echoing within your mind for just a moment.",,
+icfbFissureScanOption,PopulateOptions,"$icfbSubspaceFissure score:1000
+!$icfbSeen
+!$icfbInvestigated",,,"10:icfbFissureScanOpt:Run the sensor package",
+icfbFissureLeaveOption,PopulateOptions,"$icfbSubspaceFissure score:1000","SetShortcut defaultLeave ""ESCAPE""",,"100:defaultLeave:Leave",
+icfbFissureScan,DialogOptionSelected,"$option == icfbFissureScanOpt","$icfbInvestigated = true
+UpdateMemory
+FireAll PopulateOptions","The scan goes through without any issues, but a few crewmembers report a lingering feeling of being watched by something. You recommend they visit with the onboard psychologist.",,
+"#END Fissure Interaction",,,,,,
 "#END Subspace Fissure",,,,,,
 "#END Missions",,,,,,
 
