@@ -137,11 +137,6 @@ public class JumpstartRequiredQuest implements QuestFactory {
                     }
 
                     @Override
-                    public void advance(float deltaTime) {
-
-                    }
-
-                    @Override
                     public void end() {
                         Misc.makeUnimportant(xent, ID);
                         Misc.makeUnimportant(xent.getMarket().getPrimaryEntity(), ID);
@@ -233,7 +228,7 @@ public class JumpstartRequiredQuest implements QuestFactory {
                         }
 
                         if (
-                                xent.getRelToPlayer().getRel() >= 0.4f &&
+                                xent.getRelToPlayer().getRel() >= 0.5f &&
                                         !Global.getSector()
                                                 .getMemoryWithoutUpdate()
                                                 .getBoolean(IcfbMemFlags.XENT_OFFERING_SPECIAL_MISSION)
@@ -571,11 +566,6 @@ public class JumpstartRequiredQuest implements QuestFactory {
                         Misc.makeImportant(xent, ID);
                         Misc.makeImportant(xent.getMarket().getPrimaryEntity(), ID);
                         Global.getSector().getMemoryWithoutUpdate().set(IcfbMemFlags.XENT_SPECIAL_MISSION_COMPLETE, true);
-                    }
-
-                    @Override
-                    public void advance(float deltaTime) {
-
                     }
 
                     @Override

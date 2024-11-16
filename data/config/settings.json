@@ -6,7 +6,8 @@
 	},
 	"graphics":{
 		"icfb_intel":{
-			"xent_fis":"graphics/icons/abilities/direct_jump.png",
+			"fis":"graphics/icons/missions/visit_object.png",
+			"phs":"graphics/icons/missions/spysat.png",
 		},
 		"icfb_icons":{
 			"shift_drive":"graphics/ItCameFromBeyond/icons/abilities/shift_drive.png",

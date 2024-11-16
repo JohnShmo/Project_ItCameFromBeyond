@@ -12,6 +12,7 @@ import com.fs.starfarer.api.impl.campaign.rulecmd.UpdateMemory;
 import com.fs.starfarer.api.util.Misc;
 import org.shmo.icfb.IcfbLog;
 import org.shmo.icfb.campaign.quests.factories.QuestFactory;
+import org.shmo.icfb.campaign.quests.impl.missions.StealPhaseTech;
 import org.shmo.icfb.campaign.quests.impl.missions.SubspaceFissure;
 import org.shmo.icfb.campaign.scripts.IcfbQuestManager;
 
@@ -59,6 +60,7 @@ public class IcfbMissionHub implements CallEvent.CallableEvent, EveryFrameScript
     private static IcfbMission initMissionFromId(String id, PersonAPI person) {
         switch (id) {
             case IcfbMissions.SUBSPACE_FISSURE: return new SubspaceFissure(person);
+            case IcfbMissions.STEAL_PHASE_TECH: return new StealPhaseTech(person);
             // TODO: Other missions
             default: return null;
         }
@@ -228,7 +230,6 @@ public class IcfbMissionHub implements CallEvent.CallableEvent, EveryFrameScript
         int count = memory.getInt(MEM_KEY + "_count");
 
         if (count == 0) {
-            FireBest.fire(null, dialog, memoryMap, "IcfbMHOpenText");
             FireBest.fire(null, dialog, memoryMap, "IcfbMHPreMissionListText");
             FireAll.fire(null, dialog, memoryMap, "PopulateOptions");
             return;

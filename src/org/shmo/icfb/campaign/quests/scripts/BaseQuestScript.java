@@ -15,13 +15,13 @@ public abstract class BaseQuestScript implements QuestScript {
     }
 
     @Override
-    public abstract void start();
+    public void start() {}
 
     @Override
-    public abstract void advance(float deltaTime);
+    public void advance(float deltaTime) {}
 
     @Override
-    public abstract void end();
+    public void end() {}
 
     @Override
     public void cleanup() {

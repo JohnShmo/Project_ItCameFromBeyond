@@ -1,19 +1,12 @@
 package org.shmo.icfb.campaign.quests.impl.missions;
 
-import com.fs.starfarer.api.EveryFrameScriptWithCleanup;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
+import com.fs.starfarer.api.campaign.ai.FleetAssignmentDataAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
-import com.fs.starfarer.api.fleet.FleetAPI;
-import com.fs.starfarer.api.graphics.SpriteAPI;
-import com.fs.starfarer.api.impl.campaign.CommRelayEntityPlugin;
 import com.fs.starfarer.api.impl.campaign.ids.*;
-import com.fs.starfarer.api.impl.campaign.procgen.SectorProcGen;
-import com.fs.starfarer.api.impl.campaign.procgen.themes.ThemeGenerator;
-import com.fs.starfarer.api.impl.campaign.procgen.themes.Themes;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import org.magiclib.util.MagicCampaign;
 import org.shmo.icfb.IcfbMisc;
 import org.shmo.icfb.campaign.IcfbFactions;
 import org.shmo.icfb.campaign.quests.Quest;
@@ -27,7 +20,8 @@ import java.util.*;
 public class SubspaceFissure extends BaseIcfbMission {
 
     private SectorEntityToken _fissure = null;
-    private CampaignFleetAPI _fleet = null;
+    private CampaignFleetAPI _fleet1 = null;
+    private CampaignFleetAPI _fleet2 = null;
 
     public SubspaceFissure(PersonAPI missionGiver) {
         Data data = getData();
@@ -41,8 +35,8 @@ public class SubspaceFissure extends BaseIcfbMission {
 
         data.creditReward = calculateReward(missionGiver.getMarket().getPrimaryEntity(), data.targetStarSystem.getCenter());
         data.xpReward = 5000;
-        data.repReward = 0.1f;
-        data.repPenalty = 0.05f;
+        data.repReward = 0.7f;
+        data.repPenalty = 0.03f;
         data.timeLimitDays = 180f;
         data.targetFaction = IcfbFactions.BOUNDLESS.getFaction();
     }
@@ -64,9 +58,7 @@ public class SubspaceFissure extends BaseIcfbMission {
     }
 
     @Override
-    public Quest create() {
-        Quest quest = initQuest();
-
+    public void createMission(Quest quest) {
         addStep(quest, 0, new BaseQuestStepScript() {
             @Override
             public void start() {
@@ -75,54 +67,74 @@ public class SubspaceFissure extends BaseIcfbMission {
 
             @Override
             public void advance(float deltaTime) {
-                if (_fleet == null && Global.getSector().getPlayerFleet().getContainingLocation() == getData().targetStarSystem) {
-                    spawnFleet();
-                }
-                if (_fleet != null) {
-                    if (Global.getSector().getPlayerFleet().isVisibleToSensorsOf(_fleet)) {
-                        _fissure.getMemoryWithoutUpdate().set("$icfbSeen", true, 1);
-                    }
-                }
+                spawnPatrolFleetsIfNeeded();
+                updatePatrolFleet(_fleet1);
+                updatePatrolFleet(_fleet2);
             }
 
             @Override
             public void end() {
-                if (_fissure != null)
-                    Misc.makeUnimportant(_fissure, null);
-                if (_fleet != null)
-                    Misc.makeUnimportant(_fleet, null);
+                makeUnimportant(_fissure);
+                makeUnimportant(_fleet1);
+                makeUnimportant(_fleet2);
             }
 
             @Override
             public boolean isComplete() {
-                return _fissure.getMemoryWithoutUpdate().getBoolean("$icfbInvestigated");
+                return isFissureScanned();
             }
         });
 
         addStep(quest, 1, new BaseQuestStepScript() {
             @Override
-            public void start() {
-
-            }
-
-            @Override
-            public void advance(float deltaTime) {
-
-            }
-
-            @Override
-            public void end() {
-
-            }
-
-            @Override
             public boolean isComplete() {
-                return Global.getSector().getIntelManager().isPlayerInRangeOfCommRelay();
+                return isPlayerInRangeOfCommRelay();
             }
         });
+    }
 
-        addFinalStep(quest);
-        return quest;
+    private boolean isPlayerInRangeOfCommRelay() {
+        return Global.getSector().getIntelManager().isPlayerInRangeOfCommRelay();
+    }
+
+    private boolean isFissureScanned() {
+        return _fissure.getMemoryWithoutUpdate().getBoolean("$icfbInvestigated");
+    }
+
+    private void makeUnimportant(SectorEntityToken entity) {
+        if (entity != null)
+            Misc.makeUnimportant(entity, null);
+    }
+
+    private void updatePatrolFleet(CampaignFleetAPI fleet) {
+        if (fleet != null) {
+            if (isVisibleToSensorsOf(fleet)) {
+                markPlayerAsSeen();
+                FleetAssignmentDataAPI assignmentData = fleet.getCurrentAssignment();
+                if (assignmentData == null || !FleetAssignment.DEFEND_LOCATION.equals(assignmentData.getAssignment())) {
+                    fleet.clearAssignments();
+                    fleet.addAssignment(FleetAssignment.DEFEND_LOCATION, _fissure, 10);
+                    fleet.addAssignment(FleetAssignment.PATROL_SYSTEM, getData().targetStarSystem.getStar(), 100000f);
+                }
+            }
+        }
+    }
+
+    private boolean isVisibleToSensorsOf(CampaignFleetAPI fleet) {
+        return Global.getSector().getPlayerFleet().isVisibleToSensorsOf(fleet);
+    }
+
+    private void markPlayerAsSeen() {
+        _fissure.getMemoryWithoutUpdate().set("$icfbSeen", true, 2);
+    }
+
+    private void spawnPatrolFleetsIfNeeded() {
+        if (Global.getSector().getPlayerFleet().getContainingLocation() == getData().targetStarSystem) {
+            if (_fleet1 == null)
+                _fleet1 = createPatrolFleet();
+            if (_fleet2 == null)
+                _fleet2 = createPatrolFleet();
+        }
     }
 
     private void spawnFissure() {
@@ -136,7 +148,7 @@ public class SubspaceFissure extends BaseIcfbMission {
         _fissure.setCircularOrbit(
                 data.targetStarSystem.getCenter(),
                 Misc.random.nextFloat() * 360,
-                5000f + Misc.random.nextFloat() * 8000f,
+                5000f + Misc.random.nextFloat() * 9000f,
                 360
         );
         _fissure.setDiscoverable(true);
@@ -145,14 +157,14 @@ public class SubspaceFissure extends BaseIcfbMission {
         Misc.makeImportant(_fissure, null);
     }
 
-    private void spawnFleet() {
+    private CampaignFleetAPI createPatrolFleet() {
         Data data = getData();
 
-        _fleet = createFleet(
+        CampaignFleetAPI fleet = createFleet(
                 data.targetFaction.getId(),
                 FleetTypes.PATROL_LARGE,
                 data.targetFaction.getDisplayName() + " " + data.targetFaction.getFleetTypeName(FleetTypes.PATROL_LARGE),
-                275,
+                250,
                 true,
                 true,
                 _fissure,
@@ -160,8 +172,9 @@ public class SubspaceFissure extends BaseIcfbMission {
                 FleetAssignment.PATROL_SYSTEM,
                 null
         );
-        Misc.makeHostile(_fleet);
-        _fleet.setTransponderOn(true);
+        Misc.makeHostile(fleet);
+        fleet.setTransponderOn(true);
+        return fleet;
     }
 
     private void despawnFissure() {
@@ -177,14 +190,12 @@ public class SubspaceFissure extends BaseIcfbMission {
 
     @Override
     public Set<String> getIntelTags() {
-        final Set<String> tags = new HashSet<>();
-        tags.add(Tags.INTEL_EXPLORATION);
-        return tags;
+        return IcfbMisc.setOf(Tags.INTEL_EXPLORATION);
     }
 
     @Override
     public String getIcon() {
-        return Global.getSettings().getSpriteName("icfb_intel", "xent_fis");
+        return Global.getSettings().getSpriteName("icfb_intel", "fis");
     }
 
     @Override

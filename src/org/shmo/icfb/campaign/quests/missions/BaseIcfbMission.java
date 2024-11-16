@@ -106,7 +106,7 @@ public abstract class BaseIcfbMission implements IcfbMission {
         return false;
     }
 
-    protected Quest initQuest() {
+    private Quest initQuest() {
         _questId = _data.missionGiver.getId() + ":" + getId();
         final Quest quest = new Quest(_questId);
         quest.setName(getName());
@@ -144,11 +144,13 @@ public abstract class BaseIcfbMission implements IcfbMission {
         return quest;
     }
 
+    protected abstract void createMission(Quest quest);
+
     protected void addStep(Quest quest, int stageIndex, QuestStepScript script) {
         quest.addStep(new IcfbMissionStepIntel(this, stageIndex), script);
     }
 
-    protected void addFinalStep(Quest quest) {
+    private void addFinalStep(Quest quest) {
         quest.addStep(
                 new BaseQuestStepIntel() {
                     @Override
@@ -625,5 +627,13 @@ public abstract class BaseIcfbMission implements IcfbMission {
             despawnFleet(fleet);
         }
         _fleets.clear();
+    }
+
+    @Override
+    public Quest create() {
+        final Quest quest = initQuest();
+        createMission(quest);
+        addFinalStep(quest);
+        return quest;
     }
 }

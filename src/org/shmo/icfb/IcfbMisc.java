@@ -11,6 +11,12 @@ import org.shmo.icfb.utilities.ShmoMath;
 import java.util.*;
 
 public class IcfbMisc {
+    public static Set<String> setOf(String... strings) {
+        final Set<String> set = new HashSet<>();
+        Collections.addAll(set, strings);
+        return set;
+    }
+
     public static float computeShiftJumpCRPenalty(
             IcfbSettings.ShiftJumpSettings.CRPenaltyCurve curve,
             float t
@@ -62,7 +68,7 @@ public class IcfbMisc {
         final List<StarSystemAPI> starSystems = new ArrayList<>();
 
         for (StarSystemAPI starSystem : allSystems) {
-            if (predicate.isValid(starSystem))
+            if (predicate.isValid(starSystem) && starSystem.getStar() != null)
                 starSystems.add(starSystem);
         }
 
