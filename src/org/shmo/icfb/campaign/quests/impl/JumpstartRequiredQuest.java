@@ -7,6 +7,7 @@ import com.fs.starfarer.api.characters.AbilityPlugin;
 import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.impl.campaign.ids.*;
 import com.fs.starfarer.api.impl.campaign.missions.hub.BaseMissionHub;
+import com.fs.starfarer.api.impl.campaign.missions.hub.MissionHub;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
 import org.lwjgl.input.Keyboard;
@@ -130,11 +131,7 @@ public class JumpstartRequiredQuest implements QuestFactory {
                 new BaseQuestStepScript() {
                     @Override
                     public void start() {
-                        xent.getMarket().getCommDirectory().getEntryForPerson(xent).setHidden(false);
-                        IcfbMissionHub.createHub(
-                                xent,
-                                IcfbMissions.SUBSPACE_FISSURE
-                        );
+                        initXentHub(xent);
                         Misc.makeImportant(xent, ID);
                         Misc.makeImportant(xent.getMarket().getPrimaryEntity(), ID);
                     }
@@ -230,6 +227,11 @@ public class JumpstartRequiredQuest implements QuestFactory {
 
                     @Override
                     public void advance(float deltaTime) {
+                        if (BaseMissionHub.get(xent) != null) {
+                            BaseMissionHub.set(xent, null);
+                            initXentHub(xent);
+                        }
+
                         if (
                                 xent.getRelToPlayer().getRel() >= 0.4f &&
                                         !Global.getSector()
@@ -589,6 +591,14 @@ public class JumpstartRequiredQuest implements QuestFactory {
         );
 
         return quest;
+    }
+
+    private void initXentHub(final PersonAPI xent) {
+        xent.getMarket().getCommDirectory().getEntryForPerson(xent).setHidden(false);
+        IcfbMissionHub.createHub(
+                xent,
+                IcfbMissions.SUBSPACE_FISSURE
+        );
     }
 
     public static class SpecialMission {

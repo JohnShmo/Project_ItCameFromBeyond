@@ -22,6 +22,7 @@ import org.shmo.icfb.campaign.quests.scripts.BaseQuestScript;
 import org.shmo.icfb.campaign.quests.scripts.BaseQuestStepScript;
 import org.shmo.icfb.campaign.quests.scripts.QuestStepScript;
 import org.shmo.icfb.campaign.scripts.IcfbQuestManager;
+import org.shmo.icfb.utilities.ShmoGuiUtils;
 
 import java.awt.*;
 import java.util.*;
@@ -216,8 +217,9 @@ public abstract class BaseIcfbMission implements IcfbMission {
                     public void addDescriptionBody(TooltipMakerAPI info) {
                         final Data data = getData();
 
-                        if (getDescriptionImage() != null)
-                            info.addImage(getDescriptionImage(), getBodyPanelWidth(), 0);
+                        if (getDescriptionImage() != null) {
+                            ShmoGuiUtils.addCenteredImage(info, getDescriptionImage(), getBodyPanelWidth(), 0);
+                        }
                         if (!data.failed)
                             info.addPara("Mission complete!", 10);
                         else

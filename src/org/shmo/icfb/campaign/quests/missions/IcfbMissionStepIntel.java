@@ -43,13 +43,13 @@ public class IcfbMissionStepIntel extends BaseQuestStepIntel {
         if (_mission.getDescriptionImage() != null) {
             ShmoGuiUtils.addCenteredImage(info, _mission.getDescriptionImage(), getBodyPanelWidth(), 0);
         }
-        info.addSpacer(10);
+        info.addSpacer(8);
         _mission.addDescriptionBody(info, _stageIndex);
     }
 
     @Override
     public void addDescriptionBulletPoints(TooltipMakerAPI info) {
-        info.addSpacer(10);
+        info.addSpacer(8);
         addBulletPoints(info);
     }
 
