@@ -81,7 +81,7 @@ public class IcfbMissionHub implements CallEvent.CallableEvent, EveryFrameScript
 
         memory.set(
                 "$" + id + "_reward",
-                Misc.getWithDGS(mission.getCreditReward())
+                Misc.getDGSCredits(mission.getCreditReward())
         );
 
         if (mission.getLocationName() != null) {

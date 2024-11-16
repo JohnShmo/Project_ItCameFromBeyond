@@ -192,8 +192,14 @@ Xent's screen flickers, ""I am tested once again.""",,
 ,,,,,,
 # Xent Subspace Fissure,,,,,,
 icfbXentFisDesc,icfbFisDesc,"$id == icfb_xent score:1000
-",,"> Description of mission",,
-icfbXentFisBlurb,IcfbMHAddBlurb_icfbFis,"$id == icfb_xent score:1000",,"> Subspace Fissure",,
+","SetTextHighlights $icfbFis_location $icfbFis_distance $icfbFis_timeLimit  $icfbFis_reward","Your screen blinks on and off to reveal data about the mission organized sporadically.
+
+""As you can see, $playerSirOrMadam $playerName, an anomaly known as a subspace fissure has likely appeared in the $icfbFis_location - which is $icfbFis_distance lightyears away. The reported presence of $icfbFis_faction patrols all but confirms this. These fissures started to manifest in the sector ever since their 'performance' with the Wings of Enteria."" 
+
+""Due to the sensitivity of the information, and the stability of such an anomaly, you shall have $icfbFis_timeLimit days to locate the fissure, perform an analysis of it, and then connect with a comm relay to transfer the required data,"" Xent says, his voice modulator enabling this long-winded explanation to be uttered within a single breath - as far as you can tell.
+
+""And of course, my collaborator, you will be compensated. The reward is $icfbFis_reward. Are these terms acceptable?""",,
+icfbXentFisBlurb,IcfbMHAddBlurb_icfbFis,"$id == icfb_xent score:1000",,"Xent's image flickers as he picks through a few log screens, ""One of our other collaborators located signs of a spacial anomaly. Timely data collection would be ample aid to our great work.""",,
 "#END Xent Subspace Fissure",,,,,,
 "#END Xent Missions",,,,,,
 ,,,,,,
