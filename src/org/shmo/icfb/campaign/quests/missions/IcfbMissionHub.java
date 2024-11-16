@@ -182,6 +182,11 @@ public class IcfbMissionHub implements CallEvent.CallableEvent, EveryFrameScript
         removeMission(id);
     }
 
+    private IcfbMission getMission(String id) {
+        MemoryAPI memory = _person.getMemoryWithoutUpdate();
+        return (IcfbMission)memory.get("$" + id);
+    }
+
     @Override
     public boolean callEvent(String ruleId, InteractionDialogAPI dialog, List<Misc.Token> params, Map<String, MemoryAPI> memoryMap) {
         if (params.isEmpty())
@@ -219,33 +224,30 @@ public class IcfbMissionHub implements CallEvent.CallableEvent, EveryFrameScript
 
     private void listMissions(InteractionDialogAPI dialog, Map<String, MemoryAPI> memoryMap) {
         refresh();
-        int count = _person.getMemoryWithoutUpdate().getInt(MEM_KEY + "_count");
+        MemoryAPI memory = _person.getMemory();
+        int count = memory.getInt(MEM_KEY + "_count");
 
-        FireBest.fire(null, dialog, memoryMap, "IcfbMHOpenText");
-        FireBest.fire(null, dialog, memoryMap, "IcfbMHPreMissionListText");
-
-        if (count <= 0) {
+        if (count == 0) {
+            FireBest.fire(null, dialog, memoryMap, "IcfbMHOpenText");
+            FireBest.fire(null, dialog, memoryMap, "IcfbMHPreMissionListText");
             FireAll.fire(null, dialog, memoryMap, "PopulateOptions");
             return;
         }
 
-        dialog.getOptionPanel().clearOptions();
-
-        for (String missionId : _missionSet) {
-            if (isMissionAvailable(missionId))
-                FireBest.fire(null, dialog, memoryMap, "IcfbMHAddBlurb_" + missionId);
+        if (!memory.getBoolean("$icfbMHAlreadyListedBlurbs")) {
+            FireBest.fire(null, dialog, memoryMap, "IcfbMHOpenText");
+            FireBest.fire(null, dialog, memoryMap, "IcfbMHPreMissionListText");
+            for (String missionId : _missionSet) {
+                if (isMissionAvailable(missionId))
+                    FireBest.fire(null, dialog, memoryMap, "IcfbMHAddBlurb_" + missionId);
+            }
+            if (count > 1) {
+                FireBest.fire(null, dialog, memoryMap, "IcfbMHPostMissionListText");
+            }
+            memory.set("$icfbMHAlreadyListedBlurbs", true, 0);
         }
 
-        if (count > 1) {
-            FireBest.fire(null, dialog, memoryMap, "IcfbMHPostMissionListText");
-        }
-
-        FireBest.fire(null, dialog, memoryMap, "IcfbMHAddCloseOption");
-        for (String missionId : _missionSet) {
-            if (isMissionAvailable(missionId))
-                FireBest.fire(null, dialog, memoryMap, "IcfbMHAddOption_" + missionId);
-        }
-
+        FireAll.fire(null, dialog, memoryMap, "IcfbMHAddOptions");
     }
 
     @Override

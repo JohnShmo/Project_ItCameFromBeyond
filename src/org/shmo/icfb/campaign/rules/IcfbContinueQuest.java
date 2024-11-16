@@ -15,7 +15,9 @@ public class IcfbContinueQuest extends BaseCommandPlugin {
     public boolean execute(String ruleId, InteractionDialogAPI dialog, List<Misc.Token> params, Map<String, MemoryAPI> memoryMap) {
         if (params.size() < 1)
             return false;
-        Quest quest = IcfbQuestManager.getInstance().getQuest(params.get(0).string);
+        Quest quest = IcfbQuestManager.getInstance().getQuest(
+                params.get(0).getStringWithTokenReplacement(ruleId, dialog, memoryMap)
+        );
         if (quest != null) {
             quest.progress();
             return true;

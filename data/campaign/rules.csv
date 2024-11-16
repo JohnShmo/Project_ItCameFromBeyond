@@ -95,12 +95,16 @@ It would probably be best not to ask anyone else about this. You feel the collec
 "#END Chariot of Hope Quest",,,,,,
 ,,,,,,
 # Jumpstart Required Quest,,,,,,
+icfbXentPickGreetingRule,PickGreeting,"$id == icfb_xent score:1000","IcfbMusic start icfb_xent_theme
+FireBest icfbXentPickGreeting
+ShowPersonVisual",,,
+icfbXentLeave,DialogOptionSelected,"$option == cutCommLink
+$id == icfb_xent score:1000","IcfbMusic stop
+ShowDefaultVisual
+EndConversation",,,
 ,,,,,,
 # Xent Convo,,,,,,
-icfbXentGreeting0,PickGreeting,"$isPerson
-$global.icfbAwaitingAgentContact
-$id == icfb_xent","ShowPersonVisual
-FireAll icfbXentPopulateOptions","The comm link whirs to life, static dancing across your screen. An almost motionless visage appears, his augmentations and visor are the first thing you notice.
+icfbXentGreeting0,icfbXentPickGreeting,"$global.icfbAwaitingAgentContact","FireAll icfbXentPopulateOptions","The comm link whirs to life, static dancing across your screen. An almost motionless visage appears, his augmentations and visor are the first thing you notice.
 
 ""Who provides?"" he asks, his voice stagnant and droning. Each syllable enunciated with extreme care.",,
 icfbXentPopulateWrongOptions,icfbXentPopulateOptions,,,,"1:icfbXentWrongOpt0:""Uh, what?""
@@ -162,10 +166,8 @@ icfbXentContinue5,DialogOptionSelected,"$option == icfbXentContinueOpt5","FireAl
 "#END Xent Convo",,,,,,
 ,,,,,,
 # Xent Missions,,,,,,
-icfbXentGreeting1,PickGreeting,"$global.icfbAcceptingXentMissions
-$id == icfb_xent score:1000
-$icfbHub != null","ShowPersonVisual
-FireAll PopulateOptions","""Our work continues...""",,
+icfbXentGreeting1,icfbXentPickGreeting,"$global.icfbAcceptingXentMissions
+$icfbHub != null","FireAll PopulateOptions","""Our work continues...""",,
 icfbXentAddHubOption,PopulateOptions,"$global.icfbAcceptingXentMissions
 $icfbHub != null
 $id == icfb_xent score:1000",,,"5:icfbMHOpen:""Do you have any work for me?""",
@@ -201,8 +203,7 @@ $global.icfbAcceptingXentMissions
 $id == icfb_xent score:1000
 $icfbHub != null","SetOptionColor icfbXentDevForceZiggyOpt gray",,"500:icfbXentDevForceZiggyOpt:Force ziggurat interaction",
 icfbXentDevForceZiggy,DialogOptionSelected,"$option == icfbXentDevForceZiggyOpt","FireBest icfbXentReactsToZiggy",,,
-icfbXentSeesZiggy0,PickGreeting,"$global.icfbAcceptingXentMissions
-$id == icfb_xent score:1000
+icfbXentSeesZiggy0,icfbXentPickGreeting,"$global.icfbAcceptingXentMissions
 $icfbHub != null
 $icfbCanReactToZig
 PlayerFleetHasShipWithBaseHull ziggurat","FireBest icfbXentReactsToZiggy",,,
@@ -225,11 +226,9 @@ $id == icfb_xent score:1000
 $icfbHub != null","SetOptionColor icfbXentDevForceSpecialMissionOpt gray",,"501:icfbXentDevForceSpecialMissionOpt:Trigger special mission",
 icfbXentDevForceSpecialMission,DialogOptionSelected,"$option == icfbXentDevForceSpecialMissionOpt","$global.icfbXentOfferingSpecialMission = true
 FireAll PopulateOptions",,,
-icfbXentGreeting2,PickGreeting,"$global.icfbXentOfferingSpecialMission
+icfbXentGreeting2,icfbXentPickGreeting,"$global.icfbXentOfferingSpecialMission
 $global.icfbAcceptingXentMissions
-$id == icfb_xent score:1000
-$icfbHub != null","ShowPersonVisual
-FireAll PopulateOptions","""Our work continues..."" Xent Alabaster nods his head very slightly. You can tell he has something more to say.
+$icfbHub != null","FireAll PopulateOptions","""Our work continues..."" Xent Alabaster nods his head very slightly. You can tell he has something more to say.
 
 ""I have something new for you. Something special. It pertains to the fruits of our great work,"" he says.",,
 icfbXentAddSpecialMissionOption,PopulateOptions,"$global.icfbXentOfferingSpecialMission
@@ -429,8 +428,7 @@ FireAll icfbJRPopulateFleetEncounterOptions","""You are a flakey person - you kn
 "#END Mercenary Fleet Encounter",,,,,,
 ,,,,,,
 # Finale,,,,,,
-icfbXentGreeting3,PickGreeting,"$global.icfbXentSpecialMissionComplete
-$id == icfb_xent score:1000","ShowPersonVisual","""Ah, welcome back, $playerSirOrMadam $playerLastName"" Xent starts, ""I imagine you have gathered the data I requested.""
+icfbXentGreeting3,icfbXentPickGreeting,"$global.icfbXentSpecialMissionComplete",,"""Ah, welcome back, $playerSirOrMadam $playerLastName"" Xent starts, ""I imagine you have gathered the data I requested.""
 
 A long pause deafens the conversation with anticipation. You give your crew the go-ahead to transfer the instrument package back to the dead drop location from before.
 
@@ -455,21 +453,22 @@ Your display turns black.","0:cutCommLink:Cut the comm link",
 ,,,,,,
 # Missions,,,,,,
 icfbMHOpenSelected,DialogOptionSelected,"$option == icfbMHOpen","Call $icfbHub listMissions",,,
-icfbMHCloseSelected,DialogOptionSelected,"$option == icfbMHClose","UpdateMemory
+icfbMHCloseSelected,DialogOptionSelected,"$option == icfbMHClose","$icfbMHAlreadyListedBlurbs = false 0
 FireAll PopulateOptions",,,
-icfbMHCloseOption,IcfbMHAddCloseOption,,,,"100:icfbMHClose:""I'll need to think about it.""",
+icfbMHCloseOption,IcfbMHAddOptions,,"SetShortcut icfbMHClose ""ESCAPE""",,"100:icfbMHClose:""I'll need to think about it.""",
 ,,,,,,
 # Subspace Fissure,,,,,,
 icfbFisOpen,DialogOptionSelected,"$option == icfbFis_option","Call $icfbHub icfbFis showMap ""Destination""
 FireBest icfbFisDesc",,"0:icfbFis_accept:Accept
 1:icfbFis_decline:Decline",
-icfbFisAccept,DialogOptionSelected,"$option == icfbFis_accept","Call $icfbHub icfbFis hideMap
+icfbFisAccept,DialogOptionSelected,"$option == icfbFis_accept","FireBest IcfbMHPrintAcceptText
+Call $icfbHub icfbFis hideMap
 Call $icfbHub icfbFis accept
-UpdateMemory
 Call $icfbHub listMissions",,,
-icfbFisDecline,DialogOptionSelected,"$option == icfbFis_decline","Call $icfbHub icfbFis hideMap
+icfbFisDecline,DialogOptionSelected,"$option == icfbFis_decline","FireBest IcfbMHPrintDeclineText
+Call $icfbHub icfbFis hideMap
 Call $icfbHub listMissions",,,
-icfbFisOption,IcfbMHAddOption_icfbFis,,,,"10:icfbFis_option:Ask about investigating the spacial anomaly",
+icfbFisOption,IcfbMHAddOptions,"$icfbFis_available",,,"10:icfbFis_option:Ask about investigating the spacial anomaly",
 ,,,,,,
 # Fissure Interaction,,,,,,
 icfbFissureStartDialogSeen,OpenInteractionDialog,"$icfbSubspaceFissure score:1000

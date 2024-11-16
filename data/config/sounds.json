@@ -14,5 +14,12 @@
 				"volume":1
 			}, 
 		],
+		"icfb_xent_theme": [
+			{
+				"file":"icfb_xent_theme.ogg",
+				"source":"sounds/music",
+				"volume":1
+			}
+		],
 	},
 }

@@ -588,11 +588,13 @@ public abstract class BaseIcfbMission implements IcfbMission {
         SectorEntityToken despawnLocation = memory.getEntity("$" + _questId + "_despawnLocation");
         if (despawnLocation == null) {
             MarketAPI market = Misc.getBiggestMarketInLocation(fleet.getContainingLocation());
-            if (market.getFactionId().equals(fleet.getFaction().getId()))
+            if (market != null && market.getFactionId().equals(fleet.getFaction().getId()))
                 despawnLocation = market.getPrimaryEntity();
         }
         if (despawnLocation == null) {
-            despawnLocation = IcfbMisc.pickMarket( 0, fleet.getFaction().getId()).getPrimaryEntity();
+            MarketAPI market = IcfbMisc.pickMarket( 0, fleet.getFaction().getId());
+            if (market != null)
+                despawnLocation = market.getPrimaryEntity();
         }
         if (despawnLocation == null) {
             despawnLocation = IcfbMisc.pickSystem().getCenter();
