@@ -33,20 +33,17 @@ public class SubspaceFissure extends BaseIcfbMission {
             return;
         }
 
-        data.creditReward = calculateReward(missionGiver.getMarket().getPrimaryEntity(), data.targetStarSystem.getCenter());
+        data.creditReward = calculateReward(
+                missionGiver.getMarket().getPrimaryEntity(),
+                data.targetStarSystem.getCenter(),
+                20000,
+                1500
+        );
         data.xpReward = 5000;
-        data.repReward = 0.7f;
-        data.repPenalty = 0.03f;
+        data.repReward = 0.05f;
+        data.repPenalty = 0.02f;
         data.timeLimitDays = 180f;
         data.targetFaction = IcfbFactions.BOUNDLESS.getFaction();
-    }
-
-    private static int calculateReward(SectorEntityToken start, SectorEntityToken objective) {
-        final float baseReward = 20000;
-        final float rewardPerLY = 1500;
-        final float distanceLY = Misc.getDistanceLY(start, objective);
-        final float result = baseReward + (rewardPerLY * distanceLY);
-        return (int)result;
     }
 
     private String getFissureId() {
@@ -244,12 +241,12 @@ public class SubspaceFissure extends BaseIcfbMission {
             info.addPara(
                     "Locate and examine a spacial anomaly known as a 'subspace fissure'." +
                             " The fissure was last spotted some distance away from the center of the" +
-                            " %s by prior investigators. It's likely being monitored by" +
+                            " %s by prior investigators. It's likely being monitored by " + factionAOrAn +
                             " %s defense fleet.",
                     0,
                     new Color[] {Misc.getHighlightColor(), factionColor},
                     data.targetStarSystem.getName(),
-                    factionAOrAn + " " + factionName
+                    factionName
             );
             if (Global.getSector().getPlayerFleet().hasAbility(Abilities.GRAVITIC_SCAN)) {
                 info.addPara(

@@ -636,4 +636,10 @@ public abstract class BaseIcfbMission implements IcfbMission {
         addFinalStep(quest);
         return quest;
     }
+
+    protected int calculateReward(SectorEntityToken start, SectorEntityToken objective, float baseReward, float rewardPerLY) {
+        final float distanceLY = Misc.getDistanceLY(start, objective);
+        final float result = baseReward + (rewardPerLY * distanceLY);
+        return (int)result;
+    }
 }

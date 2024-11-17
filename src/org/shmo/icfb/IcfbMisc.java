@@ -2,9 +2,11 @@ package org.shmo.icfb;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
+import com.fs.starfarer.api.campaign.PlanetAPI;
 import com.fs.starfarer.api.campaign.StarSystemAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
+import com.fs.starfarer.api.impl.campaign.ids.Planets;
 import com.fs.starfarer.api.util.Misc;
 import org.shmo.icfb.utilities.ShmoMath;
 
@@ -146,5 +148,22 @@ public class IcfbMisc {
 
     public static MarketAPI pickMarket() {
         return pickMarket(0);
+    }
+
+    public static PlanetAPI pickPlanet(StarSystemAPI system) {
+        final List<PlanetAPI> allPlanets = system.getPlanets();
+        final List<PlanetAPI> planets = new ArrayList<>();
+        for (PlanetAPI planet : allPlanets) {
+            if (planet.isStar() || planet.getTypeId().equals("black_hole"))
+                continue;
+            planets.add(planet);
+        }
+
+        PlanetAPI picked = null;
+        if (!planets.isEmpty()) {
+            final int index = Misc.random.nextInt(planets.size());
+            picked = planets.get(index);
+        }
+        return picked;
     }
 }

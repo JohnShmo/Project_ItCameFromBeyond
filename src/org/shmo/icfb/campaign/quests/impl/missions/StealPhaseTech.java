@@ -8,6 +8,7 @@ import com.fs.starfarer.api.campaign.StarSystemAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.impl.campaign.ids.Tags;
+import com.fs.starfarer.api.impl.campaign.procgen.StarSystemGenerator;
 import com.fs.starfarer.api.util.Misc;
 import org.shmo.icfb.IcfbMisc;
 import org.shmo.icfb.campaign.quests.Quest;
@@ -31,7 +32,7 @@ public class StealPhaseTech extends BaseIcfbMission {
             @Override
             public boolean isValid(StarSystemAPI starSystem) {
                 return starSystem.isProcgen()
-                        && starSystem.getPlanets().size() >= 4
+                        && starSystem.getPlanets().size() >= 5
                         && !starSystem.hasTag(Tags.THEME_REMNANT_RESURGENT)
                         && !starSystem.hasTag(Tags.THEME_REMNANT_SECONDARY);
             }
@@ -41,20 +42,24 @@ public class StealPhaseTech extends BaseIcfbMission {
             return;
         }
 
-        data.creditReward = calculateReward(person.getMarket().getPrimaryEntity(), data.targetStarSystem.getCenter());
+        _planetWithBase = IcfbMisc.pickPlanet(data.targetStarSystem);
+        if (_planetWithBase == null) {
+            data.valid = false;
+            return;
+        }
+
+        data.creditReward = calculateReward(
+                data.missionGiver.getMarket().getPrimaryEntity(),
+                data.targetStarSystem.getCenter(),
+                40000,
+                1100
+        );
+
         data.xpReward = 5000;
-        data.repReward = 0.1f;
-        data.repPenalty = 0.05f;
+        data.repReward = 0.07f;
+        data.repPenalty = 0.03f;
         data.timeLimitDays = 240f;
         data.targetFaction = Global.getSector().getFaction(Factions.TRITACHYON);
-    }
-
-    private static int calculateReward(SectorEntityToken start, SectorEntityToken objective) {
-        final float baseReward = 40000;
-        final float rewardPerLY = 1200;
-        final float distanceLY = Misc.getDistanceLY(start, objective);
-        final float result = baseReward + (rewardPerLY * distanceLY);
-        return (int)result;
     }
 
     @Override
