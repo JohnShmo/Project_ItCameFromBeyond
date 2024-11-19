@@ -226,6 +226,7 @@ public class JumpstartRequiredQuest implements QuestFactory {
                             BaseMissionHub.set(xent, null);
                             initXentHub(xent);
                         }
+                        ensureAllMissionsAvailable(xent);
 
                         if (
                                 xent.getRelToPlayer().getRel() >= 0.5f &&
@@ -587,7 +588,16 @@ public class JumpstartRequiredQuest implements QuestFactory {
         xent.getMarket().getCommDirectory().getEntryForPerson(xent).setHidden(false);
         IcfbMissionHub.createHub(
                 xent,
-                IcfbMissions.SUBSPACE_FISSURE
+                IcfbMissions.SUBSPACE_FISSURE,
+                IcfbMissions.STEAL_PHASE_TECH
+        );
+    }
+
+    private void ensureAllMissionsAvailable(final PersonAPI xent) {
+        IcfbMissionHub.addToAvailableMissions(
+                xent,
+                IcfbMissions.SUBSPACE_FISSURE,
+                IcfbMissions.STEAL_PHASE_TECH
         );
     }
 

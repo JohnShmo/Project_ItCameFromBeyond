@@ -614,6 +614,7 @@ public abstract class BaseIcfbMission implements IcfbMission {
         memory.unset(MemFlags.MEMORY_KEY_MAKE_PREVENT_DISENGAGE);
         memory.unset(MemFlags.MEMORY_KEY_MAKE_AGGRESSIVE_ONE_BATTLE_ONLY);
         memory.unset(MemFlags.ENTITY_MISSION_IMPORTANT);
+        memory.unset(MemFlags.MEMORY_KEY_NO_JUMP);
         Misc.makeUnimportant(fleet, null);
         memory.unset("$icfbQuestId");
         memory.unset("$" + _questId + "_despawnLocation");

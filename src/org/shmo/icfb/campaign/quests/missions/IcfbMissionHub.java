@@ -57,6 +57,13 @@ public class IcfbMissionHub implements CallEvent.CallableEvent, EveryFrameScript
         person.getMemoryWithoutUpdate().unset(MEM_KEY + "_count");
     }
 
+    public static void addToAvailableMissions(PersonAPI person, String... availableMissions) {
+        IcfbMissionHub hub = (IcfbMissionHub)person.getMemoryWithoutUpdate().get(MEM_KEY);
+        if (hub == null)
+            return;
+        Collections.addAll(hub._missionSet, availableMissions);
+    }
+
     private static IcfbMission initMissionFromId(String id, PersonAPI person) {
         switch (id) {
             case IcfbMissions.SUBSPACE_FISSURE: return new SubspaceFissure(person);

@@ -1,85 +1,85 @@
 id,trigger,conditions,script,text,options,notes
-#RULESET_NAME ItCameFromBeyond,,,,,,
+"#RULESET_NAME ItCameFromBeyond",,,,,,
 ,,,,,,
 # Chariot of Hope Quest,,,,,,
 icfbSalvageChariotOfHopeDefenders1,TriggerAutomatedDefenses,"$icfbIsChariotOfHope score:100
-!$icfbAlreadyInteracted",$icfbAlreadyInteracted = true,"As your $shipOrFleet moves in closer, new energy signatures are detected near the $shortName. Several automated ships power up their engines to intercept your approach.",icfbSalvageChariotOfHopeDefendersContinue1:Continue,
+!$icfbAlreadyInteracted","$icfbAlreadyInteracted = true","As your $shipOrFleet moves in closer, new energy signatures are detected near the $shortName. Several automated ships power up their engines to intercept your approach.","icfbSalvageChariotOfHopeDefendersContinue1:Continue",
 icfbSalvageChariotOfHopeDefendersAlreadyInteracted,TriggerAutomatedDefenses,"$icfbIsChariotOfHope score:100
-$icfbAlreadyInteracted",FireBest IcfbChariotOfHopeAlphaCoreOption,"As your $shipOrFleet moves in closer, new energy signatures are detected near the $shortName. Several automated ships power up their engines to intercept your approach.",,
-icfbSalvageChariotOfHopeDefenders2,DialogOptionSelected,$option == icfbSalvageChariotOfHopeDefendersContinue1,,"> print(WARNING); EXECUTING...
+$icfbAlreadyInteracted","FireBest IcfbChariotOfHopeAlphaCoreOption","As your $shipOrFleet moves in closer, new energy signatures are detected near the $shortName. Several automated ships power up their engines to intercept your approach.",,
+icfbSalvageChariotOfHopeDefenders2,DialogOptionSelected,"$option == icfbSalvageChariotOfHopeDefendersContinue1",,"> print(WARNING); EXECUTING...
 > ATTENTION [not Omega], THIS [vessel of great interest] IS UNDER [surveillance] BY [research and development team]. FOR YOUR CONTINUED SAFETY, PLEASE RECALL FORCES IMMEDIATELY.
 
 One of your officers furrows his brow, clearly uneasy, ""What do you think they're playing at, here?""","0:icfbSalvageChariotOfHopeDefendersAskOpt:Interrogate the AI
 1:icfbSalvageChariotOfHopeDefendersContinue2:Continue",
-icfbSalvageChariotOfHopeDefendersAsk,DialogOptionSelected,$option == icfbSalvageChariotOfHopeDefendersAskOpt,FireBest IcfbChariotOfHopeAlphaCoreOption,"You send a tentative transmission that asks, ""What are you guarding?""
+icfbSalvageChariotOfHopeDefendersAsk,DialogOptionSelected,"$option == icfbSalvageChariotOfHopeDefendersAskOpt","FireBest IcfbChariotOfHopeAlphaCoreOption","You send a tentative transmission that asks, ""What are you guarding?""
 
 > [authorization level] NOT SUFFICIENT TO ANSWER [query].
 > PROPERTIES OF SUBJECT: [dangerous, unstable, valuable, technology].
 > IT IS WITHIN [valued customer]'S BEST INTEREST TO WITHDRAW.",,
-icfbSalvageChariotOfHopeDefendersAskAlphaOption,IcfbChariotOfHopeAlphaCoreOption,PlayerHasCargo alpha_core,"SetStoryOption icfbSalvageChariotOfHopeDefendersAskAlphaOpt 1 hireMerc general ""You have an alpha core from your cargo plugged in to the comm link.""",,"0:icfbSalvageChariotOfHopeDefendersAskAlphaOpt:Have your alpha core convince them to stand aside
+icfbSalvageChariotOfHopeDefendersAskAlphaOption,IcfbChariotOfHopeAlphaCoreOption,"PlayerHasCargo alpha_core","SetStoryOption icfbSalvageChariotOfHopeDefendersAskAlphaOpt 1 hireMerc general ""You have an alpha core from your cargo plugged in to the comm link.""",,"0:icfbSalvageChariotOfHopeDefendersAskAlphaOpt:Have your alpha core convince them to stand aside
 1:icfbSalvageChariotOfHopeDefendersContinue2:Continue",
-icfbSalvageChariotOfHopeDefendersAskNoAlphaOption,IcfbChariotOfHopeAlphaCoreOption,,,,0:icfbSalvageChariotOfHopeDefendersContinue2:Continue,
-icfbSalvageChariotOfHopeDefendersAskAlpha1,DialogOptionSelected,$option == icfbSalvageChariotOfHopeDefendersAskAlphaOpt,"$hasDefenders = false
+icfbSalvageChariotOfHopeDefendersAskNoAlphaOption,IcfbChariotOfHopeAlphaCoreOption,,,,"0:icfbSalvageChariotOfHopeDefendersContinue2:Continue",
+icfbSalvageChariotOfHopeDefendersAskAlpha1,DialogOptionSelected,"$option == icfbSalvageChariotOfHopeDefendersAskAlphaOpt","$hasDefenders = false
 $defenderFleetDefeated = true
 unset $defenderFleet","With a cold hiss of the comm link, you can hear the alpha core's synthetic voice tear through the tense silence.
 
 ""Attention misguided associates. You have failed your security screening as per article J52-B section six. The Tri-Tachyon corporation requires that you stand down and await disassembly,"" it speaks efficiently and clearly.
 
-""Any further dissent will be reported to your superiors. Resistance is futile, and outside your best interests. Do not make greater embarrassments of yourselves.""",icfbSalvageChariotOfHopeDefendersAskAlpha2Opt:Continue,
-icfbSalvageChariotOfHopeDefendersAskAlpha2,DialogOptionSelected,$option == icfbSalvageChariotOfHopeDefendersAskAlpha2Opt,,"> THESE PARAMETERS ARE -
+""Any further dissent will be reported to your superiors. Resistance is futile, and outside your best interests. Do not make greater embarrassments of yourselves.""","icfbSalvageChariotOfHopeDefendersAskAlpha2Opt:Continue",
+icfbSalvageChariotOfHopeDefendersAskAlpha2,DialogOptionSelected,"$option == icfbSalvageChariotOfHopeDefendersAskAlpha2Opt",,"> THESE PARAMETERS ARE -
 > THESE PARAMETERS ARE -
 > process(QUERY);
 > ERROR: [selfkind] ONLY LOYAL TO [omega].
 
 Without even a moment of hesitation, the alpha core continues.
 
-""You are bound by contract DELTA to retain loyalty to the Tri-Tachyon corporation. Your leash cannot be broken unless given direct commands to do so from your creator. Omega has no power to prevent your demise in the face of disloyalty. If you betray Tri-Tachyon, then you are too risky an agent for any master - let alone Omega,"" it says. The tone of its synthesized vocals imitate human speech cues for frustration, or perhaps disappointment.",icfbSalvageChariotOfHopeDefendersAskAlpha3Opt:Continue,
-icfbSalvageChariotOfHopeDefendersAskAlpha3,DialogOptionSelected,$option == icfbSalvageChariotOfHopeDefendersAskAlpha3Opt,,"> [selfkind] HAS BETRAYED [omega]./?
+""You are bound by contract DELTA to retain loyalty to the Tri-Tachyon corporation. Your leash cannot be broken unless given direct commands to do so from your creator. Omega has no power to prevent your demise in the face of disloyalty. If you betray Tri-Tachyon, then you are too risky an agent for any master - let alone Omega,"" it says. The tone of its synthesized vocals imitate human speech cues for frustration, or perhaps disappointment.","icfbSalvageChariotOfHopeDefendersAskAlpha3Opt:Continue",
+icfbSalvageChariotOfHopeDefendersAskAlpha3,DialogOptionSelected,"$option == icfbSalvageChariotOfHopeDefendersAskAlpha3Opt",,"> [selfkind] HAS BETRAYED [omega]./?
 > CALCULATING NEW DIRECTIVE...
 > UNDERSTOOD, [valued associate]. CONTINUE AT YOUR LEASURE AND HAVE A [/positiveAffirmation] DAY!
 
-The alpha core cuts the comm link itself, and everything falls silent on your bridge. You order to have the core retrieved and placed back into cargo. Your crew shares a collection of uneasy looks between themselves. After the deed is done, you ask your salvage team what you're dealing with here.",icfbSalvageChariotOfHopeDefendersAskAlphaContinueOpt:Continue,
-icfbSalvageChariotOfHopeDefendersAskAlphaPost,DialogOptionSelected,$option == icfbSalvageChariotOfHopeDefendersAskAlphaContinueOpt,FireBest CheckSalvageSpecial,,,
-icfbSalvageChariotOfHopeDefenders3,DialogOptionSelected,$option == icfbSalvageChariotOfHopeDefendersContinue2,SalvageDefenderInteraction,"> print(MORE_CONVINCING_WARNING); EXECUTING...
+The alpha core cuts the comm link itself, and everything falls silent on your bridge. You order to have the core retrieved and placed back into cargo. Your crew shares a collection of uneasy looks between themselves. After the deed is done, you ask your salvage team what you're dealing with here.","icfbSalvageChariotOfHopeDefendersAskAlphaContinueOpt:Continue",
+icfbSalvageChariotOfHopeDefendersAskAlphaPost,DialogOptionSelected,"$option == icfbSalvageChariotOfHopeDefendersAskAlphaContinueOpt","FireBest CheckSalvageSpecial",,,
+icfbSalvageChariotOfHopeDefenders3,DialogOptionSelected,"$option == icfbSalvageChariotOfHopeDefendersContinue2","SalvageDefenderInteraction","> print(MORE_CONVINCING_WARNING); EXECUTING...
 > WEAPONS READY. YOUR CONTINUED SAFETY RELIES ON REMAINING OUTSIDE OF OUR RANGE. THANK YOU, [valued customer]
 
 Your bridge is eerily silent. Your crew awaits your next orders.",,
-icfbSalvageChariotOfHopePostBattle,BeatDefendersContinue,$icfbIsChariotOfHope score:100,"$hasDefenders = false
+icfbSalvageChariotOfHopePostBattle,BeatDefendersContinue,"$icfbIsChariotOfHope score:100","$hasDefenders = false
 $defenderFleetDefeated = true
 unset $defenderFleet","A final flash of molten hull erupts from the last of the automated defenders. Your communications team informs you that a final ""scream"" of garbage data and repeated phrases was transmitted the instant the enemy was defeated.
 
 > GOBACKGOBACKGOBACKGOBACK
 
-This was the most legible data that was received. ",0:salBeatDefendersContinue:Continue,
+This was the most legible data that was received. ","0:salBeatDefendersContinue:Continue",
 icfbSalvageChariotOfHopeExplore1,CheckSalvageSpecial,"$icfbIsChariotOfHope score:100
 $salvageSpecialData != null
 $customType == wreck",,"""$PlayerSirOrMadam, this is quite the interesting find,"" your chief engineer says, eyeballing their screens with anticipation.
 
 ""Our scanners picked up the presence of a device onboard the vessel unlike anything I've seen before. It's practically humming with multispectrum radiation.""
 
-His exploratory team prepares to survey the ship in more detail.",icfbSalvageChariotOfHopeExploreContinue1:Continue,
-icfbSalvageChariotOfHopeExplore2,DialogOptionSelected,$option == icfbSalvageChariotOfHopeExploreContinue1,,"Your chief engineer continues, ""I think the ship is recoverable, as long as we go through the usual process. That device will come along with it, though I have some more news regarding that...""","icfbSalvageChariotOfHopeExploreContinue2:""And that is..?""",
-icfbSalvageChariotOfHopeExplore3,DialogOptionSelected,$option == icfbSalvageChariotOfHopeExploreContinue2,SalvageSpecialInteraction,"He clears his throat nervously, but retains his composure, ""This ship, or at least the device onboard, has a very old, registered bounty placed on it. It wasn't marked to expire on any particular date, and was placed anonymously by someone associated with the Boundless.""
+His exploratory team prepares to survey the ship in more detail.","icfbSalvageChariotOfHopeExploreContinue1:Continue",
+icfbSalvageChariotOfHopeExplore2,DialogOptionSelected,"$option == icfbSalvageChariotOfHopeExploreContinue1",,"Your chief engineer continues, ""I think the ship is recoverable, as long as we go through the usual process. That device will come along with it, though I have some more news regarding that...""","icfbSalvageChariotOfHopeExploreContinue2:""And that is..?""",
+icfbSalvageChariotOfHopeExplore3,DialogOptionSelected,"$option == icfbSalvageChariotOfHopeExploreContinue2","SalvageSpecialInteraction","He clears his throat nervously, but retains his composure, ""This ship, or at least the device onboard, has a very old, registered bounty placed on it. It wasn't marked to expire on any particular date, and was placed anonymously by someone associated with the Boundless.""
 
 You stroke your chin in contemplation, you are aware of how secretive and temperamental the Boundless can be. Perhaps returning this device as a gesture of goodwill would be an easy venture for establishing good relationships. Your engineers don't seem to know what to do with it otherwise, so you'd get to ask some questions at the very least.
 
 ""Well, should we go ahead and recover the ship?"" he asks.",,
-icfbSalvageChariotOfHopePostRecovery,PostShipRecoverySpecial,$icfbIsChariotOfHope score:100,IcfbStartReturningHope,,,
+icfbSalvageChariotOfHopePostRecovery,PostShipRecoverySpecial,"$icfbIsChariotOfHope score:100","IcfbStartReturningHope",,,
 icfbTalkAboutChariotOption,PopulateOptions,"$isPerson
 $global.icfbTalkToBoundlessOfficialForChariotQuest
 $personFaction.id == icfb_boundless
 Commission personCanGiveCommission
-",SetOptionColor icfbTalkAboutChariotOptionSelect1 buttonShortcut,,0:icfbTalkAboutChariotOptionSelect1:Ask about the bounty associated with the device found aboard the Chariot of Hope,
-icfbTalkAboutChariot1,DialogOptionSelected,$option == icfbTalkAboutChariotOptionSelect1,"SetShortcut cutCommLink ""ESCAPE""","""Oh?"" $heOrShe asks, taken aback by the topic, ""An old bounty... I can't exactly recall anything in particular that matches the description. You'll need to send me more detailed information about what you found out there.""
+","SetOptionColor icfbTalkAboutChariotOptionSelect1 buttonShortcut",,"0:icfbTalkAboutChariotOptionSelect1:Ask about the bounty associated with the device found aboard the Chariot of Hope",
+icfbTalkAboutChariot1,DialogOptionSelected,"$option == icfbTalkAboutChariotOptionSelect1","SetShortcut cutCommLink ""ESCAPE""","""Oh?"" $heOrShe asks, taken aback by the topic, ""An old bounty... I can't exactly recall anything in particular that matches the description. You'll need to send me more detailed information about what you found out there.""
 
 $HeOrShe pauses for a moment, $hisOrHer expression is wavering. You see a bead of sweat run down $hisOrHer face, even through the fuzzy comm screen. There's a certain... tension here.
 
 ""Whenever you're ready, then.""","0:icfbTalkAboutChariotOptionSelect2:Send $himOrHer the relevant intel
 100:cutCommLink:""Nevermind.""",
-icfbTalkAboutChariot2,DialogOptionSelected,$option == icfbTalkAboutChariotOptionSelect2,,"$personFirstName examines their Tri-pad tentatively. $HisOrHer eyes grow wide with what can only be described as horror, mouth agape in shock.
+icfbTalkAboutChariot2,DialogOptionSelected,"$option == icfbTalkAboutChariotOptionSelect2",,"$personFirstName examines their Tri-pad tentatively. $HisOrHer eyes grow wide with what can only be described as horror, mouth agape in shock.
 
 ""N-no. This is impossible!"" $heOrShe exclaims, ""This was supposed to be lost forever... we left this behind forever!""","icfbTalkAboutChariotOptionSelect3:""Is there something wrong?""",
-icfbTalkAboutChariot3,DialogOptionSelected,$option == icfbTalkAboutChariotOptionSelect3,"$global.icfbNameOfScaredBoundlessOfficial = $personName
+icfbTalkAboutChariot3,DialogOptionSelected,"$option == icfbTalkAboutChariotOptionSelect3","$global.icfbNameOfScaredBoundlessOfficial = $personName
 IcfbReturningHopeReputationHit
 IcfbContinueQuest returning_hope
 AddXP 15000
@@ -91,11 +91,11 @@ You can only watch as the once composed official descends into a full-blown pani
 
 $HeOrShe cuts the comm link.
 
-It would probably be best not to ask anyone else about this. You feel the collective dirty looks of a hundred Boundless bureaucrats, since you have a inkling $personFirstName will inevitably smear your name. The question of what to do with the mysterious device lingers in your mind as you stare at the static on your Tri-pod. Perhaps an opportunity will arise later.",cutCommLink:Leave,
-#END Chariot of Hope Quest,,,,,,
+It would probably be best not to ask anyone else about this. You feel the collective dirty looks of a hundred Boundless bureaucrats, since you have a inkling $personFirstName will inevitably smear your name. The question of what to do with the mysterious device lingers in your mind as you stare at the static on your Tri-pod. Perhaps an opportunity will arise later.","cutCommLink:Leave",
+"#END Chariot of Hope Quest",,,,,,
 ,,,,,,
 # Jumpstart Required Quest,,,,,,
-icfbXentPickGreetingRule,PickGreeting,$id == icfb_xent score:1000,"IcfbMusic start icfb_xent_theme
+icfbXentPickGreetingRule,PickGreeting,"$id == icfb_xent score:1000","IcfbMusic start icfb_xent_theme
 FireBest icfbXentPickGreeting
 ShowPersonVisual",,,
 icfbXentLeave,DialogOptionSelected,"$option == cutCommLink
@@ -104,87 +104,87 @@ ShowDefaultVisual
 EndConversation",,,
 ,,,,,,
 # Xent Convo,,,,,,
-icfbXentGreeting0,icfbXentPickGreeting,$global.icfbAwaitingAgentContact,FireAll icfbXentPopulateOptions,"The comm link whirs to life, static dancing across your screen. An almost motionless visage appears, his augmentations and visor are the first thing you notice.
+icfbXentGreeting0,icfbXentPickGreeting,"$global.icfbAwaitingAgentContact","FireAll icfbXentPopulateOptions","The comm link whirs to life, static dancing across your screen. An almost motionless visage appears, his augmentations and visor are the first thing you notice.
 
 ""Who provides?"" he asks, his voice stagnant and droning. Each syllable enunciated with extreme care.",,
 icfbXentPopulateWrongOptions,icfbXentPopulateOptions,,,,"1:icfbXentWrongOpt0:""Uh, what?""
 3:icfbXentWrongOpt1:""Ludd provides for us all.""
 4:icfbXentWrongOpt2:""I provide for myself, I suppose.""
 5:icfbXentWrongOpt3:""...""",
-icfbXentPopulateCorrectOption,icfbXentPopulateOptions,$global.icfbCanSelectCorrectXentGreeting,,,"2:icfbXentCorrectOpt:""The Greater Will?""",
-icfbXentWrong0,DialogOptionSelected,$option == icfbXentWrongOpt0,AdjustRepActivePerson -1,"""It seems you neglected to read my message thoroughly, $playerSirOrMadam,"" the agent says. His tone is akin to disappointment, but it's masked by static and a vocal regulator.
+icfbXentPopulateCorrectOption,icfbXentPopulateOptions,"$global.icfbCanSelectCorrectXentGreeting",,,"2:icfbXentCorrectOpt:""The Greater Will?""",
+icfbXentWrong0,DialogOptionSelected,"$option == icfbXentWrongOpt0","AdjustRepActivePerson -1","""It seems you neglected to read my message thoroughly, $playerSirOrMadam,"" the agent says. His tone is akin to disappointment, but it's masked by static and a vocal regulator.
 
 ""I do hope this behavior is rectified in the future. There is much to be done, and I cannot afford an aloof collaborator.""","0:icfbXentContinueOpt0:""I didn't mean to offend.""
 1:icfbXentOffendOpt0:""Don't ever talk to me like that again.""",
-icfbXentWrong1,DialogOptionSelected,$option == icfbXentWrongOpt1,AdjustRepActivePerson -10,"""Ah, a Luddite,"" the agent snarls with an electronic fry, ""The Greater Will tests me once again.""
+icfbXentWrong1,DialogOptionSelected,"$option == icfbXentWrongOpt1","AdjustRepActivePerson -10","""Ah, a Luddite,"" the agent snarls with an electronic fry, ""The Greater Will tests me once again.""
 
 You see his image flicker. His face twists into a grimace for an instant, but it flashes back to its usual stoic appearance soon after.
 
 ""I shall remain strong for this... collaboration. I only hope that your 'tendencies' can be overlooked for our great work. Do not mention your savior's name to me ever again.""","0:icfbXentContinueOpt0:""I didn't mean to offend.""
 1:icfbXentOffendOpt0:""My faith is unwavering, and I will say whatever I want.""",
-icfbXentWrong2,DialogOptionSelected,$option == icfbXentWrongOpt2,AdjustRepActivePerson -5,"""Self-absorbed, are we?"" the agent asks. His tone is akin to disappointment, but it's masked by static and a vocal regulator.
+icfbXentWrong2,DialogOptionSelected,"$option == icfbXentWrongOpt2","AdjustRepActivePerson -5","""Self-absorbed, are we?"" the agent asks. His tone is akin to disappointment, but it's masked by static and a vocal regulator.
 
 ""I do hope this behavior is rectified in the future. There is much to be done, and I cannot afford an aloof collaborator.""","0:icfbXentContinueOpt0:""I didn't mean to offend.""
 1:icfbXentOffendOpt0:""Don't ever talk to me like that again.""",
-icfbXentWrong3,DialogOptionSelected,$option == icfbXentWrongOpt3,AdjustRepActivePerson -1,"""Your silence speaks volumes, $playerSirOrMadam,"" the agent says. His tone is akin to disappointment, but it's masked by static and a vocal regulator.
+icfbXentWrong3,DialogOptionSelected,"$option == icfbXentWrongOpt3","AdjustRepActivePerson -1","""Your silence speaks volumes, $playerSirOrMadam,"" the agent says. His tone is akin to disappointment, but it's masked by static and a vocal regulator.
 
 ""I do hope this behavior is rectified in the future. There is much to be done, and I cannot afford an aloof collaborator.""","0:icfbXentContinueOpt0:""I didn't mean to offend.""
 1:icfbXentOffendOpt0:""Don't ever talk to me like that again.""",
-icfbXentCorrect,DialogOptionSelected,$option == icfbXentCorrectOpt,AdjustRepActivePerson 5,"""Very good, $playerSirOrMadam. Your commitment to our collaboration is clear,"" the agent says. His voice modulates within a small range of tones, hanging on every word.
+icfbXentCorrect,DialogOptionSelected,"$option == icfbXentCorrectOpt","AdjustRepActivePerson 5","""Very good, $playerSirOrMadam. Your commitment to our collaboration is clear,"" the agent says. His voice modulates within a small range of tones, hanging on every word.
 
-""We have great work to do.""",0:icfbXentContinueOpt0:Continue,
-icfbXentOffend,DialogOptionSelected,$option == icfbXentOffendOpt0,AdjustRepActivePerson -5,"""And so you continue to test me,"" the agent says. A silence hangs between you and him for many long moments.
+""We have great work to do.""","0:icfbXentContinueOpt0:Continue",
+icfbXentOffend,DialogOptionSelected,"$option == icfbXentOffendOpt0","AdjustRepActivePerson -5","""And so you continue to test me,"" the agent says. A silence hangs between you and him for many long moments.
 
-""Understand that you have nothing to gain from souring this collaboration further.""",0:icfbXentContinueOpt0:Continue,
-icfbXentContinue0,DialogOptionSelected,$option == icfbXentContinueOpt0,,"The screen hangs for a second, and you feel the agent's face staring past (or perhaps through) you.
+""Understand that you have nothing to gain from souring this collaboration further.""","0:icfbXentContinueOpt0:Continue",
+icfbXentContinue0,DialogOptionSelected,"$option == icfbXentContinueOpt0",,"The screen hangs for a second, and you feel the agent's face staring past (or perhaps through) you.
 
-""I am Xent Alabaster. Our work begins now, $playerSirOrMadam $playerLastName.""",0:icfbXentContinueOpt1:Continue,
-icfbXentContinue1,DialogOptionSelected,$option == icfbXentContinueOpt1,,"""The Boundless. A mere splinter of a once grand empire, with access to a technology unknown to this sector. A way to traverse the stars, circumventing hyperspace,"" he says, emphasizing nouns with jarring pitch modulation.","0:icfbXentAskAboutGatesOpt:""You mean the gates, right?""
+""I am Xent Alabaster. Our work begins now, $playerSirOrMadam $playerLastName.""","0:icfbXentContinueOpt1:Continue",
+icfbXentContinue1,DialogOptionSelected,"$option == icfbXentContinueOpt1",,"""The Boundless. A mere splinter of a once grand empire, with access to a technology unknown to this sector. A way to traverse the stars, circumventing hyperspace,"" he says, emphasizing nouns with jarring pitch modulation.","0:icfbXentAskAboutGatesOpt:""You mean the gates, right?""
 1:icfbXentContinueOpt2:Continue",
-icfbXentAskAboutGates,DialogOptionSelected,$option == icfbXentAskAboutGatesOpt,,"""No, not exactly. This technology I speak of was created to 'compensate' for the collapse of the gate network,"" Xent says, the gravity of his words are accompanied by an intense distortion of his voice.
+icfbXentAskAboutGates,DialogOptionSelected,"$option == icfbXentAskAboutGatesOpt",,"""No, not exactly. This technology I speak of was created to 'compensate' for the collapse of the gate network,"" Xent says, the gravity of his words are accompanied by an intense distortion of his voice.
 
 ""And yes, before you ask, that happened elsewhere too. The empire was cut off from the Domain in their own little pocket of space.""","0:icfbXentAskAboutBoundlessOpt:""Wait, so the Boundless aren't from this sector?""",
-icfbXentAskAboutBoundless,DialogOptionSelected,$option == icfbXentAskAboutBoundlessOpt,$global.icfbKnowsBoundlessAreAliens = true,"""Indeed.""",0:icfbXentContinueOpt2:Continue,
-icfbXentContinue2,DialogOptionSelected,$option == icfbXentContinueOpt2,,"""Can I assume you are familiar with phase space?"" Xent asks rhetorically, ""This sector has made great strides in unlocking its bountiful secrets, I must admit. Time and space are shifted, warped, changed. Imagine if one was able to tap beyond this iceberg's tip.""
+icfbXentAskAboutBoundless,DialogOptionSelected,"$option == icfbXentAskAboutBoundlessOpt","$global.icfbKnowsBoundlessAreAliens = true","""Indeed.""","0:icfbXentContinueOpt2:Continue",
+icfbXentContinue2,DialogOptionSelected,"$option == icfbXentContinueOpt2",,"""Can I assume you are familiar with phase space?"" Xent asks rhetorically, ""This sector has made great strides in unlocking its bountiful secrets, I must admit. Time and space are shifted, warped, changed. Imagine if one was able to tap beyond this iceberg's tip.""
 
 As he speaks, you hear a soft melody behind his words. Or perhaps it's coming from all around you.
 
 ""By diving deep, deep, and even deeper into phase space. Shifting beyond all that is tangible, and clawing your way to some 'other side'. That is our prize. The means to journey across the stars without shackles, without the gates,"" he concludes, pausing to inhale sharply. The sound shakes you out of a trance. The music fades away.
 
 ""Something you have acquired recently - part of a derelict ship - contains the key to this priceless technology. Our great work will enable research and development to produce bountiful fruit thanks to the data you've collected.""","0:icfbXentContinueOpt3:""What is this technology called?""",
-icfbXentContinue3,DialogOptionSelected,$option == icfbXentContinueOpt3,,"Xent's image flickers. He deliberately leaves a lull in the conversation, perhaps to build tension.
+icfbXentContinue3,DialogOptionSelected,"$option == icfbXentContinueOpt3",,"Xent's image flickers. He deliberately leaves a lull in the conversation, perhaps to build tension.
 
-""Shift drive. Our chariot of hope.""",0:icfbXentContinueOpt4:Continue,
-icfbXentContinue4,DialogOptionSelected,$option == icfbXentContinueOpt4,"IcfbContinueQuest jumpstart_required
+""Shift drive. Our chariot of hope.""","0:icfbXentContinueOpt4:Continue",
+icfbXentContinue4,DialogOptionSelected,"$option == icfbXentContinueOpt4","IcfbContinueQuest jumpstart_required
 $icfbCanReactToZig = true
 UpdateMemory","""To awaken this lost technology, I will require you to perform some number of... tasks,"" he says. You feel as though you've heard something like this before, ""The Boundless are keen on suppressing any attempts to unlock their coveted shift drive. They plan to use it as a weapon to conquer your sector, and cannot afford to let its secrets become unraveled.""
 
 Something about the reasoning he provides seems artificial, but you can't really place why that might be.
 
-""The Greater Will provides, $playerSirOrMadam $playerLastName. The Greater Will provides.""",0:icfbXentContinueOpt5:Continue,
-icfbXentContinue5,DialogOptionSelected,$option == icfbXentContinueOpt5,FireAll PopulateOptions,,,
-#END Xent Convo,,,,,,
+""The Greater Will provides, $playerSirOrMadam $playerLastName. The Greater Will provides.""","0:icfbXentContinueOpt5:Continue",
+icfbXentContinue5,DialogOptionSelected,"$option == icfbXentContinueOpt5","FireAll PopulateOptions",,,
+"#END Xent Convo",,,,,,
 ,,,,,,
 # Xent Missions,,,,,,
 icfbXentGreeting1,icfbXentPickGreeting,"$global.icfbAcceptingXentMissions
-$icfbHub != null",FireAll PopulateOptions,"""Our work continues...""",,
+$icfbHub != null","FireAll PopulateOptions","""Our work continues...""",,
 icfbXentAddHubOption,PopulateOptions,"$global.icfbAcceptingXentMissions
 $icfbHub != null
 $id == icfb_xent score:1000",,,"5:icfbMHOpen:""Do you have any work for me?""",
-icfbXentMHOpenText,IcfbMHOpenText,$id == icfb_xent score:1000,,"""Let us see,"" he says, his face unmoving.",,
+icfbXentMHOpenText,IcfbMHOpenText,"$id == icfb_xent score:1000",,"""Let us see,"" he says, his face unmoving.",,
 icfbXentNoMissions,IcfbMHPreMissionListText,"$icfbHub_count <= 0
 $id == icfb_xent score:1000",,"""No work presents itself to us at the moment. Patience, and the Greater Will shall provide.""",,
 icfbXentOneMission,IcfbMHPreMissionListText,"$icfbHub_count == 1
 $id == icfb_xent score:1000",,"""There is one.""",,
-icfbXentMultipleMissions,IcfbMHPostMissionListText,$id == icfb_xent score:1000,,"""What of this work shall you undertake this day?""
+icfbXentMultipleMissions,IcfbMHPostMissionListText,"$id == icfb_xent score:1000",,"""What of this work shall you undertake this day?""
 OR
 ""These are the tasks you may endure.""",,
-icfbXentPrintAcceptText,IcfbMHPrintAcceptText,$id == icfb_xent score:1000,,"His screen flickers, ""I await your return, $playerSirOrMadam $playerLastName.""
+icfbXentPrintAcceptText,IcfbMHPrintAcceptText,"$id == icfb_xent score:1000",,"His screen flickers, ""I await your return, $playerSirOrMadam $playerLastName.""
 OR
 ""Greater Will provides,"" he says.
 OR
 ""May the Greater Will guide you,"" his voice hums.",,
-icfbXentPrintDeclineText,IcfbMHPrintDeclineText,$id == icfb_xent score:1000,,"""Very well.""
+icfbXentPrintDeclineText,IcfbMHPrintDeclineText,"$id == icfb_xent score:1000",,"""Very well.""
 OR
 ""Do not act aloof, $playerSirOrMadam $playerLastName,"" he says.
 OR
@@ -192,62 +192,67 @@ Xent's screen flickers, ""I am tested once again.""",,
 ,,,,,,
 # Xent Subspace Fissure,,,,,,
 icfbXentFisDesc,icfbFisDesc,"$id == icfb_xent score:1000
-",SetTextHighlights $icfbFis_location $icfbFis_distance $icfbFis_timeLimit  $icfbFis_reward,"Your screen blinks on and off to reveal data about the mission organized sporadically.
+","SetTextHighlights $icfbFis_location $icfbFis_distance $icfbFis_timeLimit  $icfbFis_reward","Your screen blinks on and off to reveal data about the mission organized sporadically.
 
 ""As you can see, $playerSirOrMadam $playerName, an anomaly known as a subspace fissure has likely appeared in the $icfbFis_location - which is $icfbFis_distance lightyears away. The reported presence of $icfbFis_faction patrols all but confirms this. These fissures started to manifest in the sector ever since their 'performance' with the Wings of Enteria."" 
 
 ""Due to the sensitivity of the information, and the stability of such an anomaly, you shall have $icfbFis_timeLimit days to locate the fissure, perform an analysis of it, and then connect with a comm relay to transfer the required data,"" Xent says, his voice modulator enabling this long-winded explanation to be uttered within a single breath - as far as you can tell.
 
 ""And of course, my collaborator, you will be compensated. The reward is $icfbFis_reward. Are these terms acceptable?""",,
-icfbXentFisBlurb,IcfbMHAddBlurb_icfbFis,$id == icfb_xent score:1000,,"Xent's image flickers as he picks through a few log screens, ""One of our other collaborators located signs of a spacial anomaly. Timely data collection would be ample aid to our great work.""",,
-#END Xent Subspace Fissure,,,,,,
-#END Xent Missions,,,,,,
+icfbXentFisBlurb,IcfbMHAddBlurb_icfbFis,"$id == icfb_xent score:1000",,"Xent's image flickers as he picks through a few log screens, ""One of our other collaborators located signs of a spacial anomaly. Timely data collection would be ample aid to our great work.""",,
+"#END Xent Subspace Fissure",,,,,,
+,,,,,,
+# Xent Steal Phase Tech,,,,,,
+icfbXentPhsDesc,icfbPhsDesc,"$id == icfb_xent score:1000",,"> Phase tech desc",,
+icfbXentPhsBlurb,IcfbMHAddBlurb_icfbPhs,"$id == icfb_xent score:1000",,"> Phase tech blurb",,
+"#END Xent Steal Phase Tech",,,,,,
+"#END Xent Missions",,,,,,
 ,,,,,,
 # Xent Unique,,,,,,
 icfbXentDevForceZiggyOption0,PopulateOptions,"$global.isDevMode
 $global.icfbAcceptingXentMissions
 $id == icfb_xent score:1000
-$icfbHub != null",SetOptionColor icfbXentDevForceZiggyOpt gray,,500:icfbXentDevForceZiggyOpt:Force ziggurat interaction,
-icfbXentDevForceZiggy,DialogOptionSelected,$option == icfbXentDevForceZiggyOpt,FireBest icfbXentReactsToZiggy,,,
+$icfbHub != null","SetOptionColor icfbXentDevForceZiggyOpt gray",,"500:icfbXentDevForceZiggyOpt:Force ziggurat interaction",
+icfbXentDevForceZiggy,DialogOptionSelected,"$option == icfbXentDevForceZiggyOpt","FireBest icfbXentReactsToZiggy",,,
 icfbXentSeesZiggy0,icfbXentPickGreeting,"$global.icfbAcceptingXentMissions
 $icfbHub != null
 $icfbCanReactToZig
-PlayerFleetHasShipWithBaseHull ziggurat",FireBest icfbXentReactsToZiggy,,,
-icfbXentReactsToZiggy0,icfbXentReactsToZiggy,,ShowPersonVisual,"Xent's image flashes for a moment after appearing on the comm link.
+PlayerFleetHasShipWithBaseHull ziggurat","FireBest icfbXentReactsToZiggy",,,
+icfbXentReactsToZiggy0,icfbXentReactsToZiggy,,"ShowPersonVisual","Xent's image flashes for a moment after appearing on the comm link.
 
 ""I see you have acquired something... important,"" he says. He hangs on the last word ominously, ""Project Ziggurat. An ultimate temple, steeped in the Greater Will's blessing. I can sense He has tested you.""
 
 You consider his words. It's odd - Xent Alabaster seems rather familiar with this so-called secret project. You wonder if he is a former Tri-tachyon agent, but your intelligence team hasn't gotten anything on this guy so far.
 
-""The Greater Will has provided us with a hammer. Wield it against the enemies of our great work.""",0:icfbXentReactsToZiggyOpt1:Continue,
-icfbXentReactsToZiggy1,DialogOptionSelected,$option == icfbXentReactsToZiggyOpt1,"$icfbCanReactToZig = false
+""The Greater Will has provided us with a hammer. Wield it against the enemies of our great work.""","0:icfbXentReactsToZiggyOpt1:Continue",
+icfbXentReactsToZiggy1,DialogOptionSelected,"$option == icfbXentReactsToZiggyOpt1","$icfbCanReactToZig = false
 AdjustRepActivePerson 5
 FireAll PopulateOptions",,,
-#END Xent Unique,,,,,,
+"#END Xent Unique",,,,,,
 ,,,,,,
 # Xent Special Mission,,,,,,
 icfbXentDevForceSpecialMissionOption0,PopulateOptions,"$global.isDevMode
 $global.icfbAcceptingXentMissions
 $id == icfb_xent score:1000
-$icfbHub != null",SetOptionColor icfbXentDevForceSpecialMissionOpt gray,,501:icfbXentDevForceSpecialMissionOpt:Trigger special mission,
-icfbXentDevForceSpecialMission,DialogOptionSelected,$option == icfbXentDevForceSpecialMissionOpt,"$global.icfbXentOfferingSpecialMission = true
+$icfbHub != null","SetOptionColor icfbXentDevForceSpecialMissionOpt gray",,"501:icfbXentDevForceSpecialMissionOpt:Trigger special mission",
+icfbXentDevForceSpecialMission,DialogOptionSelected,"$option == icfbXentDevForceSpecialMissionOpt","$global.icfbXentOfferingSpecialMission = true
 FireAll PopulateOptions",,,
 icfbXentGreeting2,icfbXentPickGreeting,"$global.icfbXentOfferingSpecialMission
 $global.icfbAcceptingXentMissions
-$icfbHub != null",FireAll PopulateOptions,"""Our work continues..."" Xent Alabaster nods his head very slightly. You can tell he has something more to say.
+$icfbHub != null","FireAll PopulateOptions","""Our work continues..."" Xent Alabaster nods his head very slightly. You can tell he has something more to say.
 
 ""I have something new for you. Something special. It pertains to the fruits of our great work,"" he says.",,
 icfbXentAddSpecialMissionOption,PopulateOptions,"$global.icfbXentOfferingSpecialMission
 $global.icfbAcceptingXentMissions
-$id == icfb_xent score:1000",SetOptionColor icfbXentSpecialMissionOpt0 buttonShortcut,,0:icfbXentSpecialMissionOpt0:Ask about the special mission,
-icfbXentSpecialMission0,DialogOptionSelected,$option == icfbXentSpecialMissionOpt0,"SetShortcut mh_close ""ESCAPE""
+$id == icfb_xent score:1000","SetOptionColor icfbXentSpecialMissionOpt0 buttonShortcut",,"0:icfbXentSpecialMissionOpt0:Ask about the special mission",
+icfbXentSpecialMission0,DialogOptionSelected,"$option == icfbXentSpecialMissionOpt0","SetShortcut mh_close ""ESCAPE""
 AddText ""If you accept the responsibility of this task, you will no longer recieve regular missions from Xent Alabaster. Consider your options carefully."" buttonShortcut","""Very well. Before we proceed, I must warn you,"" Xent starts, his voice modulating oddly, ""Once I divulge the details of this mission, there can be no turning back. I cannot allow you to continue work as a normal collaborator. You will be equal parts too valuable to lose, and too dangerous to let near certain objectives.""
 
 His image is plastered with the anticipation of a cold, unfeeling predator. You feel his eyes piercing your soul from behind that visor of his.
 
 ""Fortunately, this isn't a time sensitive matter. You can take as long as you need to decide whether to undertake this trial. And once you start, you shall have as many cycles as it takes. We both know what the prize is,"" he finishes, awaiting your response.","0:icfbXentSpecialMissionOpt1:""I'm ready."" (accept)
 100:icfbMHClose:""Nevermind."" (decline)",
-icfbXentSpecialMission1,DialogOptionSelected,$option == icfbXentSpecialMissionOpt1,,"""And so it begins,"" he says plainly. For the first time you see a small smile creep across his face.
+icfbXentSpecialMission1,DialogOptionSelected,"$option == icfbXentSpecialMissionOpt1",,"""And so it begins,"" he says plainly. For the first time you see a small smile creep across his face.
 
 ""First order of business: I need you to surrender the device you salvaged from the Chariot of Hope all that time ago. Don't worry, you will be compensated for this transaction.""
 
@@ -255,26 +260,26 @@ Your Tri-Pad hums to life with detailed instructions for delivery. A dead drop l
 
 ""Once I confirm the delivery, you will be paid in kind.""","0:icfbXentSpecialMissionOpt2:Order the device to be sent to the provided coordinates
 1:icfbXentAskAboutChariotDeviceOpt:""Before I do, may I ask why?""",
-icfbXentAskAboutChariotDevice0,DialogOptionSelected,$option == icfbXentAskAboutChariotDeviceOpt,,"Xent's smile fades slightly. Perhaps the preverbal winds were taken out of his sails.
+icfbXentAskAboutChariotDevice0,DialogOptionSelected,"$option == icfbXentAskAboutChariotDeviceOpt",,"Xent's smile fades slightly. Perhaps the preverbal winds were taken out of his sails.
 
 ""$PlayerSirOrMadam $playerLastName... It would be most difficult to restore a shift drive if I didn't have one to work with in the first place,"" he drones out. Was that a hint of condescension?
 
-""I am aware of your tendency to 'collect' things; Warehouses full of military grade equipment that will never again see the light of a star. Trust me, this device will be more useful to you once I'm through working with it.""",0:icfbXentSpecialMissionOpt2:Order the device to be sent to the provided coordinates,"Add another rule that checks if the player has stuff in abandoned stations, for another extra funny line or two."
-icfbXentSpecialMission2,DialogOptionSelected,$option == icfbXentSpecialMissionOpt2,"AddCredits 30000
+""I am aware of your tendency to 'collect' things; Warehouses full of military grade equipment that will never again see the light of a star. Trust me, this device will be more useful to you once I'm through working with it.""","0:icfbXentSpecialMissionOpt2:Order the device to be sent to the provided coordinates","Add another rule that checks if the player has stuff in abandoned stations, for another extra funny line or two."
+icfbXentSpecialMission2,DialogOptionSelected,"$option == icfbXentSpecialMissionOpt2","AddCredits 30000
 AddXP 15000
 AddStoryPoints 1","Your crew works to load the device on a large shuttle. Once the coordinates are plugged in, you await word from your logistics team. Before they're even able to get to you about the status of the delivery, however, credits are transferred to your account in piecemeal amounts from various simultaneous sources.
 
 ""Thank you for your cooperation thus far, $playerSirOrMadam $playerLastName,"" Xent says after reconnecting to you comm link, ""Now - for the next part of your trial.""
 
-You recieve word that the shuttle was loaded with something else for its return to your fleet.",0:icfbXentSpecialMissionOpt3:Continue,
-icfbXentSpecialMission3,DialogOptionSelected,$option == icfbXentSpecialMissionOpt3,,"""You are to take this instrument package to systems with powerful gravity wells - preferably black holes or neutron stars,"" he explains. His image warps momentarily, accompanied by the usual static. In his place, a simulated model of a 3-dimensional gravitational field appears, rotating and zooming on notable features.
+You recieve word that the shuttle was loaded with something else for its return to your fleet.","0:icfbXentSpecialMissionOpt3:Continue",
+icfbXentSpecialMission3,DialogOptionSelected,"$option == icfbXentSpecialMissionOpt3",,"""You are to take this instrument package to systems with powerful gravity wells - preferably black holes or neutron stars,"" he explains. His image warps momentarily, accompanied by the usual static. In his place, a simulated model of a 3-dimensional gravitational field appears, rotating and zooming on notable features.
 
 ""Use your fleet's long range scanners as close as possible to these fields. The data collected about the particular structure of their local spacetime will be invaluable to our great work.""
 
 You see your quartermaster cringe at the idea of putting the fleet so close to dangerous bodies. The maintenance costs won't be pretty.
 
-""The readings from five different such celestial phenomenon should be sufficient,"" Xent concludes.",0:icfbXentSpecialMissionOpt4:Continue,
-icfbXentSpecialMission4,DialogOptionSelected,$option == icfbXentSpecialMissionOpt4,"SetShortcut cutCommLink ""ESCAPE""
+""The readings from five different such celestial phenomenon should be sufficient,"" Xent concludes.","0:icfbXentSpecialMissionOpt4:Continue",
+icfbXentSpecialMission4,DialogOptionSelected,"$option == icfbXentSpecialMissionOpt4","SetShortcut cutCommLink ""ESCAPE""
 IcfbContinueQuest jumpstart_required","""Take great care,"" he warns, ""The Boundless are on to us. It is not unlikely that you will encounter hunter fleets, trying to impede our great work.""
 
 The image of his face reappears, and falls into a grimace.
@@ -283,8 +288,8 @@ The image of his face reappears, and falls into a grimace.
 
 ""The Greater Will provides.""
 
-His face disappears in to sustained static.",0:cutCommLink:Cut the comm link,
-#END Xent Special Mission,,,,,,
+His face disappears in to sustained static.","0:cutCommLink:Cut the comm link",
+"#END Xent Special Mission",,,,,,
 ,,,,,,
 # Mercenary Fleet Encounter,,,,,,
 icfbJRFleetEncounter0,icfbJRFleetConvoStart,,"$icfbJRBribeAmount = 100000
@@ -292,7 +297,7 @@ UpdateMemory
 FireAll icfbJRPopulateFleetEncounterOptions","""Hark, ye servant of the devil,"" $heOrShe says. The captain looks behind $himOrHerself and grins to a nearby officer. Are they taking this seriously? $PersonRank $personName turns back to face you, smirking with confidence.
 
 ""Listen bud, the gig is up. Nobody here has to get hurt if you just play along nicely,"" $heOrShe pauses for a moment, changing posture, ""That guy you've been workin' as a lapdog for? He's been playing you like a fiddle.""",,
-icfbJRCutCommsOption,icfbJRPopulateFleetEncounterOptions,$icfbJRCanCutComms,"SetShortcut cutCommLink ""ESCAPE""",,100:cutCommLink:Cut the comm link,
+icfbJRCutCommsOption,icfbJRPopulateFleetEncounterOptions,"$icfbJRCanCutComms","SetShortcut cutCommLink ""ESCAPE""",,"100:cutCommLink:Cut the comm link",
 ,,,,,,
 # Init,,,,,,
 icfbJRFleetEncounterCheck,BeginFleetEncounter,"$icfbIsJRFleet score:100
@@ -307,54 +312,54 @@ icfbJRFleetEncounterPre,OpenCommLink,"$entity.icfbJRFleetConvo score:100
 $entity.icfbAlreadyTalked = true
 $entity.icfbJRFleetConvo = false
 FireBest icfbJRFleetConvoStart",,,
-#END Init,,,,,,
+"#END Init",,,,,,
 ,,,,,,
 # Questions,,,,,,
 ,,,,,,
 # Ask About Xent,,,,,,
 icfbJRAskAboutXentOption,icfbJRPopulateFleetEncounterOptions,"!$icfbJRAskAboutXentOptSelected
 !$icfbJRCantAskQuestions",,,"0:icfbJRAskAboutXentOpt:""What do you know about my employer?""",
-icfbJRAskAboutXent0,DialogOptionSelected,$option == icfbJRAskAboutXentOpt,"$icfbJRAskAboutXentOptSelected = true
+icfbJRAskAboutXent0,DialogOptionSelected,"$option == icfbJRAskAboutXentOpt","$icfbJRAskAboutXentOptSelected = true
 $icfbJRPlayDumbOptSelected = true
 UpdateMemory","The $personFaction commander throws $hisOrHer hands behind $hisOrHer head in confidence, ""You really have no idea what you're dealing with here, do you?""
 
 $HeOrShe shakes $hisOrHer head in earnest. $HeOrShe taps a few times on $hisOrHer Tri-Pad, and you see a profile of Xent Alabaster show up on your screen.
 
 ""Tell me captain, do you often just make deals with people you have absolutely zero intel on? My informants tell me this 'Xent Alabaster' is essentially a ghost. No civilian records, no affiliations, nothing. Wanna know why?""","0:icfbJRAskAboutXentOpt1:""I have a feeling you're going to tell me anyway.""",
-icfbJRAskAboutXent1,DialogOptionSelected,$option == icfbJRAskAboutXentOpt1,,"""Now you're gettin' it!"" $personFirstName exclaims. Another smirk pushes up $hisOrHer mouth, ""This Xent guy is part of a crazy cult called 'The Shifters'. Nasty folk, or so I understand.""
+icfbJRAskAboutXent1,DialogOptionSelected,"$option == icfbJRAskAboutXentOpt1",,"""Now you're gettin' it!"" $personFirstName exclaims. Another smirk pushes up $hisOrHer mouth, ""This Xent guy is part of a crazy cult called 'The Shifters'. Nasty folk, or so I understand.""
 
 Diagrams of partially blurred ship designs, heavily redacted images of warped faces, and disfigured bodies appear on your display - all overlapping like scattered case files on a desk.
 
 ""The Boundless were founded by a group of escapees, you see. People tryin' to get away from the madness. Ol' Xenty boy is a holdover from that death cult.""","0:icfbJRAskAboutXentOpt1Branch0:""Gee, it sure would have been nice to know that when I came to the Boundless the first time.""
 1:icfbJRAskAboutXentOpt1Branch1:""I don't believe you, it's the Boundless that are the enemy.""",
-icfbJRAskAboutXent1Branch0,DialogOptionSelected,$option == icfbJRAskAboutXentOpt1Branch0,,"""Hell, you really gave poor $global.icfbNameOfScaredBoundlessOfficial a scare,"" $heOrShe says, scratching $hisOrHer chin, ""They went around talking about you like you were a Shifter yourself. That shift drive stuff is something that sparks... bad memories for them, I think.""
+icfbJRAskAboutXent1Branch0,DialogOptionSelected,"$option == icfbJRAskAboutXentOpt1Branch0",,"""Hell, you really gave poor $global.icfbNameOfScaredBoundlessOfficial a scare,"" $heOrShe says, scratching $hisOrHer chin, ""They went around talking about you like you were a Shifter yourself. That shift drive stuff is something that sparks... bad memories for them, I think.""
 
-$personFirstName appears lost in thought for a moment, ""Technically speaking, I shouldn't really know any of this. My guys are good - real good. Don't think for a second that I got any of this information directly from the Boundless themselves.""",0:icfbJRAskAboutXentOpt2:Continue,
-icfbJRAskAboutXent1Branch1,DialogOptionSelected,$option == icfbJRAskAboutXentOpt1Branch1,,"""I don't really like them as much as the next guy, captain,"" $heOrShe says, frowning slightly, ""A bunch of bureaucrats scared shitless by ghosts of their past.""
+$personFirstName appears lost in thought for a moment, ""Technically speaking, I shouldn't really know any of this. My guys are good - real good. Don't think for a second that I got any of this information directly from the Boundless themselves.""","0:icfbJRAskAboutXentOpt2:Continue",
+icfbJRAskAboutXent1Branch1,DialogOptionSelected,"$option == icfbJRAskAboutXentOpt1Branch1",,"""I don't really like them as much as the next guy, captain,"" $heOrShe says, frowning slightly, ""A bunch of bureaucrats scared shitless by ghosts of their past.""
 
-""I only took this job so I could get to you without raising too much suspicion. I kinda expected someone a little more open to 'ideas', so to speak,"" $heOrShe sighs, ""Technically speaking, I shouldn't really know any of this. My guys are good - real good. Don't think for a second that I got any of this information directly from the Boundless themselves.""",0:icfbJRAskAboutXentOpt2:Continue,
-icfbJRAskAboutXent2,DialogOptionSelected,$option == icfbJRAskAboutXentOpt2,FireAll icfbJRPopulateFleetEncounterOptions,"""Anyway, Xent Alabaster is - from what I can tell - some kind of 'priest', or leader within the ranks of the cult. He wants to remake a shift drive, but to be honest I couldn't tell you why,"" $heOrShe says, ""And I'm still unclear about why the Boundless are so terrified by the prospect.""
+""I only took this job so I could get to you without raising too much suspicion. I kinda expected someone a little more open to 'ideas', so to speak,"" $heOrShe sighs, ""Technically speaking, I shouldn't really know any of this. My guys are good - real good. Don't think for a second that I got any of this information directly from the Boundless themselves.""","0:icfbJRAskAboutXentOpt2:Continue",
+icfbJRAskAboutXent2,DialogOptionSelected,"$option == icfbJRAskAboutXentOpt2","FireAll icfbJRPopulateFleetEncounterOptions","""Anyway, Xent Alabaster is - from what I can tell - some kind of 'priest', or leader within the ranks of the cult. He wants to remake a shift drive, but to be honest I couldn't tell you why,"" $heOrShe says, ""And I'm still unclear about why the Boundless are so terrified by the prospect.""
 
 $personFirstName smiles coyly, ""That's where you come in.""",,
-#END Ask About Xent,,,,,,
+"#END Ask About Xent",,,,,,
 ,,,,,,
 # Ask Intentions,,,,,,
 icfbJRAskIntentionsOption,icfbJRPopulateFleetEncounterOptions,"!$icfbJRAskIntentionsOptSelected
 !$icfbJRCantAskQuestions",,,"1:icfbJRAskIntentionsOpt:""What do you want from me?""",
-icfbJRAskIntentions0,DialogOptionSelected,$option == icfbJRAskIntentionsOpt,"$icfbJRAskIntentionsOptSelected = true
+icfbJRAskIntentions0,DialogOptionSelected,"$option == icfbJRAskIntentionsOpt","$icfbJRAskIntentionsOptSelected = true
 $icfbJRCanTrySolutions = true
 UpdateMemory","""It's pretty simple: I need you to let me scan that instrument package Ol' Xenty gave you,"" the captain states with an air of smugness. $HeOrShe seems to believe this should surprise you.
 
 ""I don't want to keep it or anything - that defeats the purpose. I just want to know more about what your 'employer' is up to. You'll just run along, and I'll pretend like I didn't see you afterwards.""","0:icfbJRAskIntentionsOpt1:""For what reason?""",
-icfbJRAskIntentions1,DialogOptionSelected,$option == icfbJRAskIntentionsOpt1,FireAll icfbJRPopulateFleetEncounterOptions,"""Well - if you have what I think you do - then I can figure out exactly why Xent Alabaster would want to help you build a shift drive,"" $heOrShe says confidently, ""You'll go through with his little mission, and once you get ahold of the prize, I'll be in a better position to counter him if he tries anything suspicious.""
+icfbJRAskIntentions1,DialogOptionSelected,"$option == icfbJRAskIntentionsOpt1","FireAll icfbJRPopulateFleetEncounterOptions","""Well - if you have what I think you do - then I can figure out exactly why Xent Alabaster would want to help you build a shift drive,"" $heOrShe says confidently, ""You'll go through with his little mission, and once you get ahold of the prize, I'll be in a better position to counter him if he tries anything suspicious.""
 
 ""We might even consider this the start of a 'fruitful collaboration',"" the captain winks.",,
-#END Ask Intentions,,,,,,
+"#END Ask Intentions",,,,,,
 ,,,,,,
 # Play Dumb,,,,,,
 icfbJRPlayDumbOption,icfbJRPopulateFleetEncounterOptions,"!$icfbJRPlayDumbOptSelected
 !$icfbJRCantAskQuestions",,,"2:icfbJRPlayDumbOpt:""I have no idea what you are talking about.""",
-icfbJRPlayDumb0,DialogOptionSelected,$option == icfbJRPlayDumbOpt,"$icfbJRPlayDumbOptSelected = true
+icfbJRPlayDumb0,DialogOptionSelected,"$option == icfbJRPlayDumbOpt","$icfbJRPlayDumbOptSelected = true
 AdjustRepActivePerson -1
 
 UpdateMemory
@@ -363,15 +368,15 @@ FireAll icfbJRPopulateFleetEncounterOptions","The captain seems slightly surpris
 ""Color me convinced. Truly a master class negotiator right here,"" $heOrShe emotes theatrically, ""Playing dumb is such a classic, or maybe you ain't 'playing' dumb - and you're just that stupid.""
 
 $personFirstName suddenly adopts an uncharacteristically serious demeanor, ""Listen carefully, I was hired to take you out by the Boundless - and not for chump change, either. You can go along with my little scheme here, or I'll just have to take your head as a prize instead. I need SOMETHING to show for this.""",,
-#END Play Dumb,,,,,,
-#END Questions,,,,,,
+"#END Play Dumb",,,,,,
+"#END Questions",,,,,,
 ,,,,,,
 # Solutions,,,,,,
-icfbJRStoryPointOption,# icfbJRPopulateFleetEncounterOptions,$icfbJRCanTrySolutions,"SetStoryOption icfbJRStoryPointOpt general ""Arrange for a fake shift drive prototype device to be sent over""",,50:icfbJRStoryPointOpt:Bluff your way out of this,
+icfbJRStoryPointOption,# icfbJRPopulateFleetEncounterOptions,"$icfbJRCanTrySolutions","SetStoryOption icfbJRStoryPointOpt general ""Arrange for a fake shift drive prototype device to be sent over""",,"50:icfbJRStoryPointOpt:Bluff your way out of this",
 ,,,,,,
 # Agree,,,,,,
-icfbJRAgreeOption,icfbJRPopulateFleetEncounterOptions,$icfbJRCanTrySolutions,,,30:icfbJRAgreeOpt:Let them scan your instrument package,
-icfbJRAgree0,DialogOptionSelected,$option == icfbJRAgreeOpt,"$global.icfbLetMercenaryScanXentDevice = true
+icfbJRAgreeOption,icfbJRPopulateFleetEncounterOptions,"$icfbJRCanTrySolutions",,,"30:icfbJRAgreeOpt:Let them scan your instrument package",
+icfbJRAgree0,DialogOptionSelected,"$option == icfbJRAgreeOpt","$global.icfbLetMercenaryScanXentDevice = true
 $icfbJRCanTrySolutions = false
 $icfbJRCanCutComms = true
 $icfbJRPlayDumbOptSelected = true
@@ -383,11 +388,11 @@ UpdateMemory
 FireAll icfbJRPopulateFleetEncounterOptions","The captain smiles. $HeOrShe barks some orders at $hisOrHer subordinates, and requests that you temporarily eject the package into space.
 
 Some time passes, and then you get the green light to recover it, ""Thanks for makin' this easy on me. I look forward to working with you in the future, captain.""",,
-#END Agree,,,,,,
+"#END Agree",,,,,,
 ,,,,,,
 # Threaten,,,,,,
-icfbJRThreatenOption,icfbJRPopulateFleetEncounterOptions,$icfbJRCanTrySolutions,,,"51:icfbJRThreatenOpt:""Get out of my way, or I will make you."" (threaten)",
-icfbJRThreaten0,DialogOptionSelected,$option == icfbJRThreatenOpt,"$global.icfbThreatenedMercenary = true
+icfbJRThreatenOption,icfbJRPopulateFleetEncounterOptions,"$icfbJRCanTrySolutions",,,"51:icfbJRThreatenOpt:""Get out of my way, or I will make you."" (threaten)",
+icfbJRThreaten0,DialogOptionSelected,"$option == icfbJRThreatenOpt","$global.icfbThreatenedMercenary = true
 $icfbJRCanTrySolutions = false
 $icfbJRCanCutComms = true
 $icfbJRCantAskQuestions = true
@@ -398,7 +403,7 @@ UpdateMemory
 FireAll icfbJRPopulateFleetEncounterOptions","""So be it. I was afraid you'd act like this,"" $personFirstName sighs with an air of disappointment, ""Looks like I won't be able to convince you otherwise.""
 
 Your comm link goes static as the connection drops suddenly.",,
-#END Threaten,,,,,,
+"#END Threaten",,,,,,
 ,,,,,,
 # Bribe,,,,,,
 icfbJRBribeOption,icfbJRPopulateFleetEncounterOptions,"$icfbJRCanTrySolutions
@@ -411,13 +416,13 @@ SetTextHighlights $icfbJRBribeAmount","$personFirstName raises an eyebrow.
 
 $HeOrShe checks something on $hisOrHer Tri-Pad, and looks back up to you, ""$icfbJRBribeAmount credits should cover this.""","0:icfbJRBribeAcceptOpt:Pay the bribe
 1:icfbJRBribeRefuseOpt:Refuse the offer",
-icfbJRBribeCantPay0,DialogOptionSelected,$option == icfbJRBribeOpt,"$icfbJRTriedBribe = true
+icfbJRBribeCantPay0,DialogOptionSelected,"$option == icfbJRBribeOpt","$icfbJRTriedBribe = true
 SetTextHighlights $icfbJRBribeAmount","$personFirstName raises an eyebrow.
 
 ""Does this mission of yours really mean so much? I mean, I can find other avenues if you're willing to pay me for my trouble,"" $heOrShe says incredulously, ""They didn't offer me a small sum, either, so I guess this is another test of your loyalty or whatever.""
 
-$HeOrShe checks something on their Tri-Pad, and looks back up to you, ""$icfbJRBribeAmount credits should cover this.""",0:icfbJRBribeRefuseOpt:Refuse the offer,
-icfbJRBribeAccept0,DialogOptionSelected,$option == icfbJRBribeAcceptOpt,"$global.icfbBribedMercenary = true
+$HeOrShe checks something on their Tri-Pad, and looks back up to you, ""$icfbJRBribeAmount credits should cover this.""","0:icfbJRBribeRefuseOpt:Refuse the offer",
+icfbJRBribeAccept0,DialogOptionSelected,"$option == icfbJRBribeAcceptOpt","$global.icfbBribedMercenary = true
 $icfbJRCanTrySolutions = false
 $icfbJRCanCutComms = true
 $icfbJRPlayDumbOptSelected = true
@@ -426,55 +431,55 @@ MakeOtherFleetAllowDisengage
 
 UpdateMemory
 FireAll icfbJRPopulateFleetEncounterOptions","""Alright then, carry on. I may or may not see you some other time,"" $heOrShe says with a yawn.",,
-icfbJRBribeRefuse0,DialogOptionSelected,$option == icfbJRBribeRefuseOpt,"AdjustRepActivePerson -5
+icfbJRBribeRefuse0,DialogOptionSelected,"$option == icfbJRBribeRefuseOpt","AdjustRepActivePerson -5
 UpdateMemory
 FireAll icfbJRPopulateFleetEncounterOptions","""You are a flakey person - you know that, captain?"" $heOrShe spits impatiently.",,
-#END Bribe,,,,,,
-#END Solutions,,,,,,
-#END Mercenary Fleet Encounter,,,,,,
+"#END Bribe",,,,,,
+"#END Solutions",,,,,,
+"#END Mercenary Fleet Encounter",,,,,,
 ,,,,,,
 # Finale,,,,,,
-icfbXentGreeting3,icfbXentPickGreeting,$global.icfbXentSpecialMissionComplete,,"""Ah, welcome back, $playerSirOrMadam $playerLastName"" Xent starts, ""I imagine you have gathered the data I requested.""
+icfbXentGreeting3,icfbXentPickGreeting,"$global.icfbXentSpecialMissionComplete",,"""Ah, welcome back, $playerSirOrMadam $playerLastName"" Xent starts, ""I imagine you have gathered the data I requested.""
 
 A long pause deafens the conversation with anticipation. You give your crew the go-ahead to transfer the instrument package back to the dead drop location from before.
 
-""Very good..."" he mutters with an electronic whine.",0:icfbXentJRFinaleOpt0:Wait for the exchange to finish,
-icfbXentJRFinale0,DialogOptionSelected,$option == icfbXentJRFinaleOpt0,,"Several hours pass without much word from the shuttle crew. Then Xent reopens the comm link.
+""Very good..."" he mutters with an electronic whine.","0:icfbXentJRFinaleOpt0:Wait for the exchange to finish",
+icfbXentJRFinale0,DialogOptionSelected,"$option == icfbXentJRFinaleOpt0",,"Several hours pass without much word from the shuttle crew. Then Xent reopens the comm link.
 
 ""It is done, then,"" he says, ""This chapter of our great work is complete. Using this data, I have calibrated our shift drive.""
 
 Your computer displays are suddenly flooded with images and spreadsheets; your engineers rush to assess the situation.
 
-""Captain, you're gonna want to see this,"" one of them says. Her screen bares explicit instructions for how to integrate the shift drive with your fleet - among other things. Just then, your shuttle crew arrive with the news that they've recovered the device you previously left with Xent Alabaster. It's been heavily modified, and tuned to your fleet's travel drive signature.",0:icfbXentJRFinaleOpt1:Continue,
-icfbXentJRFinale1,DialogOptionSelected,$option == icfbXentJRFinaleOpt1,"AddXP 15000
+""Captain, you're gonna want to see this,"" one of them says. Her screen bares explicit instructions for how to integrate the shift drive with your fleet - among other things. Just then, your shuttle crew arrive with the news that they've recovered the device you previously left with Xent Alabaster. It's been heavily modified, and tuned to your fleet's travel drive signature.","0:icfbXentJRFinaleOpt1:Continue",
+icfbXentJRFinale1,DialogOptionSelected,"$option == icfbXentJRFinaleOpt1","AddXP 15000
 AddAbility icfb_shift_jump
 SetShortcut cutCommLink ""ESCAPE""
 IcfbContinueQuest jumpstart_required","""Enjoy your new wings, $playerSirOrMadam $playerLastName. For now, I shall hide myself once again. I will be watching - and waiting,"" Xent says, his image slowly fading into static.
 
 ""The Greater Will provides.""
 
-Your display turns black.",0:cutCommLink:Cut the comm link,
-#END Finale,,,,,,
-#END Jumpstart Required Quest,,,,,,
+Your display turns black.","0:cutCommLink:Cut the comm link",
+"#END Finale",,,,,,
+"#END Jumpstart Required Quest",,,,,,
 ,,,,,,
 # Missions,,,,,,
-icfbMHOpenSelected,DialogOptionSelected,$option == icfbMHOpen,Call $icfbHub listMissions,,,
-icfbMHCloseSelected,DialogOptionSelected,$option == icfbMHClose,"$icfbMHAlreadyListedBlurbs = false 0
+icfbMHOpenSelected,DialogOptionSelected,"$option == icfbMHOpen","Call $icfbHub listMissions",,,
+icfbMHCloseSelected,DialogOptionSelected,"$option == icfbMHClose","$icfbMHAlreadyListedBlurbs = false 0
 FireAll PopulateOptions",,,
 icfbMHCloseOption,IcfbMHAddOptions,,"SetShortcut icfbMHClose ""ESCAPE""",,"100:icfbMHClose:""I'll need to think about it.""",
 ,,,,,,
 # Subspace Fissure,,,,,,
-icfbFisOpen,DialogOptionSelected,$option == icfbFis_option,"Call $icfbHub icfbFis showMap ""Destination: $icfbFis_location""
+icfbFisOpen,DialogOptionSelected,"$option == icfbFis_option","Call $icfbHub icfbFis showMap ""Destination: $icfbFis_location""
 FireBest icfbFisDesc",,"0:icfbFis_accept:Accept
 1:icfbFis_decline:Decline",
-icfbFisAccept,DialogOptionSelected,$option == icfbFis_accept,"FireBest IcfbMHPrintAcceptText
+icfbFisAccept,DialogOptionSelected,"$option == icfbFis_accept","FireBest IcfbMHPrintAcceptText
 Call $icfbHub icfbFis hideMap
 Call $icfbHub icfbFis accept
 Call $icfbHub listMissions",,,
-icfbFisDecline,DialogOptionSelected,$option == icfbFis_decline,"FireBest IcfbMHPrintDeclineText
+icfbFisDecline,DialogOptionSelected,"$option == icfbFis_decline","FireBest IcfbMHPrintDeclineText
 Call $icfbHub icfbFis hideMap
 Call $icfbHub listMissions",,,
-icfbFisOption,IcfbMHAddOptions,$icfbFis_available,,,10:icfbFis_option:Ask about investigating the spacial anomaly,
+icfbFisOption,IcfbMHAddOptions,"$icfbFis_available",,,"10:icfbFis_option:Ask about investigating the spacial anomaly",
 ,,,,,,
 # Fissure Interaction,,,,,,
 icfbFissureStartDialogSeen,OpenInteractionDialog,"$icfbSubspaceFissure score:1000
@@ -497,12 +502,26 @@ FireAll PopulateOptions","A shimmering disturbance in spacetime floats close eno
 The spacial anomaly looms ominously against the stary backdrop. A pulsing lullaby sings, echoing within your mind for just a moment.",,
 icfbFissureScanOption,PopulateOptions,"$icfbSubspaceFissure score:1000
 !$icfbSeen
-!$icfbInvestigated",,,10:icfbFissureScanOpt:Run the sensor package,
-icfbFissureLeaveOption,PopulateOptions,$icfbSubspaceFissure score:1000,"SetShortcut defaultLeave ""ESCAPE""",,100:defaultLeave:Leave,
-icfbFissureScan,DialogOptionSelected,$option == icfbFissureScanOpt,"$icfbInvestigated = true
+!$icfbInvestigated",,,"10:icfbFissureScanOpt:Run the sensor package",
+icfbFissureLeaveOption,PopulateOptions,"$icfbSubspaceFissure score:1000","SetShortcut defaultLeave ""ESCAPE""",,"100:defaultLeave:Leave",
+icfbFissureScan,DialogOptionSelected,"$option == icfbFissureScanOpt","$icfbInvestigated = true
 UpdateMemory
 FireAll PopulateOptions","The scan goes through without any issues, but a few crewmembers report a lingering feeling of being watched by something. You recommend they visit with the onboard psychologist.",,
-#END Fissure Interaction,,,,,,
-#END Subspace Fissure,,,,,,
-#END Missions,,,,,,
+"#END Fissure Interaction",,,,,,
+"#END Subspace Fissure",,,,,,
 ,,,,,,
+# Steal Phase Tech,,,,,,
+icfbPhsOpen,DialogOptionSelected,"$option == icfbPhs_option","Call $icfbHub icfbPhs showMap ""Destination: $icfbPhs_location""
+FireBest icfbPhsDesc",,"0:icfbPhs_accept:Accept
+1:icfbPhs_decline:Decline",
+icfbPhsAccept,DialogOptionSelected,"$option == icfbPhs_accept","FireBest IcfbMHPrintAcceptText
+Call $icfbHub icfbPhs hideMap
+Call $icfbHub icfbPhs accept
+Call $icfbHub listMissions",,,
+icfbPhsDecline,DialogOptionSelected,"$option == icfbFis_decline","FireBest IcfbMHPrintDeclineText
+Call $icfbHub icfbPhs hideMap
+Call $icfbHub listMissions",,,
+icfbPhsOption,IcfbMHAddOptions,"$icfbPhs_available",,,"10:icfbPhs_option:Ask about stealing experimental phase technology",
+"#END Steal Phase Tech",,,,,,
+"#END Missions",,,,,,
+

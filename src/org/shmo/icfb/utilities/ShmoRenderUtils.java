@@ -3,6 +3,7 @@ package org.shmo.icfb.utilities;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.graphics.SpriteAPI;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.magiclib.util.MagicRender;
 
@@ -68,4 +69,5 @@ public class ShmoRenderUtils {
                 ship.getLayer()
         );
     }
+
 }

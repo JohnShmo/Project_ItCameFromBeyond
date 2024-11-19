@@ -6,6 +6,7 @@ import com.fs.starfarer.api.campaign.PlanetAPI;
 import com.fs.starfarer.api.campaign.StarSystemAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
+import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.impl.campaign.ids.Planets;
 import com.fs.starfarer.api.util.Misc;
 import org.shmo.icfb.utilities.ShmoMath;
@@ -150,11 +151,14 @@ public class IcfbMisc {
         return pickMarket(0);
     }
 
-    public static PlanetAPI pickPlanet(StarSystemAPI system) {
+    public static PlanetAPI pickUncolonizedPlanet(StarSystemAPI system) {
         final List<PlanetAPI> allPlanets = system.getPlanets();
         final List<PlanetAPI> planets = new ArrayList<>();
         for (PlanetAPI planet : allPlanets) {
-            if (planet.isStar() || planet.getTypeId().equals("black_hole"))
+            if (planet.isStar()
+                    || planet.getTypeId().equals("black_hole")
+                    || (planet.getMarket() != null && planet.getMarket().isInEconomy())
+            )
                 continue;
             planets.add(planet);
         }
