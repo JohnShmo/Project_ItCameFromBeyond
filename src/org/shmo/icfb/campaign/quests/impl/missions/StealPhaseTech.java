@@ -131,7 +131,7 @@ public class StealPhaseTech extends BaseIcfbMission {
         }
         if (susLevel >= 1) {
             memory.set(FLEET_PROGRESS_KEY, 0);
-            memory.set("$icfbRunningAway", true, 2);
+            memory.set("$icfbRunningAway", true, 0.5f);
             _runDestination = Misc.pickLocationNotNearPlayer(fleet.getContainingLocation(), fleet.getLocation(), 4000f);
             fleet.getAbility(Abilities.EMERGENCY_BURN).activate();
             return;
