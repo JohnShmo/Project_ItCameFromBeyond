@@ -119,18 +119,22 @@ public class IcfbFleetSuspicion implements CampaignUIRenderingListener, EveryFra
                 || !fleet.getMemoryWithoutUpdate().contains(susLevelMemKey)
                 || !fleet.isVisibleToSensorsOf(playerFleet))
             return;
+        final float amount = fleet.getMemoryWithoutUpdate().getFloat(susLevelMemKey);
+        if (amount <= 0)
+            return;
 
         final int barWidth = 128;
         final int barHeight = 16;
         final int iconWidth = 32;
         final String iconCategory = "icfb_icons";
-        final String iconId = "sus";
+        String iconId = "sus";
         final Color barColor = new Color(140, 28, 24, 255);
-        final Color fillColor = new Color(189, 109, 80, 255);
+        Color fillColor = new Color(189, 109, 80, 255);
 
-        final float amount = fleet.getMemoryWithoutUpdate().getFloat(susLevelMemKey);
-        if (amount <= 0)
-            return;
+        if (amount >= 1) {
+            fillColor = new Color(220, 200, 80, 255);
+            iconId = "sus2";
+        }
 
         // Set OpenGL flags
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);

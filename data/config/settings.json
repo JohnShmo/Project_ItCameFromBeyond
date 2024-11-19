@@ -12,6 +12,7 @@
 		"icfb_icons":{
 			"shift_drive":"graphics/ItCameFromBeyond/icons/abilities/shift_drive.png",
 			"sus":"graphics/ItCameFromBeyond/icons/campaign/sus.png",
+			"sus2":"graphics/ItCameFromBeyond/icons/campaign/sus2.png",
 		},
 		"icfb_portraits":{
 			"aria":"graphics/ItCameFromBeyond/portraits/Aria.png",
