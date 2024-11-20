@@ -57,11 +57,11 @@ public class IcfbFleetSuspicion implements CampaignUIRenderingListener, EveryFra
 
         CampaignPingSpec custom = new CampaignPingSpec();
         custom.setColor(new Color(255, 70, 20, 100));
-        custom.setWidth(4 + t * 12f);
-        custom.setMinRange(fleet.getRadius());
-        custom.setRange(radius * 1.5f);
-        custom.setDuration(duration);
-        custom.setAlphaMult(0.3333f + t * 0.3333f);
+        custom.setWidth(4 + t * 26f);
+        custom.setMinRange(radius);
+        custom.setRange(radius);
+        custom.setDuration(2);
+        custom.setAlphaMult(0.1f + t * 0.4f);
         custom.setNum(1);
         custom.setInvert(true);
 
