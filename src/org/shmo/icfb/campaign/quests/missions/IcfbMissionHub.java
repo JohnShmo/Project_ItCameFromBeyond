@@ -11,6 +11,7 @@ import com.fs.starfarer.api.impl.campaign.rulecmd.FireBest;
 import com.fs.starfarer.api.impl.campaign.rulecmd.UpdateMemory;
 import com.fs.starfarer.api.util.Misc;
 import org.shmo.icfb.IcfbLog;
+import org.shmo.icfb.campaign.quests.Quest;
 import org.shmo.icfb.campaign.quests.factories.QuestFactory;
 import org.shmo.icfb.campaign.quests.impl.missions.StealPhaseTech;
 import org.shmo.icfb.campaign.quests.impl.missions.SubspaceFissure;
@@ -219,6 +220,12 @@ public class IcfbMissionHub implements CallEvent.CallableEvent, EveryFrameScript
 
         if (action.equals("accept")) {
             acceptMission(id);
+            return true;
+        }
+
+        if (action.equals("complete")) {
+            IcfbMission mission = (IcfbMission)_person.getMemory().get("$" + id + "_ref");
+            mission.completeViaDialog(dialog);
             return true;
         }
 

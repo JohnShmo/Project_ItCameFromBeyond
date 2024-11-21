@@ -6,12 +6,10 @@ import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
-import com.fs.starfarer.api.fleet.FleetAPI;
 import com.fs.starfarer.api.impl.campaign.ids.MemFlags;
 import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import javafx.util.Pair;
 import org.jetbrains.annotations.Nullable;
 import org.magiclib.campaign.MagicCaptainBuilder;
 import org.magiclib.campaign.MagicFleetBuilder;
@@ -104,6 +102,27 @@ public abstract class BaseIcfbMission implements IcfbMission {
         }
 
         return false;
+    }
+
+    @Override
+    public void completeViaDialog(InteractionDialogAPI dialog) {
+        Data data = getData();
+        dialog.getTextPanel().addPara("%s complete!", Misc.getHighlightColor(), getName());
+        if (data.creditReward != 0)
+            dialog.getTextPanel().addPara("    - Added %s", Misc.getHighlightColor(), Misc.getDGSCredits(data.creditReward));
+        if (data.xpReward != 0)
+            dialog.getTextPanel().addPara("    - Gained %s XP", Misc.getHighlightColor(), Misc.getWithDGS(data.xpReward));
+        if (data.repReward != 0)
+            dialog.getTextPanel().addPara(
+                    "    - Reputation with %s improved by %s to %s",
+                    Misc.getHighlightColor(),
+                    data.missionGiver.getName().getFullName(),
+                    Misc.getRoundedValue(data.repReward * 100),
+                    Misc.getRoundedValue((data.missionGiver.getRelToPlayer().getRel() + data.repReward) * 100)
+            );
+        Quest quest = IcfbQuestManager.getInstance().getQuest(data.missionGiver.getId() + ":" + getId());
+        quest.progressToFinalStep();
+        data.missionGiver.getMemoryWithoutUpdate().unset("$" + getId() + "_ref");
     }
 
     private Quest initQuest() {

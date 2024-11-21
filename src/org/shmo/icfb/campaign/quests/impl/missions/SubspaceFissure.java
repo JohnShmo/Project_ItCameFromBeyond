@@ -36,7 +36,7 @@ public class SubspaceFissure extends BaseIcfbMission {
         data.creditReward = calculateReward(
                 missionGiver.getMarket().getPrimaryEntity(),
                 data.targetStarSystem.getCenter(),
-                20000,
+                30000,
                 1500
         );
         data.xpReward = 5000;

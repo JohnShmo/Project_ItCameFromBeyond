@@ -3,10 +3,12 @@ package org.shmo.icfb.campaign.quests.impl.missions;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.Script;
 import com.fs.starfarer.api.campaign.*;
+import com.fs.starfarer.api.campaign.listeners.FleetEventListener;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.impl.campaign.ids.*;
 import com.fs.starfarer.api.util.Misc;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.util.vector.Vector2f;
 import org.shmo.icfb.IcfbMisc;
 import org.shmo.icfb.campaign.quests.Quest;
@@ -20,12 +22,18 @@ import java.util.Set;
 
 public class StealPhaseTech extends BaseIcfbMission {
 
-    public static final String IS_BASE_KEY = "$icfbIsBase";
-    public static final String PLAYER_SEES_BASE_KEY = "$icfbPlayerSeesBase";
+    public static final String IS_BASE_KEY = "$icfbPhsIsBase";
+    public static final String PLAYER_INTERACTED_KEY = "$icfbPhsInteracted";
     public static final String FLEET_KEY = "$icfPhsFleet";
     public static final String FLEET_PROGRESS_KEY = "$icfPhsFleetProgress";
+    public static final String RUNNING_AWAY_KEY = "$icfbPhsRunningAway";
+    public static final String FLEET_WAITING_TO_PROGRESS_KEY = "$icfbPhsWaitingToProgress";
+    public static final String MARINE_COUNT_KEY = "$icfbPhsMarineCount";
+    public static final int MARINE_COUNT = 100;
 
     CampaignFleetAPI _fleet = null;
+    FleetEventListener _fleetEventListener = null;
+    boolean _fleetWasKilled = false;
     PlanetAPI _planetWithBase = null;
     Vector2f _runDestination = null;
 
@@ -56,15 +64,16 @@ public class StealPhaseTech extends BaseIcfbMission {
         data.creditReward = calculateReward(
                 data.missionGiver.getMarket().getPrimaryEntity(),
                 data.targetStarSystem.getCenter(),
-                40000,
-                1100
-        );
+                70000,
+                750
+        ) + data.targetStarSystem.getPlanets().size() * 5000;
 
         data.xpReward = 5000;
         data.repReward = 0.07f;
         data.repPenalty = 0.03f;
         data.timeLimitDays = 240f;
         data.targetFaction = Global.getSector().getFaction(Factions.TRITACHYON);
+        Global.getSector().getMemoryWithoutUpdate().set(MARINE_COUNT_KEY, MARINE_COUNT);
     }
 
     @Override
@@ -72,26 +81,69 @@ public class StealPhaseTech extends BaseIcfbMission {
         addStep(quest, 0, new BaseQuestStepScript() {
             @Override
             public void start() {
-                initBase();
                 initFleet();
             }
 
             @Override
             public void advance(float deltaTime) {
+                Global.getSector().getMemoryWithoutUpdate().set(MARINE_COUNT_KEY, MARINE_COUNT);
                 if (_fleet != null && !_fleet.isExpired())
                     updateFleet(_fleet, deltaTime);
+                if (_fleetWasKilled)
+                    getData().failed = true;
             }
 
             @Override
             public void end() {
+                cleanupStage1();
+            }
 
+            @Override
+            public boolean isComplete() {
+                return _planetWithBase.getMemoryWithoutUpdate().getBoolean(PLAYER_INTERACTED_KEY);
+            }
+        });
+
+        addStep(quest, 1, new BaseQuestStepScript() {
+            @Override
+            public void start() {
+                initStep2();
+            }
+
+            @Override
+            public void advance(float deltaTime) {
+                ensureCompletable();
+            }
+
+            @Override
+            public void end() {
+                cleanupStep2();
             }
         });
     }
 
-    private void initBase() {
-        _planetWithBase.getMemoryWithoutUpdate().set(IS_BASE_KEY, true);
-        _planetWithBase.getMemoryWithoutUpdate().set(PLAYER_SEES_BASE_KEY, false);
+    private void initStep2() {
+        Data data = getData();
+        data.targetStarSystem = data.missionGiver.getMarket().getStarSystem();
+        data.targetLocation = data.missionGiver.getMarket().getPrimaryEntity();
+        data.targetMarket = data.missionGiver.getMarket();
+        Misc.makeImportant(data.targetLocation, getReasonId());
+        Misc.makeImportant(data.missionGiver, getReasonId());
+    }
+
+    private void cleanupStep2() {
+        Misc.makeUnimportant(getData().targetLocation, getReasonId());
+        Misc.makeUnimportant(getData().missionGiver, getReasonId());
+        getData().missionGiver.getMemoryWithoutUpdate().unset("$icfbPhs_complete");
+        getData().missionGiver.getMemoryWithoutUpdate().unset("$" + getId() + "_ref");
+    }
+
+    private void ensureCompletable() {
+        Data data = getData();
+        if (!data.missionGiver.getMemoryWithoutUpdate().getBoolean("$icfbPhs_complete"))
+            data.missionGiver.getMemoryWithoutUpdate().set("$icfbPhs_complete", true);
+        if (!data.missionGiver.getMemoryWithoutUpdate().contains("$" + getId() + "_ref"))
+            data.missionGiver.getMemoryWithoutUpdate().set("$" + getId() + "_ref", this);
     }
 
     private void initFleet() {
@@ -114,6 +166,22 @@ public class StealPhaseTech extends BaseIcfbMission {
         _fleet.setLocation(_planetWithBase.getLocation().x, _planetWithBase.getLocation().y);
         _fleet.setTransponderOn(false);
         _fleet.addAssignment(FleetAssignment.PATROL_SYSTEM, data.targetStarSystem.getStar(), 100000f);
+        _fleetEventListener = new FleetEventListener() {
+            @Override
+            public void reportFleetDespawnedToListener(CampaignFleetAPI fleet, CampaignEventListener.FleetDespawnReason reason, Object param) {
+                if (reason.equals(CampaignEventListener.FleetDespawnReason.DESTROYED_BY_BATTLE))
+                    _fleetWasKilled = true;
+            }
+
+            @Override
+            public void reportBattleOccurred(CampaignFleetAPI fleet, CampaignFleetAPI primaryWinner, BattleAPI battle) {
+                if (battle.isPlayerInvolved()) {
+                    _fleetWasKilled = true;
+                    despawnFleet(_fleet, _fleet);
+                }
+            }
+        };
+        _fleet.addEventListener(_fleetEventListener);
         memory.set(FLEET_PROGRESS_KEY, 0);
     }
 
@@ -124,14 +192,14 @@ public class StealPhaseTech extends BaseIcfbMission {
         final MemoryAPI memory = fleet.getMemoryWithoutUpdate();
         final float susLevel = IcfbFleetSuspicion.getFleetSuspicion(fleet);
         final boolean playerCanSee = fleet.isVisibleToPlayerFleet();
-        if (memory.getBoolean("$icfbRunningAway") && _runDestination != null) {
-            memory.set("$icfbPhsWaitingToProgress", 25f);
+        if (memory.getBoolean(RUNNING_AWAY_KEY) && _runDestination != null) {
+            memory.set(FLEET_WAITING_TO_PROGRESS_KEY, 25f);
             fleet.setMoveDestinationOverride(_runDestination.x, _runDestination.y);
             return;
         }
         if (susLevel >= 1) {
             memory.set(FLEET_PROGRESS_KEY, 0);
-            memory.set("$icfbRunningAway", true, 0.5f);
+            memory.set(RUNNING_AWAY_KEY, true, 0.5f);
             _runDestination = Misc.pickLocationNotNearPlayer(fleet.getContainingLocation(), fleet.getLocation(), 4000f);
             fleet.getAbility(Abilities.EMERGENCY_BURN).activate();
             return;
@@ -140,14 +208,14 @@ public class StealPhaseTech extends BaseIcfbMission {
                     playerCanSee &&
                             (fleet.getCurrentAssignment() == null
                             || !fleet.getCurrentAssignment().getAssignment().equals(FleetAssignment.GO_TO_LOCATION)
-                            ) && memory.getFloat("$icfbPhsWaitingToProgress") <= 0
+                            ) && memory.getFloat(FLEET_WAITING_TO_PROGRESS_KEY) <= 0
             ) {
                 if (memory.getInt(FLEET_PROGRESS_KEY) > 2) {
                     fleet.clearAssignments();
                     IcfbFleetSuspicion.removeFromFleet(fleet);
                     despawnFleet(fleet, _planetWithBase);
-                    _planetWithBase.getMemoryWithoutUpdate().set(PLAYER_SEES_BASE_KEY, true);
-                    Misc.makeImportant(_planetWithBase, data.missionGiver.getId() + ":" + getId());
+                    Misc.setFlagWithReason(_planetWithBase.getMemoryWithoutUpdate(), IS_BASE_KEY, getReasonId(), true, data.timeLimitDays);
+                    Misc.makeImportant(_planetWithBase, getReasonId());
                     data.targetLocation = _planetWithBase;
                     _fleet = null;
                     return;
@@ -164,7 +232,7 @@ public class StealPhaseTech extends BaseIcfbMission {
                 if (chance < 0.5f && nextDest != _planetWithBase) {
                     fleet.clearAssignments();
                     fleet.addAssignment(FleetAssignment.PATROL_SYSTEM, fleet.getStarSystem().getStar(), 100000);
-                    memory.set("$icfbPhsWaitingToProgress", 25f);
+                    memory.set(FLEET_WAITING_TO_PROGRESS_KEY, 25f);
                     memory.set(FLEET_PROGRESS_KEY, memory.getInt(FLEET_PROGRESS_KEY) + 1);
                     return;
                 }
@@ -176,7 +244,7 @@ public class StealPhaseTech extends BaseIcfbMission {
                         new Script() {
                             @Override
                             public void run() {
-                                memory.set("$icfbPhsWaitingToProgress", 20f);
+                                memory.set(FLEET_WAITING_TO_PROGRESS_KEY, 20f);
                             }
                         });
                 fleet.addAssignment(FleetAssignment.ORBIT_PASSIVE, nextDest, 100000f);
@@ -214,8 +282,19 @@ public class StealPhaseTech extends BaseIcfbMission {
 
     @Override
     protected void cleanupImpl() {
-        Misc.makeUnimportant(_planetWithBase, getData().missionGiver.getId() + ":" + getId());
+        cleanupStage1();
+    }
+
+    private void cleanupStage1() {
+        Misc.makeUnimportant(_planetWithBase, getReasonId());
+        Misc.setFlagWithReason(_planetWithBase.getMemoryWithoutUpdate(), IS_BASE_KEY, getReasonId(), false, 0);
+        _planetWithBase.getMemoryWithoutUpdate().unset(PLAYER_INTERACTED_KEY);
         IcfbFleetSuspicion.removeFromFleet(_fleet);
+    }
+
+    @NotNull
+    private String getReasonId() {
+        return getData().missionGiver.getId() + ":" + getId();
     }
 
     private boolean planetIsValid() {
