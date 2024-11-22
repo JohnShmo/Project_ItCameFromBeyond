@@ -21,7 +21,7 @@ import java.util.*;
 
 public class IcfbMissionHub implements CallEvent.CallableEvent, EveryFrameScript {
     public static final String MEM_KEY = "$icfbHub";
-    public static final float DAYS_BETWEEN_UPDATES = 5;
+    public static final float DAYS_BETWEEN_UPDATES = 3;
     public static final float CHANCE_TO_MAKE_AVAILABLE_PER_UPDATE = 0.15f;
 
     private final PersonAPI _person;

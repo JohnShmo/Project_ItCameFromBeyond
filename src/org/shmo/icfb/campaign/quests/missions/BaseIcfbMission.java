@@ -107,6 +107,10 @@ public abstract class BaseIcfbMission implements IcfbMission {
     @Override
     public void completeViaDialog(InteractionDialogAPI dialog) {
         Data data = getData();
+        String icon = getIcon();
+        if (icon != null && !icon.isEmpty()) {
+            dialog.getTextPanel().addImage(icon);
+        }
         dialog.getTextPanel().addPara("%s complete!", Misc.getHighlightColor(), getName());
         if (data.creditReward != 0)
             dialog.getTextPanel().addPara("    - Added %s", Misc.getHighlightColor(), Misc.getDGSCredits(data.creditReward));
@@ -165,7 +169,7 @@ public abstract class BaseIcfbMission implements IcfbMission {
 
     protected abstract void createMission(Quest quest);
 
-    protected void addStep(Quest quest, int stageIndex, QuestStepScript script) {
+    final protected void addStep(Quest quest, int stageIndex, QuestStepScript script) {
         quest.addStep(new IcfbMissionStepIntel(this, stageIndex), script);
     }
 

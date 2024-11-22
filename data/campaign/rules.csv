@@ -203,8 +203,14 @@ icfbXentFisBlurb,IcfbMHAddBlurb_icfbFis,$id == icfb_xent score:1000,,"Xent's ima
 #END Xent Subspace Fissure,,,,,,
 ,,,,,,
 # Xent Steal Phase Tech,,,,,,
-icfbXentPhsDesc,icfbPhsDesc,$id == icfb_xent score:1000,,> Phase tech desc,,
-icfbXentPhsBlurb,IcfbMHAddBlurb_icfbPhs,$id == icfb_xent score:1000,,> Phase tech blurb,,
+icfbXentPhsDesc,icfbPhsDesc,$id == icfb_xent score:1000,SetTextHighlights $icfbPhs_distance $icfbPhs_location $global.icfbPhsMarineCount $icfbPhs_timeLimit  $icfbPhs_reward,"Xent pulls up a holoreel containing footage of a hypothetical mission target. A facility concealed by the natural environment of some imagined planet.
+
+""A series of experiments are being conducted in the pursuit of Tri-Tachyon's interests in advancing phase technology on a remote world $icfbPhs_distance lightyears away in the $icfbPhs_location. The exact location of the target is unknown; my 'informant' was reluctant to share all of the details,"" he says with a cold flow to his words.
+
+""Nevertheless, by finding and tracking one of their supply-acquisition fleets in the system, you should be led directly to their so-called hidden base. In this situation, violence is detrimental to our great work."" 
+
+""You will need at least $global.icfbPhsMarineCount marines to perform a successful extraction of the technology once you find the base. You will have $icfbPhs_timeLimit days to complete this task, and you will be paid an ample $icfbPhs_reward for its success,"" he finishes, awaiting your response in uncanny silence.",,
+icfbXentPhsBlurb,IcfbMHAddBlurb_icfbPhs,$id == icfb_xent score:1000,,"""The Greater Will blessed me with information pertaining to a secret research facility, and its work in - by the standards of your backwards polities - 'illegal' phase technology. We would be wise to acquire the fruits of their labor.""",,
 #END Xent Steal Phase Tech,,,,,,
 #END Xent Missions,,,,,,
 ,,,,,,
@@ -245,7 +251,7 @@ $icfbHub != null",FireAll PopulateOptions,"""Our work continues..."" Xent Alabas
 icfbXentAddSpecialMissionOption,PopulateOptions,"$global.icfbXentOfferingSpecialMission
 $global.icfbAcceptingXentMissions
 $id == icfb_xent score:1000",SetOptionColor icfbXentSpecialMissionOpt0 buttonShortcut,,0:icfbXentSpecialMissionOpt0:Ask about the special mission,
-icfbXentSpecialMission0,DialogOptionSelected,$option == icfbXentSpecialMissionOpt0,"SetShortcut mh_close ""ESCAPE""
+icfbXentSpecialMission0,DialogOptionSelected,$option == icfbXentSpecialMissionOpt0,"SetShortcut icfbMHClose ""ESCAPE""
 AddText ""If you accept the responsibility of this task, you will no longer recieve regular missions from Xent Alabaster. Consider your options carefully."" buttonShortcut","""Very well. Before we proceed, I must warn you,"" Xent starts, his voice modulating oddly, ""Once I divulge the details of this mission, there can be no turning back. I cannot allow you to continue work as a normal collaborator. You will be equal parts too valuable to lose, and too dangerous to let near certain objectives.""
 
 His image is plastered with the anticipation of a cold, unfeeling predator. You feel his eyes piercing your soul from behind that visor of his.
@@ -467,10 +473,12 @@ icfbMHOpenSelected,DialogOptionSelected,$option == icfbMHOpen,Call $icfbHub list
 icfbMHCloseSelected,DialogOptionSelected,$option == icfbMHClose,"$icfbMHAlreadyListedBlurbs = false 0
 FireAll PopulateOptions",,,
 icfbMHCloseOption,IcfbMHAddOptions,,"SetShortcut icfbMHClose ""ESCAPE""",,"100:icfbMHClose:""I'll need to think about it.""",
+icfbMHContinue,DialogOptionSelected,$option == icfbMHContinueOpt,FireBest PickGreeting,,,
 ,,,,,,
 # Subspace Fissure,,,,,,
 icfbFisOpen,DialogOptionSelected,$option == icfbFis_option,"Call $icfbHub icfbFis showMap ""Destination: $icfbFis_location""
-FireBest icfbFisDesc",,"0:icfbFis_accept:Accept
+FireBest icfbFisDesc
+SetShortcut icfbFis_decline ""ESCAPE""",,"0:icfbFis_accept:Accept
 1:icfbFis_decline:Decline",
 icfbFisAccept,DialogOptionSelected,$option == icfbFis_accept,"FireBest IcfbMHPrintAcceptText
 Call $icfbHub icfbFis hideMap
@@ -512,7 +520,8 @@ FireAll PopulateOptions","The scan goes through without any issues, but a few cr
 ,,,,,,
 # Steal Phase Tech,,,,,,
 icfbPhsOpen,DialogOptionSelected,$option == icfbPhs_option,"Call $icfbHub icfbPhs showMap ""Destination: $icfbPhs_location""
-FireBest icfbPhsDesc",,"0:icfbPhs_accept:Accept
+FireBest icfbPhsDesc
+SetShortcut icfbPhs_decline ""ESCAPE""",,"0:icfbPhs_accept:Accept
 1:icfbPhs_decline:Decline",
 icfbPhsAccept,DialogOptionSelected,$option == icfbPhs_accept,"FireBest IcfbMHPrintAcceptText
 Call $icfbHub icfbPhs hideMap
@@ -523,9 +532,9 @@ Call $icfbHub icfbPhs hideMap
 Call $icfbHub listMissions",,,
 icfbPhsOption,IcfbMHAddOptions,$icfbPhs_available,,,10:icfbPhs_option:Ask about stealing experimental phase technology,
 icfbPhsComplete,PickGreeting,"$icfbPhs_complete score:5000
-$icfbPhs_ref != null","IcfbCompleteMission $icfbPhs_ref
-unset $icfbPhs_complete
-FireBest PickGreeting",,,
+$icfbPhs_ref != null","ShowPersonVisual
+IcfbCompleteMission $icfbPhs_ref
+unset $icfbPhs_complete",,0:icfbMHContinueOpt:Continue,
 ,,,,,,
 # Secret Base Interaction,,,,,,
 icfbPhsOpenBaseDialog,OpenInteractionDialog,$icfbPhsIsBase score:1000,"ShowDefaultVisual

@@ -7,6 +7,7 @@ import com.fs.starfarer.api.campaign.listeners.FleetEventListener;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.impl.campaign.ids.*;
+import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.util.vector.Vector2f;
@@ -17,6 +18,7 @@ import org.shmo.icfb.campaign.quests.missions.IcfbMissions;
 import org.shmo.icfb.campaign.quests.scripts.BaseQuestStepScript;
 import org.shmo.icfb.campaign.scripts.temp.IcfbFleetSuspicion;
 
+import java.awt.*;
 import java.util.Random;
 import java.util.Set;
 
@@ -28,6 +30,7 @@ public class StealPhaseTech extends BaseIcfbMission {
     public static final String FLEET_PROGRESS_KEY = "$icfPhsFleetProgress";
     public static final String RUNNING_AWAY_KEY = "$icfbPhsRunningAway";
     public static final String FLEET_WAITING_TO_PROGRESS_KEY = "$icfbPhsWaitingToProgress";
+    public static final String FLEET_SEEN_IN_ORBIT = "$icfbPhsSeenInOrbit";
     public static final String MARINE_COUNT_KEY = "$icfbPhsMarineCount";
     public static final int MARINE_COUNT = 100;
 
@@ -44,10 +47,15 @@ public class StealPhaseTech extends BaseIcfbMission {
         data.targetStarSystem = IcfbMisc.pickSystem(new IcfbMisc.SystemPickerPredicate() {
             @Override
             public boolean isValid(StarSystemAPI starSystem) {
-                return starSystem.isProcgen()
+                boolean sanityChecks = starSystem.isProcgen()
                         && starSystem.getPlanets().size() >= 5
                         && !starSystem.hasTag(Tags.THEME_REMNANT_RESURGENT)
                         && !starSystem.hasTag(Tags.THEME_REMNANT_SECONDARY);
+                for (PlanetAPI planet : starSystem.getPlanets()) {
+                    if (planet.getTypeId().equals(StarTypes.NEUTRON_STAR))
+                        return false;
+                }
+                return sanityChecks;
             }
         });
         if (data.targetStarSystem == null) {
@@ -194,11 +202,13 @@ public class StealPhaseTech extends BaseIcfbMission {
         final boolean playerCanSee = fleet.isVisibleToPlayerFleet();
         if (memory.getBoolean(RUNNING_AWAY_KEY) && _runDestination != null) {
             memory.set(FLEET_WAITING_TO_PROGRESS_KEY, 25f);
+            memory.unset(FLEET_SEEN_IN_ORBIT);
             fleet.setMoveDestinationOverride(_runDestination.x, _runDestination.y);
             return;
         }
         if (susLevel >= 1) {
             memory.set(FLEET_PROGRESS_KEY, 0);
+            memory.unset(FLEET_SEEN_IN_ORBIT);
             memory.set(RUNNING_AWAY_KEY, true, 0.5f);
             _runDestination = Misc.pickLocationNotNearPlayer(fleet.getContainingLocation(), fleet.getLocation(), 4000f);
             fleet.getAbility(Abilities.EMERGENCY_BURN).activate();
@@ -234,6 +244,7 @@ public class StealPhaseTech extends BaseIcfbMission {
                     fleet.addAssignment(FleetAssignment.PATROL_SYSTEM, fleet.getStarSystem().getStar(), 100000);
                     memory.set(FLEET_WAITING_TO_PROGRESS_KEY, 25f);
                     memory.set(FLEET_PROGRESS_KEY, memory.getInt(FLEET_PROGRESS_KEY) + 1);
+                    memory.unset(FLEET_SEEN_IN_ORBIT);
                     return;
                 }
 
@@ -249,9 +260,13 @@ public class StealPhaseTech extends BaseIcfbMission {
                         });
                 fleet.addAssignment(FleetAssignment.ORBIT_PASSIVE, nextDest, 100000f);
                 memory.set(FLEET_PROGRESS_KEY, memory.getInt(FLEET_PROGRESS_KEY) + 1);
+                memory.unset(FLEET_SEEN_IN_ORBIT);
 
-            } else if (playerCanSee) {
+            } else if (playerCanSee || memory.getBoolean(FLEET_SEEN_IN_ORBIT)) {
                 memory.set("$icfbPhsWaitingToProgress", memory.getFloat("$icfbPhsWaitingToProgress") - deltaTime);
+                if (fleet.getCurrentAssignment() != null && fleet.getCurrentAssignment().getAssignment().equals(FleetAssignment.ORBIT_PASSIVE)) {
+                    memory.set(FLEET_SEEN_IN_ORBIT, true);
+                }
             }
     }
 
@@ -301,4 +316,51 @@ public class StealPhaseTech extends BaseIcfbMission {
         return _planetWithBase != null && (_planetWithBase.getMarket() == null || !_planetWithBase.getMarket().isInEconomy());
     }
 
+    @Override
+    public void addDescriptionBody(TooltipMakerAPI info, int stageIndex) {
+        Data data = getData();
+        Color hl = Misc.getHighlightColor();
+        Color ng = Misc.getNegativeHighlightColor();
+        Color fc = data.targetFaction.getBaseUIColor();
+        final int marines = Global.getSector().getPlayerFleet().getCargo().getMarines();
+
+        if (stageIndex == 0) {
+            info.addPara(
+                    "A secret base lies hidden somewhere in the %s system. It would take many cycles to find it via " +
+                            "trial and error. Instead, you are instructed to locate the %s fleet roaming the system, " +
+                            "and %s.",
+                    0,
+                    new Color[] { hl, fc, hl },
+                    getLocationName(),
+                    getTargetFactionName(),
+                    "track it without raising too much suspicion"
+            );
+
+            info.addPara(
+                    "Eventually the fleet should land at its base of origin " +
+                    "for resupply, and that's when you strike. %s",
+                    10,
+                    Misc.getNegativeHighlightColor(),
+                    "Attacking the fleet before locating the secret base will fail the mission."
+            );
+
+            info.addPara(
+                    "You will need %s(%s) marines to carry out the ensuing " +
+                            "raid on the base - to claim the experimental phase technology you're after.",
+                    10,
+                    new Color[] { hl, marines >= MARINE_COUNT ? hl : ng },
+                    Misc.getWithDGS(MARINE_COUNT),
+                    Misc.getWithDGS(marines)
+            );
+        }
+
+        if (stageIndex == 1) {
+            info.addPara(
+                    "You've acquired the experimental phase technology package. Return to %s to complete the mission.",
+                    0,
+                    data.missionGiver.getFaction().getBaseUIColor(),
+                    data.missionGiver.getName().getFullName()
+            );
+        }
+    }
 }
