@@ -52,7 +52,7 @@ public class StealPhaseTech extends BaseIcfbMission {
                         && !starSystem.hasTag(Tags.THEME_REMNANT_RESURGENT)
                         && !starSystem.hasTag(Tags.THEME_REMNANT_SECONDARY);
                 for (PlanetAPI planet : starSystem.getPlanets()) {
-                    if (planet.getTypeId().equals(StarTypes.NEUTRON_STAR))
+                    if (planet.getTypeId().equals(StarTypes.NEUTRON_STAR)) // This would be insanely annoying otherwise
                         return false;
                 }
                 return sanityChecks;

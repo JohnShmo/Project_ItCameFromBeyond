@@ -206,11 +206,6 @@ public class SubspaceFissure extends BaseIcfbMission {
     }
 
     @Override
-    public String getDescriptionImage() {
-        return getData().missionGiver.getPortraitSprite();
-    }
-
-    @Override
     protected void cleanupImpl() {
         despawnFissure();
     }

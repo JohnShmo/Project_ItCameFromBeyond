@@ -589,7 +589,8 @@ public class JumpstartRequiredQuest implements QuestFactory {
         IcfbMissionHub.createHub(
                 xent,
                 IcfbMissions.SUBSPACE_FISSURE,
-                IcfbMissions.STEAL_PHASE_TECH
+                IcfbMissions.STEAL_PHASE_TECH,
+                IcfbMissions.ACQUIRE_RESOURCE
         );
     }
 
@@ -597,7 +598,8 @@ public class JumpstartRequiredQuest implements QuestFactory {
         IcfbMissionHub.addToAvailableMissions(
                 xent,
                 IcfbMissions.SUBSPACE_FISSURE,
-                IcfbMissions.STEAL_PHASE_TECH
+                IcfbMissions.STEAL_PHASE_TECH,
+                IcfbMissions.ACQUIRE_RESOURCE
         );
     }
 

@@ -8,13 +8,8 @@ import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.impl.campaign.rulecmd.CallEvent;
 import com.fs.starfarer.api.impl.campaign.rulecmd.FireAll;
 import com.fs.starfarer.api.impl.campaign.rulecmd.FireBest;
-import com.fs.starfarer.api.impl.campaign.rulecmd.UpdateMemory;
 import com.fs.starfarer.api.util.Misc;
-import org.shmo.icfb.IcfbLog;
-import org.shmo.icfb.campaign.quests.Quest;
 import org.shmo.icfb.campaign.quests.factories.QuestFactory;
-import org.shmo.icfb.campaign.quests.impl.missions.StealPhaseTech;
-import org.shmo.icfb.campaign.quests.impl.missions.SubspaceFissure;
 import org.shmo.icfb.campaign.scripts.IcfbQuestManager;
 
 import java.util.*;
@@ -22,7 +17,11 @@ import java.util.*;
 public class IcfbMissionHub implements CallEvent.CallableEvent, EveryFrameScript {
     public static final String MEM_KEY = "$icfbHub";
     public static final float DAYS_BETWEEN_UPDATES = 3;
-    public static final float CHANCE_TO_MAKE_AVAILABLE_PER_UPDATE = 0.15f;
+    public static final float CHANCE_TO_MAKE_AVAILABLE_PER_UPDATE = 0.1f;
+    public static final float CHANCE_TO_REPLACE_PER_UPDATE = 0.075f;
+    public static final float CHANCE_TO_REMOVE_PER_UPDATE = 0.08f;
+    public static final float CHANCE_TO_REPLACE_PER_UPDATE_IF_RESOURCE_MISSION = 0.75f;
+    public static final float CHANCE_TO_REMOVE_PER_UPDATE_IF_RESOURCE_MISSION = 0.16f;
 
     private final PersonAPI _person;
     private final Set<String> _missionSet;
@@ -65,21 +64,12 @@ public class IcfbMissionHub implements CallEvent.CallableEvent, EveryFrameScript
         Collections.addAll(hub._missionSet, availableMissions);
     }
 
-    private static IcfbMission initMissionFromId(String id, PersonAPI person) {
-        switch (id) {
-            case IcfbMissions.SUBSPACE_FISSURE: return new SubspaceFissure(person);
-            case IcfbMissions.STEAL_PHASE_TECH: return new StealPhaseTech(person);
-            // TODO: Other missions
-            default: return null;
-        }
-    }
-
     public void addMission(String id) {
-        if (IcfbQuestManager.getInstance().contains(id))
+        if (IcfbQuestManager.getInstance().contains(_person.getId() + ":" + id))
             return;
-        if (_person.getMemory().contains(id))
+        if (_person.getMemory().contains("$" + id))
             return;
-        IcfbMission mission = initMissionFromId(id, _person);
+        IcfbMission mission = IcfbMissions.createMission(id, _person);
         if (mission == null || !mission.isValid())
             return;
         MemoryAPI memory = _person.getMemoryWithoutUpdate();
@@ -298,10 +288,37 @@ public class IcfbMissionHub implements CallEvent.CallableEvent, EveryFrameScript
     public void update() {
         updateTimestamp();
 
+        float availableFraction = 0;
         for (String id : _missionSet) {
-            addMission(id);
-            if (_random.nextFloat() <= CHANCE_TO_MAKE_AVAILABLE_PER_UPDATE)
+            if (isMissionAvailable(id))
+                availableFraction += 1;
+        }
+        availableFraction /= _missionSet.size();
+
+        for (String id : _missionSet) {
+            final float chanceToRemove = id.equals(IcfbMissions.ACQUIRE_RESOURCE) ?
+                    CHANCE_TO_REMOVE_PER_UPDATE_IF_RESOURCE_MISSION :
+                    CHANCE_TO_REMOVE_PER_UPDATE;
+            if (isMissionAvailable(id) && _random.nextFloat() <= chanceToRemove * availableFraction) {
+                removeMission(id);
+                availableFraction = 0;
+                continue;
+            }
+
+            final float chanceToReplace = id.equals(IcfbMissions.ACQUIRE_RESOURCE) ?
+                    CHANCE_TO_REPLACE_PER_UPDATE_IF_RESOURCE_MISSION :
+                    CHANCE_TO_REPLACE_PER_UPDATE;
+            if (isMissionAvailable(id) && _random.nextFloat() <= chanceToReplace) {
+                removeMission(id);
+                addMission(id);
                 makeMissionAvailable(id);
+                continue;
+            }
+
+            addMission(id);
+            if (_random.nextFloat() <= CHANCE_TO_MAKE_AVAILABLE_PER_UPDATE) {
+                makeMissionAvailable(id);
+            }
         }
 
         refresh();

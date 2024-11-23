@@ -8,6 +8,7 @@
 		"icfb_intel":{
 			"fis":"graphics/icons/missions/visit_object.png",
 			"phs":"graphics/icons/missions/spysat.png",
+			"res":"graphics/icons/missions/procurement.png",
 		},
 		"icfb_icons":{
 			"shift_drive":"graphics/ItCameFromBeyond/icons/abilities/shift_drive.png",
