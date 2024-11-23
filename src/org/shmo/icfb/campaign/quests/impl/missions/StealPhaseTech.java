@@ -77,8 +77,8 @@ public class StealPhaseTech extends BaseIcfbMission {
         ) + data.targetStarSystem.getPlanets().size() * 5000;
 
         data.xpReward = 5000;
-        data.repReward = 0.07f;
-        data.repPenalty = 0.03f;
+        data.repReward = 0.05f;
+        data.repPenalty = 0.02f;
         data.timeLimitDays = 240f;
         data.targetFaction = Global.getSector().getFaction(Factions.TRITACHYON);
         Global.getSector().getMemoryWithoutUpdate().set(MARINE_COUNT_KEY, MARINE_COUNT);
@@ -298,6 +298,7 @@ public class StealPhaseTech extends BaseIcfbMission {
     @Override
     protected void cleanupImpl() {
         cleanupStage1();
+        cleanupStep2();
     }
 
     private void cleanupStage1() {
@@ -345,8 +346,9 @@ public class StealPhaseTech extends BaseIcfbMission {
             );
 
             info.addPara(
-                    "You will need %s(%s) marines to carry out the ensuing " +
-                            "raid on the base - to claim the experimental phase technology you're after.",
+                    "You will need %s marines to carry out the ensuing " +
+                            "raid on the base - to claim the experimental phase technology you're after. Your fleet is " +
+                            "currently carrying %s marines.",
                     10,
                     new Color[] { hl, marines >= MARINE_COUNT ? hl : ng },
                     Misc.getWithDGS(MARINE_COUNT),

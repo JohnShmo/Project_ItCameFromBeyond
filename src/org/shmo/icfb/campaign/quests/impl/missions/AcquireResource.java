@@ -45,6 +45,7 @@ public class AcquireResource extends BaseIcfbMission {
 
         data.creditReward = creditsPerUnit * count;
         data.repReward = 0.05f;
+        data.repPenalty = 0.02f;
         data.xpReward = 2500;
         data.timeLimitDays = 90;
         data.targetMarket = person.getMarket();

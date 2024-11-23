@@ -32,4 +32,5 @@ public interface IcfbMission extends QuestFactory {
     float getMinimumRepLevel();
     void cleanup();
     void completeViaDialog(InteractionDialogAPI dialog);
+    void cancel();
 }

@@ -9,6 +9,7 @@
 			"fis":"graphics/icons/missions/visit_object.png",
 			"phs":"graphics/icons/missions/spysat.png",
 			"res":"graphics/icons/missions/procurement.png",
+			"sci":"graphics/icons/missions/extraction.png",
 		},
 		"icfb_icons":{
 			"shift_drive":"graphics/ItCameFromBeyond/icons/abilities/shift_drive.png",

@@ -17,16 +17,15 @@ import java.util.*;
 public class IcfbMissionHub implements CallEvent.CallableEvent, EveryFrameScript {
     public static final String MEM_KEY = "$icfbHub";
     public static final float DAYS_BETWEEN_UPDATES = 3;
-    public static final float CHANCE_TO_MAKE_AVAILABLE_PER_UPDATE = 0.1f;
+    public static final float CHANCE_TO_MAKE_AVAILABLE_PER_UPDATE = 0.15f;
     public static final float CHANCE_TO_REPLACE_PER_UPDATE = 0.075f;
     public static final float CHANCE_TO_REMOVE_PER_UPDATE = 0.08f;
-    public static final float CHANCE_TO_REPLACE_PER_UPDATE_IF_RESOURCE_MISSION = 0.75f;
-    public static final float CHANCE_TO_REMOVE_PER_UPDATE_IF_RESOURCE_MISSION = 0.16f;
 
     private final PersonAPI _person;
     private final Set<String> _missionSet;
     private final Random _random;
     private long _timestampOfLastUpdate;
+    private int _numberOfUpdates = 0;
 
     private IcfbMissionHub(PersonAPI person, Set<String> missionSet) {
         _person = person;
@@ -50,6 +49,7 @@ public class IcfbMissionHub implements CallEvent.CallableEvent, EveryFrameScript
         if (hub != null) {
             for (String missionId : hub._missionSet) {
                 hub.removeMission(missionId);
+                IcfbQuestManager.getInstance().remove(hub._person.getId() + ":" + missionId);
             }
             Global.getSector().removeScript(hub);
         }
@@ -182,7 +182,7 @@ public class IcfbMissionHub implements CallEvent.CallableEvent, EveryFrameScript
         removeMission(id);
     }
 
-    private IcfbMission getMission(String id) {
+    public IcfbMission getMission(String id) {
         MemoryAPI memory = _person.getMemoryWithoutUpdate();
         return (IcfbMission)memory.get("$" + id);
     }
@@ -293,22 +293,27 @@ public class IcfbMissionHub implements CallEvent.CallableEvent, EveryFrameScript
             if (isMissionAvailable(id))
                 availableFraction += 1;
         }
-        availableFraction /= _missionSet.size();
+        availableFraction = Math.max(availableFraction - 1f, 0f);
+        availableFraction /= Math.max(_missionSet.size(), 1);
+
+        _numberOfUpdates++;
+        if (_numberOfUpdates >= 10) {
+            for (String id : _missionSet) {
+                removeMission(id);
+            }
+            forceAvailableUpdate(2);
+            _numberOfUpdates = 0;
+            availableFraction = 0;
+        }
 
         for (String id : _missionSet) {
-            final float chanceToRemove = id.equals(IcfbMissions.ACQUIRE_RESOURCE) ?
-                    CHANCE_TO_REMOVE_PER_UPDATE_IF_RESOURCE_MISSION :
-                    CHANCE_TO_REMOVE_PER_UPDATE;
-            if (isMissionAvailable(id) && _random.nextFloat() <= chanceToRemove * availableFraction) {
+            if (isMissionAvailable(id) && _random.nextFloat() <= CHANCE_TO_REMOVE_PER_UPDATE * availableFraction) {
                 removeMission(id);
                 availableFraction = 0;
                 continue;
             }
 
-            final float chanceToReplace = id.equals(IcfbMissions.ACQUIRE_RESOURCE) ?
-                    CHANCE_TO_REPLACE_PER_UPDATE_IF_RESOURCE_MISSION :
-                    CHANCE_TO_REPLACE_PER_UPDATE;
-            if (isMissionAvailable(id) && _random.nextFloat() <= chanceToReplace) {
+            if (isMissionAvailable(id) && _random.nextFloat() <= CHANCE_TO_REPLACE_PER_UPDATE) {
                 removeMission(id);
                 addMission(id);
                 makeMissionAvailable(id);

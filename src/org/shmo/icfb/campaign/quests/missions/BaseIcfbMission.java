@@ -51,12 +51,12 @@ public abstract class BaseIcfbMission implements IcfbMission {
     private boolean _cleanedUp = false;
     private final List<CampaignFleetAPI> _fleets = new ArrayList<>();
 
-    public Data getData() {
+    final public Data getData() {
         return _data;
     }
 
     @Override
-    public boolean callEvent(String ruleId, String action, InteractionDialogAPI dialog, List<Misc.Token> params, Map<String, MemoryAPI> memoryMap) {
+    final public boolean callEvent(String ruleId, String action, InteractionDialogAPI dialog, List<Misc.Token> params, Map<String, MemoryAPI> memoryMap) {
 
         if ("showMap".equals(action)) {
             SectorEntityToken mapLoc = getMapLocation();
@@ -105,7 +105,7 @@ public abstract class BaseIcfbMission implements IcfbMission {
     }
 
     @Override
-    public void completeViaDialog(InteractionDialogAPI dialog) {
+    final public void completeViaDialog(InteractionDialogAPI dialog) {
         Data data = getData();
         String icon = getIcon();
         if (icon != null && !icon.isEmpty()) {
@@ -344,7 +344,7 @@ public abstract class BaseIcfbMission implements IcfbMission {
     }
 
     @Override
-    public SectorEntityToken getMapLocation() {
+    final public SectorEntityToken getMapLocation() {
         final Data data = getData();
 
         if (data.targetLocation != null)
@@ -358,7 +358,7 @@ public abstract class BaseIcfbMission implements IcfbMission {
     }
 
     @Override
-    public String getLocationName() {
+    final public String getLocationName() {
         if (_data.targetStarSystem != null) {
             return _data.targetStarSystem.getName();
         }
@@ -372,12 +372,12 @@ public abstract class BaseIcfbMission implements IcfbMission {
     }
 
     @Override
-    public int getCreditReward() {
+    final public int getCreditReward() {
         return _data.creditReward;
     }
 
     @Override
-    public String getTargetFactionName() {
+    final public String getTargetFactionName() {
         if (_data.targetFaction != null)
             return _data.targetFaction.getDisplayName();
         else if (_data.targetMarket != null) {
@@ -389,7 +389,7 @@ public abstract class BaseIcfbMission implements IcfbMission {
     }
 
     @Override
-    public String getTargetMarketName() {
+    final public String getTargetMarketName() {
         if (_data.targetMarket != null) {
             return _data.targetMarket.getName();
         }
@@ -397,16 +397,16 @@ public abstract class BaseIcfbMission implements IcfbMission {
     }
 
     @Override
-    public float getTimeLimitDays() {
+    final public float getTimeLimitDays() {
         return _data.timeLimitDays;
     }
 
     @Override
-    public boolean isFailed() {
+    final public boolean isFailed() {
         return _data.failed;
     }
 
-    public void fail() {
+    final public void fail() {
         _data.failed = true;
         Quest quest = IcfbQuestManager.getInstance().getQuest(getData().missionGiver.getId() + ":" + getId());
         if (quest == null)
@@ -414,7 +414,7 @@ public abstract class BaseIcfbMission implements IcfbMission {
         quest.progressToFinalStep();
     }
 
-    public boolean isTimeUp() {
+    final public boolean isTimeUp() {
         if (_data.timeLimitDays <= 0)
             return false;
         return Global.getSector().getClock().getElapsedDaysSince(_data.startTimeStamp) > _data.timeLimitDays;
@@ -426,7 +426,7 @@ public abstract class BaseIcfbMission implements IcfbMission {
     }
 
     @Override
-    public boolean isValid() {
+    final public boolean isValid() {
         return _data.valid && !_data.failed && isValidImpl();
     }
 
@@ -435,7 +435,7 @@ public abstract class BaseIcfbMission implements IcfbMission {
     }
 
     @Override
-    public void cleanup() {
+    final public void cleanup() {
         _cleanedUp = true;
         cleanupFleets();
         cleanupImpl();
@@ -443,13 +443,13 @@ public abstract class BaseIcfbMission implements IcfbMission {
 
     protected void cleanupImpl() {}
 
-    protected CampaignFleetAPI createFleet(MagicFleetBuilder fleetBuilder) {
+    final protected CampaignFleetAPI createFleet(MagicFleetBuilder fleetBuilder) {
         CampaignFleetAPI fleet = fleetBuilder.create();
         _fleets.add(fleet);
         return fleet;
     }
 
-    protected CampaignFleetAPI createFleet(
+    final protected CampaignFleetAPI createFleet(
             String factionId,
             String fleetType,
             String fleetName,
@@ -476,7 +476,7 @@ public abstract class BaseIcfbMission implements IcfbMission {
         );
     }
 
-    protected CampaignFleetAPI createFleet(
+    final protected CampaignFleetAPI createFleet(
             String factionId,
             String fleetType,
             String fleetName,
@@ -507,7 +507,7 @@ public abstract class BaseIcfbMission implements IcfbMission {
         );
     }
 
-    protected CampaignFleetAPI createFleet(
+    final protected CampaignFleetAPI createFleet(
             String factionId,
             String fleetType,
             String fleetName,
@@ -539,7 +539,7 @@ public abstract class BaseIcfbMission implements IcfbMission {
         );
     }
 
-    protected CampaignFleetAPI createFleet(
+    final protected CampaignFleetAPI createFleet(
             String factionId,
             String fleetType,
             String fleetName,
@@ -600,12 +600,12 @@ public abstract class BaseIcfbMission implements IcfbMission {
         return fleet;
     }
 
-    protected void despawnFleet(CampaignFleetAPI fleet, SectorEntityToken despawnLocation) {
+    final protected void despawnFleet(CampaignFleetAPI fleet, SectorEntityToken despawnLocation) {
         fleet.getMemoryWithoutUpdate().set("$" + _questId + "_despawnLocation", despawnLocation);
         despawnFleet(fleet);
     }
 
-    protected void despawnFleet(CampaignFleetAPI fleet) {
+    final protected void despawnFleet(CampaignFleetAPI fleet) {
         if (fleet.getContainingLocation() == null || fleet.isExpired())
             return;
         MemoryAPI memory = fleet.getMemory();
@@ -654,16 +654,21 @@ public abstract class BaseIcfbMission implements IcfbMission {
     }
 
     @Override
-    public Quest create() {
+    final public Quest create() {
         final Quest quest = initQuest();
         createMission(quest);
         addFinalStep(quest);
         return quest;
     }
 
-    protected int calculateReward(SectorEntityToken start, SectorEntityToken objective, float baseReward, float rewardPerLY) {
+    final protected int calculateReward(SectorEntityToken start, SectorEntityToken objective, float baseReward, float rewardPerLY) {
         final float distanceLY = Misc.getDistanceLY(start, objective);
         final float result = baseReward + (rewardPerLY * distanceLY);
         return (int)result;
+    }
+
+    @Override
+    final public void cancel() {
+        IcfbQuestManager.getInstance().remove(getData().missionGiver.getId() + ":" + getId());
     }
 }
