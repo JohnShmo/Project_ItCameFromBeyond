@@ -10,6 +10,7 @@ import com.fs.starfarer.api.impl.campaign.ids.MemFlags;
 import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.magiclib.campaign.MagicCaptainBuilder;
 import org.magiclib.campaign.MagicFleetBuilder;
@@ -670,5 +671,10 @@ public abstract class BaseIcfbMission implements IcfbMission {
     @Override
     final public void cancel() {
         IcfbQuestManager.getInstance().remove(getData().missionGiver.getId() + ":" + getId());
+    }
+
+    @NotNull
+    protected String getReasonId() {
+        return getData().missionGiver.getId() + ":" + getId();
     }
 }

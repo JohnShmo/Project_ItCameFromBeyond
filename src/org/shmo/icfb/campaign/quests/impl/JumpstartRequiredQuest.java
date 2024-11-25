@@ -590,7 +590,8 @@ public class JumpstartRequiredQuest implements QuestFactory {
                 xent,
                 IcfbMissions.SUBSPACE_FISSURE,
                 IcfbMissions.STEAL_PHASE_TECH,
-                IcfbMissions.ACQUIRE_RESOURCE
+                IcfbMissions.ACQUIRE_RESOURCE,
+                IcfbMissions.EXTRACT_SCIENTIST
         );
     }
 
@@ -599,7 +600,8 @@ public class JumpstartRequiredQuest implements QuestFactory {
                 xent,
                 IcfbMissions.SUBSPACE_FISSURE,
                 IcfbMissions.STEAL_PHASE_TECH,
-                IcfbMissions.ACQUIRE_RESOURCE
+                IcfbMissions.ACQUIRE_RESOURCE,
+                IcfbMissions.EXTRACT_SCIENTIST
         );
     }
 

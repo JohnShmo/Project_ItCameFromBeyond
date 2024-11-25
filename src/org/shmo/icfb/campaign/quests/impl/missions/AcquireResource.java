@@ -185,9 +185,4 @@ public class AcquireResource extends BaseIcfbMission {
             );
         }
     }
-
-    @NotNull
-    private String getReasonId() {
-        return getData().missionGiver.getId() + ":" + getId();
-    }
 }

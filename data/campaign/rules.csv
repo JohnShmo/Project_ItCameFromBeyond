@@ -221,6 +221,11 @@ icfbXentResDesc,icfbResDesc,"$id == icfb_xent score:1000","SetTextHighlights $ic
 ""As such, you shall have $icfbRes_timeLimit days to satisfy this procurement. $icfbRes_reward will be yours upon completion. Are these terms acceptable?""",,
 icfbXentResBlurb,IcfbMHAddBlurb_icfbRes,"$id == icfb_xent score:1000",,"Xent pulls up a report on a missing convoy that was meant to bring resources to aid his efforts, ""It would be beneficial to our great work if you acquired these commodities in their stead.""",,
 "#END Xent Acquire Resource",,,,,,
+,,,,,,
+# Xent Extract Scientist,,,,,,
+icfbXentSciDesc,icfbSciDesc,"$id == icfb_xent score:1000",,"> Sci Desc",,
+icfbXentSciBlurb,IcfbMHAddBlurb_icfbSci,"$id == icfb_xent score:1000",,"> Sci Blurb",,
+"#END Xent Extract Scientist",,,,,,
 "#END Xent Missions",,,,,,
 ,,,,,,
 # Xent Unique,,,,,,
@@ -585,5 +590,30 @@ $icfbRes_ref != null
 PlayerHasCargo $icfbRes_commodityType $icfbRes_commodityCount","SetOptionColor icfbResCompleteOpt buttonShortcut",,"0:icfbResCompleteOpt:Hand in $icfbRes_commodityCountDGS $icfbRes_commodityName",
 icfbResOption,IcfbMHAddOptions,"$icfbRes_available",,,"10:icfbRes_option:Offer to fulfill the resource procurement order",
 "#END Acquire Resource",,,,,,
+,,,,,,
+# Extract Scientist,,,,,,
+icfbSciOpen,DialogOptionSelected,"$option == icfbSci_option","Call $icfbHub icfbSci showMap ""Destination: $icfbPhs_location""
+FireBest icfbSciDesc
+SetShortcut icfbSci_decline ""ESCAPE""",,"0:icfbSci_accept:Accept
+1:icfbSci_decline:Decline",
+icfbSciAccept,DialogOptionSelected,"$option == icfbSci_accept","FireBest IcfbMHPrintAcceptText
+Call $icfbHub icfbSci hideMap
+Call $icfbHub icfbSci accept
+Call $icfbHub listMissions",,,
+icfbSciDecline,DialogOptionSelected,"$option == icfbSci_decline","FireBest IcfbMHPrintDeclineText
+Call $icfbHub icfbSci hideMap
+Call $icfbHub listMissions",,,
+icfbSciOption,IcfbMHAddOptions,"$icfbSci_available",,,"10:icfbSci_option:Inquire about potentially recruiting the notable scientist",
+icfbSciComplete,PickGreeting,"$icfbSci_complete score:5000
+$icfbSci_ref != null","ShowPersonVisual
+IcfbCompleteMission $icfbSci_ref
+unset $icfbSci_complete",,"0:icfbMHContinueOpt:Continue",
+,,,,,,
+# Sci Market Interactions,,,,,,
+icfbSciMarketRaidOption,PopulateOptions,"$icfbSci_isMarket","SetOptionColor icfbSciMarketRaidOpt buttonShortcut",,"50:icfbSciMarketRaidOpt:Conduct a raid to abduct the target scientist",
+icfbSciMarketBribeOption,PopulateOptions,"$icfbSci_isMarket","SetOptionColor icfbSciMarketBribeOpt buttonShortcut",,"50:icfbSciMarketBribeOpt:Open a channel to bribe the target scientist",
+icfbSciMarketSPOption,PopulateOptions,"$icfbSci_isMarket","SetStoryOption icfbSciMarketSPOpt 1 hireMerc general ""You come up with a plan to recruit the scientist more peacefully.""",,"50:icfbSciMarketSPOpt:Find another way to recruit the scientist",
+"#END Sci Market Interactions",,,,,,
+"#END Extract Scientist",,,,,,
 "#END Missions",,,,,,
 

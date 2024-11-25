@@ -136,14 +136,16 @@ public class IcfbQuestManager implements EveryFrameScript {
 
     @Override
     public void advance(float amount) {
-        final List<Quest> quests = getAllQuests();
-        for (Quest quest : quests) {
-            if (quest.isComplete()) {
-                broadcastQuestCompleted(quest.getId());
-                remove(quest);
-                continue;
+        try {
+            final List<Quest> quests = getAllQuests();
+            for (Quest quest : quests) {
+                if (quest.isComplete()) {
+                    broadcastQuestCompleted(quest.getId());
+                    remove(quest);
+                    continue;
+                }
+                quest.advance(amount);
             }
-            quest.advance(amount);
-        }
+        } catch (Exception ignored) {}
     }
 }

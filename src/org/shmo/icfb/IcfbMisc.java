@@ -124,7 +124,8 @@ public class IcfbMisc {
         return pickMarket(new MarketPickerPredicate() {
             @Override
             public boolean isValid(MarketAPI market) {
-                return !market.isHidden()
+                return !market.isInvalidMissionTarget()
+                        && !market.isHidden()
                         && market.getSize() >= minSize
                         && factionIdSet.contains(market.getFactionId());
             }
@@ -141,7 +142,8 @@ public class IcfbMisc {
         return pickMarket(new MarketPickerPredicate() {
             @Override
             public boolean isValid(MarketAPI market) {
-                return !market.isHidden()
+                return !market.isInvalidMissionTarget()
+                        && !market.isHidden()
                         && market.getSize() >= minSize;
             }
         });

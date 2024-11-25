@@ -2,6 +2,7 @@ package org.shmo.icfb.campaign.quests.missions;
 
 import com.fs.starfarer.api.characters.PersonAPI;
 import org.shmo.icfb.campaign.quests.impl.missions.AcquireResource;
+import org.shmo.icfb.campaign.quests.impl.missions.ExtractScientist;
 import org.shmo.icfb.campaign.quests.impl.missions.StealPhaseTech;
 import org.shmo.icfb.campaign.quests.impl.missions.SubspaceFissure;
 
@@ -35,6 +36,7 @@ public class IcfbMissions {
             case SUBSPACE_FISSURE: return new SubspaceFissure(person);
             case STEAL_PHASE_TECH: return new StealPhaseTech(person);
             case ACQUIRE_RESOURCE: return new AcquireResource(person);
+            case EXTRACT_SCIENTIST: return new ExtractScientist(person);
             // TODO: Other missions
             default: return null;
         }

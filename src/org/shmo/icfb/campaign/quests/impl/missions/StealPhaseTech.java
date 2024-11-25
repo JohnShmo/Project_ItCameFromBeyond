@@ -308,11 +308,6 @@ public class StealPhaseTech extends BaseIcfbMission {
         IcfbFleetSuspicion.removeFromFleet(_fleet);
     }
 
-    @NotNull
-    private String getReasonId() {
-        return getData().missionGiver.getId() + ":" + getId();
-    }
-
     private boolean planetIsValid() {
         return _planetWithBase != null && (_planetWithBase.getMarket() == null || !_planetWithBase.getMarket().isInEconomy());
     }

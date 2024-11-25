@@ -37,30 +37,32 @@ public class QuantumInversionPlugin extends BaseEveryFrameCombatPlugin {
 
     @Override
     public void advance(float amount, List<InputEventAPI> events) {
-        CombatEngineAPI engine = Global.getCombatEngine();
-        if (engine == null)
-            return;
-        if (engine.isPaused())
-            return;
-        _timePassed += amount;
-        final float keyframeInterval =
-                IcfbGlobal.getSettings().shipSystem.quantumInversionKeyframeInterval;
+        try {
+            CombatEngineAPI engine = Global.getCombatEngine();
+            if (engine == null)
+                return;
+            if (engine.isPaused())
+                return;
+            _timePassed += amount;
+            final float keyframeInterval =
+                    IcfbGlobal.getSettings().shipSystem.quantumInversionKeyframeInterval;
 
-        final List<ShipAPI> ships = getShipsWithQuantumInversion(engine);
-        for (ShipAPI ship : ships) {
-            QuantumInversionSystem.drawGhost(ship);
+            final List<ShipAPI> ships = getShipsWithQuantumInversion(engine);
+            for (ShipAPI ship : ships) {
+                QuantumInversionSystem.drawGhost(ship);
 
-            if (QuantumInversionSystem.isPlaying(ship)) {
-                QuantumInversionSystem.play(ship, amount);
-            } else {
-                if (!QuantumInversionSystem.isActive(ship)) {
-                    if (_timePassed >= keyframeInterval)
-                        QuantumInversionSystem.record(ship, _timePassed);
+                if (QuantumInversionSystem.isPlaying(ship)) {
+                    QuantumInversionSystem.play(ship, amount);
+                } else {
+                    if (!QuantumInversionSystem.isActive(ship)) {
+                        if (_timePassed >= keyframeInterval)
+                            QuantumInversionSystem.record(ship, _timePassed);
+                    }
                 }
             }
-        }
 
-        if (_timePassed >= keyframeInterval)
-            _timePassed -= keyframeInterval;
+            if (_timePassed >= keyframeInterval)
+                _timePassed -= keyframeInterval;
+        } catch (Exception ignored) {}
     }
 }
