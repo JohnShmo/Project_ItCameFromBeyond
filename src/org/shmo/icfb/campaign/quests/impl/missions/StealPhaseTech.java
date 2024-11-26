@@ -313,6 +313,26 @@ public class StealPhaseTech extends BaseIcfbMission {
     }
 
     @Override
+    public void addBulletPoints(TooltipMakerAPI info, int stageIndex) {
+        if (stageIndex == 0) {
+            info.addPara(
+                    "Find the secret research facility in the %s",
+                    0,
+                    Misc.getHighlightColor(),
+                    getLocationName()
+            );
+        }
+        if (stageIndex == 1) {
+            info.addPara(
+                    "Return to %s",
+                    0,
+                    getData().missionGiver.getFaction().getBaseUIColor(),
+                    getData().missionGiver.getName().getFullName()
+            );
+        }
+    }
+
+    @Override
     public void addDescriptionBody(TooltipMakerAPI info, int stageIndex) {
         Data data = getData();
         Color hl = Misc.getHighlightColor();
@@ -322,7 +342,7 @@ public class StealPhaseTech extends BaseIcfbMission {
 
         if (stageIndex == 0) {
             info.addPara(
-                    "A secret base lies hidden somewhere in the %s system. It would take many cycles to find it via " +
+                    "A secret base lies hidden somewhere in the %s. It would take many cycles to find it via " +
                             "trial and error. Instead, you are instructed to locate the %s fleet roaming the system, " +
                             "and %s.",
                     0,

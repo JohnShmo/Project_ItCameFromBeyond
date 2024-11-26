@@ -1,3 +1,11 @@
+0.1.0a-alpha
+
+> "Save safe" - recommended to start a new save to experience the new content. !!Please finish any in-progress repeatable missions with a certain NPC before updating to ensure compatibility!!
+- Added - several new mission types, replacing the generic missions given by a certain NPC
+- Added - a new music track to go along with that NPC
+- Adjusted - portrait art
+- Fixed - crash caused by Ballistic Preloader ship system
+
 0.0.8b-indev (hotfix)
 
 - Adjusted - visuals (made sprites less bad)

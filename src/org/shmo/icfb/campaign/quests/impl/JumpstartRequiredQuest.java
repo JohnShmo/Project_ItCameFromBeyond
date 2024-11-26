@@ -573,10 +573,10 @@ public class JumpstartRequiredQuest implements QuestFactory {
                     public void end() {
                         Misc.makeUnimportant(xent, ID);
                         Misc.makeUnimportant(xent.getMarket().getPrimaryEntity(), ID);
-                        IcfbMissionHub.removeHub(xent);
                         Global.getSector().getMemoryWithoutUpdate().unset(IcfbMemFlags.XENT_SPECIAL_MISSION_COMPLETE);
                         Global.getSector().getMemoryWithoutUpdate().set(IcfbMemFlags.JUMPSTART_REQUIRED_COMPLETE, true);
                         xent.getMarket().getCommDirectory().getEntryForPerson(xent).setHidden(true);
+                        IcfbMissionHub.removeHub(xent);
                     }
                 }
         );

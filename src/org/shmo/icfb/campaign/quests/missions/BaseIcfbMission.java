@@ -123,7 +123,7 @@ public abstract class BaseIcfbMission implements IcfbMission {
                     Misc.getHighlightColor(),
                     data.missionGiver.getName().getFullName(),
                     Misc.getRoundedValue(data.repReward * 100),
-                    Misc.getRoundedValue((data.missionGiver.getRelToPlayer().getRel() + data.repReward) * 100)
+                    Misc.getRoundedValue(Math.min(100, (data.missionGiver.getRelToPlayer().getRel() + data.repReward) * 100))
             );
         Quest quest = IcfbQuestManager.getInstance().getQuest(data.missionGiver.getId() + ":" + getId());
         quest.progressToFinalStep();

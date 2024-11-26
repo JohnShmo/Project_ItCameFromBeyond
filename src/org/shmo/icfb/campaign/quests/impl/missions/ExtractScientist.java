@@ -1,13 +1,19 @@
 package org.shmo.icfb.campaign.quests.impl.missions;
 
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.CampaignFleetAPI;
+import com.fs.starfarer.api.campaign.FleetAssignment;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
+import com.fs.starfarer.api.impl.campaign.ids.Abilities;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
+import com.fs.starfarer.api.impl.campaign.ids.FleetTypes;
+import com.fs.starfarer.api.impl.campaign.ids.MemFlags;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
+import org.lwjgl.util.vector.Vector2f;
 import org.shmo.icfb.IcfbMisc;
 import org.shmo.icfb.campaign.IcfbFactions;
 import org.shmo.icfb.campaign.quests.Quest;
@@ -23,9 +29,12 @@ public class ExtractScientist extends BaseIcfbMission {
     public static final String MARINES_REQUIRED_KEY = "$icfbSci_marinesRequired";
     public static final String CREDITS_REQUIRED_KEY = "$icfbSci_creditsRequired";
     public static final String CREDITS_STRING_KEY = "$icfbSci_creditsString";
+    public static final String PROGRESS_KEY = "$icfbSci_progress";
     public static final String IS_MARKET_KEY = "$icfbSci_isMarket";
     public static final String COMPLETE_KEY = "$icfbSci_complete";
     public static final String REF_KEY = "$icfbSci_ref";
+
+    private CampaignFleetAPI _fleet = null;
 
     public ExtractScientist(PersonAPI person) {
         final Data data = getData();
@@ -49,7 +58,7 @@ public class ExtractScientist extends BaseIcfbMission {
         data.repReward = 0.05f;
         data.repPenalty = 0.02f;
         data.xpReward = 2500;
-        data.timeLimitDays = 60;
+        data.timeLimitDays = 90;
         data.creditReward = 52500 + (market.getSize() * 2500);
 
         MemoryAPI memory = person.getMemoryWithoutUpdate();
@@ -75,12 +84,26 @@ public class ExtractScientist extends BaseIcfbMission {
             public void end() {
                 cleanupStage0();
             }
+
+            @Override
+            public boolean isComplete() {
+                return getData().targetLocation.getMemoryWithoutUpdate().getBoolean(PROGRESS_KEY);
+            }
         });
 
         addStep(quest, 1, new BaseQuestStepScript() {
             @Override
             public void start() {
                 initStage1();
+            }
+
+            @Override
+            public void advance(float deltaTime) {
+                if (_fleet != null && !_fleet.isExpired()) {
+                    if (Global.getSector().getPlayerFleet().isVisibleToSensorsOf(_fleet)) {
+                        _fleet.getAbility(Abilities.EMERGENCY_BURN).activate();
+                    }
+                }
             }
 
             @Override
@@ -105,6 +128,23 @@ public class ExtractScientist extends BaseIcfbMission {
         Misc.makeImportant(data.missionGiver, getReasonId());
         data.missionGiver.getMemoryWithoutUpdate().set(COMPLETE_KEY, true);
         data.missionGiver.getMemoryWithoutUpdate().set(REF_KEY, this);
+
+        _fleet = createFleet(
+                data.targetFaction.getId(),
+                FleetTypes.TASK_FORCE,
+                data.targetFaction.getDisplayName() + " Retribution Fleet",
+                200,
+                true,
+                true
+        );
+        Vector2f location = Global.getSector().getPlayerFleet().getLocationInHyperspace();
+
+        Global.getSector().getHyperspace().addEntity(_fleet);
+        _fleet.setLocation(location.x, location.y);
+        Misc.setFlagWithReason(_fleet.getMemoryWithoutUpdate(), MemFlags.MEMORY_KEY_MAKE_HOSTILE, getReasonId(), true, data.timeLimitDays);
+        Misc.setFlagWithReason(_fleet.getMemoryWithoutUpdate(), MemFlags.MEMORY_KEY_ALLOW_LONG_PURSUIT, getReasonId(), true, data.timeLimitDays);
+        Misc.setFlagWithReason(_fleet.getMemoryWithoutUpdate(), MemFlags.MEMORY_KEY_PURSUE_PLAYER, getReasonId(), true, data.timeLimitDays);
+        Misc.setFlagWithReason(_fleet.getMemoryWithoutUpdate(), MemFlags.MEMORY_KEY_MAKE_ALWAYS_PURSUE, getReasonId(), true, data.timeLimitDays);
     }
 
     private void ensureMarketIsValid() {
@@ -113,7 +153,7 @@ public class ExtractScientist extends BaseIcfbMission {
         final SectorEntityToken entity = data.targetMarket.getPrimaryEntity();
         final MemoryAPI memory = entity.getMemoryWithoutUpdate();
 
-        memory.set(MARINES_REQUIRED_KEY, calculateCreditsRequired());
+        memory.set(MARINES_REQUIRED_KEY, calculateMarinesRequired());
         memory.set(CREDITS_REQUIRED_KEY, calculateCreditsRequired());
         memory.set(CREDITS_STRING_KEY, Misc.getDGSCredits(calculateCreditsRequired()));
     }
@@ -122,6 +162,7 @@ public class ExtractScientist extends BaseIcfbMission {
         final Data data = getData();
         Misc.makeUnimportant(data.targetMarket.getPrimaryEntity(), getReasonId());
         Misc.setFlagWithReason(data.targetMarket.getPrimaryEntity().getMemoryWithoutUpdate(), IS_MARKET_KEY, getReasonId(), false, 0);
+        data.targetMarket.getPrimaryEntity().getMemoryWithoutUpdate().unset(PROGRESS_KEY);
     }
 
     private void cleanupStage1() {
@@ -130,6 +171,7 @@ public class ExtractScientist extends BaseIcfbMission {
         Misc.makeUnimportant(data.missionGiver, getReasonId());
         data.missionGiver.getMemoryWithoutUpdate().unset(COMPLETE_KEY);
         data.missionGiver.getMemoryWithoutUpdate().unset(REF_KEY);
+        _fleet = null;
     }
 
     @Override

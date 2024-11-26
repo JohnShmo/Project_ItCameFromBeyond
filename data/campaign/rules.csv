@@ -102,6 +102,7 @@ icfbXentLeave,DialogOptionSelected,"$option == cutCommLink
 $id == icfb_xent score:1000","IcfbMusic stop
 ShowDefaultVisual
 EndConversation",,,
+icfbXentDefaultGreeting,icfbXentPickGreeting,,"SetShortcut cutCommLink ""ESCAPE""","""Come back to me later, once your mission is complete.""","0:cutCommLink:Cut the comm link",
 ,,,,,,
 # Xent Convo,,,,,,
 icfbXentGreeting0,icfbXentPickGreeting,"$global.icfbAwaitingAgentContact","FireAll icfbXentPopulateOptions","The comm link whirs to life, static dancing across your screen. An almost motionless visage appears, his augmentations and visor are the first thing you notice.
@@ -223,8 +224,12 @@ icfbXentResBlurb,IcfbMHAddBlurb_icfbRes,"$id == icfb_xent score:1000",,"Xent pul
 "#END Xent Acquire Resource",,,,,,
 ,,,,,,
 # Xent Extract Scientist,,,,,,
-icfbXentSciDesc,icfbSciDesc,"$id == icfb_xent score:1000",,"> Sci Desc",,
-icfbXentSciBlurb,IcfbMHAddBlurb_icfbSci,"$id == icfb_xent score:1000",,"> Sci Blurb",,
+icfbXentSciDesc,icfbSciDesc,"$id == icfb_xent score:1000","SetTextHighlights $icfbSci_market $icfbSci_reward $icfbSci_timeLimit","""Well then,"" Xent begins, ""The details of this mission are rather straight-forward. Though the means by which you complete it are up in the air. I'll let you discuss strategy with your own personal collaborators.""
+
+""A scientist with some notoriety resides on $icfbSci_market. Their genius would aid our great work considerably, if we had access to it. Whether you make them come willingly or not, I'm sure they'll find themselves far more 'cooperative' once you bring them here. I'll send you details on the person in question,"" he says, transferring relevant data to your Tri-pad.
+
+""Be prepared to allocate a small bribe, or perhaps a squadron of marines. A reward of $icfbSci_reward is on the table if you can get them to me within $icfbSci_timeLimit days.""",,
+icfbXentSciBlurb,IcfbMHAddBlurb_icfbSci,"$id == icfb_xent score:1000",,"Xent briefly shows a selection of photos depicting a man wearing a lab coat making public appearances, ""I've found a researcher that may aid us in our great work, if only you could extract them from their current residence...""",,
 "#END Xent Extract Scientist",,,,,,
 "#END Xent Missions",,,,,,
 ,,,,,,
@@ -562,7 +567,7 @@ By following a fleet here, you were made aware of a secret base located on the p
 He lets out a hearty laugh, temping you to reciprocate his mild insanity. But you hired him for a reason, and a job's a job. Illegal phase technology isn't going to steal itself - probably.
 
 You have $player.marines marines available for this operation.",,
-icfbPhsLeaveBaseOption,icfbPhsBaseOptions,,"SetShortcut icfbPhsLeaveBase ""ESCAPE""",,"100:defaultLeave:Leave",
+icfbPhsLeaveBaseOption,icfbPhsBaseOptions,,"SetShortcut defaultLeave ""ESCAPE""",,"100:defaultLeave:Leave",
 icfbPhsRaidBaseOption,icfbPhsBaseOptions,"$player.marines >= $global.icfbPhsMarineCount",,,"0:icfbPhsRaidBaseOpt:Execute the raid",
 icfbPhsRaidBase,DialogOptionSelected,"$option == icfbPhsRaidBaseOpt","IcfbPlaySound ui_raid_finished 1 1
 $icfbPhsInteracted = true","You send a few shuttles to the planet's surface, where they skim across as low as possible to avoid detection. One fires a breaching missile, which barrels towards the known location of the concealed hangar door. Hidden point defense batteries stir to life, spinning up machine guns in a vain attempt to intercept the surprise attack. A violent explosion rocks the half-deployed blast doors, shielding your incursion with a veil of heavy smoke and ash.
@@ -613,6 +618,51 @@ unset $icfbSci_complete",,"0:icfbMHContinueOpt:Continue",
 icfbSciMarketRaidOption,PopulateOptions,"$icfbSci_isMarket","SetOptionColor icfbSciMarketRaidOpt buttonShortcut",,"50:icfbSciMarketRaidOpt:Conduct a raid to abduct the target scientist",
 icfbSciMarketBribeOption,PopulateOptions,"$icfbSci_isMarket","SetOptionColor icfbSciMarketBribeOpt buttonShortcut",,"50:icfbSciMarketBribeOpt:Open a channel to bribe the target scientist",
 icfbSciMarketSPOption,PopulateOptions,"$icfbSci_isMarket","SetStoryOption icfbSciMarketSPOpt 1 hireMerc general ""You come up with a plan to recruit the scientist more peacefully.""",,"50:icfbSciMarketSPOpt:Find another way to recruit the scientist",
+icfbSciMarketBack,DialogOptionSelected,"$option == icfbSciMarketBackOpt","FireAll PopulateOptions",,,
+icfbSciMarketRaidNotEnough,DialogOptionSelected,"$option == icfbSciMarketRaidOpt
+$player.marines < $icfbSci_marinesRequired","SetTextHighlights $icfbSci_marinesRequired $player.marines
+SetShortcut icfbSciMarketBackOpt ""ESCAPE""","Organizing a raid to abduct the researcher is no small task. You'll need at least $icfbSci_marinesRequired marines for a successful operation. This action also won't go unnoticed by local authorities, and may lower your reputation with them.
+
+Your fleet is currently carrying $player.marines marines.","100:icfbSciMarketBackOpt:Consider your other options",
+icfbSciMarketRaid,DialogOptionSelected,"$option == icfbSciMarketRaidOpt
+$player.marines >= $icfbSci_marinesRequired","SetTextHighlights $icfbSci_marinesRequired $player.marines
+SetShortcut icfbSciMarketBackOpt ""ESCAPE""","Organizing a raid to abduct the researcher is no small task. You'll need at least $icfbSci_marinesRequired marines for a successful operation. This action also won't go unnoticed by local authorities, and may lower your reputation with them.
+
+Your fleet is currently carrying $player.marines marines.","0:icfbSciMarketRaidConfirmOpt:Conduct the raid
+100:icfbSciMarketBackOpt:Consider your other options",
+icfbSciMarketRaidConfirm,DialogOptionSelected,"$option == icfbSciMarketRaidConfirmOpt","IcfbPlaySound ui_raid_finished 1 1
+AdjustRep $faction.id -1 -0.1
+unset $icfbSci_isMarket
+$icfbSci_progress = true
+SetShortcut defaultLeave ""ESCAPE""","You give the orders, and a taskforce is swiftly organized. The marines under your command understand the mission perfectly: get in, grab the nerd in a labcoat, get out.
+
+A brief skirmish with local peacekeeping officers ends in their surrender to your superior forces, and before the enemy can call in backup, your marines storm the building where the target is working.
+
+Once the target is extracted, and before a larger conflict ensues, a shuttle is ordered to move everyone out of there. You'd best leave port before people start asking too many questions.","100:defaultLeave:Leave",
+icfbSciMarketBribeNotEnough,DialogOptionSelected,"$option == icfbSciMarketBribeOpt
+$player.credits < $icfbSci_creditsRequired","SetTextHighlights $icfbSci_creditsString
+SetShortcut icfbSciMarketBackOpt ""ESCAPE""","Your chosen ambassador gets back to you with the rundown of the situation, ""They want $icfbSci_creditsString. They call it a 'hiring fee', but I call it piracy. What do you think, captain?""","100:icfbSciMarketBackOpt:Consider your other options",
+icfbSciMarketBribe,DialogOptionSelected,"$option == icfbSciMarketBribeOpt
+$player.credits >= $icfbSci_creditsRequired","SetTextHighlights $icfbSci_creditsString
+SetShortcut icfbSciMarketBackOpt ""ESCAPE""","Your chosen ambassador gets back to you with the rundown of the situation, ""They want $icfbSci_creditsString. They call it a 'hiring fee', but I call it piracy. What do you think, captain?""","0:icfbSciMarketBribeConfirmOpt:Confirm the credit transfer
+100:icfbSciMarketBackOpt:Consider your other options",
+icfbSciMarketBribeConfirm,DialogOptionSelected,"$option == icfbSciMarketBribeConfirmOpt","AddRemoveCommodity credits -$icfbSci_creditsRequired
+IcfbPlaySound ui_acquired_blueprint 1 1
+unset $icfbSci_isMarket
+$icfbSci_progress = true
+SetShortcut defaultLeave ""ESCAPE""","After your 'purchase', a shuttle flies down to an agreed upon location for extraction.
+
+""I'm glad we could come to an agreement, captain $playerFirstName,"" the scientist smugly remarks as they disembark into your hangar bay, ""I look forward to working with you in the future.""
+
+Despite his enthusiasm, you know it's probably not the best idea to stick around. He was involved in an important project for $theFaction, and they won't take his absence lightly.","100:defaultLeave:Leave",
+icfbSciMarketSPConfirm,DialogOptionSelected,"$option == icfbSciMarketSPOpt","IcfbPlaySound ui_acquired_blueprint 1 1
+unset $icfbSci_isMarket
+$icfbSci_progress = true
+SetShortcut defaultLeave ""ESCAPE""","You have a comm link opened with the scientist. Your bridge crew watch and wait with anticipation. Over the link, you divulge the plans of Xent Alabaster - without mentioning his name, of course. The potential of the shift drive seems to paint a greedy expression across the face of the researcher. You choose your words carefully, avoiding any that may alert the scientist - or anybody listening - from getting the wrong idea.
+
+""I'm glad we could come to an agreement, captain $playerFirstName,"" the scientist remarks as they disembark into your hangar bay, ""I look forward to working with you in the future.""
+
+Despite his enthusiasm, you know it's probably not the best idea to stick around. He was involved in an important project for $theFaction, and they won't take his absence lightly.","100:defaultLeave:Leave",
 "#END Sci Market Interactions",,,,,,
 "#END Extract Scientist",,,,,,
 "#END Missions",,,,,,
