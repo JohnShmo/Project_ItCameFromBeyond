@@ -12,7 +12,9 @@ import org.shmo.icfb.IcfbGlobal;
 import org.shmo.icfb.IcfbLog;
 import org.shmo.icfb.IcfbMisc;
 import org.shmo.icfb.campaign.intel.ShiftJumpDamageIntel;
+import org.shmo.icfb.campaign.plugins.ShifterRiftCloud;
 import org.shmo.icfb.campaign.scripts.IcfbShiftDriveManager;
+import org.shmo.icfb.graphics.ShifterRiftRenderer;
 import org.shmo.icfb.utilities.ShmoMath;
 
 import java.util.ArrayList;
@@ -75,6 +77,13 @@ public class ShiftJump {
 
     private static void doJump(CampaignFleetAPI fleet, SectorEntityToken destination) {
         JumpPointAPI.JumpDestination dest = new JumpPointAPI.JumpDestination(destination, null);
+        ShifterRiftCloud.create(
+                destination.getContainingLocation(),
+                destination.getLocation().x,
+                destination.getLocation().y,
+                180,
+                2.5f
+        );
         Global.getSector().doHyperspaceTransition(fleet, fleet, dest);
         fleet.setNoEngaging(2.0f);
         fleet.clearAssignments();
@@ -303,6 +312,13 @@ public class ShiftJump {
 
         despawnPrimedPing();
         spawnJumpPing(fleet);
+        ShifterRiftCloud.create(
+                fleet.getContainingLocation(),
+                fleet.getLocation().x,
+                fleet.getLocation().y,
+                180,
+                2.5f
+        );
         resetTarget();
 
         if (fleet.isPlayerFleet()) {

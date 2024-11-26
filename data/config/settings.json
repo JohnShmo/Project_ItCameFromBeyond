@@ -21,6 +21,11 @@
 			"shifter_01":"graphics/ItCameFromBeyond/portraits/Shifter_01.png",
 			"shifter_01_static":"graphics/ItCameFromBeyond/portraits/Shifter_01_Static.png",
 		},
+		"icfb_fx":{
+			"shifter_rift_core":"graphics/ItCameFromBeyond/fx/shifter_rift_core.png",
+			"shifter_rift_fringe":"graphics/ItCameFromBeyond/fx/shifter_rift_fringe.png",
+			"shifter_rift_mask":"graphics/ItCameFromBeyond/fx/shifter_rift_mask.png",
+		}
 	},
 	"designTypeColors":{
 		"Boundless Engineering":[245,169,199,255],
