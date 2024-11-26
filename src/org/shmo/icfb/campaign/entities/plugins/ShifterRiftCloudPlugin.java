@@ -1,4 +1,4 @@
-package org.shmo.icfb.campaign.plugins;
+package org.shmo.icfb.campaign.entities.plugins;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignEngineLayers;
@@ -16,7 +16,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShifterRiftCloud extends BaseCustomEntityPlugin {
+public class ShifterRiftCloudPlugin extends BaseCustomEntityPlugin {
     private static class CloudInstance {
         Vector2f location;
         float angle;
@@ -34,6 +34,7 @@ public class ShifterRiftCloud extends BaseCustomEntityPlugin {
 
     public enum State {
         IN,
+        TRANSITION,
         OUT
     }
 
@@ -58,6 +59,27 @@ public class ShifterRiftCloud extends BaseCustomEntityPlugin {
     private List<CloudInstance> _cloudInstances = null;
     private State _state = State.IN;
     private float _lifeTime = 0;
+
+    public void setState(State state) {
+        _state = state;
+    }
+
+    public State getState() {
+        return _state;
+    }
+
+    public void setLocation(float x, float y) {
+        if (_params == null)
+            return;
+        final float prevX = _params.x;
+        final float prevY = _params.y;
+        final float diffX = x - prevX;
+        final float diffY = y - prevY;
+        for (CloudInstance cloudInstance : _cloudInstances) {
+            cloudInstance.location.x += diffX;
+            cloudInstance.location.y += diffY;
+        }
+    }
 
     private void createCloudInstance(float cx, float cy, float distance) {
         if (_cloudInstances == null)
@@ -135,20 +157,19 @@ public class ShifterRiftCloud extends BaseCustomEntityPlugin {
         if (Global.getSector().isPaused())
             return;
 
-        if (_lifeTime <= 0) {
-            _state = State.OUT;
-        }
-        else {
-            _lifeTime -= amount;
+        if (_params.lifeTime > 0) {
+            if (_lifeTime <= 0 && _state.equals(State.IN)) {
+                _state = State.TRANSITION;
+            } else {
+                _lifeTime -= amount;
+            }
         }
 
         if (_state.equals(State.IN)) {
             for (CloudInstance cloudInstance : _cloudInstances) {
                 cloudInstance.inLifeTime += amount * 2;
-                if (cloudInstance.inLifeTime > 1)
-                    cloudInstance.inLifeTime = 1;
             }
-        } else {
+        } else if (_state.equals(State.OUT)) {
             float highestLifetime = -1;
             for (CloudInstance cloudInstance : _cloudInstances) {
                 if (cloudInstance.outLifeTime > highestLifetime)
@@ -160,6 +181,11 @@ public class ShifterRiftCloud extends BaseCustomEntityPlugin {
                 entity = null;
                 _cloudInstances = null;
             }
+        } else {
+            for (CloudInstance cloudInstance : _cloudInstances) {
+                cloudInstance.outLifeTime = Math.min(cloudInstance.inLifeTime, cloudInstance.outLifeTime);
+            }
+            _state = State.OUT;
         }
     }
 
@@ -167,19 +193,33 @@ public class ShifterRiftCloud extends BaseCustomEntityPlugin {
     public void render(CampaignEngineLayers layer, ViewportAPI viewport) {
         if (entity == null || entity.isExpired())
             return;
+        if (_params == null)
+            return;
         if (_cloudInstances == null || _cloudInstances.isEmpty())
             return;
+
         final ShifterRiftRenderer riftRenderer = new ShifterRiftRenderer();
+
         for (CloudInstance cloudInstance : _cloudInstances) {
             if (cloudInstance.inLifeTime <= 0)
                 continue;
             ShifterRiftRenderer.Request request = new ShifterRiftRenderer.Request();
-            request.location = cloudInstance.location;
+
             final float lt = _state.equals(State.IN) ? cloudInstance.inLifeTime : cloudInstance.outLifeTime;
-            request.scale = cloudInstance.size * ShmoMath.easeInOutQuad(Math.min(Math.max(lt, 0f), 1f));
+            final float t = ShmoMath.easeInOutQuad(Math.min(Math.max(lt, 0f), 1f));
+            final Vector2f center = new Vector2f(_params.x, _params.y);
+            final Vector2f location = new Vector2f(cloudInstance.location.x, cloudInstance.location.y);
+
+            request.location = ShmoMath.lerp(center, location, 0.7f + (t * 0.3f));
+            request.scale = cloudInstance.size * t;
             request.angle = cloudInstance.angle;
             riftRenderer.addRequest(request);
         }
-        riftRenderer.render();
+
+        if (layer.equals(CampaignEngineLayers.TERRAIN_6B)) {
+            riftRenderer.renderFringe();
+        } else if (layer.equals(CampaignEngineLayers.BELOW_STATIONS)) {
+            riftRenderer.renderCore();
+        }
     }
 }

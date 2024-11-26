@@ -55,7 +55,7 @@
 		"showIconOnMap":false,
 		"showNameOnMap":false,
 		"interactable":false,
-		"layers":[STATIONS],
-		"pluginClass":"org.shmo.icfb.campaign.plugins.ShifterRiftCloud",
+		"layers":[TERRAIN_6B, BELOW_STATIONS],
+		"pluginClass":"org.shmo.icfb.campaign.entities.plugins.ShifterRiftCloudPlugin",
 	}
 }
