@@ -11,9 +11,8 @@ import org.lwjgl.util.vector.Vector2f;
 import org.shmo.icfb.IcfbGlobal;
 import org.shmo.icfb.IcfbLog;
 import org.shmo.icfb.IcfbMisc;
-import org.shmo.icfb.campaign.entities.ShifterRiftCloud;
 import org.shmo.icfb.campaign.intel.ShiftJumpDamageIntel;
-import org.shmo.icfb.campaign.entities.plugins.ShifterRiftCloudPlugin;
+import org.shmo.icfb.campaign.entities.plugins.ShifterRiftCloud;
 import org.shmo.icfb.campaign.scripts.IcfbShiftDriveManager;
 import org.shmo.icfb.utilities.ShmoMath;
 
@@ -77,7 +76,7 @@ public class ShiftJump {
 
     private static void doJump(CampaignFleetAPI fleet, SectorEntityToken destination) {
         JumpPointAPI.JumpDestination dest = new JumpPointAPI.JumpDestination(destination, null);
-        new ShifterRiftCloud(
+        ShifterRiftCloud.create(
                 destination.getContainingLocation(),
                 destination.getLocation().x,
                 destination.getLocation().y,
@@ -175,10 +174,10 @@ public class ShiftJump {
             if (crAfterUse == 0) {
                 if (tryApplyDamage(member, rng)) {
                     eventMessage = member.getShipName() + " was damaged due to complications during Shift Jump.";
-                    Global.getSector().getIntelManager().addIntel(new ShiftJumpDamageIntel(eventMessage));
+                    Global.getSector().getCampaignUI().addMessage(eventMessage, Misc.getNegativeHighlightColor());
                 } else if (tryDisable(member, rng)) {
                     eventMessage = member.getShipName() + " was destroyed due to complications during Shift Jump.";
-                    Global.getSector().getIntelManager().addIntel(new ShiftJumpDamageIntel(eventMessage));
+                    Global.getSector().getCampaignUI().addMessage(eventMessage, Misc.getNegativeHighlightColor());
                 }
             }
             repairTracker.applyCREvent(-crCost, eventMessage);
@@ -312,7 +311,7 @@ public class ShiftJump {
 
         despawnPrimedPing();
         spawnJumpPing(fleet);
-        new ShifterRiftCloud(
+        ShifterRiftCloud.create(
                 fleet.getContainingLocation(),
                 fleet.getLocation().x,
                 fleet.getLocation().y,

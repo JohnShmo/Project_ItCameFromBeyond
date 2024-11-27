@@ -22,4 +22,8 @@
 			}
 		],
 	},
+	
+	"icfb_shifter_rift_loop":[
+		{"file":"sounds/sfx_campaign/icfb_shifter_rift_loop_00.ogg","pitch":0.25,"volume":0.8},
+    ],
 }

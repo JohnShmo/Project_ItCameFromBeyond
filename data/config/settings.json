@@ -24,7 +24,6 @@
 		"icfb_fx":{
 			"shifter_rift_core":"graphics/ItCameFromBeyond/fx/shifter_rift_core.png",
 			"shifter_rift_fringe":"graphics/ItCameFromBeyond/fx/shifter_rift_fringe.png",
-			"shifter_rift_mask":"graphics/ItCameFromBeyond/fx/shifter_rift_mask.png",
 		}
 	},
 	"designTypeColors":{

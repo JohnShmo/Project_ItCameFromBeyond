@@ -168,7 +168,7 @@ public class ShmoMath {
         return 1f - (float)Math.cos((t * Math.PI) / 2);
     }
 
-    public static float eastOutSine(float t) {
+    public static float easeOutSine(float t) {
         return (float)Math.sin((t * Math.PI) / 2);
     }
 
