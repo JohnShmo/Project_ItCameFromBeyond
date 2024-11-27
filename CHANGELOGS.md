@@ -1,3 +1,8 @@
+0.1.1a-alpha
+
+- Added - new VFX and SFX for Shift Jump
+- Fixed - potential crash when abandoning a mission in a particular way
+
 0.1.0a-alpha
 
 > "Save safe" - recommended to start a new save to experience the new content. !!Please finish any in-progress repeatable missions with a certain NPC before updating to ensure compatibility!!

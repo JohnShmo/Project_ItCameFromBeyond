@@ -24,7 +24,6 @@
 	"icfb_subspace_fissure": {
 		"defaultRadius":50, # used if radius<0 in addCustomEntity()
 		"icon":"graphics/icons/black_hole_well.png",
-		"sprite":"graphics/stations/gate_glow_concentric.png",
 		"spriteWidth":50,
 		"spriteHeight":50,
 		"detectionRange":2000,

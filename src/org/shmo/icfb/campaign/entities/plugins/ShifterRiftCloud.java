@@ -8,6 +8,7 @@ import com.fs.starfarer.api.combat.ViewportAPI;
 import com.fs.starfarer.api.impl.campaign.BaseCustomEntityPlugin;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.util.Misc;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.util.vector.Vector2f;
 import org.shmo.icfb.graphics.ShifterRiftCloudRenderer;
 import org.shmo.icfb.utilities.ShmoMath;
@@ -48,25 +49,9 @@ public class ShifterRiftCloud extends BaseCustomEntityPlugin {
         params.duration = duration;
         SectorEntityToken entity;
         if (location != null) {
-            entity = location.addCustomEntity(
-                    null,
-                    null,
-                    "icfb_shifter_rift_cloud",
-                    Factions.NEUTRAL,
-                    params
-            );
-            entity.setLocation(x, y);
-            entity.setFacing(Misc.random.nextFloat() * 360);
+            entity = spawnEntity(location, x, y, params);
         } else {
-            entity = Global.getSector().getHyperspace().addCustomEntity(
-                    null,
-                    null,
-                    "icfb_shifter_rift_cloud",
-                    Factions.NEUTRAL,
-                    params
-            );
-            entity.setLocation(x, y);
-            entity.setFacing(Misc.random.nextFloat() * 360);
+            entity = spawnEntity(Global.getSector().getHyperspace(), x, y, params);
             if (entity.getContainingLocation() != null)
                 entity.getContainingLocation().removeEntity(entity);
         }
@@ -75,6 +60,21 @@ public class ShifterRiftCloud extends BaseCustomEntityPlugin {
 
     public static ShifterRiftCloud create(LocationAPI location, float x, float y, float radius) {
         return create(location, x, y, radius, -1);
+    }
+
+    @NotNull
+    private static SectorEntityToken spawnEntity(LocationAPI location, float x, float y, Params params) {
+        SectorEntityToken entity;
+        entity = location.addCustomEntity(
+                null,
+                null,
+                "icfb_shifter_rift_cloud",
+                Factions.NEUTRAL,
+                params
+        );
+        entity.setLocation(x, y);
+        entity.setFacing(Misc.random.nextFloat() * 360);
+        return entity;
     }
 
     private Params _params = null;
@@ -109,6 +109,12 @@ public class ShifterRiftCloud extends BaseCustomEntityPlugin {
         if (_params == null || entity == null || entity.isExpired())
             return new Vector2f();
         return new Vector2f(_params.x, _params.y);
+    }
+
+    public void setFacing(float angle) {
+        if (entity == null)
+            return;
+        entity.setFacing(angle);
     }
 
     public LocationAPI getContainingLocation() {
@@ -195,116 +201,119 @@ public class ShifterRiftCloud extends BaseCustomEntityPlugin {
 
     @Override
     public void advance(float amount) {
+        try {
+            if (entity == null || entity.isExpired())
+                return;
+            if (_params == null)
+                return;
+            if (_cloudInstances == null || _cloudInstances.isEmpty())
+                return;
+            if (Global.getSector().isPaused())
+                return;
+            _params.x = entity.getLocation().x;
+            _params.y = entity.getLocation().y;
+
+            if (_params.duration > 0) {
+                if (_lifeTime <= 0 && _state.equals(State.IN)) {
+                    _state = State.TRANSITION;
+                } else {
+                    _lifeTime -= amount;
+                }
+            }
+
+            final float soundLoopFade;
+            if (_state.equals(State.IN)) {
+                float highestLifetime = -1;
+                for (CloudInstance cloudInstance : _cloudInstances) {
+                    if (cloudInstance.inLifeTime > highestLifetime)
+                        highestLifetime = cloudInstance.inLifeTime;
+                    cloudInstance.inLifeTime += amount * 2;
+                }
+                soundLoopFade = ShmoMath.easeOutCirc(Math.max(Math.min(1f, highestLifetime / 2f), 0f));
+            } else if (_state.equals(State.OUT)) {
+                float highestLifetime = -1;
+                for (CloudInstance cloudInstance : _cloudInstances) {
+                    if (cloudInstance.outLifeTime > highestLifetime)
+                        highestLifetime = cloudInstance.outLifeTime;
+                    cloudInstance.outLifeTime -= amount * 2;
+                }
+                if (highestLifetime <= 0) {
+                    Misc.fadeAndExpire(entity);
+                    entity = null;
+                    _cloudInstances = null;
+                    _state = State.END;
+                }
+                soundLoopFade = ShmoMath.easeOutCirc(Math.max(Math.min(1f, highestLifetime / 2f), 0f));
+            } else if (_state.equals(State.TRANSITION)) {
+                for (CloudInstance cloudInstance : _cloudInstances) {
+                    cloudInstance.outLifeTime = Math.min(cloudInstance.inLifeTime, cloudInstance.outLifeTime);
+                }
+                _state = State.OUT;
+                soundLoopFade = 1f;
+            } else {
+                soundLoopFade = 0f;
+            }
+            playSoundLoop(0.5f + soundLoopFade * 0.5f, soundLoopFade);
+        } catch (Exception ignored) {}
+    }
+
+    private void playSoundLoop(float pitch, float volume) {
         if (entity == null || entity.isExpired())
             return;
         if (_params == null)
             return;
-        if (_cloudInstances == null || _cloudInstances.isEmpty())
+        if (!entity.isInCurrentLocation())
             return;
-        if (Global.getSector().isPaused())
+        if (!entity.isVisibleToPlayerFleet())
             return;
-        _params.x = entity.getLocation().x;
-        _params.y = entity.getLocation().y;
 
-        if (_params.duration > 0) {
-            if (_lifeTime <= 0 && _state.equals(State.IN)) {
-                _state = State.TRANSITION;
-            } else {
-                _lifeTime -= amount;
-            }
-        }
-
-        if (_state.equals(State.IN)) {
-            float highestLifetime = -1;
-            for (CloudInstance cloudInstance : _cloudInstances) {
-                if (cloudInstance.inLifeTime > highestLifetime)
-                    highestLifetime = cloudInstance.inLifeTime;
-                cloudInstance.inLifeTime += amount * 2;
-            }
-            float t = ShmoMath.easeOutCirc(Math.max(Math.min(1f, highestLifetime / 2f), 0f));
-            Global.getSoundPlayer().playLoop(
-                    "icfb_shifter_rift_loop",
-                    this,
-                    0.5f + t * 0.5f,
-                    t,
-                    entity.getLocation(), entity.getVelocity(),
-                    0.1f,
-                    0.1f
-            );
-        } else if (_state.equals(State.OUT)) {
-            float highestLifetime = -1;
-            for (CloudInstance cloudInstance : _cloudInstances) {
-                if (cloudInstance.outLifeTime > highestLifetime)
-                    highestLifetime = cloudInstance.outLifeTime;
-                cloudInstance.outLifeTime -= amount * 2;
-            }
-            float t = ShmoMath.easeOutCirc(Math.max(Math.min(1f, highestLifetime / 2f), 0f));
-            Global.getSoundPlayer().playLoop(
-                    "icfb_shifter_rift_loop",
-                    this,
-                    0.5f + t * 0.5f,
-                    t,
-                    entity.getLocation(), entity.getVelocity(),
-                    0.1f,
-                    0.1f
-            );
-            if (highestLifetime <= 0) {
-                Misc.fadeAndExpire(entity);
-                entity = null;
-                _cloudInstances = null;
-                _state = State.END;
-            }
-        } else if (_state.equals(State.TRANSITION)) {
-            for (CloudInstance cloudInstance : _cloudInstances) {
-                cloudInstance.outLifeTime = Math.min(cloudInstance.inLifeTime, cloudInstance.outLifeTime);
-            }
-            _state = State.OUT;
-            Global.getSoundPlayer().playLoop(
-                    "icfb_shifter_rift_loop",
-                    this,
-                    1.0f,
-                    1.0f,
-                    entity.getLocation(),
-                    entity.getVelocity(),
-                    0.1f,
-                    0.1f
-            );
-        }
+        Global.getSoundPlayer().playLoop(
+                "icfb_shifter_rift_loop",
+                this,
+                pitch,
+                volume,
+                entity.getLocation(),
+                entity.getVelocity(),
+                0.1f,
+                0.1f
+        );
     }
 
     @Override
     public void render(CampaignEngineLayers layer, ViewportAPI viewport) {
-        if (entity == null || entity.isExpired())
-            return;
-        if (_params == null)
-            return;
-        if (_cloudInstances == null || _cloudInstances.isEmpty())
-            return;
+        try {
+            if (entity == null || entity.isExpired())
+                return;
+            if (_params == null)
+                return;
+            if (_cloudInstances == null || _cloudInstances.isEmpty())
+                return;
 
-        final ShifterRiftCloudRenderer riftRenderer = new ShifterRiftCloudRenderer();
+            final ShifterRiftCloudRenderer riftRenderer = new ShifterRiftCloudRenderer();
 
-        for (CloudInstance cloudInstance : _cloudInstances) {
-            if (cloudInstance.inLifeTime <= 0)
-                continue;
-            ShifterRiftCloudRenderer.Request request = new ShifterRiftCloudRenderer.Request();
+            for (CloudInstance cloudInstance : _cloudInstances) {
+                if (cloudInstance.inLifeTime <= 0)
+                    continue;
+                final ShifterRiftCloudRenderer.Request request = new ShifterRiftCloudRenderer.Request();
 
-            final float lifeTime = _state.equals(State.IN) ? cloudInstance.inLifeTime : cloudInstance.outLifeTime;
-            final float t = ShmoMath.easeInOutQuad(Math.min(Math.max(lifeTime, 0f), 1f));
-            final Vector2f center = new Vector2f(_params.x, _params.y);
-            Vector2f location = new Vector2f(_params.x + cloudInstance.x, _params.y + cloudInstance.y);
-            if (entity.getFacing() != 0f)
-                location = Misc.rotateAroundOrigin(location, entity.getFacing(), center);
+                final float lifeTime = _state.equals(State.IN) ? cloudInstance.inLifeTime : cloudInstance.outLifeTime;
+                final float t = ShmoMath.easeInOutQuad(Math.min(Math.max(lifeTime, 0f), 1f));
+                final Vector2f center = new Vector2f(_params.x, _params.y);
+                Vector2f location = new Vector2f(_params.x + cloudInstance.x, _params.y + cloudInstance.y);
+                if (entity.getFacing() != 0f)
+                    location = Misc.rotateAroundOrigin(location, entity.getFacing(), center);
 
-            request.location = ShmoMath.lerp(center, location, 0.7f + (t * 0.3f));
-            request.scale = cloudInstance.size * t;
-            request.angle = cloudInstance.angle;
-            riftRenderer.addRequest(request);
-        }
+                request.location = ShmoMath.lerp(center, location, 0.7f + (t * 0.3f));
+                request.scale = cloudInstance.size * t;
+                request.angle = cloudInstance.angle;
+                riftRenderer.addRequest(request);
+            }
 
-        if (layer.equals(CampaignEngineLayers.TERRAIN_6B)) {
-            riftRenderer.renderFringe();
-        } else if (layer.equals(CampaignEngineLayers.BELOW_STATIONS)) {
-            riftRenderer.renderCore();
-        }
+            if (layer.equals(CampaignEngineLayers.TERRAIN_6B)) {
+                riftRenderer.renderFringe();
+            } else if (layer.equals(CampaignEngineLayers.BELOW_STATIONS)) {
+                riftRenderer.renderCore();
+            }
+        } catch (Exception ignored) {}
     }
 }

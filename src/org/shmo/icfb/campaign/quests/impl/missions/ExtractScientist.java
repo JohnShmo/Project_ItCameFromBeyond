@@ -160,17 +160,22 @@ public class ExtractScientist extends BaseIcfbMission {
 
     private void cleanupStage0() {
         final Data data = getData();
-        Misc.makeUnimportant(data.targetMarket.getPrimaryEntity(), getReasonId());
-        Misc.setFlagWithReason(data.targetMarket.getPrimaryEntity().getMemoryWithoutUpdate(), IS_MARKET_KEY, getReasonId(), false, 0);
-        data.targetMarket.getPrimaryEntity().getMemoryWithoutUpdate().unset(PROGRESS_KEY);
+        if (data.targetMarket != null) {
+            Misc.makeUnimportant(data.targetMarket.getPrimaryEntity(), getReasonId());
+            Misc.setFlagWithReason(data.targetMarket.getPrimaryEntity().getMemoryWithoutUpdate(), IS_MARKET_KEY, getReasonId(), false, 0);
+            data.targetMarket.getPrimaryEntity().getMemoryWithoutUpdate().unset(PROGRESS_KEY);
+        }
     }
 
     private void cleanupStage1() {
         final Data data = getData();
-        Misc.makeUnimportant(data.targetMarket.getPrimaryEntity(), getReasonId());
-        Misc.makeUnimportant(data.missionGiver, getReasonId());
-        data.missionGiver.getMemoryWithoutUpdate().unset(COMPLETE_KEY);
-        data.missionGiver.getMemoryWithoutUpdate().unset(REF_KEY);
+        if (data.targetMarket != null)
+            Misc.makeUnimportant(data.targetMarket.getPrimaryEntity(), getReasonId());
+        if (data.missionGiver != null) {
+            Misc.makeUnimportant(data.missionGiver, getReasonId());
+            data.missionGiver.getMemoryWithoutUpdate().unset(COMPLETE_KEY);
+            data.missionGiver.getMemoryWithoutUpdate().unset(REF_KEY);
+        }
         _fleet = null;
     }
 

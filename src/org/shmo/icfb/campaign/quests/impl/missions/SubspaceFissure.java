@@ -1,5 +1,6 @@
 package org.shmo.icfb.campaign.quests.impl.missions;
 
+import com.fs.starfarer.api.EveryFrameScriptWithCleanup;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.campaign.ai.FleetAssignmentDataAPI;
@@ -9,6 +10,7 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.shmo.icfb.IcfbMisc;
 import org.shmo.icfb.campaign.IcfbFactions;
+import org.shmo.icfb.campaign.entities.plugins.ShifterRiftCloud;
 import org.shmo.icfb.campaign.quests.Quest;
 import org.shmo.icfb.campaign.quests.missions.IcfbMissions;
 import org.shmo.icfb.campaign.quests.missions.BaseIcfbMission;
@@ -22,6 +24,7 @@ public class SubspaceFissure extends BaseIcfbMission {
     private SectorEntityToken _fissure = null;
     private CampaignFleetAPI _fleet1 = null;
     private CampaignFleetAPI _fleet2 = null;
+    private ShifterRiftCloud _riftCloud = null;
 
     public SubspaceFissure(PersonAPI missionGiver) {
         Data data = getData();
@@ -151,6 +154,40 @@ public class SubspaceFissure extends BaseIcfbMission {
         _fissure.setDiscoverable(true);
         _fissure.setDiscoveryXP(2000f);
         _fissure.getMemoryWithoutUpdate().set("$icfbSubspaceFissure", true);
+        _riftCloud = ShifterRiftCloud.create(
+                _fissure.getContainingLocation(),
+                _fissure.getLocation().x,
+                _fissure.getLocation().y,
+                _fissure.getRadius()
+        );
+        _riftCloud.getEntity().setExtendedDetectedAtRange(2000f);
+        _riftCloud.getEntity().setDetectionRangeDetailsOverrideMult(2000f);
+        _riftCloud.getEntity().setSensorProfile(2000f);
+        _fissure.addScript(new EveryFrameScriptWithCleanup() {
+            @Override
+            public void cleanup() {
+                _riftCloud.expire();
+            }
+
+            @Override
+            public boolean isDone() {
+                return _fissure == null || _fissure.isExpired() || !_fissure.isAlive();
+            }
+
+            @Override
+            public boolean runWhilePaused() {
+                return false;
+            }
+
+            @Override
+            public void advance(float v) {
+                try {
+                    _riftCloud.getEntity().setSensorProfile(2000f);
+                    _riftCloud.setLocation(_fissure.getLocation().x, _fissure.getLocation().y);
+                    _riftCloud.setFacing(_fissure.getFacing());
+                } catch (Exception ignored) {}
+            }
+        });
         Misc.makeImportant(_fissure, null);
     }
 
@@ -182,6 +219,10 @@ public class SubspaceFissure extends BaseIcfbMission {
                 Misc.fadeAndExpire(_fissure, 3);
             }
             _fissure = null;
+        }
+        if (_riftCloud != null) {
+            _riftCloud.expire();
+            _riftCloud = null;
         }
     }
 

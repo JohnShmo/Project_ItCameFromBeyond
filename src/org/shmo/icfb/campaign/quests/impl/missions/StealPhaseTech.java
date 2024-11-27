@@ -140,10 +140,14 @@ public class StealPhaseTech extends BaseIcfbMission {
     }
 
     private void cleanupStep2() {
-        Misc.makeUnimportant(getData().targetLocation, getReasonId());
-        Misc.makeUnimportant(getData().missionGiver, getReasonId());
-        getData().missionGiver.getMemoryWithoutUpdate().unset("$icfbPhs_complete");
-        getData().missionGiver.getMemoryWithoutUpdate().unset("$" + getId() + "_ref");
+        Data data = getData();
+        if (data.targetLocation != null)
+            Misc.makeUnimportant(getData().targetLocation, getReasonId());
+        if (data.missionGiver != null) {
+            Misc.makeUnimportant(getData().missionGiver, getReasonId());
+            data.missionGiver.getMemoryWithoutUpdate().unset("$icfbPhs_complete");
+            data.missionGiver.getMemoryWithoutUpdate().unset("$" + getId() + "_ref");
+        }
     }
 
     private void ensureCompletable() {
@@ -302,10 +306,14 @@ public class StealPhaseTech extends BaseIcfbMission {
     }
 
     private void cleanupStage1() {
-        Misc.makeUnimportant(_planetWithBase, getReasonId());
-        Misc.setFlagWithReason(_planetWithBase.getMemoryWithoutUpdate(), IS_BASE_KEY, getReasonId(), false, 0);
-        _planetWithBase.getMemoryWithoutUpdate().unset(PLAYER_INTERACTED_KEY);
-        IcfbFleetSuspicion.removeFromFleet(_fleet);
+        if (_planetWithBase != null) {
+            Misc.makeUnimportant(_planetWithBase, getReasonId());
+            Misc.setFlagWithReason(_planetWithBase.getMemoryWithoutUpdate(), IS_BASE_KEY, getReasonId(), false, 0);
+            _planetWithBase.getMemoryWithoutUpdate().unset(PLAYER_INTERACTED_KEY);
+        }
+        if (_fleet != null) {
+            IcfbFleetSuspicion.removeFromFleet(_fleet);
+        }
     }
 
     private boolean planetIsValid() {

@@ -437,9 +437,11 @@ public abstract class BaseIcfbMission implements IcfbMission {
 
     @Override
     final public void cleanup() {
-        _cleanedUp = true;
-        cleanupFleets();
-        cleanupImpl();
+        try {
+            _cleanedUp = true;
+            cleanupFleets();
+            cleanupImpl();
+        } catch(Exception ignored) {}
     }
 
     protected void cleanupImpl() {}
