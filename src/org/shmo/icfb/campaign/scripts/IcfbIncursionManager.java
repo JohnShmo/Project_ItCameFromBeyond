@@ -38,7 +38,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
     public static final int MAX_POINTS = 600;
 
     public interface FactorTooltipMaker {
-        void addTooltipDesc(TooltipMakerAPI dialog);
+        void addTooltipDesc(Factor factor, TooltipMakerAPI dialog);
     }
 
     public enum Factor {
@@ -49,7 +49,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
                 false,
                 new FactorTooltipMaker() {
                     @Override
-                    public void addTooltipDesc(TooltipMakerAPI dialog) {
+                    public void addTooltipDesc(Factor factor, TooltipMakerAPI dialog) {
 
                     }
                 }
@@ -61,7 +61,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
                 false,
                 new FactorTooltipMaker() {
                     @Override
-                    public void addTooltipDesc(TooltipMakerAPI dialog) {
+                    public void addTooltipDesc(Factor factor, TooltipMakerAPI dialog) {
 
                     }
                 }
@@ -73,7 +73,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
                 true,
                 new FactorTooltipMaker() {
                     @Override
-                    public void addTooltipDesc(TooltipMakerAPI dialog) {
+                    public void addTooltipDesc(Factor factor, TooltipMakerAPI dialog) {
 
                     }
                 }
@@ -85,7 +85,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
                 true,
                 new FactorTooltipMaker() {
                     @Override
-                    public void addTooltipDesc(TooltipMakerAPI dialog) {
+                    public void addTooltipDesc(Factor factor, TooltipMakerAPI dialog) {
 
                     }
                 }
@@ -97,7 +97,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
                 true,
                 new FactorTooltipMaker() {
                     @Override
-                    public void addTooltipDesc(TooltipMakerAPI dialog) {
+                    public void addTooltipDesc(Factor factor, TooltipMakerAPI dialog) {
 
                     }
                 }
@@ -135,7 +135,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
         }
         public void addTooltipDesc(TooltipMakerAPI dialog) {
             if (hasTooltipDesc())
-                tooltipMaker.addTooltipDesc(dialog);
+                tooltipMaker.addTooltipDesc(this, dialog);
         }
     }
 
