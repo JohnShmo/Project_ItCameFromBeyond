@@ -22,16 +22,16 @@ import java.util.Set;
 
 public class IcfbIncursionManager extends BaseCampaignEventListener implements EveryFrameScript, ShiftDriveListener {
     public static final String KEY = "$IcfbIncursionManager";
-    public static final String POINTS_KEY = "$points";
-    public static final String TARGET_SYSTEM_KEY = "$targetSystem";
-    public static final String INCURSION_ACTIVE_KEY = "$incursionActive";
-    public static final String ONE_TIME_FACTORS_KEY = "$oneTimeFactors";
-    public static final String MONTHLY_FACTORS_KEY = "$monthlyFactors";
-    public static final String ACTIVATED_KEY = "$activated";
-    public static final String NERFED_KEY = "$nerfed";
-    public static final String INCURSION_TIMESTAMP_KEY = "$incursionTimestamp";
-    public static final String ONE_TIME_TIMESTAMP_KEY = "$oneTimeTimestamp";
-    public static final String SEEN_FIRST_INCURSION = "seenFirstIncursion";
+    private static final String POINTS_KEY = "$points";
+    private static final String TARGET_SYSTEM_KEY = "$targetSystem";
+    private static final String INCURSION_ACTIVE_KEY = "$incursionActive";
+    private static final String ONE_TIME_FACTORS_KEY = "$oneTimeFactors";
+    private static final String MONTHLY_FACTORS_KEY = "$monthlyFactors";
+    private static final String ACTIVATED_KEY = "$activated";
+    private static final String NERFED_KEY = "$nerfed";
+    private static final String INCURSION_TIMESTAMP_KEY = "$incursionTimestamp";
+    private static final String ONE_TIME_TIMESTAMP_KEY = "$oneTimeTimestamp";
+    private static final String SEEN_FIRST_INCURSION = "seenFirstIncursion";
 
     public static final float DURATION_OF_INCURSIONS = 60f;
     public static final float DURATION_OF_ONE_TIME_FACTORS = 5f;
@@ -332,6 +332,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
         if (!_subscribed) {
             IcfbShiftDriveManager.getInstance().addListener(this);
             Global.getSector().addListener(this);
+            _subscribed = true;
         }
     }
 
