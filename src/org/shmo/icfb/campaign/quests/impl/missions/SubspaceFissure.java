@@ -50,7 +50,7 @@ public class SubspaceFissure extends BaseIcfbMission {
     }
 
     private String getFissureId() {
-        return getData().missionGiver.getId() + ":" + getId() + ":" + "subspace_fissure";
+        return getReasonId() + ":" + "subspace_fissure";
     }
 
     private String getFissureType() {

@@ -7,6 +7,7 @@ import exerelin.campaign.SectorManager;
 import org.magiclib.util.MagicSettings;
 import org.shmo.icfb.campaign.abilities.ShiftJump;
 import org.shmo.icfb.campaign.abilities.ShiftJumpAbilityPlugin;
+import org.shmo.icfb.campaign.scripts.IcfbIncursionManager;
 import org.shmo.icfb.campaign.scripts.IcfbQuestManager;
 import org.shmo.icfb.campaign.scripts.IcfbShiftDriveManager;
 import org.shmo.icfb.utilities.ScriptInitializer;
@@ -35,6 +36,7 @@ public class IcfbModPlugin extends BaseModPlugin {
 
         ScriptInitializer.initializeScript(new IcfbShiftDriveManager.Factory());
         ScriptInitializer.initializeScript(new IcfbQuestManager.Factory());
+        ScriptInitializer.initializeScript(new IcfbIncursionManager.Factory());
 
         IcfbLog.info("" +
                 "\n#######################\n" +

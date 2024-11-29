@@ -97,6 +97,16 @@ public class IcfbMisc {
         return pickSystem(false);
     }
 
+    public static StarSystemAPI pickSystem(List<StarSystemAPI> starSystems) {
+        Random random = Misc.random;
+        StarSystemAPI pickedSystem = null;
+        if (!starSystems.isEmpty()) {
+            final int pickedIndex = random.nextInt(starSystems.size());
+            pickedSystem = starSystems.get(pickedIndex);
+        }
+        return pickedSystem;
+    }
+
     public interface MarketPickerPredicate {
         boolean isValid(MarketAPI market);
     }

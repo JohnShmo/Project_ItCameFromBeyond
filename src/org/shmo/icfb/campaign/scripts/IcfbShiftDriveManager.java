@@ -6,7 +6,6 @@ import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import org.shmo.icfb.IcfbGlobal;
 import org.shmo.icfb.campaign.abilities.ShiftJump;
-import org.shmo.icfb.campaign.intel.events.ShiftDriveEvent;
 import org.shmo.icfb.factories.ScriptFactory;
 import org.shmo.icfb.campaign.listeners.ShiftDriveListener;
 import org.shmo.icfb.utilities.MemoryHelper;
@@ -64,11 +63,6 @@ public class IcfbShiftDriveManager implements EveryFrameScript {
     }
 
     public void notifyShiftJumpUsed(CampaignFleetAPI fleet, float distanceLY) {
-        if (IcfbGlobal.getSettings().shiftDriveEvent.isEnabled) {
-            if (ShiftDriveEvent.getInstance() == null)
-                new ShiftDriveEvent();
-        }
-
         final Set<ShiftDriveListener> listeners = getListeners();
         for (ShiftDriveListener listener : listeners) {
             listener.notifyShiftJumpUsed(fleet, distanceLY);
