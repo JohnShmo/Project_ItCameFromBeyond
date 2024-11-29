@@ -31,7 +31,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
     private static final String NERFED_KEY = "$nerfed";
     private static final String INCURSION_TIMESTAMP_KEY = "$incursionTimestamp";
     private static final String ONE_TIME_TIMESTAMP_KEY = "$oneTimeTimestamp";
-    private static final String SEEN_FIRST_INCURSION = "seenFirstIncursion";
+    private static final String SEEN_FIRST_INCURSION_KEY = "$seenFirstIncursion";
 
     public static final float DURATION_OF_INCURSIONS = 60f;
     public static final float DURATION_OF_ONE_TIME_FACTORS = 5f;
@@ -200,11 +200,11 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
     }
 
     public boolean hasSeenFirstIncursion() {
-        return getMemory().getBoolean(SEEN_FIRST_INCURSION);
+        return getMemory().getBoolean(SEEN_FIRST_INCURSION_KEY);
     }
 
     public void setSeenFirstIncursion(boolean seenFirstIncursion) {
-        getMemory().set(SEEN_FIRST_INCURSION, seenFirstIncursion);
+        getMemory().set(SEEN_FIRST_INCURSION_KEY, seenFirstIncursion);
     }
 
     public boolean isActivated() {
