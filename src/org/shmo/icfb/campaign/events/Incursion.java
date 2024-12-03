@@ -2,8 +2,15 @@ package org.shmo.icfb.campaign.events;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
+import com.fs.starfarer.api.campaign.PlanetAPI;
+import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.campaign.StarSystemAPI;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
+import com.fs.starfarer.api.util.Misc;
+import org.lwjgl.util.vector.Vector2f;
+import org.shmo.icfb.IcfbGlobal;
+import org.shmo.icfb.campaign.entities.plugins.ShifterRiftCloud;
+import org.shmo.icfb.utilities.ShmoMath;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,6 +21,54 @@ public class Incursion {
     public final static String SYSTEM_KEY = "$system";
     public final static String FLEETS_KEY = "$fleets";
     public final static String ACTIVE_FLEETS_KEY = "$activeFleets";
+    public final static String SPAWN_LOCATION_KEY = "$spawnLocation";
+
+    private static SectorEntityToken createSpawnLocation(StarSystemAPI system) {
+        SectorEntityToken center = system.getCenter();
+        SectorEntityToken player = Global.getSector().getPlayerFleet();
+        if (player == null)
+            return null;
+        final boolean playerIsInSystem = center.isInCurrentLocation();
+        final PlanetAPI star = system.getStar();
+
+        if (star != null)
+            center = star;
+
+        if (playerIsInSystem) {
+            final float distanceToPlayer = Misc.getDistance(player, center);
+            final float range = player.getSensorStrength();
+            float min = Math.max(distanceToPlayer - range, IcfbGlobal.getSettings().shiftJump.arrivalDistanceFromDestination);
+            final float max = distanceToPlayer + range;
+            if (star != null) {
+                min = Math.max(min, center.getRadius() + 2f * (star.getRadius()
+                        + star.getSpec().getCoronaSize())
+                        + IcfbGlobal.getSettings().shiftJump.arrivalDistanceFromDestination);
+            }
+            final float distance = ShmoMath.lerp(min, max, Misc.random.nextFloat());
+
+            Vector2f pointing = new Vector2f();
+            pointing = Vector2f.sub(player.getLocation(), center.getLocation(), pointing);
+            pointing.normalise();
+            final float angle = Misc.getAngleInDegrees(pointing) + (Misc.random.nextFloat() - 0.5f) * 15;
+
+            Vector2f location = Misc.getUnitVectorAtDegreeAngle(angle);
+            location.scale(distance);
+
+            return system.createToken(location);
+        }
+
+        float min = IcfbGlobal.getSettings().shiftJump.arrivalDistanceFromDestination;
+        final float max = 10000f;
+        if (star != null) {
+            min = Math.max(min, center.getRadius() + 2f * (star.getRadius()
+                    + star.getSpec().getCoronaSize())
+                    + IcfbGlobal.getSettings().shiftJump.arrivalDistanceFromDestination);
+        }
+        final float distance = ShmoMath.lerp(min, max, Misc.random.nextFloat());
+        Vector2f location = Misc.getPointAtRadius(center.getLocation(), distance, Misc.random);
+
+        return system.createToken(location);
+    }
 
     private final MemoryAPI _memory;
     private boolean _initialized;
@@ -31,6 +86,31 @@ public class Incursion {
 
     public StarSystemAPI getSystem() {
         return (StarSystemAPI)getMemoryWithoutUpdate().get(SYSTEM_KEY);
+    }
+
+    public SectorEntityToken getSpawnLocation() {
+        return getMemoryWithoutUpdate().getEntity(SPAWN_LOCATION_KEY);
+    }
+
+    private void setSpawnLocation(SectorEntityToken location) {
+        if (location == null)
+            getMemoryWithoutUpdate().unset(SPAWN_LOCATION_KEY);
+        getMemoryWithoutUpdate().set(SPAWN_LOCATION_KEY, location);
+    }
+
+    private void unsetSpawnLocation() {
+        setSpawnLocation(null);
+    }
+
+    private Vector2f getPointToSpawnAt() {
+        SectorEntityToken spawnLocation = getSpawnLocation();
+        if (spawnLocation == null)
+            return null;
+        return Misc.getPointWithinRadiusUniform(
+                spawnLocation.getLocation(),
+                IcfbGlobal.getSettings().shiftJump.arrivalDistanceFromDestination,
+                Misc.random
+        );
     }
 
     @SuppressWarnings("unchecked")
@@ -77,7 +157,13 @@ public class Incursion {
     }
 
     public void start() {
+        setSpawnLocation(createSpawnLocation(getSystem()));
 
+        for (int i = 0; i < 16; i++) {
+            Vector2f point = getPointToSpawnAt();
+            if (point != null)
+                ShifterRiftCloud.create(getSystem(), point.x, point.y, 200, 120);
+        }
 
         markAsInitialized();
     }
@@ -91,7 +177,11 @@ public class Incursion {
     }
 
     public void end() {
-
+        SectorEntityToken spawnLocation = getSpawnLocation();
+        if (spawnLocation != null) {
+            Misc.fadeAndExpire(spawnLocation);
+            unsetSpawnLocation();
+        }
     }
 
     public void advance(float deltaTime) {

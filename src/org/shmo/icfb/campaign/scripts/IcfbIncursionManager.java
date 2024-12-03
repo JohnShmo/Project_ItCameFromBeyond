@@ -8,8 +8,10 @@ import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.jetbrains.annotations.Nullable;
+import org.shmo.icfb.IcfbGlobal;
 import org.shmo.icfb.IcfbLog;
 import org.shmo.icfb.IcfbMisc;
+import org.shmo.icfb.campaign.abilities.ShiftJump;
 import org.shmo.icfb.campaign.events.Incursion;
 import org.shmo.icfb.campaign.listeners.ShiftDriveListener;
 import org.shmo.icfb.factories.ScriptFactory;
@@ -30,6 +32,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
     public static final String ONE_TIME_TIMESTAMP_KEY = "$oneTimeTimestamp";
     public static final String SEEN_FIRST_INCURSION_KEY = "$seenFirstIncursion";
     public static final String INCURSION_KEY = "$incursion";
+    public static final String COUNTDOWN_TO_FIRST_INCURSION_KEY = "$countdownToFirstIncursion";
 
     public static final float DURATION_OF_INCURSIONS = 60f;
     public static final float DURATION_OF_ONE_TIME_FACTORS = 5f;
@@ -276,6 +279,24 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
         return Global.getSector().getClock().getElapsedDaysSince(getOneTimeTimestamp()) >= DURATION_OF_ONE_TIME_FACTORS;
     }
 
+    private float getCountdownToFirstIncursion() {
+        if (!getMemoryWithoutUpdate().contains(COUNTDOWN_TO_FIRST_INCURSION_KEY))
+            resetCountdownToFirstIncursion();
+        return getMemoryWithoutUpdate().getFloat(COUNTDOWN_TO_FIRST_INCURSION_KEY);
+    }
+
+    private void setCountdownToFirstIncursion(float value) {
+        getMemoryWithoutUpdate().set(COUNTDOWN_TO_FIRST_INCURSION_KEY, value);
+    }
+
+    private void progressCountdownToFirstIncursion(float amount) {
+        setCountdownToFirstIncursion(Math.max(getCountdownToFirstIncursion() - amount, 0f));
+    }
+
+    private void resetCountdownToFirstIncursion() {
+        setCountdownToFirstIncursion(15f);
+    }
+
     @Nullable
     public Incursion getCurrentIncursion() {
         if (!getMemoryWithoutUpdate().contains(INCURSION_KEY))
@@ -426,6 +447,8 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
 
     @Override
     public void advance(float deltaTime) {
+        if (Global.getSector().isPaused())
+            return;
         try {
             ensureSubscribed();
             updateIncursions(deltaTime);
@@ -453,19 +476,26 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
         if (isIncursionActive() && isIncursionTimestampExpired())
             endIncursion();
         if (!isIncursionActive() && getCurrentPoints() >= MAX_POINTS)
-            prepareIncursion();
+            prepareIncursion(deltaTime);
     }
 
-    private void prepareIncursion() {
+    private void prepareIncursion(float deltaTime) {
         final int pointsToRemove = (MAX_POINTS / 2) + Misc.random.nextInt(MAX_POINTS / 2);
         final StarSystemAPI system;
+        boolean needsCountdown = false;
         if (hasSeenFirstIncursion()) {
             system = IcfbMisc.pickSystem(Global.getSector().getEconomy().getStarSystemsWithMarkets());
         } else {
             system = getPlayerFleetSystemIfItHasMarkets();
+            needsCountdown = true;
+            if (system != null)
+                progressCountdownToFirstIncursion(deltaTime);
+            else
+                resetCountdownToFirstIncursion();
         }
-        if (system == null)
+        if (system == null || (needsCountdown && getCountdownToFirstIncursion() > 0)) {
             return;
+        }
 
         addOrRemovePoints(-pointsToRemove);
         IcfbLog.info("Preparing Incursion, and removed { " + pointsToRemove + " } points");
