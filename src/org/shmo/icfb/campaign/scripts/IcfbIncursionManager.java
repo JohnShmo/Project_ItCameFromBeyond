@@ -5,6 +5,7 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
+import com.fs.starfarer.api.impl.campaign.econ.impl.BaseIndustry;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.jetbrains.annotations.Nullable;
@@ -36,6 +37,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
 
     public static final float DURATION_OF_INCURSIONS = 60f;
     public static final float DURATION_OF_ONE_TIME_FACTORS = 5f;
+    public static final float TIME_BEFORE_FIRST_INCURSION = 20f;
     public static final int MAX_POINTS = 600;
 
     public interface FactorTooltipMaker {
@@ -51,7 +53,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
                 new FactorTooltipMaker() {
                     @Override
                     public void addTooltipDesc(FactorInstance instance, TooltipMakerAPI dialog) {
-
+                        // TODO: Tooltip
                     }
                 }
         ),
@@ -63,7 +65,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
                 new FactorTooltipMaker() {
                     @Override
                     public void addTooltipDesc(FactorInstance instance, TooltipMakerAPI dialog) {
-
+                        // TODO: Tooltip
                     }
                 }
         ),
@@ -75,7 +77,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
                 new FactorTooltipMaker() {
                     @Override
                     public void addTooltipDesc(FactorInstance instance, TooltipMakerAPI dialog) {
-
+                        // TODO: Tooltip
                     }
                 }
         )
@@ -294,7 +296,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
     }
 
     private void resetCountdownToFirstIncursion() {
-        setCountdownToFirstIncursion(15f);
+        setCountdownToFirstIncursion(TIME_BEFORE_FIRST_INCURSION);
     }
 
     @Nullable
