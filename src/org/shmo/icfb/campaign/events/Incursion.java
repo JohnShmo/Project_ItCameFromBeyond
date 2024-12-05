@@ -6,18 +6,22 @@ import com.fs.starfarer.api.campaign.PlanetAPI;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.campaign.StarSystemAPI;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
+import com.fs.starfarer.api.impl.campaign.intel.BaseIntelPlugin;
+import com.fs.starfarer.api.ui.SectorMapAPI;
+import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.lwjgl.util.vector.Vector2f;
 import org.shmo.icfb.IcfbGlobal;
 import org.shmo.icfb.campaign.entities.plugins.ShifterRiftCloud;
 import org.shmo.icfb.utilities.ShmoMath;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Incursion {
+public class Incursion extends BaseIntelPlugin {
     public final static String SYSTEM_KEY = "$system";
     public final static String FLEETS_KEY = "$fleets";
     public final static String ACTIVE_FLEETS_KEY = "$activeFleets";
@@ -76,9 +80,8 @@ public class Incursion {
 
     public Incursion(StarSystemAPI system) {
         _memory = Global.getFactory().createMemory();
-        _initialized = false;
-
         _memory.set(SYSTEM_KEY, system);
+        _initialized = false;
         setPointsContributed(25);
     }
 
@@ -167,6 +170,9 @@ public class Incursion {
                 ShifterRiftCloud.create(getSystem(), point.x, point.y, 200, 120);
         }
 
+        setImportant(true);
+        setHidden(false);
+        Global.getSector().getIntelManager().addIntel(this);
         markAsInitialized();
     }
 
@@ -195,14 +201,65 @@ public class Incursion {
     }
 
     public void advance(float deltaTime) {
-
+        super.advance(deltaTime);
+        if (isDone() || Global.getSector().isPaused())
+            return;
     }
 
+    @Override
     public boolean isDone() {
+        return isEnded();
+    }
+
+    @Override
+    public boolean isEnded() {
+        if (Global.getSector().getClock().getElapsedDaysSince(timestamp) < 1)
+            return false;
         if (!isInitialized())
             return true;
         if (getFleets().isEmpty())
             return true;
         return false;
+    }
+
+    @Override
+    protected String getName() {
+        if (getSystem() == null)
+            return "Incursion";
+        return "Incursion: " + getSystem().getName();
+    }
+
+    @Override
+    public String getIcon() {
+        return Global.getSettings().getSpriteName("icfb_events", "incursion");
+    }
+
+    @Override
+    public SectorEntityToken getMapLocation(SectorMapAPI map) {
+        StarSystemAPI system = getSystem();
+        if (system == null)
+            return null;
+        return system.getCenter();
+    }
+
+    @Override
+    public Set<String> getIntelTags(SectorMapAPI map) {
+        Set<String> tags = super.getIntelTags(map);
+        if (tags == null)
+            tags = new HashSet<>();
+        tags.add("Incursions");
+        return tags;
+    }
+
+    @Override
+    public boolean autoAddCampaignMessage() {
+        return true;
+    }
+
+    @Override
+    protected void addBulletPoints(TooltipMakerAPI info, ListInfoMode mode, boolean isUpdate, Color tc, float initPad) {
+        if (getSystem() == null)
+            return;
+        info.addPara("Location: %s", initPad, Misc.getHighlightColor(), getSystem().getName());
     }
 }

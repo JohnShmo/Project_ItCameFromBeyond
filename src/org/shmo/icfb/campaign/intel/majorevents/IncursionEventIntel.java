@@ -7,6 +7,7 @@ import com.fs.starfarer.api.impl.campaign.intel.events.BaseEventIntel;
 import com.fs.starfarer.api.impl.campaign.intel.events.BaseFactorTooltip;
 import com.fs.starfarer.api.impl.campaign.intel.events.EventFactor;
 import com.fs.starfarer.api.ui.Alignment;
+import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.shmo.icfb.campaign.events.Incursion;
@@ -14,7 +15,9 @@ import org.shmo.icfb.campaign.scripts.IcfbIncursionManager;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class IncursionEventIntel extends BaseEventIntel {
     public enum Stage {
@@ -139,7 +142,7 @@ public class IncursionEventIntel extends BaseEventIntel {
 
     @Override
     public String getIcon() {
-        return Global.getSettings().getSpriteName("icfb_icons", "shift_drive");
+        return Global.getSettings().getSpriteName("icfb_events", "incursion_event");
     }
 
     @Override
@@ -251,7 +254,7 @@ public class IncursionEventIntel extends BaseEventIntel {
     @Override
     protected String getStageIcon(Object stageId) {
         if (stageId.equals(Stage.INCURSION))
-            return Global.getSettings().getSpriteName("events", "stage_unknown_bad");
+            return Global.getSettings().getSpriteName("icfb_events", "incursion");
         return super.getStageLabel(stageId);
     }
 
@@ -265,7 +268,17 @@ public class IncursionEventIntel extends BaseEventIntel {
         return false;
     }
 
+    @Override
     protected void addBulletPoints(TooltipMakerAPI info, ListInfoMode mode, boolean isUpdate, Color tc, float initPad) {
         addEventFactorBulletPoints(info, mode, isUpdate, tc, initPad);
+    }
+
+    @Override
+    public Set<String> getIntelTags(SectorMapAPI map) {
+        Set<String> tags = super.getIntelTags(map);
+        if (tags == null)
+            tags = new HashSet<>();
+        tags.add("Incursions");
+        return tags;
     }
 }
