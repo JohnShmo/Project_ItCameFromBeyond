@@ -22,6 +22,7 @@ public class Incursion {
     public final static String FLEETS_KEY = "$fleets";
     public final static String ACTIVE_FLEETS_KEY = "$activeFleets";
     public final static String SPAWN_LOCATION_KEY = "$spawnLocation";
+    public final static String POINTS_CONTRIBUTED_KEY = "$pointsContributed";
 
     private static SectorEntityToken createSpawnLocation(StarSystemAPI system) {
         SectorEntityToken center = system.getCenter();
@@ -78,6 +79,7 @@ public class Incursion {
         _initialized = false;
 
         _memory.set(SYSTEM_KEY, system);
+        setPointsContributed(25);
     }
 
     public MemoryAPI getMemoryWithoutUpdate() {
@@ -182,6 +184,14 @@ public class Incursion {
             Misc.fadeAndExpire(spawnLocation);
             unsetSpawnLocation();
         }
+    }
+
+    public int getPointsContributed() {
+        return getMemoryWithoutUpdate().getInt(POINTS_CONTRIBUTED_KEY);
+    }
+
+    public void setPointsContributed(int points) {
+        getMemoryWithoutUpdate().set(POINTS_CONTRIBUTED_KEY, points);
     }
 
     public void advance(float deltaTime) {

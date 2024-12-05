@@ -5,18 +5,17 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
-import com.fs.starfarer.api.impl.campaign.econ.impl.BaseIndustry;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.jetbrains.annotations.Nullable;
-import org.shmo.icfb.IcfbGlobal;
 import org.shmo.icfb.IcfbLog;
 import org.shmo.icfb.IcfbMisc;
-import org.shmo.icfb.campaign.abilities.ShiftJump;
 import org.shmo.icfb.campaign.events.Incursion;
+import org.shmo.icfb.campaign.intel.majorevents.IncursionEventIntel;
 import org.shmo.icfb.campaign.listeners.ShiftDriveListener;
 import org.shmo.icfb.factories.ScriptFactory;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,11 +33,12 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
     public static final String SEEN_FIRST_INCURSION_KEY = "$seenFirstIncursion";
     public static final String INCURSION_KEY = "$incursion";
     public static final String COUNTDOWN_TO_FIRST_INCURSION_KEY = "$countdownToFirstIncursion";
+    public static final String EVENT_INTEL_KEY = "$eventIntel";
 
     public static final float DURATION_OF_INCURSIONS = 60f;
     public static final float DURATION_OF_ONE_TIME_FACTORS = 5f;
     public static final float TIME_BEFORE_FIRST_INCURSION = 20f;
-    public static final int MAX_POINTS = 600;
+    public static final int MAX_POINTS = 500;
 
     public interface FactorTooltipMaker {
         void addTooltipDesc(FactorInstance factorInstance, TooltipMakerAPI dialog);
@@ -48,24 +48,74 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
         MONTHLY_BUILDUP(
                 "monthly_buildup",
                 "Shifter Activity",
-                50,
+                40,
                 false,
                 new FactorTooltipMaker() {
                     @Override
                     public void addTooltipDesc(FactorInstance instance, TooltipMakerAPI dialog) {
-                        // TODO: Tooltip
+                        final Color sh = Global.getSettings().getDesignTypeColor("Shifter");
+                        final Color hl = Misc.getHighlightColor();
+
+                        dialog.addPara(
+                                "Unchecked %s activity eventually culminates into a larger incursion of civilized space. " +
+                                        "Currently this factor accounts for %s points per month, and this increases with the overall " +
+                                        "event progress.",
+                                0,
+                                new Color[] { sh, hl },
+                                "Shifter", Misc.getWithDGS(instance.getPoints())
+                        );
+
+                        if (!getInstance().isNerfed())
+                            dialog.addPara(
+                                    "Hostile %s fleets appear more commonly as event progress increases. " +
+                                            "Their strength seems to be bolstered by some inexplicable outside force, " +
+                                            "and they hunt you relentlessly.",
+                                    10,
+                                    sh,
+                                    "Shifter"
+                            );
+                        else
+                            dialog.addPara(
+                                    "Hostile %s fleets appear more commonly as event progress increases. " +
+                                            "Due to your actions, their strength pales in comparison to the " +
+                                            "threat they posed before.",
+                                    10,
+                                    sh,
+                                    "Shifter"
+                            );
+
+                        if (getInstance().isIncursionActive())
+                            dialog.addPara(
+                                    "A currently active incursion represents a large contribution to overall %s activity. " +
+                                            "Without being dealt with, the current incursion may rapidly result in another one elsewhere.",
+                                    10,
+                                    sh,
+                                    "Shifter"
+                            );
                     }
                 }
         ),
         SHIFT_JUMP_USE(
                 "shift_jump_use",
                 "Shift Jump Used",
-                90,
+                75,
                 true,
                 new FactorTooltipMaker() {
                     @Override
                     public void addTooltipDesc(FactorInstance instance, TooltipMakerAPI dialog) {
-                        // TODO: Tooltip
+                        final Color sh = Global.getSettings().getDesignTypeColor("Shifter");
+                        final Color hl = Misc.getHighlightColor();
+
+                        dialog.addPara(
+                                "Recent use of your %s has stirred %s activity significantly. " +
+                                        "They seem attracted to it like moths to a flame. Take care, " +
+                                        "as it's not unlikely one of their fleets will intercept you right after " +
+                                        "you make a jump.",
+                                0,
+                                new Color[]{ hl, sh },
+                                "Shift Drive",
+                                "Shifter"
+                        );
                     }
                 }
         ),
@@ -77,6 +127,9 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
                 new FactorTooltipMaker() {
                     @Override
                     public void addTooltipDesc(FactorInstance instance, TooltipMakerAPI dialog) {
+                        final Color sh = Global.getSettings().getDesignTypeColor("Shifter");
+                        final Color hl = Misc.getHighlightColor();
+
                         // TODO: Tooltip
                     }
                 }
@@ -122,25 +175,35 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
         public final Factor factor;
         public int points;
         public Object params;
+        public boolean sentIntel;
+        public long timeStamp;
         public FactorInstance(Factor factor, int points, Object params) {
             this.factor = factor;
             this.points = points;
             this.params = params;
+            this.sentIntel = false;
+            this.timeStamp = Global.getSector().getClock().getTimestamp();
         }
         public FactorInstance(Factor factor, int points) {
             this.factor = factor;
             this.points = points;
             this.params = null;
+            this.sentIntel = false;
+            this.timeStamp = Global.getSector().getClock().getTimestamp();
         }
         public FactorInstance(Factor factor, Object params) {
             this.factor = factor;
             this.points = factor.getDefaultPoints();
             this.params = params;
+            this.sentIntel = false;
+            this.timeStamp = Global.getSector().getClock().getTimestamp();
         }
         public FactorInstance(Factor factor) {
             this.factor = factor;
             this.points = factor.getDefaultPoints();
             this.params = null;
+            this.sentIntel = false;
+            this.timeStamp = Global.getSector().getClock().getTimestamp();
         }
 
         public boolean hasTooltipDesc() {
@@ -170,6 +233,18 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
 
         public Factor getFactor() {
             return factor;
+        }
+
+        public boolean getSentIntel() {
+            return sentIntel;
+        }
+
+        public void setSentIntel(boolean hasIntel) {
+            this.sentIntel = hasIntel;
+        }
+
+        public long getTimeStamp() {
+            return timeStamp;
         }
     }
 
@@ -310,6 +385,15 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
         getMemoryWithoutUpdate().set(INCURSION_KEY, incursion);
     }
 
+    public IncursionEventIntel getEventIntel() {
+        return (IncursionEventIntel)getMemoryWithoutUpdate().get(EVENT_INTEL_KEY);
+    }
+
+    public void createEventIntelIfNeeded() {
+        if (getEventIntel() == null)
+            getMemoryWithoutUpdate().set(EVENT_INTEL_KEY, new IncursionEventIntel());
+    }
+
     @SuppressWarnings("unchecked")
     private List<FactorInstance> getOneTimeFactors() {
         if (getMemoryWithoutUpdate().get(ONE_TIME_FACTORS_KEY) == null)
@@ -330,6 +414,10 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
 
     public List<FactorInstance> getMonthlyFactorsCopy() {
         return new ArrayList<>(getMonthlyFactors());
+    }
+
+    public boolean hasFactorInstance(FactorInstance instance) {
+        return getMonthlyFactors().contains(instance) || getOneTimeFactors().contains(instance);
     }
 
     public boolean hasMonthlyFactor(Factor factor) {
@@ -452,6 +540,8 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
         if (Global.getSector().isPaused())
             return;
         try {
+            if (hasSeenFirstIncursion())
+                createEventIntelIfNeeded();
             ensureSubscribed();
             updateIncursions(deltaTime);
             updateMonthlyBuildup();
@@ -499,6 +589,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
             return;
         }
 
+        setSeenFirstIncursion(true);
         addOrRemovePoints(-pointsToRemove);
         IcfbLog.info("Preparing Incursion, and removed { " + pointsToRemove + " } points");
         startIncursion(system);
@@ -533,10 +624,13 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
             instance = getMonthlyFactorInstance(Factor.MONTHLY_BUILDUP);
         }
         if (instance != null) {
+            int extraPoints = getCurrentPoints() / 20;
+            Incursion incursion = getCurrentIncursion();
+            extraPoints += incursion != null ? getCurrentIncursion().getPointsContributed() : 0;
             if (isNerfed()) {
-                instance.points = Factor.MONTHLY_BUILDUP.defaultPoints / 4;
+                instance.points = (Factor.MONTHLY_BUILDUP.defaultPoints / 4) + extraPoints;
             } else {
-                instance.points = Factor.MONTHLY_BUILDUP.defaultPoints;
+                instance.points = Factor.MONTHLY_BUILDUP.defaultPoints + extraPoints;
             }
         }
     }
@@ -544,7 +638,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
     private void updateOneTimeFactors() {
         final List<FactorInstance> oneTimeFactors = getOneTimeFactors();
         if (!oneTimeFactors.isEmpty() && isOneTimeTimestampExpired()) {
-            oneTimeFactors.remove(oneTimeFactors.size() - 1);
+            oneTimeFactors.remove(0);
             updateOneTimeTimestamp();
         }
     }
