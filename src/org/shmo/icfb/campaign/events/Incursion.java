@@ -82,7 +82,6 @@ public class Incursion extends BaseIntelPlugin {
         _memory = Global.getFactory().createMemory();
         _memory.set(SYSTEM_KEY, system);
         _initialized = false;
-        setPointsContributed(25);
     }
 
     public MemoryAPI getMemoryWithoutUpdate() {
@@ -169,7 +168,8 @@ public class Incursion extends BaseIntelPlugin {
             if (point != null)
                 ShifterRiftCloud.create(getSystem(), point.x, point.y, 200, 120);
         }
-
+        timestamp = Global.getSector().getClock().getTimestamp();
+        setPointsContributed(25);
         setImportant(true);
         setHidden(false);
         Global.getSector().getIntelManager().addIntel(this);

@@ -543,7 +543,9 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
             updateIncursions(deltaTime);
             updateMonthlyBuildup();
             updateOneTimeFactors();
-        } catch (Exception ignored) {}
+        } catch (Exception exception) {
+            IcfbLog.error(exception.getMessage());
+        }
     }
 
     private void ensureSubscribed() {
