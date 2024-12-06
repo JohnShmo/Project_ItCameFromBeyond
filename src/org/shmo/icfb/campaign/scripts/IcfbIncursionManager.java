@@ -22,20 +22,16 @@ import java.util.List;
 public class IcfbIncursionManager extends BaseCampaignEventListener implements EveryFrameScript, ShiftDriveListener {
     public static final String KEY = "$IcfbIncursionManager";
     public static final String POINTS_KEY = "$points";
-    public static final String TARGET_SYSTEM_KEY = "$targetSystem";
-    public static final String INCURSION_ACTIVE_KEY = "$incursionActive";
     public static final String ONE_TIME_FACTORS_KEY = "$oneTimeFactorInstances";
     public static final String MONTHLY_FACTORS_KEY = "$monthlyFactorInstances";
     public static final String ACTIVATED_KEY = "$activated";
     public static final String NERFED_KEY = "$nerfed";
-    public static final String INCURSION_TIMESTAMP_KEY = "$incursionTimestamp";
     public static final String ONE_TIME_TIMESTAMP_KEY = "$oneTimeTimestamp";
     public static final String SEEN_FIRST_INCURSION_KEY = "$seenFirstIncursion";
-    public static final String INCURSION_KEY = "$incursion";
+    public static final String INCURSIONS_KEY = "$incursions";
     public static final String COUNTDOWN_TO_FIRST_INCURSION_KEY = "$countdownToFirstIncursion";
     public static final String EVENT_INTEL_KEY = "$eventIntel";
 
-    public static final float DURATION_OF_INCURSIONS = 60f;
     public static final float DURATION_OF_ONE_TIME_FACTORS = 5f;
     public static final float TIME_BEFORE_FIRST_INCURSION = 20f;
     public static final int MAX_POINTS = 500;
@@ -84,7 +80,15 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
                                     "Shifter"
                             );
 
-                        if (getInstance().isIncursionActive())
+                        if (getInstance().getIncursionCount() > 1) {
+                            dialog.addPara(
+                                    "Several currently active incursions represents a large contribution to overall %s activity. " +
+                                            "Without being dealt with, the incursions may rapidly result in another one elsewhere.",
+                                    10,
+                                    sh,
+                                    "Shifter"
+                            );
+                        } else if (getInstance().isIncursionActive())
                             dialog.addPara(
                                     "A currently active incursion represents a large contribution to overall %s activity. " +
                                             "Without being dealt with, the current incursion may rapidly result in another one elsewhere.",
@@ -98,7 +102,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
         SHIFT_JUMP_USE(
                 "shift_jump_use",
                 "Shift Jump Used",
-                75,
+                50,
                 true,
                 new FactorTooltipMaker() {
                     @Override
@@ -288,18 +292,6 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
         setCurrentPoints(getCurrentPoints() + points);
     }
 
-    public StarSystemAPI getTargetSystem() {
-        return (StarSystemAPI) getMemoryWithoutUpdate().get(TARGET_SYSTEM_KEY);
-    }
-
-    private void setTargetSystem(StarSystemAPI system) {
-        getMemoryWithoutUpdate().set(TARGET_SYSTEM_KEY, system);
-    }
-
-    private void unsetTargetStarSystem() {
-        getMemoryWithoutUpdate().unset(TARGET_SYSTEM_KEY);
-    }
-
     public boolean isNerfed() {
         return getMemoryWithoutUpdate().getBoolean(NERFED_KEY);
     }
@@ -322,22 +314,6 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
 
     public void setActivated(boolean activated) {
         getMemoryWithoutUpdate().set(ACTIVATED_KEY, activated);
-    }
-
-    private long getIncursionTimestamp() {
-        return getMemoryWithoutUpdate().getLong(INCURSION_TIMESTAMP_KEY);
-    }
-
-    private void setIncursionTimestamp(long timestamp) {
-        getMemoryWithoutUpdate().set(INCURSION_TIMESTAMP_KEY, timestamp);
-    }
-
-    private void updateIncursionTimestamp() {
-        setIncursionTimestamp(Global.getSector().getClock().getTimestamp());
-    }
-
-    private boolean isIncursionTimestampExpired() {
-        return Global.getSector().getClock().getElapsedDaysSince(getIncursionTimestamp()) >= DURATION_OF_INCURSIONS;
     }
 
     private long getOneTimeTimestamp() {
@@ -374,15 +350,31 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
         setCountdownToFirstIncursion(TIME_BEFORE_FIRST_INCURSION);
     }
 
-    @Nullable
-    public Incursion getCurrentIncursion() {
-        if (!getMemoryWithoutUpdate().contains(INCURSION_KEY))
-            return null;
-        return (Incursion) getMemoryWithoutUpdate().get(INCURSION_KEY);
+    @SuppressWarnings("unchecked")
+    private List<Incursion> getIncursions() {
+        MemoryAPI memory = getMemoryWithoutUpdate();
+        if (!memory.contains(INCURSIONS_KEY))
+            memory.set(INCURSIONS_KEY, new ArrayList<Incursion>());
+        return (List<Incursion>) getMemoryWithoutUpdate().get(INCURSIONS_KEY);
     }
 
-    private void setCurrentIncursion(Incursion incursion) {
-        getMemoryWithoutUpdate().set(INCURSION_KEY, incursion);
+    public List<Incursion> getIncursionsCopy() {
+        return new ArrayList<>(getIncursions());
+    }
+
+    public int getIncursionCount() {
+        return getIncursions().size();
+    }
+
+    private void addIncursion(Incursion incursion) {
+        final List<Incursion> incursions = getIncursions();
+        if (!incursions.contains(incursion))
+            incursions.add(incursion);
+    }
+
+    private void removeIncursion(Incursion incursion) {
+        final List<Incursion> incursions = getIncursions();
+        incursions.remove(incursion);
     }
 
     public IncursionEventIntel getEventIntel() {
@@ -475,40 +467,22 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
     }
 
     public boolean isIncursionActive() {
-        return getMemoryWithoutUpdate().getBoolean(INCURSION_ACTIVE_KEY);
-    }
-
-    private void setIncursionActive(boolean incursionActive) {
-        if (incursionActive)
-            getMemoryWithoutUpdate().set(INCURSION_ACTIVE_KEY, true);
-        else
-            getMemoryWithoutUpdate().unset(INCURSION_ACTIVE_KEY);
+        return getIncursionCount() > 0;
     }
 
     private void startIncursion(StarSystemAPI system) {
         if (system == null)
             return;
-
         final Incursion incursion = new Incursion(system);
-        setCurrentIncursion(incursion);
-        setTargetSystem(system);
-        setIncursionActive(true);
+        addIncursion(incursion);
         incursion.start();
-
         IcfbLog.info("Incursion started in { " + system.getName() + " }");
     }
 
-    private void endIncursion() {
-        if (!isIncursionActive())
-            return;
-        if (getCurrentIncursion() != null)
-            getCurrentIncursion().end();
-
-        setCurrentIncursion(null);
-        unsetTargetStarSystem();
-        setIncursionActive(false);
-
-        IcfbLog.info("Incursion ended");
+    private void endIncursion(Incursion incursion) {
+        incursion.end();
+        removeIncursion(incursion);
+        IcfbLog.info("Incursion ended in { " + incursion.getSystem().getName() + " }");
     }
 
     private void monthlyUpdate() {
@@ -534,8 +508,6 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
 
     @Override
     public void advance(float deltaTime) {
-        if (Global.getSector().isPaused())
-            return;
         try {
             if (hasSeenFirstIncursion())
                 createEventIntelIfNeeded();
@@ -557,16 +529,14 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
     }
 
     private void updateIncursions(float deltaTime) {
-        Incursion incursion = getCurrentIncursion();
-        if (incursion != null) {
+        List<Incursion> incursions = getIncursionsCopy();
+        for (Incursion incursion : incursions) {
             if (incursion.isDone())
-                endIncursion();
+                endIncursion(incursion);
             else
                 incursion.advance(deltaTime);
         }
-        if (isIncursionActive() && isIncursionTimestampExpired())
-            endIncursion();
-        if (!isIncursionActive() && getCurrentPoints() >= MAX_POINTS)
+        if (getCurrentPoints() >= MAX_POINTS)
             prepareIncursion(deltaTime);
     }
 
@@ -591,7 +561,6 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
         setSeenFirstIncursion(true);
         addOrRemovePoints(-pointsToRemove);
         IcfbLog.info("Preparing Incursion, and removed { " + pointsToRemove + " } points");
-        updateIncursionTimestamp();
         startIncursion(system);
     }
 
@@ -624,8 +593,13 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
         }
         if (instance != null) {
             int extraPoints = getCurrentPoints() / 20;
-            Incursion incursion = getCurrentIncursion();
-            extraPoints += incursion != null ? getCurrentIncursion().getPointsContributed() : 0;
+            int incursionPoints = 0;
+            List<Incursion> incursions = getIncursionsCopy();
+            for (Incursion incursion : incursions) {
+                incursionPoints += incursion.getPointsContributed();
+            }
+            incursionPoints = Math.min(incursionPoints, 80);
+            extraPoints += incursionPoints;
             if (isNerfed()) {
                 instance.points = (Factor.MONTHLY_BUILDUP.defaultPoints / 4) + extraPoints;
             } else {

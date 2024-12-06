@@ -71,10 +71,16 @@ public class IncursionEventIntel extends BaseEventIntel {
                 causes.add(row2);
                 points.add(row2Points);
 
-                Incursion incursion = im.getCurrentIncursion();
-                if (incursion != null) {
+                List<Incursion> incursions = im.getIncursionsCopy();
+                if (!incursions.isEmpty()) {
                     String row3 = "Active incursion";
-                    int row3Points = im.getCurrentIncursion().getPointsContributed();
+                    if (incursions.size() > 1)
+                        row3 += "s";
+                    int row3Points = 0;
+                    for (Incursion incursion : incursions) {
+                        row3Points += incursion.getPointsContributed();
+                    }
+                    row3Points = Math.min(row3Points, 80);
                     causes.add(row3);
                     points.add(row3Points);
                 }
@@ -133,10 +139,8 @@ public class IncursionEventIntel extends BaseEventIntel {
     public IncursionEventIntel() {
         super();
 
-        setHidden(true);
         setMaxProgress(IcfbIncursionManager.MAX_POINTS);
         addStage(Stage.INCURSION, IcfbIncursionManager.MAX_POINTS, false, StageIconSize.LARGE);
-
         Global.getSector().getIntelManager().addIntel(this);
     }
 

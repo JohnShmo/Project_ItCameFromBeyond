@@ -12,7 +12,6 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.lwjgl.util.vector.Vector2f;
 import org.shmo.icfb.IcfbGlobal;
-import org.shmo.icfb.campaign.entities.plugins.ShifterRiftCloud;
 import org.shmo.icfb.utilities.ShmoMath;
 
 import java.awt.*;
@@ -27,6 +26,9 @@ public class Incursion extends BaseIntelPlugin {
     public final static String ACTIVE_FLEETS_KEY = "$activeFleets";
     public final static String SPAWN_LOCATION_KEY = "$spawnLocation";
     public final static String POINTS_CONTRIBUTED_KEY = "$pointsContributed";
+    public final static String DURATION_KEY = "$duration";
+
+    public static final float STANDARD_DURATION_DAYS = 90f;
 
     private static SectorEntityToken createSpawnLocation(StarSystemAPI system) {
         SectorEntityToken center = system.getCenter();
@@ -76,12 +78,18 @@ public class Incursion extends BaseIntelPlugin {
     }
 
     private final MemoryAPI _memory;
-    private boolean _initialized;
 
     public Incursion(StarSystemAPI system) {
         _memory = Global.getFactory().createMemory();
         _memory.set(SYSTEM_KEY, system);
-        _initialized = false;
+    }
+
+    private void setDurationDays(float days) {
+        getMemoryWithoutUpdate().set(DURATION_KEY, days);
+    }
+
+    public float getDurationDays() {
+        return getMemoryWithoutUpdate().getFloat(DURATION_KEY);
     }
 
     public MemoryAPI getMemoryWithoutUpdate() {
@@ -162,26 +170,11 @@ public class Incursion extends BaseIntelPlugin {
 
     public void start() {
         setSpawnLocation(createSpawnLocation(getSystem()));
-
-        for (int i = 0; i < 16; i++) {
-            Vector2f point = getPointToSpawnAt();
-            if (point != null)
-                ShifterRiftCloud.create(getSystem(), point.x, point.y, 200, 120);
-        }
-        timestamp = Global.getSector().getClock().getTimestamp();
-        setPointsContributed(25);
+        setPlayerVisibleTimestamp(Global.getSector().getClock().getTimestamp());
+        setDurationDays(STANDARD_DURATION_DAYS + ShmoMath.lerp(-15, 45, Misc.random.nextFloat()));
+        setPointsContributed(35);
         setImportant(true);
-        setHidden(false);
         Global.getSector().getIntelManager().addIntel(this);
-        markAsInitialized();
-    }
-
-    private void markAsInitialized() {
-        _initialized = true;
-    }
-
-    private boolean isInitialized() {
-        return _initialized;
     }
 
     public void end() {
@@ -193,6 +186,8 @@ public class Incursion extends BaseIntelPlugin {
     }
 
     public int getPointsContributed() {
+        if (isEnded() || isEnding())
+            return 0;
         return getMemoryWithoutUpdate().getInt(POINTS_CONTRIBUTED_KEY);
     }
 
@@ -202,36 +197,53 @@ public class Incursion extends BaseIntelPlugin {
 
     public void advance(float deltaTime) {
         super.advance(deltaTime);
-        if (isDone() || Global.getSector().isPaused())
+        if (isEnded() || isEnding())
             return;
+        startEndingIfNeeded();
+    }
+
+    private void startEndingIfNeeded() {
+        final float daysPassed = Global.getSector().getClock().getElapsedDaysSince(getPlayerVisibleTimestamp());
+        boolean shouldEnd;
+        if (daysPassed < 10)
+            shouldEnd = false;
+        else if (getFleets().isEmpty())
+            shouldEnd = true;
+        else shouldEnd = daysPassed > STANDARD_DURATION_DAYS;
+        if (!isEnding() && shouldEnd) {
+            end();
+            endAfterDelay();
+            sendUpdateIfPlayerHasIntel(null, null);
+        }
     }
 
     @Override
-    public boolean isDone() {
-        return isEnded();
-    }
-
-    @Override
-    public boolean isEnded() {
-        if (Global.getSector().getClock().getElapsedDaysSince(timestamp) < 1)
-            return false;
-        if (!isInitialized())
-            return true;
-        if (getFleets().isEmpty())
-            return true;
-        return false;
+    public float getTimeRemainingFraction() {
+        final float daysPassed = Global.getSector().getClock().getElapsedDaysSince(getPlayerVisibleTimestamp());
+        final float durationDays = getDurationDays();
+        final float timeRemaining = Math.max(durationDays - daysPassed, 0f);
+        return timeRemaining / durationDays;
     }
 
     @Override
     protected String getName() {
-        if (getSystem() == null)
+        if (!isEnding())
             return "Incursion";
-        return "Incursion: " + getSystem().getName();
+        else
+            return "Incursion Ended";
     }
 
     @Override
     public String getIcon() {
         return Global.getSettings().getSpriteName("icfb_events", "incursion");
+    }
+
+    @Override
+    public String getCommMessageSound() {
+        if (!isEnding())
+            return getSoundColonyThreat();
+        else
+            return getSoundStandardPosting();
     }
 
     @Override
@@ -249,11 +261,6 @@ public class Incursion extends BaseIntelPlugin {
             tags = new HashSet<>();
         tags.add("Incursions");
         return tags;
-    }
-
-    @Override
-    public boolean autoAddCampaignMessage() {
-        return true;
     }
 
     @Override
