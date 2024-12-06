@@ -142,7 +142,12 @@ public class IncursionEventIntel extends BaseEventIntel {
 
     @Override
     public String getIcon() {
-        return Global.getSettings().getSpriteName("icfb_events", "incursion_event");
+        if (getProgressFraction() < 0.33f)
+            return Global.getSettings().getSpriteName("icfb_events", "incursion_event_00");
+        else if (getProgressFraction() < 0.66f)
+            return Global.getSettings().getSpriteName("icfb_events", "incursion_event_01");
+        else
+            return Global.getSettings().getSpriteName("icfb_events", "incursion_event_02");
     }
 
     @Override

@@ -488,15 +488,12 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
     private void startIncursion(StarSystemAPI system) {
         if (system == null)
             return;
-        endIncursion();
 
-        setCurrentIncursion(new Incursion(system));
-        if (getCurrentIncursion() != null)
-            getCurrentIncursion().start();
-
+        final Incursion incursion = new Incursion(system);
+        setCurrentIncursion(incursion);
         setTargetSystem(system);
         setIncursionActive(true);
-        setIncursionTimestamp(Global.getSector().getClock().getTimestamp());
+        incursion.start();
 
         IcfbLog.info("Incursion started in { " + system.getName() + " }");
     }
@@ -506,8 +503,8 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
             return;
         if (getCurrentIncursion() != null)
             getCurrentIncursion().end();
-        setCurrentIncursion(null);
 
+        setCurrentIncursion(null);
         unsetTargetStarSystem();
         setIncursionActive(false);
 
@@ -592,8 +589,8 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
         setSeenFirstIncursion(true);
         addOrRemovePoints(-pointsToRemove);
         IcfbLog.info("Preparing Incursion, and removed { " + pointsToRemove + " } points");
-        startIncursion(system);
         updateIncursionTimestamp();
+        startIncursion(system);
     }
 
     @Nullable

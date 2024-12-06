@@ -26,7 +26,9 @@
 			"shifter_rift_fringe":"graphics/ItCameFromBeyond/fx/shifter_rift_fringe.png",
 		},
 		"icfb_events":{
-			"incursion_event":"graphics/ItCameFromBeyond/icons/intel/incursion_event.png",
+			"incursion_event_00":"graphics/ItCameFromBeyond/icons/intel/incursion_event_00.png",
+			"incursion_event_01":"graphics/ItCameFromBeyond/icons/intel/incursion_event_01.png",
+			"incursion_event_02":"graphics/ItCameFromBeyond/icons/intel/incursion_event_02.png",
 			"incursion":"graphics/ItCameFromBeyond/icons/intel/incursion.png",
 		}
 	},
