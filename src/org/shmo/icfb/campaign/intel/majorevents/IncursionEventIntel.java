@@ -67,7 +67,7 @@ public class IncursionEventIntel extends BaseEventIntel {
 
                 String row2 = (im.isNerfed() ? "Weakened Shifter fleets" : "Shifter fleets");
                 int row2Points = (int)(IcfbIncursionManager.Factor.MONTHLY_BUILDUP.getDefaultPoints()
-                        * (im.isIncursionActive() ? 0.25f : 1.0f));
+                        * (im.isNerfed() ? 0.25f : 1.0f));
                 causes.add(row2);
                 points.add(row2Points);
 
@@ -80,7 +80,7 @@ public class IncursionEventIntel extends BaseEventIntel {
                     for (Incursion incursion : incursions) {
                         row3Points += incursion.getPointsContributed();
                     }
-                    row3Points = Math.min(row3Points, 80);
+                    row3Points = Math.min(row3Points, IcfbIncursionManager.MAX_CONTRIBUTION_BY_ACTIVE_INCURSIONS);
                     causes.add(row3);
                     points.add(row3Points);
                 }
@@ -156,7 +156,7 @@ public class IncursionEventIntel extends BaseEventIntel {
 
     @Override
     protected String getName() {
-        return "Shifter Incursions";
+        return "Shifter Activity";
     }
 
     @Override

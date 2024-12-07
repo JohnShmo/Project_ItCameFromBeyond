@@ -1,0 +1,172 @@
+{
+	id:"icfb_shifters",
+	"color":[209,86,156,255],
+	"baseUIColor":[209,86,156,255],
+	"displayName":"Shifters",
+	"displayNameWithArticle":"the Shifters",
+	"displayNameLong":"Shifters",
+	"displayNameLongWithArticle":"the Shifters",
+	"entityNamePrefix":"Shifter",
+	"personNamePrefix":"Shifter",
+	"personNamePrefixAOrAn":"a",
+	"displayNameIsOrAre":"are",
+	"logo":"graphics/ItCameFromBeyond/factions/Shifters.png",
+	"crest":"graphics/ItCameFromBeyond/factions/Shifters_Crest.png",
+	"shipNamePrefix":"",
+	"showInIntelTab":false,
+	"music":{
+		"theme":"icfb_shifter_theme",
+		"market_neutral":"icfb_shifter_theme",
+		"market_hostile":"icfb_shifter_theme",
+		"market_friendly":"icfb_shifter_theme",
+		"encounter_neutral":"icfb_shifter_theme",
+		"encounter_hostile":"icfb_shifter_theme",
+		"encounter_friendly":"icfb_shifter_theme",
+	},
+	"shipNameSources":{
+		"OTHER":1,
+		"AZTEC":1,
+		"BEASTS":1,
+	},
+	"description":"No description yet.",
+	"names":{
+		"fringe":1,
+		"future":1,
+	},
+	# variantOverrides restricts hulls to listed variants and adjusts their probability
+	"variantOverrides":{
+	},
+	# multiplier for how often hulls show up in the faction's fleets
+	"hullFrequency":{
+		"tags":{
+		},
+		"hulls":{
+		},
+	},
+	# ships the faction gets access to when importing S&W out-of-faction
+	"shipsWhenImporting":{
+		"tags":["icfb_shifter"],
+		"hulls":[],
+	},
+	"knownShips":{
+		"tags":["icfb_shifter"],
+		"hulls":[],
+	},
+	# listing ships here will make the faction mostly use them even if other hulls become available
+	"priorityShips":{
+		"tags":["icfb_shifter"],
+		"hulls":[],
+	},
+	"knownFighters":{
+		"tags":["icfb_shifter"],
+		"fighters":[
+		],
+	},
+	"priorityFighters":{
+		"tags":["icfb_shifter"],
+		"fighters":[
+		],
+	},
+	"knownWeapons":{
+		"tags":["omega", "icfb_shifter", "merc", "ind", "independant"],
+		"weapons":[],
+	},
+	"priorityWeapons":{
+		"tags":[],
+		"weapons":[
+		],
+	},
+	"knownHullMods":{
+		"tags":["base_bp", "omega", "icfb_shifters"],
+		"hullMods":[
+			"advancedshieldemitter", # accelerated
+			"advancedoptics",
+			"turretgyros",
+			"armoredweapons",
+			"augmentedengines",
+			"autorepair",
+			"converted_hangar",
+			"eccm",
+			"ecm",
+			"expanded_deck_crew",
+			"magazines",
+			"missleracks",
+			"extendedshieldemitter",
+			"frontemitter",
+			"frontshield",  # makeshift
+			"hardenedshieldemitter",
+			"heavyarmor",
+			"insulatedengine",
+			"pointdefenseai",
+			"targetingunit",
+			"nav_relay",
+			"adaptiveshields", # omni
+			"operations_center",
+			"recovery_shuttles",
+			"fluxbreakers",
+			"solar_shielding",
+			"stabilizedshieldemitter",
+			"surveying_equipment",
+		],
+	},
+	"weaponSellFrequency":{
+	},
+	"fighterSellFrequency":{
+	},
+	"hullmodSellFrequency":{
+	},
+	"factionDoctrine":{
+		"warships":0,
+		"carriers":0,
+		"phaseShips":5,
+		
+		"officerQuality":1,
+		"shipQuality":5,
+		"numShips":3,
+		
+		"shipSize":2,
+		
+		"aggression":5,
+		
+		"combatFreighterProbability":0,     				# instead of some portion of the freighters in a fleet
+		"combatFreighterCombatUseFraction":1,				# as part of the normal combat lineup
+		"combatFreighterCombatUseFractionWhenPriority":1,   # as part of normal combat lineup, when marked as priority ship
+		"autofitRandomizeProbability":0.25,
+
+		"commanderSkillsShuffleProbability":1,
+		"commanderSkills":[
+		],
+	},
+	"illegalCommodities":[
+	],
+	"portraits":{
+		"standard_male":[
+			"graphics/ItCameFromBeyond/portraits/Shifter_02_Static.png",
+		],
+		"standard_female":[
+			"graphics/ItCameFromBeyond/portraits/Shifter_02_Static.png",
+		],
+	},
+	"ranks":{
+		"ranks":{
+		},
+		"posts":{
+		},
+	},
+	"custom":{
+		"decentralized":true,
+		"engageWhenEvenStrength":true,
+		"allowsTransponderOffTrade":true,
+		"postsNoBounties":true,
+		"pirateBehavior":true, # for fleet behavior
+		"fightToTheLast":true, # order a full assault instead of retreating, in most cases
+		"noAICoresFromAutomatedDefenses":true,
+		"officersOnAutomatedDefenses":true,
+	},
+	"fleetTypeNames":{
+		"patrolSmall":"Minor Apparition", 
+		"patrolMedium":"Manifestation", 
+		"patrolLarge":"Major Incursion", 
+		"battlestation":"Stable Incursion",
+	},
+},	

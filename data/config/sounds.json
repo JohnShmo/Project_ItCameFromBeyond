@@ -21,6 +21,13 @@
 				"volume":1
 			}
 		],
+		"icfb_shifter_theme": [
+			{
+				"file":"icfb_shifter_theme.ogg",
+				"source":"sounds/music",
+				"volume":1
+			}
+		]
 	},
 	
 	"icfb_shifter_rift_loop":[

@@ -4,6 +4,7 @@ import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.campaign.RepLevel;
 import com.fs.starfarer.api.campaign.SectorAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
+import org.shmo.icfb.campaign.IcfbFactions;
 import org.shmo.icfb.campaign.gen.FactionFactory;
 
 public class BoundlessCorvusModeFactionFactory implements FactionFactory {
@@ -18,6 +19,7 @@ public class BoundlessCorvusModeFactionFactory implements FactionFactory {
         FactionAPI church = sector.getFaction(Factions.LUDDIC_CHURCH);
         FactionAPI path = sector.getFaction(Factions.LUDDIC_PATH);
         FactionAPI league = sector.getFaction(Factions.PERSEAN);
+        FactionAPI shifters = IcfbFactions.SHIFTERS.getFaction();
 
         faction.setRelationship(path.getId(), RepLevel.HOSTILE);
         faction.setRelationship(hegemony.getId(), RepLevel.SUSPICIOUS);
@@ -27,6 +29,9 @@ public class BoundlessCorvusModeFactionFactory implements FactionFactory {
         faction.setRelationship(kol.getId(), RepLevel.INHOSPITABLE);
         faction.setRelationship(league.getId(), RepLevel.INHOSPITABLE);
         faction.setRelationship(player.getId(), RepLevel.SUSPICIOUS);
+        faction.setRelationship(shifters.getId(), RepLevel.VENGEFUL);
+
+        faction.ensureAtBest(shifters.getId(), RepLevel.HOSTILE);
 
         return faction;
     }

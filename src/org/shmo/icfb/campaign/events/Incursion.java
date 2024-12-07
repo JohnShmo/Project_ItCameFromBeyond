@@ -12,6 +12,8 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.lwjgl.util.vector.Vector2f;
 import org.shmo.icfb.IcfbGlobal;
+import org.shmo.icfb.campaign.scripts.IcfbIncursionManager;
+import org.shmo.icfb.utilities.ShifterFleetUtils;
 import org.shmo.icfb.utilities.ShmoMath;
 
 import java.awt.*;
@@ -29,6 +31,8 @@ public class Incursion extends BaseIntelPlugin {
     public final static String DURATION_KEY = "$duration";
 
     public static final float STANDARD_DURATION_DAYS = 90f;
+    public static final int MAX_POINTS_CONTRIBUTED = 50;
+    public static final int MAX_FLEETS = 20;
 
     private static SectorEntityToken createSpawnLocation(StarSystemAPI system) {
         SectorEntityToken center = system.getCenter();
@@ -65,7 +69,7 @@ public class Incursion extends BaseIntelPlugin {
         }
 
         float min = IcfbGlobal.getSettings().shiftJump.arrivalDistanceFromDestination;
-        final float max = 10000f;
+        final float max = IcfbGlobal.getSettings().shiftJump.arrivalDistanceFromDestination * 2;
         if (star != null) {
             min = Math.max(min, center.getRadius() + 2f * (star.getRadius()
                     + star.getSpec().getCoronaSize())
@@ -158,6 +162,10 @@ public class Incursion extends BaseIntelPlugin {
     private void addToActiveFleets(CampaignFleetAPI fleet) {
         if (fleet == null || !getFleets().contains(fleet))
             return;
+        Vector2f point = getPointToSpawnAt();
+        if (point == null)
+            point = new Vector2f();
+        ShifterFleetUtils.spawnFleet(fleet, getSystem(), point.x, point.y);
         getActiveFleets().add(fleet);
     }
 
@@ -168,21 +176,44 @@ public class Incursion extends BaseIntelPlugin {
         getActiveFleets().remove(fleet);
     }
 
-    public void start() {
-        setSpawnLocation(createSpawnLocation(getSystem()));
-        setPlayerVisibleTimestamp(Global.getSector().getClock().getTimestamp());
-        setDurationDays(STANDARD_DURATION_DAYS + ShmoMath.lerp(-15, 45, Misc.random.nextFloat()));
-        setPointsContributed(35);
-        setImportant(true);
-        Global.getSector().getIntelManager().addIntel(this);
+    private void cleanup() {
+        for (CampaignFleetAPI fleet : getActiveFleets()) {
+            ShifterFleetUtils.despawnFleet(fleet, getSpawnLocation());
+        }
+        getActiveFleets().clear();
+        getFleets().clear();
+        cleanupSpawnLocation();
     }
 
-    public void end() {
+    private void cleanupSpawnLocation() {
         SectorEntityToken spawnLocation = getSpawnLocation();
         if (spawnLocation != null) {
             Misc.fadeAndExpire(spawnLocation);
             unsetSpawnLocation();
         }
+    }
+
+    public void start() {
+        setSpawnLocation(createSpawnLocation(getSystem()));
+        setPlayerVisibleTimestamp(Global.getSector().getClock().getTimestamp());
+        setDurationDays(STANDARD_DURATION_DAYS + ShmoMath.lerp(-15, 45, Misc.random.nextFloat()));
+        setPointsContributed(MAX_POINTS_CONTRIBUTED);
+        setImportant(true);
+        Global.getSector().getIntelManager().addIntel(this);
+
+        for (int i = 0; i < MAX_FLEETS; i++) {
+            int fleetPoints = ShmoMath.lerp(15, 160, Misc.random.nextFloat());
+            addFleet(ShifterFleetUtils.createFleet(fleetPoints, IcfbIncursionManager.getInstance().isNerfed()));
+        }
+
+        List<CampaignFleetAPI> fleets = getFleetsCopy();
+        addToActiveFleets(fleets.get(0));
+        addToActiveFleets(fleets.get(1));
+        addToActiveFleets(fleets.get(2));
+    }
+
+    public void end() {
+        cleanup();
     }
 
     public int getPointsContributed() {
@@ -200,6 +231,40 @@ public class Incursion extends BaseIntelPlugin {
         if (isEnded() || isEnding())
             return;
         startEndingIfNeeded();
+        updateFleets(deltaTime);
+    }
+
+    private void updateFleets(float deltaTime) {
+        final Set<CampaignFleetAPI> activeFleets = getActiveFleets();
+
+        final List<CampaignFleetAPI> toRemove = new ArrayList<>();
+        for (CampaignFleetAPI fleet : activeFleets) {
+            if (!fleet.isAlive() || fleet.isExpired()) {
+                toRemove.add(fleet);
+                continue;
+            }
+        }
+        for (CampaignFleetAPI fleet : toRemove) {
+            removeFleet(fleet);
+        }
+
+        final List<CampaignFleetAPI> fleetsCopy = getFleetsCopy();
+        if (activeFleets.size() < 5) {
+            float chanceToSpawn = 0.50f * deltaTime;
+            if (Misc.random.nextFloat() <= chanceToSpawn) {
+                int index = Misc.random.nextInt(fleetsCopy.size());
+                CampaignFleetAPI fleet = getFleetsCopy().get(index);
+
+                if (!activeFleets.contains(fleet)) {
+                    addToActiveFleets(fleetsCopy.get(index));
+                }
+            }
+        }
+
+        final float fractionOfFleetsRemaining = (float)getFleets().size() / (float)MAX_FLEETS;
+        final int pointsFromFleets = (int)((MAX_POINTS_CONTRIBUTED - 10) * fractionOfFleetsRemaining);
+        final int totalPoints = pointsFromFleets + 10;
+        setPointsContributed(totalPoints);
     }
 
     private void startEndingIfNeeded() {
@@ -228,9 +293,12 @@ public class Incursion extends BaseIntelPlugin {
     @Override
     protected String getName() {
         if (!isEnding())
-            return "Incursion";
+            if (getSystem() != null)
+                return "Incursion - " + getSystem().getBaseName();
+            else
+                return "Incursion";
         else
-            return "Incursion Ended";
+            return "Incursion - Over";
     }
 
     @Override
@@ -265,8 +333,5 @@ public class Incursion extends BaseIntelPlugin {
 
     @Override
     protected void addBulletPoints(TooltipMakerAPI info, ListInfoMode mode, boolean isUpdate, Color tc, float initPad) {
-        if (getSystem() == null)
-            return;
-        info.addPara("Location: %s", initPad, Misc.getHighlightColor(), getSystem().getName());
     }
 }

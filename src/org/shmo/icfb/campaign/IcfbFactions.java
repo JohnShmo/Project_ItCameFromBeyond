@@ -7,14 +7,17 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.shmo.icfb.IcfbLog;
 import org.shmo.icfb.campaign.gen.impl.factions.BoundlessCorvusModeFactionFactory;
 import org.shmo.icfb.campaign.gen.FactionFactory;
+import org.shmo.icfb.campaign.gen.impl.factions.ShifterFactionFactory;
 
 public class IcfbFactions {
     public static final FactionData BOUNDLESS = new FactionData( "icfb_boundless");
+    public static final FactionData SHIFTERS = new FactionData( "icfb_shifters");
 
     public static void generateForCorvusMode(SectorAPI sector) {
         IcfbLog.info("  Initializing factions...");
 
         BOUNDLESS.createFaction(new BoundlessCorvusModeFactionFactory(), sector);
+        SHIFTERS.createFaction(new ShifterFactionFactory(), sector);
     }
 
     public static class FactionData {

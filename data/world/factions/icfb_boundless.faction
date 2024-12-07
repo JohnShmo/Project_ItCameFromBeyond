@@ -1,6 +1,7 @@
 {
 	id:"icfb_boundless",
 	"color":[245,169,199,255],
+	"baseUIColor":[245,169,199,255],
 	"displayName":"Boundless",
 	"displayNameWithArticle":"the Boundless",
 	"displayNameLong":"Boundless",
@@ -103,9 +104,9 @@
 	"hullmodSellFrequency":{
 	},
 	"factionDoctrine":{
-		"warships":4,
+		"warships":5,
 		"carriers":2,
-		"phaseShips":1,
+		"phaseShips":0,
 		
 		"officerQuality":4,
 		"shipQuality":2,

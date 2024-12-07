@@ -174,10 +174,12 @@ public class ShiftJump {
             if (crAfterUse == 0) {
                 if (tryApplyDamage(member, rng)) {
                     eventMessage = member.getShipName() + " was damaged due to complications during Shift Jump.";
-                    Global.getSector().getCampaignUI().addMessage(eventMessage, Misc.getNegativeHighlightColor());
+                    if (fleet.isPlayerFleet())
+                        Global.getSector().getCampaignUI().addMessage(eventMessage, Misc.getNegativeHighlightColor());
                 } else if (tryDisable(member, rng)) {
                     eventMessage = member.getShipName() + " was destroyed due to complications during Shift Jump.";
-                    Global.getSector().getCampaignUI().addMessage(eventMessage, Misc.getNegativeHighlightColor());
+                    if (fleet.isPlayerFleet())
+                        Global.getSector().getCampaignUI().addMessage(eventMessage, Misc.getNegativeHighlightColor());
                 }
             }
             repairTracker.applyCREvent(-crCost, eventMessage);

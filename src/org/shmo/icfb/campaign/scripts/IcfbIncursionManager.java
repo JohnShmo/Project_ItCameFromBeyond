@@ -35,6 +35,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
     public static final float DURATION_OF_ONE_TIME_FACTORS = 5f;
     public static final float TIME_BEFORE_FIRST_INCURSION = 20f;
     public static final int MAX_POINTS = 500;
+    public static final int MAX_CONTRIBUTION_BY_ACTIVE_INCURSIONS = 125;
 
     public interface FactorTooltipMaker {
         void addTooltipDesc(FactorInstance factorInstance, TooltipMakerAPI dialog);
@@ -598,7 +599,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
             for (Incursion incursion : incursions) {
                 incursionPoints += incursion.getPointsContributed();
             }
-            incursionPoints = Math.min(incursionPoints, 80);
+            incursionPoints = Math.min(incursionPoints, MAX_CONTRIBUTION_BY_ACTIVE_INCURSIONS);
             extraPoints += incursionPoints;
             if (isNerfed()) {
                 instance.points = (Factor.MONTHLY_BUILDUP.defaultPoints / 4) + extraPoints;
