@@ -1,0 +1,29 @@
+{
+    "displayName": "Shifter",
+    "fluxCapacitors": 10,
+    "fluxVents": 10,
+    "goalVariant": true,
+    "hullId": "icfb_gelugon",
+    "hullMods": [
+        "targetingunit",
+        "auxiliarythrusters"
+    ],
+    "quality": 0.0,
+    "variantId": "icfb_gelugon_shifter",
+    "weaponGroups": [
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 001": "ioncannon"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 000": "ioncannon"
+            }
+        }
+    ]
+}

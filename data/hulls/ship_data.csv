@@ -15,8 +15,8 @@ Hakarl,icfb_hakarl,Battlecruiser,Boundless Engineering,orion_device,22,11000,110
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 # SHIFTER,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-,icfb_beelzebufo,Beelzebufo,Shifter,icfb_quantum_inversion,5,2000,375,4250,,350,80,,130,190,130,70,130,250,PHASE,phasecloak,90,,,0.03,0.04,12,25,35,20,1,20,10,500000,8,10,800,0.25,5,5,,,,,,,"UNBOARDABLE, HIDE_IN_CODEX","icfb_shifter, no_autofit, restricted",,0.4,2,2,,6000
-,icfb_gelugon,Gelugon,Shifter,temporalshell,3,900,165,2000,,150,30,,190,190,190,180,180,100,PHASE,phasecloak,90,,,0.03,0.04,2,15,30,10,1,10,10,500000,5,20,800,0.25,3,3,,,,,,,"UNBOARDABLE, HIDE_IN_CODEX","icfb_shifter, no_autofit, restricted",,0.75,2,2,,5000
+,icfb_beelzebufo,Beelzebufo,Shifter,icfb_quantum_inversion,10,2000,375,4250,,350,80,,130,190,130,70,130,250,PHASE,phasecloak,90,,,0.03,0.04,12,25,35,20,1,20,10,500000,8,10,800,0.25,5,5,,,,,,,"UNBOARDABLE, HIDE_IN_CODEX","icfb_shifter, no_autofit, restricted",,0.4,2,2,,6000
+,icfb_gelugon,Gelugon,Shifter,temporalshell,6,900,165,2000,,150,30,,190,190,190,180,180,100,PHASE,phasecloak,90,,,0.03,0.04,2,15,30,10,1,10,10,500000,5,20,800,0.25,3,3,,,,,,,"UNBOARDABLE, HIDE_IN_CODEX","icfb_shifter, no_autofit, restricted",,0.75,2,2,,5000
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,

@@ -1,0 +1,38 @@
+{
+    "displayName": "Undoer",
+    "fluxCapacitors": 7,
+    "fluxVents": 10,
+    "goalVariant": true,
+    "hullId": "icfb_beelzebufo",
+    "hullMods": [
+        "ecm",
+        "adaptive_coils",
+        "missleracks",
+        "fluxdistributor"
+    ],
+    "quality": 0.0,
+    "variantId": "icfb_beelzebufo_undoer",
+    "weaponGroups": [
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 000": "plasma"
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 001": "sabot"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS 002": "pdburst"
+            }
+        }
+    ]
+}

@@ -75,9 +75,16 @@
 
 	# phase ships
 	"phaseSmall":{
+		
 		# Shifter
-		"icfb_gelugon_incursion": 8,
-		"icfb_beelzebufo_incursion": 8,
+		"icfb_gelugon_incursion": 1,
+		"icfb_gelugon_shifter": 5,
+		
+		"icfb_beelzebufo_incursion": 1,
+		"icfb_beelzebufo_sting": 5,
+		"icfb_beelzebufo_undoer": 5,
+		"icfb_beelzebufo_detonation": 5,
+		"icfb_beelzebufo_shifter": 5,
 	},
 	"phaseMedium":{
 		
