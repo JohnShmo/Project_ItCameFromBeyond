@@ -87,7 +87,7 @@ public class IcfbSettings {
         public FloatSetting arrivalDistanceFromDestination = new FloatSetting(500f);
 
         public void loadFromJSON(@NotNull JSONObject json) {
-            crPenaltyAtMaxRange.set((float)json.optDouble("crPenaltyAtMaxRange", crPenaltyAtMaxRange.getDefault()));
+            crPenaltyAtMaxRange.set(json, "crPenaltyAtMaxRange");
             String crPenaltyCurveString = json.optString("crPenaltyCurve", "");
             switch (crPenaltyCurveString) {
                 case "FAST": crPenaltyCurve.set(CRPenaltyCurve.FAST); break;
