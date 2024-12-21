@@ -68,8 +68,13 @@ public class BallisticPreloaderPlugin extends BaseEveryFrameCombatPlugin {
                     continue;
                 entry.expendCharge();
                 DamageAPI damage = projectile.getDamage();
-                damage.getModifier().modifyPercent(BallisticPreloader.ID, IcfbGlobal.getSettings().shipSystem.ballisticPreloaderBonusDamagePercent);
                 projectile.setCustomData(BallisticPreloader.ID, new Object());
+                if (damage == null)
+                    continue;
+                damage.getModifier().modifyPercent(
+                        BallisticPreloader.ID,
+                        IcfbGlobal.getSettings().shipSystem.ballisticPreloaderBonusDamagePercent.get()
+                );
             }
         } catch (Exception ignored) {}
     }

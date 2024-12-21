@@ -59,9 +59,11 @@ public class ThrusterPulseSystem extends BaseShipSystemScript {
 
     private void applySpeedBoost(MutableShipStatsAPI stats, float effectLevel, ShipAPI ship) {
         float speed = stats.getMaxSpeed().base;
-        speed += IcfbGlobal.getSettings().shipSystem.thrusterPulseImpulseMagnitude *
+        speed += IcfbGlobal.getSettings().shipSystem.thrusterPulseImpulseMagnitude.get() *
                 ShmoMath.easeInCubic(effectLevel);
         Vector2f velocity = ship.getVelocity();
+        if (velocity.lengthSquared() == 0f)
+            return;
         velocity.normalise();
         velocity.scale(speed);
     }

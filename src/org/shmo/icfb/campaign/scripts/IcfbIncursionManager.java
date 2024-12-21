@@ -8,6 +8,7 @@ import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.jetbrains.annotations.Nullable;
+import org.shmo.icfb.IcfbGlobal;
 import org.shmo.icfb.IcfbLog;
 import org.shmo.icfb.IcfbMisc;
 import org.shmo.icfb.campaign.events.Incursion;
@@ -35,7 +36,6 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
     public static final float DURATION_OF_ONE_TIME_FACTORS = 5f;
     public static final float TIME_BEFORE_FIRST_INCURSION = 20f;
     public static final int MAX_POINTS = 500;
-    public static final int MAX_CONTRIBUTION_BY_ACTIVE_INCURSIONS = 125;
 
     public interface FactorTooltipMaker {
         void addTooltipDesc(FactorInstance factorInstance, TooltipMakerAPI dialog);
@@ -487,6 +487,8 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
     }
 
     private void monthlyUpdate() {
+        if (!IcfbGlobal.getSettings().shiftDriveEvent.isEnabled.get())
+            return;
         int totalPoints = 0;
         for (FactorInstance factor : getMonthlyFactors()) {
             totalPoints += factor.points;
@@ -510,6 +512,8 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
     @Override
     public void advance(float deltaTime) {
         try {
+            if (!IcfbGlobal.getSettings().shiftDriveEvent.isEnabled.get())
+                setCurrentPoints(0);
             if (hasSeenFirstIncursion())
                 createEventIntelIfNeeded();
             ensureSubscribed();
@@ -599,12 +603,12 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
             for (Incursion incursion : incursions) {
                 incursionPoints += incursion.getPointsContributed();
             }
-            incursionPoints = Math.min(incursionPoints, MAX_CONTRIBUTION_BY_ACTIVE_INCURSIONS);
+            incursionPoints = Math.min(incursionPoints, IcfbGlobal.getSettings().shiftDriveEvent.maxIncursionContribution.get());
             extraPoints += incursionPoints;
             if (isNerfed()) {
-                instance.points = (Factor.MONTHLY_BUILDUP.defaultPoints / 4) + extraPoints;
+                instance.points = (IcfbGlobal.getSettings().shiftDriveEvent.basePointsPerMonth.get() / 4) + extraPoints;
             } else {
-                instance.points = Factor.MONTHLY_BUILDUP.defaultPoints + extraPoints;
+                instance.points = IcfbGlobal.getSettings().shiftDriveEvent.basePointsPerMonth.get() + extraPoints;
             }
         }
     }
@@ -619,14 +623,17 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
 
     @Override
     public void notifyShiftJumpUsed(CampaignFleetAPI fleet, float distanceLY) {
+        if (!IcfbGlobal.getSettings().shiftDriveEvent.isEnabled.get())
+            return;
+        final int pointsPerUse = IcfbGlobal.getSettings().shiftDriveEvent.pointsPerShiftJumpUse.get();
         if (!fleet.isPlayerFleet())
             return;
-        if (!isActivated() && getCurrentPoints() >= Factor.SHIFT_JUMP_USE.defaultPoints)
+        if (!isActivated() && getCurrentPoints() >= pointsPerUse)
             setActivated(true);
         if (!isNerfed())
-            addFactor(Factor.SHIFT_JUMP_USE);
+            addFactor(Factor.SHIFT_JUMP_USE, pointsPerUse);
         else
-            addFactor(Factor.SHIFT_JUMP_USE, Factor.SHIFT_JUMP_USE.defaultPoints / 2);
+            addFactor(Factor.SHIFT_JUMP_USE, pointsPerUse / 2);
     }
 
     @Override

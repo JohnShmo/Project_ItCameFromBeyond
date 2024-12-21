@@ -11,7 +11,6 @@ import org.lwjgl.util.vector.Vector2f;
 import org.shmo.icfb.IcfbGlobal;
 import org.shmo.icfb.IcfbLog;
 import org.shmo.icfb.IcfbMisc;
-import org.shmo.icfb.campaign.intel.ShiftJumpDamageIntel;
 import org.shmo.icfb.campaign.entities.plugins.ShifterRiftCloud;
 import org.shmo.icfb.campaign.scripts.IcfbShiftDriveManager;
 import org.shmo.icfb.utilities.ShmoMath;
@@ -55,7 +54,7 @@ public class ShiftJump {
         final PlanetAPI starPlanet = (PlanetAPI) star;
         final float distance = 2f * (star.getRadius()
                 + starPlanet.getSpec().getCoronaSize())
-                + IcfbGlobal.getSettings().shiftJump.arrivalDistanceFromDestination;
+                + IcfbGlobal.getSettings().shiftJump.arrivalDistanceFromDestination.get();
         final Vector2f offset = MathUtils.getRandomPointOnCircumference(null, distance);
         return starPlanet.getStarSystem().createToken(offset.x, offset.y);
     }
@@ -111,7 +110,7 @@ public class ShiftJump {
         final float normalCostPerLY = fleet.getLogistics().getFuelCostPerLightYear();
         final float costPerLY =
                 normalCostPerLY * (1f +
-                        (IcfbGlobal.getSettings().shiftJump.baseExtraFuelPercent *
+                        (IcfbGlobal.getSettings().shiftJump.baseExtraFuelPercent.get() *
                                 getFuelCostMultiplier()));
         return (int)(costPerLY * distanceInLY);
     }
@@ -135,14 +134,14 @@ public class ShiftJump {
     }
 
     public int getMaxRangeLY() {
-        return (int)(IcfbGlobal.getSettings().shiftJump.baseMaxRangeLY * getMaxRangeMultiplier());
+        return (int)(IcfbGlobal.getSettings().shiftJump.baseMaxRangeLY.get() * getMaxRangeMultiplier());
     }
 
     public float computeCRCostFractional(float t) {
         return ShmoMath.lerp(0,
-                IcfbGlobal.getSettings().shiftJump.crPenaltyAtMaxRange * getCRUseMultiplier(),
+                IcfbGlobal.getSettings().shiftJump.crPenaltyAtMaxRange.get() * getCRUseMultiplier(),
                 IcfbMisc.computeShiftJumpCRPenalty(
-                        IcfbGlobal.getSettings().shiftJump.crPenaltyCurve, t
+                        IcfbGlobal.getSettings().shiftJump.crPenaltyCurve.get(), t
                 )
         );
     }

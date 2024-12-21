@@ -253,7 +253,7 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
         }
 
         private void advance(float deltaTime) {
-            final float maxTimeSpan = IcfbGlobal.getSettings().shipSystem.quantumInversionMaxTimeSpan;
+            final float maxTimeSpan = IcfbGlobal.getSettings().shipSystem.quantumInversionMaxTimeSpan.get();
 
             for (Frame keyframe : _keyframes) {
                 keyframe.timeStamp += deltaTime;
@@ -396,7 +396,7 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
 
     private static float getFinalAlphaMult(ShipAPI ship) {
         Frame frame = getFinalKeyframe(ship);
-        final float maxTimeSpan = IcfbGlobal.getSettings().shipSystem.quantumInversionMaxTimeSpan;
+        final float maxTimeSpan = IcfbGlobal.getSettings().shipSystem.quantumInversionMaxTimeSpan.get();
         return frame.timeStamp / maxTimeSpan;
     }
 
@@ -470,7 +470,7 @@ public class QuantumInversionSystem extends BaseShipSystemScript {
     public static void play(ShipAPI ship, float deltaTime) {
         if (ship.isExpired() || ship.getHitpoints() <= 0)
             return;
-        final float maxTimeSpan = IcfbGlobal.getSettings().shipSystem.quantumInversionMaxTimeSpan;
+        final float maxTimeSpan = IcfbGlobal.getSettings().shipSystem.quantumInversionMaxTimeSpan.get();
         Data data = getData(ship);
         deltaTime *= ShmoMath.easeInQuad(getEffectLevel(ship)) * maxTimeSpan * 1.5f;
         if (!data.play(deltaTime)) {

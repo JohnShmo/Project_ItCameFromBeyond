@@ -45,7 +45,7 @@ public class QuantumInversionPlugin extends BaseEveryFrameCombatPlugin {
                 return;
             _timePassed += amount;
             final float keyframeInterval =
-                    IcfbGlobal.getSettings().shipSystem.quantumInversionKeyframeInterval;
+                    IcfbGlobal.getSettings().shipSystem.quantumInversionKeyframeInterval.get();
 
             final List<ShipAPI> ships = getShipsWithQuantumInversion(engine);
             for (ShipAPI ship : ships) {

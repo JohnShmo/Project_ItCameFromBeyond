@@ -10,6 +10,7 @@ import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
+import org.shmo.icfb.IcfbGlobal;
 import org.shmo.icfb.campaign.events.Incursion;
 import org.shmo.icfb.campaign.scripts.IcfbIncursionManager;
 
@@ -66,7 +67,7 @@ public class IncursionEventIntel extends BaseEventIntel {
                 points.add(row1Points);
 
                 String row2 = (im.isNerfed() ? "Weakened Shifter fleets" : "Shifter fleets");
-                int row2Points = (int)(IcfbIncursionManager.Factor.MONTHLY_BUILDUP.getDefaultPoints()
+                int row2Points = (int)(IcfbGlobal.getSettings().shiftDriveEvent.basePointsPerMonth.get()
                         * (im.isNerfed() ? 0.25f : 1.0f));
                 causes.add(row2);
                 points.add(row2Points);
@@ -80,7 +81,10 @@ public class IncursionEventIntel extends BaseEventIntel {
                     for (Incursion incursion : incursions) {
                         row3Points += incursion.getPointsContributed();
                     }
-                    row3Points = Math.min(row3Points, IcfbIncursionManager.MAX_CONTRIBUTION_BY_ACTIVE_INCURSIONS);
+                    row3Points = Math.min(
+                            row3Points,
+                            IcfbGlobal.getSettings().shiftDriveEvent.maxIncursionContribution.get()
+                    );
                     causes.add(row3);
                     points.add(row3Points);
                 }
@@ -275,6 +279,13 @@ public class IncursionEventIntel extends BaseEventIntel {
     @Override
     public boolean isDone() {
         return false;
+    }
+
+    @Override
+    public boolean isHidden() {
+        if (!IcfbGlobal.getSettings().shiftDriveEvent.isEnabled.get())
+            return true;
+        return super.isHidden();
     }
 
     @Override

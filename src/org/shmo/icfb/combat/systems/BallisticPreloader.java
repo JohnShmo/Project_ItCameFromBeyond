@@ -31,13 +31,13 @@ public class BallisticPreloader extends BaseShipSystemScript {
                 float pool;
                 switch (weapon.getSize()) {
                     case SMALL:
-                        pool = IcfbGlobal.getSettings().shipSystem.ballisticPreloaderSmallPool;
+                        pool = IcfbGlobal.getSettings().shipSystem.ballisticPreloaderSmallPool.get();
                         break;
                     case MEDIUM:
-                        pool = IcfbGlobal.getSettings().shipSystem.ballisticPreloaderMediumPool;
+                        pool = IcfbGlobal.getSettings().shipSystem.ballisticPreloaderMediumPool.get();
                         break;
                     case LARGE:
-                        pool = IcfbGlobal.getSettings().shipSystem.ballisticPreloaderLargePool;
+                        pool = IcfbGlobal.getSettings().shipSystem.ballisticPreloaderLargePool.get();
                         break;
                     default:
                         pool = 0f;
@@ -137,45 +137,5 @@ public class BallisticPreloader extends BaseShipSystemScript {
                 return true;
         }
         return false;
-    }
-
-    public static void addInterfaceStatusText(ShipAPI ship, String text, Vector2f textLoc) {
-        if (ship != Global.getCombatEngine().getPlayerShip()) {
-            return;
-        }
-        if (!Global.getCombatEngine().isUIShowingHUD()) {
-            return;
-        }
-        Color borderCol = GREENCOLOR;
-        if (!ship.isAlive()) {
-            borderCol = BLUCOLOR;
-        }
-        float alpha = 1;
-
-        Color shadowcolor = new Color(Color.BLACK.getRed() / 255f, Color.BLACK.getGreen() / 255f, Color.BLACK.getBlue() / 255f,
-                1f - Global.getCombatEngine().getCombatUI().getCommandUIOpacity());
-        Color color = new Color(borderCol.getRed() / 255f, borderCol.getGreen() / 255f, borderCol.getBlue() / 255f,
-                alpha * (borderCol.getAlpha() / 255f)
-                        * (1f - Global.getCombatEngine().getCombatUI().getCommandUIOpacity()));
-
-
-        final Vector2f shadowLoc = Vector2f.add(new Vector2f(1, -1),
-                textLoc, null);
-
-        if (UI_SCALING != 1) {
-            textLoc.scale(UI_SCALING);
-            shadowLoc.scale(UI_SCALING);
-            TODRAW14.setFontSize(14 * UI_SCALING);
-        }
-
-        openGL11ForText();
-        TODRAW14.setText(text);
-        TODRAW14.setMaxWidth(1000 * UI_SCALING);
-        TODRAW14.setMaxHeight(14 * UI_SCALING);
-        TODRAW14.setColor(shadowcolor);
-        TODRAW14.draw(shadowLoc);
-        TODRAW14.setColor(color);
-        TODRAW14.draw(textLoc);
-        closeGL11ForText();
     }
 }

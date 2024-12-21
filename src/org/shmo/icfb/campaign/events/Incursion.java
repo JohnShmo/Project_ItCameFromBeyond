@@ -31,7 +31,6 @@ public class Incursion extends BaseIntelPlugin {
     public final static String DURATION_KEY = "$duration";
 
     public static final float STANDARD_DURATION_DAYS = 90f;
-    public static final int MAX_POINTS_CONTRIBUTED = 50;
     public static final int MAX_FLEETS = 20;
 
     private static SectorEntityToken createSpawnLocation(StarSystemAPI system) {
@@ -41,6 +40,7 @@ public class Incursion extends BaseIntelPlugin {
             return null;
         final boolean playerIsInSystem = center.isInCurrentLocation();
         final PlanetAPI star = system.getStar();
+        final float arrivalDistance = IcfbGlobal.getSettings().shiftJump.arrivalDistanceFromDestination.get();
 
         if (star != null)
             center = star;
@@ -48,12 +48,12 @@ public class Incursion extends BaseIntelPlugin {
         if (playerIsInSystem) {
             final float distanceToPlayer = Misc.getDistance(player, center);
             final float range = player.getSensorStrength();
-            float min = Math.max(distanceToPlayer - range, IcfbGlobal.getSettings().shiftJump.arrivalDistanceFromDestination);
+            float min = Math.max(distanceToPlayer - range, arrivalDistance);
             final float max = distanceToPlayer + range;
             if (star != null) {
                 min = Math.max(min, center.getRadius() + 2f * (star.getRadius()
                         + star.getSpec().getCoronaSize())
-                        + IcfbGlobal.getSettings().shiftJump.arrivalDistanceFromDestination);
+                        + arrivalDistance);
             }
             final float distance = ShmoMath.lerp(min, max, Misc.random.nextFloat());
 
@@ -68,12 +68,12 @@ public class Incursion extends BaseIntelPlugin {
             return system.createToken(location);
         }
 
-        float min = IcfbGlobal.getSettings().shiftJump.arrivalDistanceFromDestination;
-        final float max = IcfbGlobal.getSettings().shiftJump.arrivalDistanceFromDestination * 2;
+        float min = arrivalDistance;
+        final float max = arrivalDistance * 2;
         if (star != null) {
             min = Math.max(min, center.getRadius() + 2f * (star.getRadius()
                     + star.getSpec().getCoronaSize())
-                    + IcfbGlobal.getSettings().shiftJump.arrivalDistanceFromDestination);
+                    + arrivalDistance);
         }
         final float distance = ShmoMath.lerp(min, max, Misc.random.nextFloat());
         Vector2f location = Misc.getPointAtRadius(center.getLocation(), distance, Misc.random);
@@ -124,7 +124,7 @@ public class Incursion extends BaseIntelPlugin {
             return null;
         return Misc.getPointWithinRadiusUniform(
                 spawnLocation.getLocation(),
-                IcfbGlobal.getSettings().shiftJump.arrivalDistanceFromDestination,
+                IcfbGlobal.getSettings().shiftJump.arrivalDistanceFromDestination.get(),
                 Misc.random
         );
     }
@@ -197,7 +197,7 @@ public class Incursion extends BaseIntelPlugin {
         setSpawnLocation(createSpawnLocation(getSystem()));
         setPlayerVisibleTimestamp(Global.getSector().getClock().getTimestamp());
         setDurationDays(STANDARD_DURATION_DAYS + ShmoMath.lerp(-15, 45, Misc.random.nextFloat()));
-        setPointsContributed(MAX_POINTS_CONTRIBUTED);
+        setPointsContributed(IcfbGlobal.getSettings().shiftDriveEvent.startingIncursionContribution.get());
         setImportant(true);
         Global.getSector().getIntelManager().addIntel(this);
 
@@ -262,7 +262,7 @@ public class Incursion extends BaseIntelPlugin {
         }
 
         final float fractionOfFleetsRemaining = (float)getFleets().size() / (float)MAX_FLEETS;
-        final int pointsFromFleets = (int)((MAX_POINTS_CONTRIBUTED - 10) * fractionOfFleetsRemaining);
+        final int pointsFromFleets = (int)((IcfbGlobal.getSettings().shiftDriveEvent.startingIncursionContribution.get() - 10) * fractionOfFleetsRemaining);
         final int totalPoints = pointsFromFleets + 10;
         setPointsContributed(totalPoints);
     }

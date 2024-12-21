@@ -3,23 +3,21 @@
 		"shiftJump": {
 			"crPenaltyAtMaxRange": 0.5,
 			"crPenaltyCurve": "FAST", # "FAST", "MEDIUM", "SLOW"
-			
 			"baseExtraFuelPercent": 0.25,
 			"fuelUpgradeMultiplier": 0.5,
-			
 			"baseMaxRangeLY": 10.0,
 			"rangeUpgradeMultiplier": 2.0,
-			
 			"arrivalDistanceFromDestination": 500.0,
 		},
+		
 		"shiftDriveEvent": {
-			"isEnabled": false, # Probably don't enable this yet lol
-			
-			"pointsPerLYTraveledWithShiftJump": 1,
-			"pointsPerShiftJumpUse": 5,
-			
-			"isTheHuntRepeatable": true,
+			"isEnabled": true,
+			"pointsPerShiftJumpUse": 50,
+			"basePointsPerMonth": 40,
+			"startingIncursionContribution": 50,
+			"maxIncursionContribution": 125,
 		},
+		
 		"shipSystem": {
 			## Thruster Pulse
 			"thrusterPulseImpulseMagnitude": 1200.0,

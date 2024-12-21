@@ -20,10 +20,7 @@ public class ShiftDriveEventUseFactor extends BaseEventFactor {
     public ShiftDriveEventUseFactor(float distanceLY) {
         addDistance(distanceLY);
         _timeStamp = Global.getSector().getClock().getTimestamp();
-        _progress =
-                (int)(_distanceLY *
-                        IcfbGlobal.getSettings().shiftDriveEvent.pointsPerLYTraveledWithShiftJump)
-                        + IcfbGlobal.getSettings().shiftDriveEvent.pointsPerShiftJumpUse;
+        _progress = IcfbGlobal.getSettings().shiftDriveEvent.pointsPerShiftJumpUse.get();
     }
 
     @Override
@@ -81,9 +78,7 @@ public class ShiftDriveEventUseFactor extends BaseEventFactor {
                 tooltip.addPara(str2,
                         pad, highlight,
                         String.valueOf((int)getDistance()),
-                        "Shift Jump",
-                        String.valueOf((int)(_distanceLY *
-                                IcfbGlobal.getSettings().shiftDriveEvent.pointsPerLYTraveledWithShiftJump))
+                        "Shift Jump"
                 );
             }
         };

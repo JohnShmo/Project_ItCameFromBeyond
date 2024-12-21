@@ -418,8 +418,6 @@ public class ShiftDriveEvent extends BaseEventIntel implements QuestListener, Sh
             case TheHuntQuest.ID:
                 unlockStage();
                 getStageStatus(Stage.DEADLY_EVENT).setState(StageStatus.State.INACTIVE);
-                if (IcfbGlobal.getSettings().shiftDriveEvent.isTheHuntRepeatable)
-                    setProgress(getProgress() - generateAmountToSubtractAfterDeadly());
                 break;
         }
     }

@@ -96,7 +96,7 @@ public class ShiftJumpAbilityPlugin extends BaseDurationAbility {
         final Color fuel = Global.getSettings().getColor("progressBarFuelColor");
         final int fuelPerLY = getImpl().computeFuelCost(fleet, 1);
         final int extraFuelPercent =
-                (int)((IcfbGlobal.getSettings().shiftJump.baseExtraFuelPercent *
+                (int)((IcfbGlobal.getSettings().shiftJump.baseExtraFuelPercent.get() *
                     getImpl().getFuelCostMultiplier()) * 100f);
         final float crShort = IcfbMisc.computeSupplyCostForCRRecovery(fleet, getImpl().computeCRCostFractional(0.25f));
         final float crMedium = IcfbMisc.computeSupplyCostForCRRecovery(fleet, getImpl().computeCRCostFractional(0.5f));

@@ -92,9 +92,9 @@ public class IcfbShiftDriveManager implements EveryFrameScript {
         if (!isShiftJumpUnlocked())
             setShiftJumpUnlocked(true);
         if (hasShiftJumpFuelUpgrade())
-            shiftJump.setFuelCostMultiplier(IcfbGlobal.getSettings().shiftJump.fuelUpgradeMultiplier);
+            shiftJump.setFuelCostMultiplier(IcfbGlobal.getSettings().shiftJump.fuelUpgradeMultiplier.get());
         if (hasShiftJumpRangeUpgrade())
-            shiftJump.setMaxRangeMultiplier(IcfbGlobal.getSettings().shiftJump.rangeUpgradeMultiplier);
+            shiftJump.setMaxRangeMultiplier(IcfbGlobal.getSettings().shiftJump.rangeUpgradeMultiplier.get());
     }
 
     @Override
