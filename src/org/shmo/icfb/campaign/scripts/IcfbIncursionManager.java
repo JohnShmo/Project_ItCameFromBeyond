@@ -487,7 +487,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
     }
 
     private void monthlyUpdate() {
-        if (!IcfbGlobal.getSettings().shiftDriveEvent.isEnabled.get())
+        if (!IcfbGlobal.getSettings().incursions.isEnabled.get())
             return;
         int totalPoints = 0;
         for (FactorInstance factor : getMonthlyFactors()) {
@@ -512,7 +512,7 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
     @Override
     public void advance(float deltaTime) {
         try {
-            if (!IcfbGlobal.getSettings().shiftDriveEvent.isEnabled.get())
+            if (!IcfbGlobal.getSettings().incursions.isEnabled.get())
                 setCurrentPoints(0);
             if (hasSeenFirstIncursion())
                 createEventIntelIfNeeded();
@@ -603,12 +603,12 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
             for (Incursion incursion : incursions) {
                 incursionPoints += incursion.getPointsContributed();
             }
-            incursionPoints = Math.min(incursionPoints, IcfbGlobal.getSettings().shiftDriveEvent.maxIncursionContribution.get());
+            incursionPoints = Math.min(incursionPoints, IcfbGlobal.getSettings().incursions.maxTotalIncursionContribution.get());
             extraPoints += incursionPoints;
             if (isNerfed()) {
-                instance.points = (IcfbGlobal.getSettings().shiftDriveEvent.basePointsPerMonth.get() / 4) + extraPoints;
+                instance.points = (IcfbGlobal.getSettings().incursions.basePointsPerMonth.get() / 4) + extraPoints;
             } else {
-                instance.points = IcfbGlobal.getSettings().shiftDriveEvent.basePointsPerMonth.get() + extraPoints;
+                instance.points = IcfbGlobal.getSettings().incursions.basePointsPerMonth.get() + extraPoints;
             }
         }
     }
@@ -623,9 +623,9 @@ public class IcfbIncursionManager extends BaseCampaignEventListener implements E
 
     @Override
     public void notifyShiftJumpUsed(CampaignFleetAPI fleet, float distanceLY) {
-        if (!IcfbGlobal.getSettings().shiftDriveEvent.isEnabled.get())
+        if (!IcfbGlobal.getSettings().incursions.isEnabled.get())
             return;
-        final int pointsPerUse = IcfbGlobal.getSettings().shiftDriveEvent.pointsPerShiftJumpUse.get();
+        final int pointsPerUse = IcfbGlobal.getSettings().incursions.pointsPerShiftJumpUse.get();
         if (!fleet.isPlayerFleet())
             return;
         if (!isActivated() && getCurrentPoints() >= pointsPerUse)

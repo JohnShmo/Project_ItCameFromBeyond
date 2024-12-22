@@ -30,7 +30,6 @@ public class Incursion extends BaseIntelPlugin {
     public final static String POINTS_CONTRIBUTED_KEY = "$pointsContributed";
     public final static String DURATION_KEY = "$duration";
 
-    public static final float STANDARD_DURATION_DAYS = 90f;
     public static final int MAX_FLEETS = 20;
 
     private static SectorEntityToken createSpawnLocation(StarSystemAPI system) {
@@ -196,8 +195,12 @@ public class Incursion extends BaseIntelPlugin {
     public void start() {
         setSpawnLocation(createSpawnLocation(getSystem()));
         setPlayerVisibleTimestamp(Global.getSector().getClock().getTimestamp());
-        setDurationDays(STANDARD_DURATION_DAYS + ShmoMath.lerp(-15, 45, Misc.random.nextFloat()));
-        setPointsContributed(IcfbGlobal.getSettings().shiftDriveEvent.startingIncursionContribution.get());
+        setDurationDays(ShmoMath.lerp(
+                IcfbGlobal.getSettings().incursions.minDurationDays.get(),
+                IcfbGlobal.getSettings().incursions.maxDurationDays.get(),
+                Misc.random.nextFloat()
+        ));
+        setPointsContributed(IcfbGlobal.getSettings().incursions.maxIncursionContribution.get());
         setImportant(true);
         Global.getSector().getIntelManager().addIntel(this);
 
@@ -262,7 +265,7 @@ public class Incursion extends BaseIntelPlugin {
         }
 
         final float fractionOfFleetsRemaining = (float)getFleets().size() / (float)MAX_FLEETS;
-        final int pointsFromFleets = (int)((IcfbGlobal.getSettings().shiftDriveEvent.startingIncursionContribution.get() - 10) * fractionOfFleetsRemaining);
+        final int pointsFromFleets = (int)((IcfbGlobal.getSettings().incursions.maxIncursionContribution.get() - 10) * fractionOfFleetsRemaining);
         final int totalPoints = pointsFromFleets + 10;
         setPointsContributed(totalPoints);
     }
@@ -274,7 +277,7 @@ public class Incursion extends BaseIntelPlugin {
             shouldEnd = false;
         else if (getFleets().isEmpty())
             shouldEnd = true;
-        else shouldEnd = daysPassed > STANDARD_DURATION_DAYS;
+        else shouldEnd = daysPassed > getDurationDays();
         if (!isEnding() && shouldEnd) {
             end();
             endAfterDelay();

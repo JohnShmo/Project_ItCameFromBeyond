@@ -103,23 +103,6 @@ public class IcfbSettings {
         }
     }
 
-    public static class ShiftDriveEventSettings {
-
-        public BooleanSetting isEnabled = new BooleanSetting(true);
-        public IntegerSetting pointsPerShiftJumpUse = new IntegerSetting(50);
-        public IntegerSetting basePointsPerMonth = new IntegerSetting(40);
-        public IntegerSetting startingIncursionContribution = new IntegerSetting(40);
-        public IntegerSetting maxIncursionContribution = new IntegerSetting(125);
-
-        public void loadFromJSON(@NotNull JSONObject json) {
-            isEnabled.set(json, "isEnabled");
-            pointsPerShiftJumpUse.set(json, "pointsPerShiftJumpUse");
-            basePointsPerMonth.set(json, "basePointsPerMonth");
-            startingIncursionContribution.set(json, "startingIncursionContribution");
-            maxIncursionContribution.set(json, "maxIncursionContribution");
-        }
-    }
-
     public static class ShipSystemSettings {
 
         public FloatSetting thrusterPulseImpulseMagnitude = new FloatSetting(1200f);
@@ -141,21 +124,42 @@ public class IcfbSettings {
         }
     }
 
+    public static class IncursionSettings {
+
+        public BooleanSetting isEnabled = new BooleanSetting(true);
+        public IntegerSetting pointsPerShiftJumpUse = new IntegerSetting(50);
+        public IntegerSetting basePointsPerMonth = new IntegerSetting(40);
+        public IntegerSetting maxIncursionContribution = new IntegerSetting(40);
+        public IntegerSetting maxTotalIncursionContribution = new IntegerSetting(125);
+        public IntegerSetting minDurationDays = new IntegerSetting(125);
+        public IntegerSetting maxDurationDays = new IntegerSetting(125);
+
+        public void loadFromJSON(@NotNull JSONObject json) {
+            isEnabled.set(json, "isEnabled");
+            pointsPerShiftJumpUse.set(json, "pointsPerShiftJumpUse");
+            basePointsPerMonth.set(json, "basePointsPerMonth");
+            maxIncursionContribution.set(json, "maxIncursionContribution");
+            maxTotalIncursionContribution.set(json, "maxTotalIncursionContribution");
+            minDurationDays.set(json, "minDurationDays");
+            maxDurationDays.set(json, "maxDurationDays");
+        }
+    }
+
     public final ShiftJumpSettings shiftJump = new ShiftJumpSettings();
-    public final ShiftDriveEventSettings shiftDriveEvent = new ShiftDriveEventSettings();
     public final ShipSystemSettings shipSystem = new ShipSystemSettings();
+    public final IncursionSettings incursions = new IncursionSettings();
 
     public void loadFromJSON(@NotNull JSONObject json) {
         JSONObject shiftJumpJSON = json.optJSONObject("shiftJump");
         if (shiftJumpJSON != null)
             shiftJump.loadFromJSON(shiftJumpJSON);
 
-        JSONObject shiftDriveEventJSON = json.optJSONObject("shiftDriveEvent");
-        if (shiftDriveEventJSON != null)
-            shiftDriveEvent.loadFromJSON(shiftDriveEventJSON);
-
         JSONObject shipSystemJSON = json.optJSONObject("shipSystem");
         if (shipSystemJSON != null)
             shipSystem.loadFromJSON(shipSystemJSON);
+
+        JSONObject shiftDriveEventJSON = json.optJSONObject("incursions");
+        if (shiftDriveEventJSON != null)
+            incursions.loadFromJSON(shiftDriveEventJSON);
     }
 }

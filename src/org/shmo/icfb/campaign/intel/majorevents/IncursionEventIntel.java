@@ -67,7 +67,7 @@ public class IncursionEventIntel extends BaseEventIntel {
                 points.add(row1Points);
 
                 String row2 = (im.isNerfed() ? "Weakened Shifter fleets" : "Shifter fleets");
-                int row2Points = (int)(IcfbGlobal.getSettings().shiftDriveEvent.basePointsPerMonth.get()
+                int row2Points = (int)(IcfbGlobal.getSettings().incursions.basePointsPerMonth.get()
                         * (im.isNerfed() ? 0.25f : 1.0f));
                 causes.add(row2);
                 points.add(row2Points);
@@ -83,7 +83,7 @@ public class IncursionEventIntel extends BaseEventIntel {
                     }
                     row3Points = Math.min(
                             row3Points,
-                            IcfbGlobal.getSettings().shiftDriveEvent.maxIncursionContribution.get()
+                            IcfbGlobal.getSettings().incursions.maxTotalIncursionContribution.get()
                     );
                     causes.add(row3);
                     points.add(row3Points);
@@ -283,7 +283,7 @@ public class IncursionEventIntel extends BaseEventIntel {
 
     @Override
     public boolean isHidden() {
-        if (!IcfbGlobal.getSettings().shiftDriveEvent.isEnabled.get())
+        if (!IcfbGlobal.getSettings().incursions.isEnabled.get())
             return true;
         return super.isHidden();
     }

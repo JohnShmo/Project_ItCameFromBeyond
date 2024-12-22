@@ -10,12 +10,14 @@
 			"arrivalDistanceFromDestination": 500.0,
 		},
 		
-		"shiftDriveEvent": {
+		"incursions": {
 			"isEnabled": true,
 			"pointsPerShiftJumpUse": 50,
 			"basePointsPerMonth": 40,
-			"startingIncursionContribution": 50,
-			"maxIncursionContribution": 125,
+			"maxIncursionContribution": 50,
+			"maxTotalIncursionContribution": 125,
+			"minDurationDays": 75,
+			"maxDurationDays": 135,
 		},
 		
 		"shipSystem": {
