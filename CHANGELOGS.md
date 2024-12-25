@@ -1,3 +1,7 @@
+0.1.2b-alpha (hotfix)
+
+- Fixed - Bug that causes you to infinitely fail a mission if you run out of time (oops)
+
 0.1.2a-alpha
 
 - Fixed - Crash caused by an AI-controlled ship misusing a ship ability.
