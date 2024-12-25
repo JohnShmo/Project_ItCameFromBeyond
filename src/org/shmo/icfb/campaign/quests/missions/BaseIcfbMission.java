@@ -150,7 +150,7 @@ public abstract class BaseIcfbMission implements IcfbMission {
 
                     @Override
                     public void advance(float deltaTime) {
-                        if (isTimeUp()) {
+                        if (isTimeUp() && !isFailed()) {
                             fail();
                         }
                         if (isFailed() && !quest.isOnFinalStep()) {
