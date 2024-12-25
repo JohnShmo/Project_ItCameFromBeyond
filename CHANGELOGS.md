@@ -1,3 +1,8 @@
+0.1.2a-alpha
+
+- Fixed - Crash caused by an AI-controlled ship misusing a ship ability.
+- Fixed - Bugs involving the subspace rift quest type.
+
 0.1.1a-alpha
 
 - Added - new VFX and SFX for Shift Jump

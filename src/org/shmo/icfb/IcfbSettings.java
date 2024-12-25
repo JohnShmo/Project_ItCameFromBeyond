@@ -17,6 +17,10 @@ public class IcfbSettings {
             _value = value;
         }
 
+        public void reset() {
+            _value = null;
+        }
+
         @NotNull
         public T get() {
             if (_value == null)
@@ -71,7 +75,6 @@ public class IcfbSettings {
     }
 
     public static class ShiftJumpSettings {
-
         public enum CRPenaltyCurve {
             FAST,
             MEDIUM,
@@ -104,7 +107,6 @@ public class IcfbSettings {
     }
 
     public static class ShipSystemSettings {
-
         public FloatSetting thrusterPulseImpulseMagnitude = new FloatSetting(1200f);
         public FloatSetting quantumInversionMaxTimeSpan = new FloatSetting(4.0f);
         public FloatSetting quantumInversionKeyframeInterval = new FloatSetting(0.1f);
@@ -125,7 +127,6 @@ public class IcfbSettings {
     }
 
     public static class IncursionSettings {
-
         public BooleanSetting isEnabled = new BooleanSetting(true);
         public IntegerSetting pointsPerShiftJumpUse = new IntegerSetting(50);
         public IntegerSetting basePointsPerMonth = new IntegerSetting(40);

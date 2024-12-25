@@ -1,5 +1,6 @@
 package org.shmo.icfb.campaign.quests.impl.missions;
 
+import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.EveryFrameScriptWithCleanup;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
@@ -67,6 +68,7 @@ public class SubspaceFissure extends BaseIcfbMission {
 
             @Override
             public void advance(float deltaTime) {
+                updatePlayerSeen(deltaTime);
                 spawnPatrolFleetsIfNeeded();
                 updatePatrolFleet(_fleet1);
                 updatePatrolFleet(_fleet2);
@@ -107,7 +109,7 @@ public class SubspaceFissure extends BaseIcfbMission {
     }
 
     private void updatePatrolFleet(CampaignFleetAPI fleet) {
-        if (fleet != null) {
+        if (fleet != null && fleet.isAlive()) {
             if (isVisibleToSensorsOf(fleet)) {
                 markPlayerAsSeen();
                 FleetAssignmentDataAPI assignmentData = fleet.getCurrentAssignment();
@@ -125,7 +127,16 @@ public class SubspaceFissure extends BaseIcfbMission {
     }
 
     private void markPlayerAsSeen() {
-        _fissure.getMemoryWithoutUpdate().set("$icfbSeen", true, 2);
+        if (_fissure == null)
+            return;
+        _fissure.getMemoryWithoutUpdate().set("$icfbSeen", 4);
+    }
+
+    private void updatePlayerSeen(float deltaTime) {
+        if (_fissure == null)
+            return;
+        float time = _fissure.getMemoryWithoutUpdate().getFloat("$icfbSeen");
+        _fissure.getMemoryWithoutUpdate().set("$icfbSeen", Math.max(0, time - deltaTime));
     }
 
     private void spawnPatrolFleetsIfNeeded() {
@@ -163,15 +174,10 @@ public class SubspaceFissure extends BaseIcfbMission {
         _riftCloud.getEntity().setExtendedDetectedAtRange(2000f);
         _riftCloud.getEntity().setDetectionRangeDetailsOverrideMult(2000f);
         _riftCloud.getEntity().setSensorProfile(2000f);
-        _fissure.addScript(new EveryFrameScriptWithCleanup() {
-            @Override
-            public void cleanup() {
-                _riftCloud.expire();
-            }
-
+        _fissure.addScript(new EveryFrameScript() {
             @Override
             public boolean isDone() {
-                return _fissure == null || _fissure.isExpired() || !_fissure.isAlive();
+                return _fissure == null || _riftCloud == null || _fissure.isExpired() || !_fissure.isAlive();
             }
 
             @Override
@@ -181,11 +187,11 @@ public class SubspaceFissure extends BaseIcfbMission {
 
             @Override
             public void advance(float v) {
-                try {
-                    _riftCloud.getEntity().setSensorProfile(2000f);
-                    _riftCloud.setLocation(_fissure.getLocation().x, _fissure.getLocation().y);
-                    _riftCloud.setFacing(_fissure.getFacing());
-                } catch (Exception ignored) {}
+                if (_fissure == null || _riftCloud == null)
+                    return;
+                _riftCloud.getEntity().setSensorProfile(2000f);
+                _riftCloud.setLocation(_fissure.getLocation().x, _fissure.getLocation().y);
+                _riftCloud.setFacing(_fissure.getFacing());
             }
         });
         Misc.makeImportant(_fissure, null);

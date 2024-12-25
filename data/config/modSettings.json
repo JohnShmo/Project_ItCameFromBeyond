@@ -9,17 +9,7 @@
 			"rangeUpgradeMultiplier": 2.0,
 			"arrivalDistanceFromDestination": 500.0,
 		},
-		
-		"incursions": {
-			"isEnabled": true,
-			"pointsPerShiftJumpUse": 50,
-			"basePointsPerMonth": 40,
-			"maxIncursionContribution": 50,
-			"maxTotalIncursionContribution": 125,
-			"minDurationDays": 75,
-			"maxDurationDays": 135,
-		},
-		
+
 		"shipSystem": {
 			## Thruster Pulse
 			"thrusterPulseImpulseMagnitude": 1200.0,
@@ -33,6 +23,16 @@
 			"ballisticPreloaderMediumPool": 1000.0,
 			"ballisticPreloaderLargePool": 1600.0,
 			"ballisticPreloaderBonusDamagePercent": 70.0,
-		}
+		},
+			
+		"incursions": {
+			"isEnabled": false, # dont enable this please lmao
+			"pointsPerShiftJumpUse": 50,
+			"basePointsPerMonth": 40,
+			"maxIncursionContribution": 50,
+			"maxTotalIncursionContribution": 125,
+			"minDurationDays": 75,
+			"maxDurationDays": 135,
+		},
 	}
 }
