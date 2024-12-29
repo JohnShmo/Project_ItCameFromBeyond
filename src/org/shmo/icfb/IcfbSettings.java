@@ -132,8 +132,8 @@ public class IcfbSettings {
         public IntegerSetting basePointsPerMonth = new IntegerSetting(40);
         public IntegerSetting maxIncursionContribution = new IntegerSetting(40);
         public IntegerSetting maxTotalIncursionContribution = new IntegerSetting(125);
-        public IntegerSetting minDurationDays = new IntegerSetting(125);
-        public IntegerSetting maxDurationDays = new IntegerSetting(125);
+        public IntegerSetting minDurationDays = new IntegerSetting(75);
+        public IntegerSetting maxDurationDays = new IntegerSetting(135);
 
         public void loadFromJSON(@NotNull JSONObject json) {
             isEnabled.set(json, "isEnabled");

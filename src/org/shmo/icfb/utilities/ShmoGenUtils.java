@@ -36,8 +36,10 @@ public class ShmoGenUtils {
         if (market != null) {
             if (isAdmin)
                 market.setAdmin(person);
-            market.addPerson(person);
-            market.getCommDirectory().addPerson(person, commIndex);
+            else {
+                market.addPerson(person);
+                market.getCommDirectory().addPerson(person, commIndex);
+            }
         }
 
         return person;

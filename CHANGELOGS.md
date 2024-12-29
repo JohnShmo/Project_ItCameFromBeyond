@@ -1,3 +1,7 @@
+0.1.3a-alpha
+
+- Added - Failsafe for adding mod to an ongoing save. Boundless administrators will now spawn at their starting colonies to allow you to complete the main questline.
+
 0.1.2b-alpha (hotfix)
 
 - Fixed - Bug that causes you to infinitely fail a mission if you run out of time (oops)

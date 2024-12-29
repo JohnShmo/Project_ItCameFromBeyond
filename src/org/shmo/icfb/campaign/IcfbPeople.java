@@ -1,13 +1,19 @@
 package org.shmo.icfb.campaign;
 
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.campaign.SectorAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
+import com.fs.starfarer.api.impl.campaign.ids.Industries;
+import com.fs.starfarer.api.impl.campaign.ids.Ranks;
+import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import org.shmo.icfb.IcfbLog;
 import org.shmo.icfb.campaign.gen.PersonFactory;
 import org.shmo.icfb.campaign.gen.impl.people.AriaSerokaKotovCorvusModePersonFactory;
 import org.shmo.icfb.campaign.gen.impl.people.XentAlabasterCorvusModePersonFactory;
+
+import java.util.List;
 
 public class IcfbPeople {
     public static final PersonData XENT_ALABASTER = new PersonData("icfb_xent");
@@ -15,6 +21,14 @@ public class IcfbPeople {
 
     public static void generateForCorvusMode(SectorAPI sector) {
         IcfbLog.info("  Initializing people...");
+
+        final String putPeopleInChargeKey = "$icfbPutPeopleInCharge";
+        if (!sector.getMemoryWithoutUpdate().getBoolean(putPeopleInChargeKey)) {
+            sector.getMemoryWithoutUpdate().set(putPeopleInChargeKey, true);
+            genPeople(IcfbMarkets.WINGS_OF_ENTERIA.getMarket());
+            genPeople(IcfbMarkets.LORELAI.getMarket());
+            genPeople(IcfbMarkets.PANGEA.getMarket());
+        }
 
         XENT_ALABASTER.createPerson(
                 new XentAlabasterCorvusModePersonFactory(),
@@ -28,6 +42,18 @@ public class IcfbPeople {
                 null
         );
     }
+
+    private static void genPeople(MarketAPI market) {
+        final FactionAPI faction = market.getFaction();
+        if (faction == null || !faction.getId().equals(IcfbFactions.BOUNDLESS.getId()))
+            return;
+
+        final PersonAPI admin = faction.createRandomPerson();
+        admin.setPostId(Ranks.POST_ADMINISTRATOR);
+        market.setAdmin(admin);
+        market.getCommDirectory().addPerson(admin);
+    }
+
 
     public static class PersonData {
         private final String _id;
